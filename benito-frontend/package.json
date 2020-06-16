@@ -33,7 +33,7 @@
     "prop-types": "^15.6.2",
     "react": "^16.6.1",
     "react-dev-utils": "^6.1.1",
-    "react-dom": "^16.6.1",
+    "react-dom": "^16.13.0",
     "react-hot-loader": "^4.3.12",
     "reactjs-popup": "^1.4.1",
     "resolve-url-loader": "^3.0.0",
