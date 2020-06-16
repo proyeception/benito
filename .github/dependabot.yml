@@ -1,0 +1,11 @@
+version: 2
+updates:
+    - package-ecosystem: "npm"
+      directory: "/benito-frontend"
+      schedule:
+        interval: "daily"
+    
+    - package-ecosystem: "maven"
+      directory: "/benito-backend"
+      schedule:
+        interval: "daily"
