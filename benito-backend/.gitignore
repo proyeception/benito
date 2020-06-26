@@ -19,7 +19,7 @@
 # Sensitive or high-churn files
 .idea/**/dataSources/
 .idea/**/dataSources.ids
-.idea/**/dataSources.local.xml
+.idea/**/dataSources.lbenitol.xml
 .idea/**/sqlDataSources.xml
 .idea/**/dynamic.xml
 .idea/**/uiDesigner.xml
@@ -153,7 +153,7 @@ buildNumber.properties
 *.code-workspace
 
 ### VisualStudioCode Patch ###
-# Ignore all local history of files
+# Ignore all lbenitol history of files
 .history
 
 ### Windows ###

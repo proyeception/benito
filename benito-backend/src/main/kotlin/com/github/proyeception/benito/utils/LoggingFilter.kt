@@ -8,8 +8,8 @@ import spark.Spark
 
 object LoggingFilter {
     fun register() {
-        Spark.before("/mango/*", this::before)
-        Spark.after("/mango/*", this::after)
+        Spark.before("/benito/*", this::before)
+        Spark.after("/benito/*", this::after)
     }
 
     private fun before(req: Request, res: Response) {

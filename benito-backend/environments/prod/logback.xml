@@ -2,7 +2,9 @@
 
 <configuration scan="false">
 
-        <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+            <file>logs</file>
+            <append>true</append>
             <encoder>
                 <pattern>
                     %d{ISO8601}{GMT} %-5level [${HOSTNAME}] [] [] [%thread] %logger{0}: %msg %n
@@ -13,7 +15,7 @@
     <logger name="com.github.proyeception.benito" level="DEBUG"/>
 
     <root level="INFO">
-        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
     </root>
 
 </configuration>
