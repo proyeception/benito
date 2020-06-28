@@ -1,6 +1,8 @@
 package com.github.proyeception.benito
 
-import com.github.proyeception.benito.utils.LoggingFilter
+import com.github.proyeception.benito.controller.Controller
+import com.github.proyeception.benito.injection.*
+import com.google.inject.Guice
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.servlet.FilterHolder
 import org.eclipse.jetty.servlet.ServletContextHandler
@@ -49,7 +51,22 @@ class Benito {
 
     class App : SparkApplication {
         override fun init() {
-            LoggingFilter.register()
+            val injector = Guice.createInjector(
+                ConfigModule(),
+                ConnectionModule(),
+                ControllerModule(),
+                HttpModule(),
+                ObjectMapperModule(),
+                ServiceModule()
+            )
+
+            injector.allBindings.keys
+                .filter { Controller::class.java.isAssignableFrom(it.typeLiteral.rawType) }
+                .forEach {
+                    val controller = injector.getInstance(it) as Controller
+                    controller.register()
+                    LOGGER.info("Registered controller ${controller.javaClass.simpleName}")
+                }
         }
     }
 }

@@ -6,7 +6,7 @@ import spark.Request
 import spark.Response
 import spark.Spark
 
-object LoggingFilter {
+class SparkLoggingFilter {
     fun register() {
         Spark.before("/benito/*", this::before)
         Spark.after("/benito/*", this::after)
@@ -24,5 +24,5 @@ object LoggingFilter {
         LOGGER.info("Body: ${res.body()}")
     }
 
-    private val LOGGER = LoggerFactory.getLogger(LoggingFilter::class.java)
+    private val LOGGER = LoggerFactory.getLogger(SparkLoggingFilter::class.java)
 }
