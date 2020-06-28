@@ -4,9 +4,9 @@ data class SapiensLoginRequestDTO(
     private val username: String,
     private val password: String
 ) {
-    constructor(studentLoginDTO: StudentLoginDTO) : this(
-        username = studentLoginDTO.username,
-        password = studentLoginDTO.password
+    constructor(userLoginDTO: UserLoginDTO) : this(
+        username = userLoginDTO.username,
+        password = userLoginDTO.password
     )
 }
 
