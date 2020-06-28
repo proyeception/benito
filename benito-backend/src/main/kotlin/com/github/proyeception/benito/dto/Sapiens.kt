@@ -1,9 +1,9 @@
 package com.github.proyeception.benito.dto
 
 data class AuthenticationRequestDTO(
-    private val username: String,
-    private val password: String,
-    private val userType: String
+    val username: String,
+    val password: String,
+    val userType: String
 ) {
     constructor(userLoginDTO: UserLoginDTO) : this(
         username = userLoginDTO.username,
