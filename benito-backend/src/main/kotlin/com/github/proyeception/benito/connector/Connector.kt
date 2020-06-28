@@ -1,5 +1,6 @@
 package com.github.proyeception.benito.connector
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.apache.http.HttpResponse
 import org.apache.http.client.HttpClient
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase
@@ -14,15 +15,16 @@ import java.io.InputStreamReader
 
 class Connector(
     private val apacheClient: HttpClient,
+    private val objectMapper: ObjectMapper,
     private val host: String
 ) {
     fun get(path: String): Response = execute(HttpGet("$host/$path"))
 
-    fun post(path: String, body: String): Response = execute(HttpPost("$host/$path").also { it.setBody(body) })
+    fun post(path: String, body: Any): Response = execute(HttpPost("$host/$path").also { it.setBody(body) })
 
     private fun execute(request: HttpRequestBase): Response {
         val response = apacheClient.execute(request)
-        val body = response.entity?.content?.let { BufferedReader(InputStreamReader(it)) }?.readLine()
+        val body = response.readBody()
         val headers = response.allHeaders.map { Pair(it.name, it.value) }.toMap()
         val status = response.statusLine.statusCode
         request.releaseConnection()
@@ -34,13 +36,13 @@ class Connector(
         )
     }
 
-    private fun HttpEntityEnclosingRequestBase.setBody(body: String): HttpEntityEnclosingRequestBase {
-        val params: StringEntity = StringEntity(body, ContentType.APPLICATION_JSON)
+    private fun HttpEntityEnclosingRequestBase.setBody(body: Any?): HttpEntityEnclosingRequestBase = body?.let { b ->
+        val params = StringEntity(objectMapper.writeValueAsString(b), ContentType.APPLICATION_JSON)
         this.entity = params
         return this
-    }
+    } ?: this
 
-    private fun readBody(response: HttpResponse): String? = response.entity?.content
+    private fun HttpResponse.readBody(): String? = this.entity?.content
         ?.let { BufferedReader(InputStreamReader(it)) }
         ?.readLine()
 
