@@ -6,6 +6,11 @@ data class UserLoginDTO(
     val userType: UserTypeDTO
 )
 
+data class ErrorDTO(
+    val status: Int,
+    val message: String?
+)
+
 enum class UserTypeDTO {
     TEACHER,
     STUDENT,
