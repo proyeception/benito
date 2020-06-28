@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.github.proyeception.benito.connector.Connector
 import com.github.proyeception.benito.connector.Response
 import com.github.proyeception.benito.dto.AuthenticationResponseDTO
+import com.github.proyeception.benito.dto.SapiensDTO
 import com.github.proyeception.benito.dto.UserLoginDTO
 import com.github.proyeception.benito.dto.UserTypeDTO
 import com.github.proyeception.benito.exception.AuthenticationFailedException
@@ -26,14 +27,23 @@ class SapiensServiceSpec : WordSpec() {
         "authenticate" should {
             val responseMock: Response = getMock()
             val user = UserLoginDTO(
-                username = "Charlie",
+                username = "benitocapo123",
                 password = "123456789",
                 userType = UserTypeDTO.STUDENT
             )
 
             "post withe the user object to /sapiens/authenticate" {
                 val authenticationResponseDTO = AuthenticationResponseDTO(
-                    session = "123"
+                    session = "123",
+                    userData = SapiensDTO(
+                        name = "Benito",
+                        lastName = "Quinquela",
+                        socials = emptyList(),
+                        projectRefs = emptyList(),
+                        profilePicUrl = "/some-nice-url",
+                        organization = "Some cool organization",
+                        email = "benito@proyeception.com"
+                    )
                 )
 
                 on(sapiensConnectorMock.post(eq("/sapiens/authenticate"), eq(user))).thenReturn(IO.just(responseMock))

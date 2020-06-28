@@ -17,6 +17,7 @@ class BenitoController(
     private val objectMapper: ObjectMapper,
     private val sapiensService: SapiensService
 ) : Controller {
+
     override fun register() {
         Spark.post("/benito/login", "application/json", this::login, ioResponseTransformer::render)
     }
