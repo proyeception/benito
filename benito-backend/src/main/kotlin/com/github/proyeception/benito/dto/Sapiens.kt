@@ -13,5 +13,16 @@ data class AuthenticationRequestDTO(
 }
 
 data class AuthenticationResponseDTO(
-    val session: String
+    val session: String,
+    val userData: SapiensDTO
+)
+
+data class SapiensDTO(
+    val name: String,
+    val lastName: String,
+    val profilePicUrl: String,
+    val email: String,
+    val organization: String,
+    val projectRefs: List<ProjectRefDTO>,
+    val socials: List<SocialDTO>
 )
