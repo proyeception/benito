@@ -13,14 +13,14 @@ import org.apache.http.entity.StringEntity
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
-class Connector(
+open class Connector(
     private val apacheClient: HttpClient,
     private val objectMapper: ObjectMapper,
     private val host: String
 ) {
-    fun get(path: String): IO<Response> = execute(HttpGet("$host/$path"))
+    open fun get(path: String): IO<Response> = execute(HttpGet("$host/$path"))
 
-    fun post(path: String, body: Any): IO<Response> = execute(HttpPost("$host/$path").also { it.setBody(body) })
+    open fun post(path: String, body: Any): IO<Response> = execute(HttpPost("$host/$path").also { it.setBody(body) })
 
     private fun execute(request: HttpRequestBase): IO<Response> = IO {
         val response = apacheClient.execute(request)
@@ -32,7 +32,8 @@ class Connector(
         Response(
             headers = headers,
             body = body,
-            status = status
+            status = status,
+            objectMapper = objectMapper
         )
     }
 
