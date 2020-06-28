@@ -3,7 +3,6 @@ package com.github.proyeception.benito.service
 import arrow.fx.IO
 import arrow.fx.extensions.fx
 import com.fasterxml.jackson.core.type.TypeReference
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.proyeception.benito.connector.Connector
 import com.github.proyeception.benito.dto.AuthenticationResponseDTO
 import com.github.proyeception.benito.dto.UserLoginDTO
