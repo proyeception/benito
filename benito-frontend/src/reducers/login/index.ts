@@ -3,7 +3,7 @@ import {
   UPDATE_LOGIN_USERNAME,
   UPDATE_LOGIN_PASSWORD,
   LoginState,
-} from "store/login/types";
+} from "../../store/login/types";
 
 const defaultLoginState = {
   username: "",

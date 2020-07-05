@@ -1,24 +1,17 @@
 import { createStore, compose } from "redux";
-import rootReducer from "./reducers/index";
+import rootReducer, { RootState } from "./reducers/index";
 
-type State = {
-  login: {
-    username: String;
-    password: String;
-  };
-};
-
-const defaultState: State = {
+const defaultState: RootState = {
   login: {
     username: "",
     password: "",
   },
 };
 
-const store: any = createStore(
+const store = createStore(
   rootReducer,
   defaultState,
-  (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+  ((window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose)()
 );
 
 export default store;
