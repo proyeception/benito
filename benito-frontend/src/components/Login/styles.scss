@@ -1,0 +1,15 @@
+$primary: #6b3ca7;
+
+@import "bootstrap";
+
+.sm-login-header {
+  height: 208px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sm-login-logo {
+  max-width: 96px;
+  max-height: 96px;
+}
