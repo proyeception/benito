@@ -6,9 +6,9 @@ data class AuthenticationRequestDTO(
     val userType: String
 ) {
     constructor(userLoginDTO: UserLoginDTO) : this(
-        username = userLoginDTO.username,
-        password = userLoginDTO.password,
-        userType = userLoginDTO.userType.toString()
+        username = userLoginDTO.user,
+        password = userLoginDTO.pass,
+        userType = userLoginDTO.userT.toString()
     )
 }
 

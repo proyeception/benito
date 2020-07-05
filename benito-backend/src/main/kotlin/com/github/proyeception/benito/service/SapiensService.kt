@@ -14,9 +14,8 @@ open class SapiensService(
 ) {
     fun authenticate(userLoginDTO: UserLoginDTO): IO<AuthenticationResponseDTO> = IO.fx {
         val (response) = sapiensConnector.post("/sapiens/authenticate", AuthenticationRequestDTO(userLoginDTO))
-
         if (response.isError()) {
-            throw AuthenticationFailedException("Error authenticating user ${userLoginDTO.username}")
+            throw AuthenticationFailedException("Error authenticating user ${userLoginDTO.user}")
         } else {
             response.deserializeAs(object : TypeReference<AuthenticationResponseDTO>() {})
         }

@@ -1,10 +1,25 @@
 package com.github.proyeception.benito.dto
 
-data class UserLoginDTO(
-    val username: String,
-    val password: String,
-    val userType: UserTypeDTO
-)
+import com.github.proyeception.benito.injection.Encryptor
+
+
+class UserLoginDTO(
+    username: String,
+    password: String,
+    userType: UserTypeDTO
+) {
+    val user : String
+    val pass : String
+    val userT : UserTypeDTO
+    var secretKey: String = "662ede816988e58fb6d057d9d85605e0" //la copie y pegue de un lugar, capaz
+
+    init {
+        user = username
+        pass = Encryptor.encrypt(password, secretKey)
+        userT = userType
+    }
+}
+
 
 data class UserInfoDTO(
     val session: String,
@@ -44,6 +59,7 @@ data class ErrorDTO(
 )
 
 enum class UserTypeDTO {
-    TEACHER,
+    PROFESSOR,
     STUDENT,
+    ADMIN
 }
