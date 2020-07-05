@@ -2,6 +2,7 @@ import React from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
 import Header from "./Header";
+import LoginButton from "./LoginButton";
 
 const Login = (_: any) => (
   <div className="container-fluid sm-login">
@@ -24,11 +25,7 @@ const Login = (_: any) => (
         aria-describedby="basic-addon1"
       />
     </div>
-    <div className="pt-3">
-      <button type="button" className="btn btn-primary btn-block">
-        Iniciar sesión
-      </button>
-    </div>
+    <LoginButton />
   </div>
 );
 
