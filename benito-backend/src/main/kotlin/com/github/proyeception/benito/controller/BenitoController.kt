@@ -24,7 +24,7 @@ class BenitoController(
 
     fun login(req: Request, res: Response): IO<UserInfoDTO> = IO.fx {
         val login: UserLoginDTO = objectMapper.readValue(req.body())
-        print("holi")
+        print(login.username)
         print(login.pass)
 
         sapiensService.authenticate(userLoginDTO = login).map { UserInfoDTO(it) }.bind()

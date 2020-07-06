@@ -3,20 +3,15 @@ package com.github.proyeception.benito.dto
 import com.github.proyeception.benito.injection.Encryptor
 
 
-class UserLoginDTO(
-    username: String,
-    password: String,
-    userType: UserTypeDTO
+data class UserLoginDTO(
+    val username: String,
+    val password: String,
+    val userType: UserTypeDTO
 ) {
-    val user : String
     val pass : String
-    val userT : UserTypeDTO
-    var secretKey: String = "662ede816988e58fb6d057d9d85605e0" //la copie y pegue de un lugar, capaz
-
+    private val secretKey: String = "662ede816988e58fb6d057d9d85605e0" //la copie y pegue de un lugar, capaz
     init {
-        user = username
         pass = Encryptor.encrypt(password, secretKey)
-        userT = userType
     }
 }
 
