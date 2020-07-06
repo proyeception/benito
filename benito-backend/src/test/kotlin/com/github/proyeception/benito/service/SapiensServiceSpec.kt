@@ -4,10 +4,7 @@ import arrow.fx.IO
 import com.fasterxml.jackson.core.type.TypeReference
 import com.github.proyeception.benito.connector.Connector
 import com.github.proyeception.benito.connector.Response
-import com.github.proyeception.benito.dto.AuthenticationResponseDTO
-import com.github.proyeception.benito.dto.SapiensDTO
-import com.github.proyeception.benito.dto.UserLoginDTO
-import com.github.proyeception.benito.dto.UserTypeDTO
+import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.AuthenticationFailedException
 import com.github.proyeception.benito.mock.eq
 import com.github.proyeception.benito.mock.getMock
@@ -32,6 +29,12 @@ class SapiensServiceSpec : WordSpec() {
                 userType = UserTypeDTO.STUDENT
             )
 
+            val authentication = AuthenticationRequestDTO(
+                username = "benitocapo123",
+                password = "123456789",
+                userType = "STUDENT"
+            )
+
             "post withe the user object to /sapiens/authenticate" {
                 val authenticationResponseDTO = AuthenticationResponseDTO(
                     session = "123",
@@ -46,7 +49,7 @@ class SapiensServiceSpec : WordSpec() {
                     )
                 )
 
-                on(sapiensConnectorMock.post(eq("/sapiens/authenticate"), eq(user))).thenReturn(IO.just(responseMock))
+                on(sapiensConnectorMock.post(eq("/sapiens/authenticate"), eq(authentication))).thenReturn(IO.just(responseMock))
                 on(responseMock.isError()).thenReturn(false)
                 on(responseMock.deserializeAs(any(TypeReference::class.java))).thenReturn(authenticationResponseDTO)
 
@@ -57,7 +60,7 @@ class SapiensServiceSpec : WordSpec() {
             }
 
             "throw if sapiens returns error" {
-                on(sapiensConnectorMock.post("/sapiens/authenticate", user)).thenReturn(IO.just(responseMock))
+                on(sapiensConnectorMock.post("/sapiens/authenticate", authentication)).thenReturn(IO.just(responseMock))
                 on(responseMock.isError()).thenReturn(true)
 
                 shouldThrow<AuthenticationFailedException> {
