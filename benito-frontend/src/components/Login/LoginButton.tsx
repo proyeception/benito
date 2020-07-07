@@ -2,14 +2,41 @@ import React from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
 import store from "../../store";
-import { loadLogin, finishLogin, setLoginTrue } from "../../actions/login";
+import {
+  loadLogin,
+  finishLogin,
+  setUsernameError,
+  setPasswordError,
+} from "../../actions/login";
 import { RootState } from "../../reducers";
 import { connect } from "react-redux";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { UserSession } from "../../store/user/types";
 import { setUserSession } from "../../actions/user/index";
 
+function validate(): Boolean {
+  var valid = true;
+  if (store.getState().login.username.valueOf() === "") {
+    store.dispatch(setUsernameError());
+    valid = false;
+  }
+
+  if (store.getState().login.password === "") {
+    store.dispatch(setPasswordError());
+
+    valid = false;
+  }
+
+  return valid;
+}
+
 function login() {
+  var isValid = validate();
+  console.log(isValid);
+  if (!isValid) {
+    return;
+  }
+
   store.dispatch(loadLogin());
 
   let data = {
@@ -35,7 +62,6 @@ function login() {
       console.log(user);
       store.dispatch(setUserSession(user.session, "saraza", user.userInfo));
     })
-    .then(() => store.dispatch(setLoginTrue()))
     .catch((e) => console.log(e.message))
     .finally(() => store.dispatch(finishLogin()));
 }

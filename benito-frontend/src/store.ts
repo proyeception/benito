@@ -7,6 +7,8 @@ const defaultState: RootState = {
     password: "",
     displayLoader: false,
     isLoggedIn: false,
+    passwordError: false,
+    usernameError: false,
   },
   user: {
     session: null,
