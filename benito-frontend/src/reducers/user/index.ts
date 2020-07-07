@@ -1,8 +1,9 @@
-import { UserAction, UserState, SET_USER } from "store/user/types";
+import { UserAction, UserState, SET_USER } from "../../store/user/types";
 
 const defaultUserState: UserState = {
   session: null,
   data: null,
+  username: null,
 };
 
 function userReducer(state = defaultUserState, action: UserAction): UserState {
@@ -11,6 +12,7 @@ function userReducer(state = defaultUserState, action: UserAction): UserState {
       return {
         session: action.sessionToken,
         data: action.payload,
+        username: action.username,
       };
     default:
       return state;

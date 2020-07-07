@@ -7,6 +7,7 @@ import { RootState } from "../../reducers";
 import { connect } from "react-redux";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { UserSession } from "../../store/user/types";
+import { setUserSession } from "../../actions/user/index";
 
 function login() {
   store.dispatch(loadLogin());
@@ -23,9 +24,17 @@ function login() {
     data: data,
   };
 
+  type UserData = {
+    session: String;
+    userInfo: UserSession;
+  };
+
   axios(config)
-    .then((response: AxiosResponse<UserSession>) => response.data)
-    .then((user) => console.log(user))
+    .then((response: AxiosResponse<UserData>) => response.data)
+    .then((user) => {
+      console.log(user);
+      store.dispatch(setUserSession(user.session, "saraza", user.userInfo));
+    })
     .catch((e) => console.log(e.message))
     .finally(() => store.dispatch(finishLogin()));
 }

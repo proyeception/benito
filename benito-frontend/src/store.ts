@@ -7,6 +7,11 @@ const defaultState: RootState = {
     password: "",
     displayLoader: false,
   },
+  user: {
+    session: null,
+    username: null,
+    data: null,
+  },
 };
 
 const store = createStore(

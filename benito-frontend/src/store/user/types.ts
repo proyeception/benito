@@ -24,11 +24,13 @@ interface SetUserAction {
   type: typeof SET_USER;
   sessionToken: String;
   payload: UserSession;
+  username: String;
 }
 
 export type UserAction = SetUserAction;
 
 export type UserState = {
   session: String;
+  username: String;
   data: UserSession;
 };
