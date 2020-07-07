@@ -5,6 +5,7 @@ const defaultState: RootState = {
   login: {
     username: "",
     password: "",
+    displayLoader: false,
   },
 };
 

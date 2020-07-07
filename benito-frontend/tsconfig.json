@@ -23,7 +23,7 @@
     "src/**/*.tsx",
     "node_modules/typescript/lib/lib.es6.d.ts"
   ],
-  "exclude": ["build", "dist", "node_modules", "__tests__"],
+  "exclude": ["build", "dist", "node_modules", "__tests__", "config"],
   "types": ["node", "webpack", "react", "react-dom", "reactstrap"],
   "include": ["**/*.ts"],
   "compileOnSave": false

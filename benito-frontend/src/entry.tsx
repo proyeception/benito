@@ -8,7 +8,9 @@ import { Provider } from "react-redux";
 
 const router = (
   <Router>
-    <Route exact path="/login" component={Login} />
+    <Route exact path="/login">
+      <Login />
+    </Route>
     <Route exact path="/" component={App} />
   </Router>
 );

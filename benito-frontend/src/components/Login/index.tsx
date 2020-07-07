@@ -3,8 +3,10 @@ import { hot } from "react-hot-loader";
 import "./styles.scss";
 import Header from "./Header";
 import LoginButton from "./LoginButton";
+import store from "../../store";
+import { updateLoginUsername, updateLoginPassword } from "../../actions/login";
 
-const Login = (_: any) => (
+const Login = (_: {}) => (
   <div className="container-fluid sm-login">
     <Header />
     <div className="input-group mb-3">
@@ -14,6 +16,9 @@ const Login = (_: any) => (
         placeholder="Nombre de usuario"
         aria-label="Nombre de usuario"
         aria-describedby="basic-addon1"
+        onChange={(it) =>
+          store.dispatch(updateLoginUsername(it.currentTarget.value))
+        }
       />
     </div>
     <div className="input-group mb-3">
@@ -23,6 +28,9 @@ const Login = (_: any) => (
         placeholder="Contraseña"
         aria-label="Contraseña"
         aria-describedby="basic-addon1"
+        onChange={(it) =>
+          store.dispatch(updateLoginPassword(it.currentTarget.value))
+        }
       />
     </div>
     <LoginButton />

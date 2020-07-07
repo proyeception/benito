@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "rimraf build && NODE_ENV=production webpack",
-    "dev": "webpack-dev-server --inline --hot --open",
+    "build-prod": "cp environments/prod/config.js src/config.js && rimraf build && NODE_ENV=production webpack",
+    "build-test": "cp environments/test/config.js src/config.js && rimraf build && NODE_ENV=test webpack",
+    "build-local": "cp environments/local/config.js src/config.js && rimraf build && NODE_ENV=local webpack",
+    "dev": "cp environments/local/config.js src/config.js && webpack-dev-server --inline --hot --open",
     "prod": "npm run build && http-server build -p 9290",
     "start": "webpack-dev-server -w --config webpack.config.js"
   },

@@ -263,6 +263,9 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 
+src/config.js
+environments/local/config.js
+
 # Windows shortcuts
 *.lnk
 
