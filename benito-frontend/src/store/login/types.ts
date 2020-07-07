@@ -26,6 +26,7 @@ export type LoginAction =
   | UpdatePasswordAction
   | LoadLoginAction
   | FinishLoadLoginAction;
+
 export type LoginState = {
   username: String;
   password: String;

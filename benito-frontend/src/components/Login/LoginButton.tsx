@@ -6,27 +6,7 @@ import { loadLogin, finishLogin } from "../../actions/login";
 import { RootState } from "../../reducers";
 import { connect } from "react-redux";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-
-type ProjectRef = {
-  name: String;
-  url: String;
-};
-
-type Social = {
-  name: String;
-  url: String;
-};
-
-type User = {
-  session: String;
-  name: String;
-  lastName: String;
-  profilePicUrl: String;
-  email: String;
-  organization: String;
-  projectRefs: Array<ProjectRef>;
-  socials: Array<Social>;
-};
+import { UserSession } from "../../store/user/types";
 
 function login() {
   store.dispatch(loadLogin());
@@ -43,13 +23,11 @@ function login() {
     data: data,
   };
 
-  setTimeout(() => {
-    axios(config)
-      .then((response: AxiosResponse<User>) => response.data)
-      .then((user) => console.log(user))
-      .catch((e) => console.log(e.message))
-      .finally(() => store.dispatch(finishLogin()));
-  }, 5000);
+  axios(config)
+    .then((response: AxiosResponse<UserSession>) => response.data)
+    .then((user) => console.log(user))
+    .catch((e) => console.log(e.message))
+    .finally(() => store.dispatch(finishLogin()));
 }
 
 const LoginButton = (props: { displayLogin: Boolean }) => (
