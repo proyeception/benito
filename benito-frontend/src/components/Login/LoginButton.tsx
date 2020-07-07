@@ -7,6 +7,7 @@ import {
   finishLogin,
   setUsernameError,
   setPasswordError,
+  setLoginTrue,
 } from "../../actions/login";
 import { RootState } from "../../reducers";
 import { connect } from "react-redux";
@@ -62,6 +63,7 @@ function login() {
       console.log(user);
       store.dispatch(setUserSession(user.session, "saraza", user.userInfo));
     })
+    .then(() => store.dispatch(setLoginTrue()))
     .catch((e) => console.log(e.message))
     .finally(() => store.dispatch(finishLogin()));
 }
