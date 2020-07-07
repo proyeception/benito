@@ -2,7 +2,7 @@ import React from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
 import store from "../../store";
-import { loadLogin, finishLogin } from "../../actions/login";
+import { loadLogin, finishLogin, setLoginTrue } from "../../actions/login";
 import { RootState } from "../../reducers";
 import { connect } from "react-redux";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
@@ -35,6 +35,7 @@ function login() {
       console.log(user);
       store.dispatch(setUserSession(user.session, "saraza", user.userInfo));
     })
+    .then(() => store.dispatch(setLoginTrue()))
     .catch((e) => console.log(e.message))
     .finally(() => store.dispatch(finishLogin()));
 }

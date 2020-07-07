@@ -4,6 +4,7 @@ import {
   LoginAction,
   LOAD_LOGIN,
   FINISH_LOAD_LOGIN,
+  SET_LOGIN_TRUE,
 } from "../../store/login/types";
 
 export function updateLoginUsername(newUsername: String): LoginAction {
@@ -29,5 +30,11 @@ export function loadLogin(): LoginAction {
 export function finishLogin(): LoginAction {
   return {
     type: FINISH_LOAD_LOGIN,
+  };
+}
+
+export function setLoginTrue(): LoginAction {
+  return {
+    type: SET_LOGIN_TRUE,
   };
 }
