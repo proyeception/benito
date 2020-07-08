@@ -1,5 +1,11 @@
 package com.github.proyeception.benito.dto
 
+enum class UserTypeDTO {
+    TEACHER,
+    STUDENT,
+    ADMINISTRATOR
+}
+
 data class LoginRequestDTO(
     val username: String,
     val password: String

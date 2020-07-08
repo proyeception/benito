@@ -14,7 +14,7 @@ open class Connector(
     private val objectMapper: ObjectMapper,
     private val host: String
 ) {
-    open fun get(path: String): Response = execute(HttpGet("$host/$path"))
+    open fun get(path: String): Response = execute(HttpGet("$host${if (path.startsWith("/")) path else "/$path"}"))
 
     open fun post(path: String): Response = post(path, null)
 

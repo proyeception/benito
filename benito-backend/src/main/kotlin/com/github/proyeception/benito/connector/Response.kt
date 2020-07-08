@@ -2,6 +2,7 @@ package com.github.proyeception.benito.connector
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.github.proyeception.benito.exception.HttpException
 
 open class Response(
     open val headers: Map<String, String>,
@@ -13,4 +14,8 @@ open class Response(
 
     open fun <T> deserializeAs(typeReference: TypeReference<T>?): T = objectMapper.readValue(body, typeReference)
 
+    open fun <T> deserializeOrThrow(
+        typeReference: TypeReference<T>?,
+        errorMessage: String
+    ): T = if (isError()) throw HttpException.of(status)(errorMessage) else deserializeAs(typeReference)
 }

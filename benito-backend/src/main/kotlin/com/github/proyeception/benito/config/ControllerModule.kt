@@ -1,7 +1,7 @@
 package com.github.proyeception.benito.config
 
 import com.github.proyeception.benito.controller.LoginController
-import com.github.proyeception.benito.service.MangoService
+import com.github.proyeception.benito.service.UserService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -9,8 +9,8 @@ import org.springframework.context.annotation.Configuration
 open class ControllerModule {
     @Bean
     open fun benitoController(
-        mangoService: MangoService
+        userService: UserService
     ): LoginController = LoginController(
-        mangoService = mangoService
+        userService = userService
     )
 }
