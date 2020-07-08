@@ -28,7 +28,7 @@ open class Connector(
 
     open fun patch(path: String, body: Any?): Response = execute(HttpPatch("$host/$path").also { it.setBody(body) })
 
-    open fun delete(path: String, body: Any?): Response = execute(HttpDelete("$host/$path"))
+    open fun delete(path: String): Response = execute(HttpDelete("$host/$path"))
 
     private fun execute(request: HttpRequestBase): Response {
         val response = apacheClient.execute(request)

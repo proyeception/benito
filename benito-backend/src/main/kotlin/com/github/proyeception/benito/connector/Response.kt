@@ -12,4 +12,5 @@ open class Response(
     open fun isError(): Boolean = status in 400..599
 
     open fun <T> deserializeAs(typeReference: TypeReference<T>?): T = objectMapper.readValue(body, typeReference)
+
 }
