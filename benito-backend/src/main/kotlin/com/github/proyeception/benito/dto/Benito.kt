@@ -8,7 +8,8 @@ enum class UserTypeDTO {
 
 data class LoginRequestDTO(
     val username: String,
-    val password: String
+    val password: String,
+    val userType: UserTypeDTO
 )
 
 data class ProjectRefDTO(
@@ -22,6 +23,7 @@ data class SocialRefDTO(
 )
 
 data class UserInfoDTO(
+    val id: String,
     val name: String,
     val lastName: String,
     val profilePicUrl: String,
