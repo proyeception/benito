@@ -13,7 +13,7 @@ type Props = {
 const Input = (props: Props) => (
   <div className="input-group mb-3">
     <input
-      type="text"
+      type={props.inputType.valueOf()}
       className="form-control"
       placeholder={props.placeHolder.valueOf()}
       aria-label={props.placeHolder.valueOf()}
