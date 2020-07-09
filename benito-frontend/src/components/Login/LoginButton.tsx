@@ -14,6 +14,13 @@ import { connect } from "react-redux";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { UserSession } from "../../store/user/types";
 import { setUserSession } from "../../actions/user/index";
+import { benitoHost } from "../../config";
+
+type LoginRequest = {
+  username: String;
+  password: String;
+  userType: "STUDENT" | "TEACHER";
+};
 
 function validate(): Boolean {
   var valid = true;
@@ -40,15 +47,15 @@ function login() {
 
   store.dispatch(loadLogin());
 
-  let data = {
+  let data: LoginRequest = {
     username: store.getState().login.username,
     password: store.getState().login.password,
-    usertype: "student",
+    userType: "STUDENT",
   };
 
   let config: AxiosRequestConfig = {
     method: "POST",
-    url: "http://localhost:9290/benito/login",
+    url: `${benitoHost}/benito/login`,
     data: data,
   };
 
