@@ -16,35 +16,52 @@ open class Connector(
     private val objectMapper: ObjectMapper,
     private val host: String
 ) {
-    open fun get(path: String): Response = execute(HttpGet("$host${if (path.startsWith("/")) path else "/$path"}"))
+    open fun get(path: String): Response = execute(path, HttpMethod.GET, null)
 
     open fun post(path: String): Response = post(path, null)
 
-    open fun post(path: String, body: Any?): Response = execute(HttpPost("$host/$path").also { it.setBody(body) })
+    open fun post(path: String, body: Any?): Response = execute(path, HttpMethod.POST, body)
 
     open fun put(path: String): Response = put(path, null)
 
-    open fun put(path: String, body: Any?): Response = execute(HttpPut("$host/$path").also { it.setBody(body) })
+    open fun put(path: String, body: Any?): Response = execute(path, HttpMethod.PUT, body)
 
     open fun patch(path: String): Response = patch(path, null)
 
-    open fun patch(path: String, body: Any?): Response = execute(HttpPatch("$host/$path").also { it.setBody(body) })
+    open fun patch(path: String, body: Any?): Response = execute(path, HttpMethod.PATCH, body)
 
-    open fun delete(path: String): Response = execute(HttpDelete("$host/$path"))
+    open fun delete(path: String): Response = execute(path, HttpMethod.DELETE, null)
 
-    private fun execute(request: HttpRequestBase): Response {
+    private fun execute(path: String, httpMethod: HttpMethod, body: Any?): Response {
+        val endpoint = "$host${if (path.startsWith("/")) path else "/$path"}"
+        val request = requestOf(httpMethod, body)(endpoint)
+
         val response = apacheClient.execute(request)
-        val body = response.readBody()
+        val responseBody = response.readBody()
         val headers = response.allHeaders.map { Pair(it.name, it.value) }.toMap()
         val status = response.statusLine.statusCode
         request.releaseConnection()
 
         return Response(
             headers = headers,
-            body = body,
+            body = responseBody,
             status = status,
             objectMapper = objectMapper
         )
+    }
+
+    private fun requestOf(httpMethod: HttpMethod, body: Any?): (String) -> HttpRequestBase = {
+        when (httpMethod) {
+            HttpMethod.GET -> HttpGet(it)
+            HttpMethod.POST -> HttpPost(it).also { p -> p.setBody(body) }
+            HttpMethod.PATCH -> HttpPatch(it).also { p -> p.setBody(body) }
+            HttpMethod.PUT -> HttpPut(it).also { p -> p.setBody(body) }
+            HttpMethod.DELETE -> HttpDelete(it)
+        }
+    }
+
+    private enum class HttpMethod {
+        GET, POST, PUT, PATCH, DELETE
     }
 
     private fun HttpEntityEnclosingRequestBase.setBody(body: Any?): HttpEntityEnclosingRequestBase = body?.let { b ->

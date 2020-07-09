@@ -37,3 +37,8 @@ data class UserSessionDTO(
     val sessionToken: String,
     val userInfo: UserInfoDTO
 )
+
+data class ErrorDTO(
+    val status: Int,
+    val message: String?
+)

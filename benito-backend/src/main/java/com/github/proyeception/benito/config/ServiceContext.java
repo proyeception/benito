@@ -1,11 +1,17 @@
 package com.github.proyeception.benito.config;
 
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-@Configuration
 @EnableWebMvc
-@ComponentScan("com.github.proyeception.benito")
+@Import({
+    ClientModule.class,
+    ConfigModule.class,
+    ConnectionModule.class,
+    ControllerModule.class,
+    HashModule.class,
+    ObjectMapperModule.class,
+    ServiceModule.class
+})
 public class ServiceContext {
 }
