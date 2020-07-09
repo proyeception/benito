@@ -52,7 +52,7 @@ open class ConnectorTest : WordSpec() {
             )
             val actual = connector.get("hello")
 
-            actual shouldBeEqual expected
+            expected shouldBeEqual actual
 
             verify(apacheClientMock).execute(any(HttpGet::class.java))
             verify(objectMapperMock, never()).writeValueAsString(any())
@@ -78,7 +78,7 @@ open class ConnectorTest : WordSpec() {
             )
             val actual = connector.post("hello")
 
-            actual shouldBeEqual expected
+            expected shouldBeEqual actual
 
             verify(apacheClientMock).execute(any(HttpPost::class.java))
             verify(objectMapperMock, never()).writeValueAsString(any())
@@ -105,7 +105,7 @@ open class ConnectorTest : WordSpec() {
             )
             val actual = connector.post("hello", TestObject(data = "foo"))
 
-            actual shouldBeEqual expected
+            expected shouldBeEqual actual
 
             verify(apacheClientMock).execute(any(HttpPost::class.java))
             verify(objectMapperMock).writeValueAsString(eq(TestObject(data = "foo")))
@@ -131,7 +131,7 @@ open class ConnectorTest : WordSpec() {
             )
             val actual = connector.put("hello")
 
-            actual shouldBeEqual expected
+            expected shouldBeEqual actual
 
             verify(apacheClientMock).execute(any(HttpPut::class.java))
             verify(objectMapperMock, never()).writeValueAsString(any())
@@ -158,7 +158,7 @@ open class ConnectorTest : WordSpec() {
             )
             val actual = connector.put("hello", TestObject(data = "foo"))
 
-            actual shouldBeEqual expected
+            expected shouldBeEqual actual
 
             verify(apacheClientMock).execute(any(HttpPut::class.java))
             verify(objectMapperMock).writeValueAsString(eq(TestObject(data = "foo")))
@@ -184,7 +184,7 @@ open class ConnectorTest : WordSpec() {
             )
             val actual = connector.patch("hello")
 
-            actual shouldBeEqual expected
+            expected shouldBeEqual actual
 
             verify(apacheClientMock).execute(any(HttpPatch::class.java))
             verify(objectMapperMock, never()).writeValueAsString(any())
@@ -211,7 +211,7 @@ open class ConnectorTest : WordSpec() {
             )
             val actual = connector.patch("hello", TestObject(data = "foo"))
 
-            actual shouldBeEqual expected
+            expected shouldBeEqual actual
 
             verify(apacheClientMock).execute(any(HttpPatch::class.java))
             verify(objectMapperMock).writeValueAsString(eq(TestObject(data = "foo")))
@@ -237,7 +237,7 @@ open class ConnectorTest : WordSpec() {
             )
             val actual = connector.delete("hello")
 
-            actual shouldBeEqual expected
+            expected shouldBeEqual actual
 
             verify(apacheClientMock).execute(any(HttpDelete::class.java))
             verify(objectMapperMock, never()).writeValueAsString(any())
