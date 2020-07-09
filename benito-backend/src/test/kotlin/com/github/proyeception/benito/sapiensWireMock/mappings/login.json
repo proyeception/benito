@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/mango/users?username=hola&password=hola&usertype=STUDENT"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": "{\"id\":\"1234\",\"name\":\"rochy\",\"lastName\":\"chipian\",\"profilePicUrl\":\"www.coolurl.com\",\"email\":\"rochy@chipian.com\",\"organization\":\"CoolOrg\",\"projectRefs\":[],\"socials\":[]}"
+  }
+}
