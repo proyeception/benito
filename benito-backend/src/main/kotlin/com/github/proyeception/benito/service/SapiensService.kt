@@ -13,7 +13,7 @@ open class SapiensService(
     private val sapiensConnector: Connector
 ) {
     fun authenticate(userLoginDTO: UserLoginDTO): IO<AuthenticationResponseDTO> = IO.fx {
-        val (response) = sapiensConnector.post("/sapiens/authenticate", AuthenticationRequestDTO(userLoginDTO))
+        val (response) = sapiensConnector.post("sapiens/authenticate", AuthenticationRequestDTO(userLoginDTO))
         if (response.isError()) {
             throw AuthenticationFailedException("Error authenticating user ${userLoginDTO.username}")
         } else {
