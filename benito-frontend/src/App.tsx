@@ -1,15 +1,19 @@
 import React from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
-import { Redirect } from "react-router-dom";
-import { RootState } from "./reducers";
-import { connect } from "react-redux";
+import Header from "./components/Header/index";
+import Footer from "./components/Footer";
+import { Switch, Route } from "react-router-dom";
+import Search from "./components/Search";
 
-const App = (props: { isLoggedIn: Boolean }) =>
-  props.isLoggedIn ? <div>Home</div> : <Redirect to="/login" />;
+const App = (_: any) => (
+  <div>
+    <Header />
+    <Switch>
+      <Route exact path="/search" component={Search} />
+    </Switch>
+    <Footer />
+  </div>
+);
 
-const mapStateToProps = (state: RootState) => ({
-  isLoggedIn: state.login.isLoggedIn,
-});
-
-export default hot(module)(connect(mapStateToProps)(App));
+export default hot(module)(App);
