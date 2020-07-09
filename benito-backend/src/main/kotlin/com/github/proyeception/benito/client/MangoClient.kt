@@ -2,6 +2,7 @@ package com.github.proyeception.benito.client
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.github.proyeception.benito.connector.Connector
+import com.github.proyeception.benito.dto.ProjectDTO
 import com.github.proyeception.benito.dto.UserInfoDTO
 import com.github.proyeception.benito.exception.NotFoundException
 import org.slf4j.LoggerFactory
@@ -26,7 +27,18 @@ open class MangoClient(
         return response.deserializeAs(object : TypeReference<UserInfoDTO>() {})
     }
 
+    open fun getProjects(): List<ProjectDTO> {
+        val response = this.mangoConnector.get("/projects")
+        return if (response.isError()) {
+            throw NotFoundException("Error while finding all projects")
+        } else {
+            response.deserializeAs(object : TypeReference<List<ProjectDTO>>() {})
+        }
+    }
+
     companion object {
         private val LOGGER = LoggerFactory.getLogger(MangoClient::class.java)
     }
+
+
 }

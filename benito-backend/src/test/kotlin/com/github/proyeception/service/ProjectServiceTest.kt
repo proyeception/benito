@@ -1,30 +1,24 @@
 package com.github.proyeception.benito.service
 
 
-import com.fasterxml.jackson.core.type.TypeReference
-import com.github.proyeception.benito.connector.Connector
-import com.github.proyeception.benito.connector.Response
-import com.github.proyeception.benito.dto.*
-import com.github.proyeception.benito.exception.NotFoundException
-import com.github.proyeception.benito.exception.UnauthorizedException
-import com.github.proyeception.mock.eq
+import com.github.proyeception.benito.client.MangoClient
+import com.github.proyeception.benito.dto.PersonDTO
+import com.github.proyeception.benito.dto.ProjectDTO
 import com.github.proyeception.mock.getMock
 import com.github.proyeception.mock.on
 import io.kotlintest.matchers.shouldBe
-import io.kotlintest.matchers.shouldThrow
 import io.kotlintest.specs.WordSpec
-import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito
 import java.time.LocalDate
 
 class ProjectServiceTest : WordSpec() {
     init {
-        val mangoConnectorMock: Connector = getMock()
-        val projectService = ProjectService(
-                mangoConnector = mangoConnectorMock
-        )
+        "should return list of projects" {
+            val mangoClient: MangoClient = getMock()
+            val projectService = ProjectService(
+                    mangoClient = mangoClient
+            )
 
-        "findProjects" should {
-            val responseMock: Response = getMock()
             val author = PersonDTO(
                     user = "author",
                     profileUrl = "/authorUrl"
@@ -47,27 +41,28 @@ class ProjectServiceTest : WordSpec() {
                     tags = listOf("tag1", "tag2")
             )
 
-            "get to /projects returns all projects" {
-                val projectsResponse = listOf<ProjectDTO>(project)
+            val newProject = ProjectDTO(
+                    id = "1",
+                    title = "project title",
+                    subtitle = "project subtitle",
+                    description = "project description",
+                    creationDate = LocalDate.parse("2020-02-06"),
+                    posterUrl = "",
+                    authors = listOf(author),
+                    supervisors = listOf(supervisor),
+                    tags = listOf("tag1", "tag2")
+            )
 
-                on(mangoConnectorMock.get(eq("/projects"))).thenReturn(responseMock)
-                on(responseMock.isError()).thenReturn(false)
-                on(responseMock.deserializeAs(any(TypeReference::class.java))).thenReturn(projectsResponse)
+            val projects = listOf<ProjectDTO>(newProject)
+            val expected = listOf<ProjectDTO>(project)
 
-                val expected = projectsResponse
-                val actual = projectService.findProjects()
+            on(mangoClient.getProjects()).thenReturn(projects)
 
-                expected shouldBe actual
-            }
+            val actual = projectService.findProjects()
 
-            "throw if cata returns error" {
-                on(mangoConnectorMock.get(eq("/projects"))).thenReturn(responseMock)
-                on(responseMock.isError()).thenReturn(true)
+            expected shouldBe actual
 
-                shouldThrow<NotFoundException> {
-                    projectService.findProjects()
-                }
-            }
+            Mockito.verify(mangoClient).getProjects()
         }
     }
 }
