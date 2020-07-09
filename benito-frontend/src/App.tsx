@@ -1,23 +1,15 @@
-import React from 'react';
-import { hot } from 'react-hot-loader';
-import './styles.scss';
+import React from "react";
+import { hot } from "react-hot-loader";
+import "./styles.scss";
+import { Redirect } from "react-router-dom";
+import { RootState } from "./reducers";
+import { connect } from "react-redux";
 
-type Props = {}
-type State = {}
+const App = (props: { isLoggedIn: Boolean }) =>
+  props.isLoggedIn ? <div>Home</div> : <Redirect to="/login" />;
 
-class App extends React.Component<Props, State> {
-  constructor(props: Props, ctx: any) {
-    super(props, ctx);
-    this.state = {};
-  }
+const mapStateToProps = (state: RootState) => ({
+  isLoggedIn: state.login.isLoggedIn,
+});
 
-  render() {
-    return (
-      <div>
-        Hello, world!
-      </div>
-    );
-  }
-}
-
-export default hot(module)(App);
+export default hot(module)(connect(mapStateToProps)(App));

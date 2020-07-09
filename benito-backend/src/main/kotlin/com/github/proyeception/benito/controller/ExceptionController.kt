@@ -1,29 +1,12 @@
 package com.github.proyeception.benito.controller
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.proyeception.benito.dto.ErrorDTO
 import com.github.proyeception.benito.exception.HttpException
-import org.slf4j.LoggerFactory
-import spark.Spark
+import org.springframework.web.bind.annotation.ControllerAdvice
+import org.springframework.web.bind.annotation.ExceptionHandler
 
-class ExceptionController(
-    private val objectMapper: ObjectMapper
-) : Controller {
-    override fun register() {
-        Spark.exception(Exception::class.java) { e, req, res ->
-            LOGGER.error("Error at ${req.pathInfo()}", e)
-            val status = when (e) {
-                is HttpException -> e.status
-                else -> 500
-            }
-            val body = objectMapper.writeValueAsString(ErrorDTO(status, e.message))
-            res.body(body)
-            res.status(status)
-            res.header("content-type", "application/json; charset=utf-8")
-        }
-    }
-
-    companion object {
-        private val LOGGER = LoggerFactory.getLogger(ExceptionController::class.java)
-    }
+@ControllerAdvice
+open class ExceptionController {
+    @ExceptionHandler(HttpException::class)
+    open fun handle(e: HttpException): ErrorDTO = ErrorDTO(status = e.status, message = e.message)
 }

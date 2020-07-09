@@ -1,60 +1,44 @@
 package com.github.proyeception.benito.dto
 
-import com.github.proyeception.benito.injection.Encryptor
+enum class UserTypeDTO {
+    TEACHER,
+    STUDENT,
+    ADMINISTRATOR
+}
 
-
-data class UserLoginDTO(
+data class LoginRequestDTO(
     val username: String,
     val password: String,
     val userType: UserTypeDTO
-) {
-    val pass : String
-    private val secretKey: String = "662ede816988e58fb6d057d9d85605e0" //la copie y pegue de un lugar, capaz
-    init {
-        pass = Encryptor.encrypt(password, secretKey)
-    }
-}
+)
 
+data class ProjectRefDTO(
+    val url: String,
+    val name: String
+)
+
+data class SocialRefDTO(
+    val url: String,
+    val name: String
+)
 
 data class UserInfoDTO(
-    val session: String,
+    val id: String,
     val name: String,
     val lastName: String,
     val profilePicUrl: String,
     val email: String,
     val organization: String,
     val projectRefs: List<ProjectRefDTO>,
-    val socials: List<SocialDTO>
-) {
-    constructor(authenticationResponseDTO: AuthenticationResponseDTO) : this(
-        session = authenticationResponseDTO.session,
-        name = authenticationResponseDTO.userData.name,
-        lastName = authenticationResponseDTO.userData.lastName,
-        profilePicUrl = authenticationResponseDTO.userData.profilePicUrl,
-        email = authenticationResponseDTO.userData.email,
-        organization = authenticationResponseDTO.userData.organization,
-        projectRefs = authenticationResponseDTO.userData.projectRefs,
-        socials = authenticationResponseDTO.userData.socials
-    )
-}
-
-data class ProjectRefDTO(
-    val name: String,
-    val url: String
+    val socials: List<SocialRefDTO>
 )
 
-data class SocialDTO(
-    val name: String,
-    val url: String
+data class UserSessionDTO(
+    val sessionToken: String,
+    val userInfo: UserInfoDTO
 )
 
 data class ErrorDTO(
     val status: Int,
     val message: String?
 )
-
-enum class UserTypeDTO {
-    PROFESSOR,
-    STUDENT,
-    ADMIN
-}
