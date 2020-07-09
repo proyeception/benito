@@ -13,8 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.function.Function;
@@ -26,7 +24,6 @@ public class LoggingFilter implements Filter {
     private static final Collection<String> EXCLUDED_URIS = ImmutableList.of("/hello-world");
     private static final Collection<String> EXCLUDED_HEADERS = ImmutableList.of(AUTHORIZATION_HEADER.toLowerCase());
 
-    private static final BigDecimal ONE_MILLIS_IN_NANO = new BigDecimal(1000000);
     private static final Logger LOGGER = LoggerFactory.getLogger(LoggingFilter.class);
 
     @Override
@@ -36,9 +33,8 @@ public class LoggingFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
         ServletException {
-        long startTime = System.nanoTime();
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        boolean logEnabled = !EXCLUDED_URIS.stream().anyMatch(t -> httpServletRequest.getRequestURI().startsWith(t));
+        boolean logEnabled = EXCLUDED_URIS.stream().noneMatch(t -> httpServletRequest.getRequestURI().startsWith(t));
         if (logEnabled) {
             CachedContentRequestWrapper httpRequest = new CachedContentRequestWrapper(httpServletRequest);
             ContentCachingResponseWrapper httpResponse =
@@ -47,7 +43,7 @@ public class LoggingFilter implements Filter {
             try {
                 chain.doFilter(httpRequest, httpResponse);
             } finally {
-                this.logResponse(httpResponse, startTime);
+                this.logResponse(httpResponse);
                 httpResponse.copyBodyToResponse();
             }
         } else {
@@ -63,9 +59,9 @@ public class LoggingFilter implements Filter {
         LOGGER.info("[REQUEST] -> Headers: {} - Body: {}", headers, body);
     }
 
-    private void logResponse(ContentCachingResponseWrapper response, long startTime) throws IOException {
-        BigDecimal spentTime = new BigDecimal(System.nanoTime() - startTime);
-        LOGGER.info("[RESPONSE] -> spent {} millis", spentTime.divide(ONE_MILLIS_IN_NANO, 2, RoundingMode.CEILING));
+    private void logResponse(ContentCachingResponseWrapper response) throws IOException {
+        int status = response.getStatus();
+        LOGGER.info("[RESPONSE] -> Status {}", status);
         String headers = this.buildHeaders(response.getHeaderNames(), response::getHeader);
         String result = this.toString(response.getContentInputStream());
         LOGGER.info("[RESPONSE] -> Headers: {} - Result: {}", headers, result);

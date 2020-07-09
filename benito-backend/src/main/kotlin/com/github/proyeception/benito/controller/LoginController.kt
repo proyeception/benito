@@ -14,6 +14,7 @@ class LoginController(
 ) {
     @RequestMapping("/benito/login", method = [RequestMethod.POST])
     @ResponseBody
+    @CrossOrigin
     fun login(@RequestBody loginRequest: LoginRequestDTO): UserSessionDTO {
         val userInfo = userService.findUser(
             username = loginRequest.username,
