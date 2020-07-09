@@ -1,11 +1,13 @@
 package com.github.proyeception.benito.connector
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.typesafe.config.Config
 import org.apache.http.HttpResponse
 import org.apache.http.client.HttpClient
 import org.apache.http.client.methods.*
 import org.apache.http.entity.ContentType
 import org.apache.http.entity.StringEntity
+import org.apache.http.impl.client.HttpClientBuilder
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
@@ -54,4 +56,12 @@ open class Connector(
     private fun HttpResponse.readBody(): String? = this.entity?.content
         ?.let { BufferedReader(InputStreamReader(it)) }
         ?.readLine()
+
+    companion object {
+        fun create(objectMapper: ObjectMapper, moduleConfig: Config): Connector = Connector(
+            objectMapper = objectMapper,
+            host = moduleConfig.getString("host"),
+            apacheClient = HttpClientBuilder.create().build()
+        )
+    }
 }
