@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.github.proyeception.benito.connector.Connector
 import com.github.proyeception.benito.connector.Response
 import com.github.proyeception.benito.dto.*
+import com.github.proyeception.benito.exception.NotFoundException
 import com.github.proyeception.benito.exception.UnauthorizedException
 import com.github.proyeception.mock.eq
 import com.github.proyeception.mock.getMock
@@ -15,7 +16,7 @@ import io.kotlintest.specs.WordSpec
 import org.mockito.ArgumentMatchers.any
 import java.time.LocalDate
 
-class CataServiceSpec : WordSpec() {
+class ProjectServiceTest : WordSpec() {
     init {
         val mangoConnectorMock: Connector = getMock()
         val projectService = ProjectService(
@@ -63,7 +64,7 @@ class CataServiceSpec : WordSpec() {
                 on(mangoConnectorMock.get(eq("/projects"))).thenReturn(responseMock)
                 on(responseMock.isError()).thenReturn(true)
 
-                shouldThrow<UnauthorizedException> {
+                shouldThrow<NotFoundException> {
                     projectService.findProjects()
                 }
             }
