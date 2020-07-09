@@ -10,8 +10,14 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 open class ControllerModule {
+    @Bean("benitoController")
+    open fun benitoController(
+        userService: UserService,
+        sessionService: SessionService
+    ): LoginController = LoginController(userService = userService, sessionService = sessionService)
+
     @Bean("projectController")
     open fun projectController(
-            projectService: ProjectService
+        projectService: ProjectService
     ): ProjectController = ProjectController(projectService = projectService)
 }

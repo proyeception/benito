@@ -2,7 +2,6 @@ package com.github.proyeception.benito.connector
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.github.proyeception.benito.exception.HttpException
 
 open class Response(
     open val headers: Map<String, String>,

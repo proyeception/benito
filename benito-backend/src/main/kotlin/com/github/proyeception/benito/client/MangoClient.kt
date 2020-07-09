@@ -17,7 +17,7 @@ open class MangoClient(
     ): UserInfoDTO {
         LOGGER.info("Find user data for user $username with type $userType")
 
-        val response = mangoConnector.get("/mango/users?username=$username&password=$password&usertype=$userType")
+        val response = mangoConnector.get("/mango/users?username=$username&password=$password&userType=$userType")
 
         if (response.isError()) {
             LOGGER.error("Mango responded with status code {}: {}", response.status, response.body)
@@ -29,6 +29,7 @@ open class MangoClient(
 
     open fun getProjects(): List<ProjectDTO> {
         val response = this.mangoConnector.get("/projects")
+
         return if (response.isError()) {
             throw NotFoundException("Error while finding all projects")
         } else {
@@ -39,6 +40,4 @@ open class MangoClient(
     companion object {
         private val LOGGER = LoggerFactory.getLogger(MangoClient::class.java)
     }
-
-
 }
