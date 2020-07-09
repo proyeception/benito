@@ -13,6 +13,7 @@ class LoginController(
     private val sessionService: SessionService
 ) {
     @RequestMapping("/benito/login", method = [RequestMethod.POST])
+    @ResponseBody
     fun login(@RequestBody loginRequest: LoginRequestDTO): UserSessionDTO {
         val userInfo = userService.findUser(
             username = loginRequest.username,
