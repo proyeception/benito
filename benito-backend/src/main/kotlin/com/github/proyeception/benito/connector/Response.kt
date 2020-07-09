@@ -13,9 +13,4 @@ open class Response(
     open fun isError(): Boolean = status in 400..599
 
     open fun <T> deserializeAs(typeReference: TypeReference<T>?): T = objectMapper.readValue(body, typeReference)
-
-    open fun <T> deserializeOrThrow(
-        typeReference: TypeReference<T>?,
-        errorMessage: String
-    ): T = if (isError()) throw HttpException.of(status)(errorMessage) else deserializeAs(typeReference)
 }

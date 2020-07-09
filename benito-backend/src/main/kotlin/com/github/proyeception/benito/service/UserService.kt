@@ -13,6 +13,7 @@ open class UserService(
         username: String,
         password: String,
         userTypeDTO: UserTypeDTO
+    // TODO: use another enum instead of a String for the userType (but not the UserTypeDTO)
     ): UserInfoDTO = mangoClient.findUser(username, password.hash(), userTypeDTO.toString())
 
     private fun String.hash(): String = hashUtil.hashAndSalt(this)

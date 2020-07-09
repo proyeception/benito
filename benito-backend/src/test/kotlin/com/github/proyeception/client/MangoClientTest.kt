@@ -14,6 +14,7 @@ import io.kotlintest.matchers.shouldThrow
 import io.kotlintest.specs.WordSpec
 import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyString
+import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
 
 open class MangoClientTest : WordSpec() {
@@ -54,6 +55,7 @@ open class MangoClientTest : WordSpec() {
 
             verify(responseMock).isError()
             verify(mangoConnector).get(eq("/mango/users?username=benito&password=benitocapo123&usertype=STUDENT"))
+            verify(responseMock).deserializeAs(any(TypeReference::class.java))
         }
 
         "should always throw a NotFoundException if the server responds with any error" {
@@ -69,6 +71,7 @@ open class MangoClientTest : WordSpec() {
 
             verify(responseMock).isError()
             verify(mangoConnector).get(eq("/mango/users?username=benito&password=benitocapo123&usertype=STUDENT"))
+            verify(responseMock, never()).deserializeAs(any(TypeReference::class.java))
         }
     }
 }

@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory
 open class MangoClient(
     private val mangoConnector: Connector
 ) {
-    fun findUser(
+    open fun findUser(
         username: String,
         password: String,
         userType: String
@@ -19,7 +19,6 @@ open class MangoClient(
         val response = mangoConnector.get("/mango/users?username=$username&password=$password&usertype=$userType")
 
         if (response.isError()) {
-            LOGGER.error("Error retrieving $username")
             LOGGER.error("Mango responded with status code {}: {}", response.status, response.body)
             throw NotFoundException("Failed to retrieve user $username")
         }
