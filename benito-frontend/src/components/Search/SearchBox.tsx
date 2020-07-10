@@ -5,7 +5,7 @@ const SearchBox = (_: any) => (
   <div>
     <div>
       <div>Nombre</div>
-      <input></input>
+      <input className="qui-search-input"></input>
     </div>
     <div>
       <div>Categoria</div>

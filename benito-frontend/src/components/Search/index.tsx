@@ -5,7 +5,7 @@ import SearchBox from "./SearchBox";
 
 const Search = (_: any) => (
   <div className="row">
-    <div className="col-md-2 qui-searchbox-md">
+    <div className="col-md-2 qui-searchbox-md d-none d-lg-block">
       <SearchBox />
     </div>
     <div className="col-md-10">
