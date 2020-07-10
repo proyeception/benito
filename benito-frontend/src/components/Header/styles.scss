@@ -1,20 +1,35 @@
-$large: 992;
+$large: 768;
 
 .qui-header {
-  display: flex;
-  justify-content: space-between;
   background-color: #6b3ca7;
   color: white;
 }
 
-.qui-brand-name {
+.qui-brand {
+  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: bold;
-  font-family: Raleway;
   color: white;
+  display: flex;
+
+  @media screen and (max-width: 767px) {
+    font-size: 24px;
+  }
+
+  @media screen and (min-width: 768px) {
+    text-align: left;
+    font-size: 36px;
+    justify-content: flex-start;
+  }
 }
 
-.qui-search {
-  color: white;
+.invert-colors {
+  -webkit-filter: invert(1);
+  filter: invert(1);
+}
+
+.qui-search-icon {
+  max-width: 32px;
+  max-height: 32px;
 }
 
 .qui-login {
@@ -22,14 +37,41 @@ $large: 992;
 }
 
 .qui-user-image-crop {
-  width: 100px;
-  height: 100px;
+  @media screen and(max-width: 767px) {
+    max-width: 32px;
+    max-height: 32px;
+  }
+  @media screen and(min-width: 768px) {
+    max-width: 64px;
+    max-height: 64px;
+  }
   position: relative;
   overflow: hidden;
   border-radius: 50%;
+  display: flex;
 }
 
 .qui-user-image {
+  @media screen and(max-width: 767px) {
+    max-width: 32px;
+    max-height: 32px;
+  }
+  @media screen and(min-width: 768px) {
+    max-width: 64px;
+    max-height: 64px;
+  }
   display: inline;
   margin: 0 auto;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qui-brand-col {
+  @media screen and (min-width: 768px) {
+    justify-content: flex-start;
+  }
 }
