@@ -17,6 +17,19 @@ $large: 992;
   color: white;
 }
 
-.qui-session {
+.qui-login {
   color: white;
+}
+
+.qui-user-image-crop {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.qui-user-image {
+  display: inline;
+  margin: 0 auto;
 }
