@@ -1,0 +1,58 @@
+$large: 768px;
+$small: 767px;
+
+.qui-summary-title {
+  @media screen and (max-width: $small) {
+    font-size: 13px;
+  }
+  @media screen and (min-width: $large) {
+    font-size: 24px;
+  }
+}
+
+.qui-summary-image-container {
+  position: relative;
+  margin: -50% auto; /* virtualy height needed turn don to zero */
+  width: 100%; /* height will follow within image ratio */
+  height: auto; /* to overrride attribute height set in tag */
+  vertical-align: middle; /* finalise vertical centering on baseline*/
+}
+
+.qui-summary-image-sm {
+  display: block;
+  max-width: 100%;
+}
+
+.qui-summary {
+  @media screen and (min-width: 768px) {
+    padding-left: 32px;
+    font-size: 16px;
+  }
+  @media screen and (max-width: $small) {
+    font-size: 11px;
+  }
+  font-weight: lighter;
+}
+
+.qui-authors {
+  @media screen and (max-width: $small) {
+    font-size: 10px;
+  }
+  @media screen and(min-width: $large) {
+    font-size: 16px;
+  }
+
+  text-align: right;
+  color: #a3a3a3;
+}
+
+.qui-search-header {
+  @media screen and (max-width: 768px) {
+    background: rgba(107, 60, 167, 0.1);
+  }
+}
+
+.qui-summary-image-md {
+  display: block;
+  max-width: 100%;
+}

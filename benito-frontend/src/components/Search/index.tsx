@@ -4,7 +4,10 @@ import ProjectSummary from "./ProjectSummary";
 
 const Search = (_: any) => (
   <div>
-    <div>Proyectos</div>
+    <div className="qui-search-header p-2 pl-4 qui-font-title">
+      <div>Proyectos</div>
+    </div>
+    <div className=""></div>
     <ProjectSummary />
     <hr />
     <ProjectSummary />
