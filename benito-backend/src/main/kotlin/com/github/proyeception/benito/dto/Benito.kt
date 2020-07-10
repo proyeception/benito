@@ -40,5 +40,6 @@ data class UserSessionDTO(
 
 data class ErrorDTO(
     val status: Int,
-    val message: String?
+    val message: String?,
+    val stackTrace: List<String>?
 )

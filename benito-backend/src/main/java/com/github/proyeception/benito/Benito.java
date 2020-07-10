@@ -28,15 +28,8 @@ public class Benito {
     private static final int DEFAULT_PORT = 9290;
     private static final Logger LOGGER = LoggerFactory.getLogger(Benito.class);
 
-    private final Server server;
-
-    public Benito(String[] args) {
-        this.server = this.createNewServer(args);
-    }
-
-    public static void main(String[] args) throws Exception {
-        Benito server = new Benito(args);
-        server.run();
+    public static void main(String[] args) {
+        new Benito().run(args);
     }
 
     private Server createNewServer(String[] args) {
@@ -60,10 +53,11 @@ public class Benito {
         return server;
     }
 
-    private void run() {
+    private void run(String[] args) {
         try {
-            this.server.start();
-            this.server.join();
+            Server server = createNewServer(args);
+            server.start();
+            server.join();
         } catch (Exception e) {
             LOGGER.error("Error starting the application", e);
             System.exit(-1);
@@ -90,7 +84,6 @@ public class Benito {
 
     private void appendListeners(AnnotationConfigWebApplicationContext applicationContext,
                                  ServletContextHandler handler) {
-        // Para que funcione Spring con su contexto
         handler.addEventListener(new ContextLoaderListener(applicationContext));
     }
 
@@ -108,8 +101,11 @@ public class Benito {
     private void appendFilters(ServletContextHandler handler) {
         CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
         FilterHolder characterEncodingFilterHolder = new FilterHolder(characterEncodingFilter);
-        handler.addFilter(characterEncodingFilterHolder, "/*", EnumSet.of(DispatcherType.REQUEST,
-            DispatcherType.ERROR));
+        handler.addFilter(
+            characterEncodingFilterHolder,
+            "/*",
+            EnumSet.of(DispatcherType.REQUEST, DispatcherType.ERROR)
+        );
 
         LoggingFilter loggingFilter = new LoggingFilter();
         FilterHolder loggingFilterHolder = new FilterHolder(loggingFilter);
@@ -117,11 +113,6 @@ public class Benito {
     }
 
     private int port(String[] args) {
-        String serverPort = System.getProperty("server.port");
-        if (serverPort != null) {
-            return Integer.parseInt(serverPort);
-        }
-
         return args.length > 0 ? Integer.parseInt(args[0]) : DEFAULT_PORT;
     }
 }

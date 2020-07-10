@@ -1,5 +1,6 @@
 package com.github.proyeception.benito.config
 
+import com.github.proyeception.benito.controller.ExceptionController
 import com.github.proyeception.benito.controller.LoginController
 import com.github.proyeception.benito.controller.ProjectController
 import com.github.proyeception.benito.service.ProjectService
@@ -20,4 +21,7 @@ open class ControllerModule {
     open fun projectController(
         projectService: ProjectService
     ): ProjectController = ProjectController(projectService = projectService)
+
+    @Bean("controllerAdvice")
+    open fun exceptionController(env: Environment): ExceptionController = ExceptionController(env)
 }
