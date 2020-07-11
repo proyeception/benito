@@ -7,7 +7,7 @@ import store from "../../store";
 import { Link } from "react-router-dom";
 
 const userNotLoggedInIcon =
-  "https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male2-512.png";
+  "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/User_font_awesome.svg/1200px-User_font_awesome.svg.png";
 
 const UserIcon = (props: { isLoggedIn: Boolean }) => {
   if (props.isLoggedIn) {

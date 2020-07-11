@@ -28,8 +28,8 @@ $large: 768;
 }
 
 .qui-search-icon {
-  max-width: 32px;
-  max-height: 32px;
+  width: 32px;
+  height: 32px;
 }
 
 .qui-login {
@@ -37,14 +37,6 @@ $large: 768;
 }
 
 .qui-user-image-crop {
-  @media screen and(max-width: 767px) {
-    max-width: 32px;
-    max-height: 32px;
-  }
-  @media screen and(min-width: 768px) {
-    max-width: 64px;
-    max-height: 64px;
-  }
   position: relative;
   overflow: hidden;
   border-radius: 50%;
@@ -53,8 +45,8 @@ $large: 768;
 
 .qui-user-image {
   @media screen and(max-width: 767px) {
-    max-width: 32px;
-    max-height: 32px;
+    width: 40px;
+    height: 40px;
   }
   @media screen and(min-width: 768px) {
     max-width: 64px;
