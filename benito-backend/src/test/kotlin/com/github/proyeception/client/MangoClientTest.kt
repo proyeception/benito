@@ -18,7 +18,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
-import java.time.LocalDate
+import java.time.LocalDateTime
 
 open class MangoClientTest : WordSpec() {
     init {
@@ -31,25 +31,25 @@ open class MangoClientTest : WordSpec() {
             on(mangoConnector.get(anyString())).thenReturn(responseMock)
             on(responseMock.isError()).thenReturn(false)
             on(responseMock.deserializeAs(any(TypeReference::class.java))).thenReturn(UserInfoDTO(
-                    id = "123",
-                    name = "Benito",
-                    lastName = "Quinquela",
-                    profilePicUrl = "https://github.com/favicon.ico",
-                    email = "benito@project.com",
-                    organization = "Proyectate",
-                    projectRefs = emptyList(),
-                    socials = emptyList()
+                id = "123",
+                name = "Benito",
+                lastName = "Quinquela",
+                profilePicUrl = "https://github.com/favicon.ico",
+                email = "benito@project.com",
+                organization = "Proyectate",
+                projectRefs = emptyList(),
+                socials = emptyList()
             ))
 
             val expected = UserInfoDTO(
-                    id = "123",
-                    name = "Benito",
-                    lastName = "Quinquela",
-                    profilePicUrl = "https://github.com/favicon.ico",
-                    email = "benito@project.com",
-                    organization = "Proyectate",
-                    projectRefs = emptyList(),
-                    socials = emptyList()
+                id = "123",
+                name = "Benito",
+                lastName = "Quinquela",
+                profilePicUrl = "https://github.com/favicon.ico",
+                email = "benito@project.com",
+                organization = "Proyectate",
+                projectRefs = emptyList(),
+                socials = emptyList()
             )
 
             val actual = mangoClient.findUser(username = "benito", password = "benitocapo123", userType = "STUDENT")
@@ -57,7 +57,7 @@ open class MangoClientTest : WordSpec() {
             expected shouldBe actual
 
             verify(responseMock).isError()
-            verify(mangoConnector).get(eq("/mango/users?username=benito&password=benitocapo123&usertype=STUDENT"))
+            verify(mangoConnector).get(eq("/mango/users?username=benito&password=benitocapo123&userType=STUDENT"))
             verify(responseMock).deserializeAs(any(TypeReference::class.java))
 
             "should always throw a NotFoundException if the server responds with any error" {
@@ -72,7 +72,7 @@ open class MangoClientTest : WordSpec() {
                 }
 
                 verify(responseMock).isError()
-                verify(mangoConnector).get(eq("/mango/users?username=benito&password=benitocapo123&usertype=STUDENT"))
+                verify(mangoConnector).get(eq("/mango/users?username=benito&password=benitocapo123&userType=STUDENT"))
                 verify(responseMock, never()).deserializeAs(any(TypeReference::class.java))
             }
         }
@@ -80,25 +80,25 @@ open class MangoClientTest : WordSpec() {
         "findProjects" should {
             val responseMock: Response = getMock()
             val author = PersonDTO(
-                    user = "author",
-                    profileUrl = "/authorUrl"
+                username = "author",
+                profileUrl = "/authorUrl"
             )
 
             val supervisor = PersonDTO(
-                    user = "supervisor",
-                    profileUrl = "/supervisorUrl"
+                username = "supervisor",
+                profileUrl = "/supervisorUrl"
             )
 
             val project = ProjectDTO(
-                    id = "1",
-                    title = "project title",
-                    subtitle = "project subtitle",
-                    description = "project description",
-                    creationDate = LocalDate.parse("2020-02-06"),
-                    posterUrl = "",
-                    authors = listOf(author),
-                    supervisors = listOf(supervisor),
-                    tags = listOf("tag1", "tag2")
+                id = "1",
+                title = "project title",
+                subtitle = "project subtitle",
+                description = "project description",
+                creationDate = LocalDateTime.of(2020, 2, 6, 0, 0),
+                posterUrl = "",
+                authors = listOf(author),
+                supervisors = listOf(supervisor),
+                tags = listOf("tag1", "tag2")
             )
 
             "get to /projects returns all projects" {
