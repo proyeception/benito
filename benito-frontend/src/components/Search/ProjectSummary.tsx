@@ -35,7 +35,7 @@ const ProjectSummary = (props: Props) => (
         {props.project.description}
       </div>
       <div className="qui-authors">
-        {props.project.authors.map(a => a.user).reduce((acumulador, otroElemento) => acumulador + "," + otroElemento)}
+        {props.project.authors.map(a => a.user).join(", ")}
       </div>
     </div>
     <div className="col-md-2 d-none d-lg-block">
