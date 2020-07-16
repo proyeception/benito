@@ -57,7 +57,7 @@ open class MangoClientTest : WordSpec() {
             expected shouldBe actual
 
             verify(responseMock).isError()
-            verify(mangoConnector).get(eq("/mango/users?username=benito&password=benitocapo123&usertype=STUDENT"))
+            verify(mangoConnector).get(eq("/mango/users?username=benito&password=benitocapo123&userType=STUDENT"))
             verify(responseMock).deserializeAs(any(TypeReference::class.java))
 
             "should always throw a NotFoundException if the server responds with any error" {
@@ -72,7 +72,7 @@ open class MangoClientTest : WordSpec() {
                 }
 
                 verify(responseMock).isError()
-                verify(mangoConnector).get(eq("/mango/users?username=benito&password=benitocapo123&usertype=STUDENT"))
+                verify(mangoConnector).get(eq("/mango/users?username=benito&password=benitocapo123&userType=STUDENT"))
                 verify(responseMock, never()).deserializeAs(any(TypeReference::class.java))
             }
         }

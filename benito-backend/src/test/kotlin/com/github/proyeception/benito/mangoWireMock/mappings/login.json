@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "GET",
-    "url": "/mango/users?username=hola&password=hola&usertype=STUDENT"
+    "url": "/mango/users?username=hola&password=hola&userType=STUDENT"
   },
   "response": {
     "status": 200,
