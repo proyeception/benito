@@ -31,7 +31,7 @@ constructor(props: {}, ctx: any) {
         Proyectos
       </div>
       <div className=""></div>
-      {this.state.projects.map(p => <ProjectSummary project={p}/>)}
+      {this.state.projects.map((p, index) => <ProjectSummary project={p} key={index} />)}
     </div>
   </div>
   );}
