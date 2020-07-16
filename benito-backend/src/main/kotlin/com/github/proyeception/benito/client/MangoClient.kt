@@ -28,7 +28,7 @@ open class MangoClient(
     }
 
     open fun getProjects(): List<ProjectDTO> {
-        val response = this.mangoConnector.get("/projects")
+        val response = this.mangoConnector.get("/mango/projects")
 
         return if (response.isError()) {
             throw NotFoundException("Error while finding all projects")

@@ -1,15 +1,13 @@
 package com.github.proyeception.benito.dto
 
-import com.fasterxml.jackson.annotation.JsonFormat
-import java.time.LocalDate
+import java.time.LocalDateTime
 
 data class ProjectDTO(
     val id: String,
     val title: String,
     val subtitle: String,
     val description: String,
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    val creationDate: LocalDate,
+    val creationDate: LocalDateTime,
     val posterUrl: String,
     val authors: List<PersonDTO>,
     val supervisors: List<PersonDTO>,
@@ -17,6 +15,6 @@ data class ProjectDTO(
 )
 
 data class PersonDTO(
-    val user: String,
+    val username: String,
     val profileUrl: String
 )
