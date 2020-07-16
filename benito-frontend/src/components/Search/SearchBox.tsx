@@ -2,30 +2,29 @@ import React from "react";
 import { hot } from "react-hot-loader";
 
 const SearchBox = (_: any) => (
-  <div>
-    <div>
-      <div>Nombre</div>
+  <div className='qui-search-box'>
+    <div className='qui-search-filter'>
+      <div className='qui-font-text'>Nombre</div>
       <input className="qui-search-input"></input>
     </div>
-    <div>
-      <div>Categoria</div>
-      <input></input>
+    <div className='qui-search-filter'>
+      <div className='qui-font-text'>Categoria</div>
+      <input className="qui-search-input"></input>
     </div>
-    <div>
-      <div>Fechas</div>
-      <div className="row">
-        <input className="col-md-6"></input>
-        <input className="col-md-6"></input>
-      </div>
+    <div className='qui-search-filter'>
+      <div className='qui-font-text'>Fechas</div>
+        <input className="qui-search-input-date"></input>
+        <input className="qui-search-input-date"></input>
     </div>
-    <div>
-      <div>Palabra clave</div>
-      <input></input>
+    <div className='qui-search-filter'>
+      <div className='qui-font-text'>Palabra clave</div>
+      <input className="qui-search-input"></input>
     </div>
-    <div>
-      <div>Documentación</div>
-      <input></input>
+    <div className='qui-search-filter'>
+      <div className='qui-font-text'>Documentación</div>
+      <input className="qui-search-input"></input>
     </div>
+    <button className='btn-primary qui-search-btn'>Buscar</button>
   </div>
 );
 

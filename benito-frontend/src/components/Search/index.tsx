@@ -23,10 +23,10 @@ constructor(props: {}, ctx: any) {
   render() {
   return (
     <div className="row">
-    <div className="col-md-2 qui-searchbox-md d-none d-lg-block">
+    <div className="col-md-2 qui-searchbox-md d-none d-lg-block qui-box">
       <SearchBox />
     </div>
-    <div className="col-md-10">
+    <div className="col-md-10 qui-box">
       <div className="qui-search-header p-2 pl-4 qui-font-title">
         Proyectos
       </div>
