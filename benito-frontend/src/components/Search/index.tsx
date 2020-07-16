@@ -28,7 +28,7 @@ constructor(props: {}, ctx: any) {
     </div>
     <div className="col-md-10">
       <div className="qui-search-header p-2 pl-4 qui-font-title">
-        <div>Proyectos</div>
+        Proyectos
       </div>
       <div className=""></div>
       {this.state.projects.map(p => <ProjectSummary project={p}/>)}
