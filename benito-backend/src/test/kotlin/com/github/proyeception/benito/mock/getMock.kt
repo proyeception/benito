@@ -1,4 +1,4 @@
-package com.github.proyeception.mock
+package com.github.proyeception.benito.mock
 
 import org.mockito.Mockito
 import org.mockito.stubbing.OngoingStubbing

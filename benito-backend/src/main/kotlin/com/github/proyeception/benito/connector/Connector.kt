@@ -2,6 +2,7 @@ package com.github.proyeception.benito.connector
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.typesafe.config.Config
+import org.apache.http.Header
 import org.apache.http.HttpResponse
 import org.apache.http.client.HttpClient
 import org.apache.http.client.methods.*
@@ -75,10 +76,18 @@ open class Connector(
         ?.readLine()
 
     companion object {
-        fun create(objectMapper: ObjectMapper, moduleConfig: Config): Connector = Connector(
-            objectMapper = objectMapper,
-            host = moduleConfig.getString("host"),
-            apacheClient = HttpClientBuilder.create().build()
-        )
+        fun create(
+            objectMapper: ObjectMapper,
+            moduleConfig: Config,
+            defaultHeaders: List<Header> = emptyList()
+        ): Connector {
+            return Connector(
+                objectMapper = objectMapper,
+                host = moduleConfig.getString("host"),
+                apacheClient = HttpClientBuilder.create()
+                    .setDefaultHeaders(defaultHeaders)
+                    .build()
+            )
+        }
     }
 }
