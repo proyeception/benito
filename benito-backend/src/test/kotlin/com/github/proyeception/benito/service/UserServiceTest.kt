@@ -1,13 +1,12 @@
-package com.github.proyeception.service
+package com.github.proyeception.benito.service
 
 import com.github.proyeception.benito.client.MangoClient
 import com.github.proyeception.benito.dto.UserInfoDTO
 import com.github.proyeception.benito.dto.UserTypeDTO
-import com.github.proyeception.benito.service.UserService
 import com.github.proyeception.benito.utils.HashUtil
-import com.github.proyeception.mock.eq
-import com.github.proyeception.mock.getMock
-import com.github.proyeception.mock.on
+import com.github.proyeception.benito.mock.eq
+import com.github.proyeception.benito.mock.getMock
+import com.github.proyeception.benito.mock.on
 import io.kotlintest.matchers.shouldBe
 import io.kotlintest.properties.forAll
 import io.kotlintest.specs.WordSpec

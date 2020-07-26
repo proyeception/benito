@@ -1,11 +1,9 @@
-package com.github.proyeception.connector
+package com.github.proyeception.benito.connector
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.github.proyeception.benito.connector.Connector
-import com.github.proyeception.benito.connector.Response
-import com.github.proyeception.mock.eq
-import com.github.proyeception.mock.getMock
-import com.github.proyeception.mock.on
+import com.github.proyeception.benito.mock.eq
+import com.github.proyeception.benito.mock.getMock
+import com.github.proyeception.benito.mock.on
 import io.kotlintest.matchers.shouldBe
 import io.kotlintest.specs.WordSpec
 import org.apache.http.HttpEntity

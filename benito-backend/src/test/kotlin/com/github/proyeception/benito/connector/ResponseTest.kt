@@ -1,9 +1,8 @@
-package com.github.proyeception.connector
+package com.github.proyeception.benito.connector
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.github.proyeception.benito.connector.Response
-import com.github.proyeception.mock.getMock
+import com.github.proyeception.benito.mock.getMock
 import io.kotlintest.properties.Gen
 import io.kotlintest.properties.forAll
 import io.kotlintest.properties.forNone

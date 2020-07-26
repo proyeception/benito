@@ -1,6 +1,7 @@
 package com.github.proyeception.benito.config
 
 import com.github.proyeception.benito.client.MangoClient
+import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.service.ProjectService
 import com.github.proyeception.benito.service.SessionService
 import com.github.proyeception.benito.service.UserService
@@ -17,8 +18,8 @@ open class ServiceModule {
 
     @Bean
     open fun projectService(
-        mangoClient: MangoClient
-    ): ProjectService = ProjectService(mangoClient = mangoClient)
+        medusaClient: MedusaClient
+    ): ProjectService = ProjectService(medusaClient = medusaClient)
 
     @Bean
     open fun sessionService(hashUtil: HashUtil): SessionService = SessionService(hashUtil = hashUtil)

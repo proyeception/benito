@@ -1,16 +1,15 @@
-package com.github.proyeception.client
+package com.github.proyeception.benito.client
 
 import com.fasterxml.jackson.core.type.TypeReference
-import com.github.proyeception.benito.client.MangoClient
 import com.github.proyeception.benito.connector.Connector
 import com.github.proyeception.benito.connector.Response
 import com.github.proyeception.benito.dto.PersonDTO
 import com.github.proyeception.benito.dto.ProjectDTO
 import com.github.proyeception.benito.dto.UserInfoDTO
 import com.github.proyeception.benito.exception.NotFoundException
-import com.github.proyeception.mock.eq
-import com.github.proyeception.mock.getMock
-import com.github.proyeception.mock.on
+import com.github.proyeception.benito.mock.eq
+import com.github.proyeception.benito.mock.getMock
+import com.github.proyeception.benito.mock.on
 import io.kotlintest.matchers.shouldBe
 import io.kotlintest.matchers.shouldThrow
 import io.kotlintest.specs.WordSpec
@@ -18,7 +17,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
-import java.time.LocalDateTime
+import java.time.LocalDate
 
 open class MangoClientTest : WordSpec() {
     init {
@@ -94,7 +93,8 @@ open class MangoClientTest : WordSpec() {
                 title = "project title",
                 subtitle = "project subtitle",
                 description = "project description",
-                creationDate = LocalDateTime.of(2020, 2, 6, 0, 0),
+                summary = "project summary",
+                creationDate = LocalDate.of(2020, 2, 6),
                 posterUrl = "",
                 authors = listOf(author),
                 supervisors = listOf(supervisor),
@@ -104,7 +104,7 @@ open class MangoClientTest : WordSpec() {
             "get to /projects returns all projects" {
                 val projectsResponse = listOf<ProjectDTO>(project)
 
-                on(mangoConnector.get(eq("/projects"))).thenReturn(responseMock)
+                on(mangoConnector.get(eq("/mango/projects"))).thenReturn(responseMock)
                 on(responseMock.isError()).thenReturn(false)
                 on(responseMock.deserializeAs(any(TypeReference::class.java))).thenReturn(projectsResponse)
 
@@ -115,7 +115,7 @@ open class MangoClientTest : WordSpec() {
             }
 
             "throw if mango returns error" {
-                on(mangoConnector.get(eq("/projects"))).thenReturn(responseMock)
+                on(mangoConnector.get(eq("/mango/projects"))).thenReturn(responseMock)
                 on(responseMock.isError()).thenReturn(true)
 
                 shouldThrow<NotFoundException> {
