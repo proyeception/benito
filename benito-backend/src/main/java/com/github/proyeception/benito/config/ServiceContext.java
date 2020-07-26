@@ -9,7 +9,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
     ConfigModule.class,
     ConnectionModule.class,
     ControllerModule.class,
-    HashModule.class,
     ObjectMapperModule.class,
     ServiceModule.class
 })

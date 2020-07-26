@@ -10,15 +10,9 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 open class ConnectionModule {
-    @Bean("mangoConnector")
-    open fun mangoConnector(
-        objectMapper: ObjectMapper,
-        config: Config
-    ): Connector = Connector.create(objectMapper, config.getConfig("mango"))
-
     @Bean("medusaConnector")
     open fun medusaConnector(
-        @Qualifier("objectMapperSnakeCase")objectMapperSnakeCase: ObjectMapper,
+        @Qualifier("objectMapperSnakeCase") objectMapperSnakeCase: ObjectMapper,
         config: Config
     ): Connector = Connector.create(
         objectMapperSnakeCase,
