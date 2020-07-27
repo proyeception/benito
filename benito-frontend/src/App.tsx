@@ -7,7 +7,7 @@ import { Switch, Route } from "react-router-dom";
 import Search from "./components/Search";
 
 const App = (_: any) => (
-  <div>
+  <div className="qui-app">
     <Header />
     <Switch>
       <Route exact path="/search" component={Search} />
