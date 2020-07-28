@@ -40,7 +40,7 @@ function validate(): Boolean {
 
 function login() {
   var isValid = validate();
-  console.log(isValid);
+
   if (!isValid) {
     return;
   }
@@ -66,10 +66,9 @@ function login() {
 
   axios(config)
     .then((response: AxiosResponse<UserData>) => response.data)
-    .then((user) => {
-      console.log(user);
-      store.dispatch(setUserSession(user.session, "saraza", user.userInfo));
-    })
+    .then((user) =>
+      store.dispatch(setUserSession(user.session, "saraza", user.userInfo))
+    )
     .then(() => store.dispatch(setLoginTrue()))
     .catch((e) => console.log(e.message))
     .finally(() => store.dispatch(finishLogin()));

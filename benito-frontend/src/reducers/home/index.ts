@@ -13,6 +13,7 @@ function homeReducer(state = defaultHomeState, action: HomeAction) {
     case UPDATE_REMARKABLE_PROJECTS:
       return {
         ...state,
+        remarkableProjects: action.payload,
       };
     default:
       return state;
