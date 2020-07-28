@@ -1,12 +1,10 @@
 package com.github.proyeception.benito.controller
 
+import com.github.proyeception.benito.dto.OrderDTO
 import com.github.proyeception.benito.dto.ProjectDTO
 import com.github.proyeception.benito.service.ProjectService
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.*
 
 @Controller
 class ProjectController(
@@ -16,7 +14,7 @@ class ProjectController(
     @RequestMapping("/benito/projects", method = [RequestMethod.GET])
     @ResponseBody
     @CrossOrigin
-    private fun findProjects(): List<ProjectDTO> {
-        return projectService.findProjects()
+    private fun findProjects(@RequestParam(required = false) orderBy: OrderDTO?): List<ProjectDTO> {
+        return projectService.findProjects(orderBy)
     }
 }

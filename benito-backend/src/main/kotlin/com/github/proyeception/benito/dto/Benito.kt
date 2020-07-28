@@ -43,3 +43,10 @@ data class ErrorDTO(
     val message: String?,
     val stackTrace: List<String>?
 )
+
+enum class OrderDTO(val sortMethod: String){
+    DATE_ASC("creationDate:ASC"),
+    DATE_DESC("creationDate:DESC"),
+    ALPHA_ASC("title:ASC"),
+    ALPHA_DESC("title:DESC"),
+}
