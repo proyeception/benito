@@ -8,19 +8,11 @@ type Props = {
 };
 
 const RemarkableProject = (props: Props) => (
-  <div>
-    <div>
-      <img
-        className="d-block w-100 img-fluid qui-remarkable-project"
-        src={props.project.posterUrl}
-        alt={props.project.title.valueOf()}
-      />
-    </div>
-    <div>
-      <div>{props.project.title}</div>
-      <div>Por {props.project.authors.map((a) => a.username).join(", ")}</div>
-    </div>
-  </div>
+  <img
+    className="d-block w-100 img-fluid qui-remarkable-project"
+    src={props.project.posterUrl}
+    alt={props.project.title.valueOf()}
+  />
 );
 
 export default hot(module)(RemarkableProject);
