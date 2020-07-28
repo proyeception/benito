@@ -1,7 +1,7 @@
 import React from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
-import RemarkableProjects from "./RemarkableProjects";
+import RemarkableGallery from "./RemarkableGallery";
 import { RootState } from "../../reducers";
 import { connect } from "react-redux";
 import { Project } from "../../types";
@@ -15,7 +15,7 @@ const Home = (props: Props) => {
 
   return (
     <div>
-      <RemarkableProjects />
+      <RemarkableGallery />
     </div>
   );
 };

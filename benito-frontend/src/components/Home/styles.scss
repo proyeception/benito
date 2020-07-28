@@ -1,0 +1,11 @@
+.qui-remarkable-project {
+  width: 100%;
+  object-fit: cover;
+
+  @media screen and(max-width: 767px) {
+    max-height: 144px;
+  }
+  @media screen and(min-width: 768px) {
+    max-height: 400px;
+  }
+}
