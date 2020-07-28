@@ -9,4 +9,8 @@ open class ProjectService(
     fun findProjects(): List<ProjectDTO> {
         return medusaClient.projects().map { ProjectDTO(it) }
     }
+
+    fun top10Projects(): List<ProjectDTO> {
+        return medusaClient.top10Projects().map { ProjectDTO(it) }
+    }
 }

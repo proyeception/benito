@@ -19,4 +19,11 @@ class ProjectController(
     private fun findProjects(): List<ProjectDTO> {
         return projectService.findProjects()
     }
+
+    @RequestMapping("/benito/projects/top-10", method = [RequestMethod.GET])
+    @ResponseBody
+    @CrossOrigin
+    private fun top10Projects(): List<ProjectDTO> {
+        return projectService.top10Projects()
+    }
 }
