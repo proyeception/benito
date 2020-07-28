@@ -48,7 +48,7 @@ class MedusaClientTest : WordSpec() {
             "get to /projects returns all projects" {
                 val projectsResponse = listOf<ProjectDTO>(project)
 
-                on(medusaConnector.get(eq("/projects"))).thenReturn(responseMock)
+                on(medusaConnector.get(eq("/projects?"))).thenReturn(responseMock)
                 on(responseMock.isError()).thenReturn(false)
                 on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
 
@@ -58,8 +58,8 @@ class MedusaClientTest : WordSpec() {
                 expected shouldBe actual
             }
 
-            "throw if mango returns error" {
-                on(medusaConnector.get(eq("/projects"))).thenReturn(responseMock)
+            "throw if medusa returns error" {
+                on(medusaConnector.get(eq("/projects?"))).thenReturn(responseMock)
                 on(responseMock.isError()).thenReturn(true)
 
                 shouldThrow<FailedDependencyException> {

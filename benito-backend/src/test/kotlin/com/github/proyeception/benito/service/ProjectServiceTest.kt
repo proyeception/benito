@@ -62,7 +62,7 @@ class ProjectServiceTest : WordSpec() {
 
             on(medusaClient.projects()).thenReturn(projects)
 
-            val actual = projectService.findProjects()
+            val actual = projectService.findProjects(null)
 
             expected shouldBe actual
 
