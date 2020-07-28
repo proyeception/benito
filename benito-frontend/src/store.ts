@@ -15,6 +15,9 @@ const defaultState: RootState = {
     username: null,
     data: null,
   },
+  home: {
+    remarkableProjects: [],
+  },
 };
 
 const store = createStore(

@@ -3,7 +3,8 @@ import { hot } from "react-hot-loader";
 import axios from "axios";
 import { benitoHost } from "../../config";
 import SearchBox from "./SearchBox";
-import ProjectSummary, { Project } from "./ProjectSummary";
+import ProjectSummary from "./ProjectSummary";
+import { Project } from "../../types";
 
 class Search extends Component<{}, { projects: Array<Project> }> {
   constructor(props: {}, ctx: any) {

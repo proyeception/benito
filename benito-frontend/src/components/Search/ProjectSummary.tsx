@@ -1,19 +1,7 @@
 import React from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
-
-export type Project = {
-  id: String;
-  title: String;
-  description: String;
-  posterUrl: string;
-  authors: Array<Person>;
-};
-
-type Person = {
-  username: String;
-  profileUrl: String;
-};
+import { Project } from "../../types";
 
 type Props = {
   project: Project;
