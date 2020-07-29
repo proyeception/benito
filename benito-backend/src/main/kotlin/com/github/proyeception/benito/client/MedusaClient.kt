@@ -22,7 +22,7 @@ open class MedusaClient(
                 .appendOrder(orderBy)
                 .appendParam("creation_date", from, MedusaFilter.GREATER_OR_EQUAL)
                 .appendParam("creation_date", to, MedusaFilter.LESS_OR_EQUAL)
-                .appendParam("title", nameContains, MedusaFilter.CONTAINS)
+                .appendParam("title", nameContains.replaceWhitespaces(), MedusaFilter.CONTAINS)
                 .appendParam("tags", tags, MedusaFilter.IN)
                 .dropLast(1)
 
@@ -40,6 +40,9 @@ open class MedusaClient(
 
     private fun String.appendParam(param: String, value: String?, filter: MedusaFilter): String =
             value?.let { "${this}${param}_${filter.filterName}=$it&" } ?: this
+
+    private fun String?.replaceWhitespaces(): String? =
+            this?.let { this.replace(" ", "+") } ?: this
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(MedusaClient::class.java)
