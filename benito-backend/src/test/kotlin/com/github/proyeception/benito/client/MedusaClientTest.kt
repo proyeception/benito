@@ -72,7 +72,7 @@ class MedusaClientTest : WordSpec() {
                 val projectsResponse = listOf<ProjectDTO>(project)
 
                 val expectedEndpoint =
-                        STRAPI_PROJECTS_PATH + STRAPI_SORT_QUERY_PARAM + STRAPI_DATE_FIELD + STRAPI_ASC_IDENTIFIER
+                        STRAPI_PROJECTS_PATH + QUERY_PARAM_START + STRAPI_SORT_QUERY_PARAM + STRAPI_DATE_FIELD + STRAPI_ASC_IDENTIFIER
                 on(medusaConnector.get(eq(expectedEndpoint))).thenReturn(responseMock)
                 on(responseMock.isError()).thenReturn(false)
                 on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
@@ -87,7 +87,7 @@ class MedusaClientTest : WordSpec() {
                 val projectsResponse = listOf<ProjectDTO>(project)
 
                 val expectedEndpoint =
-                        STRAPI_PROJECTS_PATH + STRAPI_SORT_QUERY_PARAM + STRAPI_DATE_FIELD + STRAPI_DESC_IDENTIFIER
+                        STRAPI_PROJECTS_PATH + QUERY_PARAM_START + STRAPI_SORT_QUERY_PARAM + STRAPI_DATE_FIELD + STRAPI_DESC_IDENTIFIER
                 on(medusaConnector.get(eq(expectedEndpoint))).thenReturn(responseMock)
                 on(responseMock.isError()).thenReturn(false)
                 on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
@@ -102,7 +102,7 @@ class MedusaClientTest : WordSpec() {
                 val projectsResponse = listOf<ProjectDTO>(project)
 
                 val expectedEndpoint =
-                        STRAPI_PROJECTS_PATH + STRAPI_SORT_QUERY_PARAM + STRAPI_ALPHABETIC_FIELD + STRAPI_ASC_IDENTIFIER
+                        STRAPI_PROJECTS_PATH + QUERY_PARAM_START + STRAPI_SORT_QUERY_PARAM + STRAPI_ALPHABETIC_FIELD + STRAPI_ASC_IDENTIFIER
                 on(medusaConnector.get(eq(expectedEndpoint))).thenReturn(responseMock)
                 on(responseMock.isError()).thenReturn(false)
                 on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
@@ -117,7 +117,7 @@ class MedusaClientTest : WordSpec() {
                 val projectsResponse = listOf<ProjectDTO>(project)
 
                 val expectedEndpoint =
-                        STRAPI_PROJECTS_PATH + STRAPI_SORT_QUERY_PARAM + STRAPI_ALPHABETIC_FIELD + STRAPI_DESC_IDENTIFIER
+                        STRAPI_PROJECTS_PATH + QUERY_PARAM_START + STRAPI_SORT_QUERY_PARAM + STRAPI_ALPHABETIC_FIELD + STRAPI_DESC_IDENTIFIER
                 on(medusaConnector.get(eq(expectedEndpoint))).thenReturn(responseMock)
                 on(responseMock.isError()).thenReturn(false)
                 on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
@@ -132,10 +132,13 @@ class MedusaClientTest : WordSpec() {
     }
 
     companion object {
-        const val STRAPI_PROJECTS_PATH = "/projects?"
+        const val STRAPI_PROJECTS_PATH = "/projects"
+        const val QUERY_PARAM_START = "?"
+
         const val STRAPI_SORT_QUERY_PARAM = "_sort="
         const val STRAPI_ASC_IDENTIFIER = ":ASC"
         const val STRAPI_DESC_IDENTIFIER = ":DESC"
+
 
         const val STRAPI_DATE_FIELD = "creationDate"
         const val STRAPI_ALPHABETIC_FIELD = "title"

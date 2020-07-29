@@ -24,6 +24,7 @@ open class MedusaClient(
                 .appendParam("creation_date", to, MedusaFilter.LESS_OR_EQUAL)
                 .appendParam("title", nameContains, MedusaFilter.CONTAINS)
                 .appendParam("tags", tags, MedusaFilter.IN)
+                .dropLast(1)
 
         val response = medusaConnector.get(endpoint)
         LOGGER.info(response.body)
@@ -35,7 +36,7 @@ open class MedusaClient(
         return response.deserializeAs(object : TypeReference<List<MedusaProjectDTO>>() {})
     }
 
-    private fun String.appendOrder(orderBy: OrderDTO?): String = orderBy?.sortMethod?.let { "${this}_sort=$it" } ?: this
+    private fun String.appendOrder(orderBy: OrderDTO?): String = orderBy?.sortMethod?.let { "${this}_sort=$it&" } ?: this
 
     private fun String.appendParam(param: String, value: String?, filter: MedusaFilter): String =
             value?.let { "${this}${param}_${filter.filterName}=$it&" } ?: this
