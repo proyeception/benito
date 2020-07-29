@@ -14,7 +14,13 @@ class ProjectController(
     @RequestMapping("/benito/projects", method = [RequestMethod.GET])
     @ResponseBody
     @CrossOrigin
-    private fun findProjects(@RequestParam(required = false) orderBy: OrderDTO?): List<ProjectDTO> {
-        return projectService.findProjects(orderBy)
+    private fun findProjects(
+            @RequestParam(required = false) orderBy: OrderDTO?,
+            @RequestParam(required = false) from: String?,
+            @RequestParam(required = false) to: String?,
+            @RequestParam(required = false, name = "name") nameContains: String?,
+            @RequestParam(required = false, name = "tags") tags: String?
+    ): List<ProjectDTO> {
+        return projectService.findProjects(orderBy, from, to, nameContains, tags)
     }
 }

@@ -54,7 +54,7 @@ class MedusaClientTest : WordSpec() {
                 on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
 
                 val expected = projectsResponse
-                val actual = medusaClient.projects()
+                val actual = medusaClient.getProjects()
 
                 expected shouldBe actual
             }
@@ -64,7 +64,7 @@ class MedusaClientTest : WordSpec() {
                 on(responseMock.isError()).thenReturn(true)
 
                 shouldThrow<FailedDependencyException> {
-                    medusaClient.projects()
+                    medusaClient.getProjects()
                 }
             }
 
@@ -78,7 +78,7 @@ class MedusaClientTest : WordSpec() {
                 on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
 
                 val expected = projectsResponse
-                val actual = medusaClient.projects(OrderDTO.DATE_ASC)
+                val actual = medusaClient.getProjects(OrderDTO.DATE_ASC)
 
                 expected shouldBe actual
             }
@@ -93,7 +93,7 @@ class MedusaClientTest : WordSpec() {
                 on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
 
                 val expected = projectsResponse
-                val actual = medusaClient.projects(OrderDTO.DATE_DESC)
+                val actual = medusaClient.getProjects(OrderDTO.DATE_DESC)
 
                 expected shouldBe actual
             }
@@ -108,7 +108,7 @@ class MedusaClientTest : WordSpec() {
                 on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
 
                 val expected = projectsResponse
-                val actual = medusaClient.projects(OrderDTO.ALPHA_ASC)
+                val actual = medusaClient.getProjects(OrderDTO.ALPHA_ASC)
 
                 expected shouldBe actual
             }
@@ -123,7 +123,7 @@ class MedusaClientTest : WordSpec() {
                 on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
 
                 val expected = projectsResponse
-                val actual = medusaClient.projects(OrderDTO.ALPHA_DESC)
+                val actual = medusaClient.getProjects(OrderDTO.ALPHA_DESC)
 
                 expected shouldBe actual
             }
