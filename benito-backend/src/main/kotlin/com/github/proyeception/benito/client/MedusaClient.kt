@@ -22,7 +22,7 @@ open class MedusaClient(
 
     open fun project(id: String): MedusaProjectDTO {
         val response = medusaConnector.get("/projects/${id}")
-        LOGGER.info(response.body)
+        //LOGGER.info(response.body)
 
         if (response.isError()) {
             throw FailedDependencyException("Error getting project from Medusa")
