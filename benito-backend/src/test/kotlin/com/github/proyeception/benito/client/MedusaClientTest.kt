@@ -139,8 +139,7 @@ class MedusaClientTest : WordSpec() {
         const val STRAPI_ASC_IDENTIFIER = ":ASC"
         const val STRAPI_DESC_IDENTIFIER = ":DESC"
 
-
-        const val STRAPI_DATE_FIELD = "creationDate"
+        const val STRAPI_DATE_FIELD = "creation_date"
         const val STRAPI_ALPHABETIC_FIELD = "title"
     }
 }

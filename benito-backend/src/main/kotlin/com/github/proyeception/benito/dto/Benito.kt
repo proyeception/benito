@@ -45,8 +45,8 @@ data class ErrorDTO(
 )
 
 enum class OrderDTO(val sortMethod: String){
-    DATE_ASC("creationDate:ASC"),
-    DATE_DESC("creationDate:DESC"),
+    DATE_ASC("creation_date:ASC"),
+    DATE_DESC("creation_date:DESC"),
     ALPHA_ASC("title:ASC"),
     ALPHA_DESC("title:DESC"),
 }
