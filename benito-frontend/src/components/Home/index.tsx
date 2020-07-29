@@ -5,6 +5,7 @@ import RemarkableGallery from "./RemarkableGallery";
 import { RootState } from "../../reducers";
 import { connect } from "react-redux";
 import { Project } from "../../types";
+import HomeSearchBox from "./HomeSearchBox";
 
 type Props = {
   remarkableProjects: Array<Project>;
@@ -16,6 +17,7 @@ const Home = (props: Props) => {
   return (
     <div>
       <RemarkableGallery />
+      <HomeSearchBox />
     </div>
   );
 };

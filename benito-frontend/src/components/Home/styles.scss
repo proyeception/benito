@@ -9,3 +9,41 @@
     max-height: 360px;
   }
 }
+
+.qui-home-search-box-container {
+  background-color: white;
+  margin-top: 64px;
+  padding: 24px;
+}
+
+.qui-home-search-box {
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-top: 16px;
+  padding-bottom: 24px;
+  background-color: #7553a1;
+  border-radius: 16px;
+  color: white;
+}
+
+.qui-home-search-box-title {
+  font-weight: bold;
+  font-size: 24px;
+  padding-bottom: 4px;
+}
+
+.qui-home-search-box-subtitle {
+  font-size: 18px;
+}
+
+.qui-home-search-box-item {
+  font-size: 14px;
+  font-weight: lighter;
+}
+
+.qui-home-search-box-button {
+  border-radius: 32px;
+  background-color: #80aef3;
+  font-weight: bold;
+  font-size: 18px;
+}
