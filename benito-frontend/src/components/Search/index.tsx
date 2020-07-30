@@ -28,7 +28,7 @@ class Search extends Component<{}, { projects: Array<Project>, name: string, cat
   }
 
   buildQueryParams() {
-    let params = ""
+    let params = "?"
     params = params.concat(this.buildQueryParamProperty("name", this.state.name))
     params = params.concat(this.buildQueryParamProperty("tags", this.state.category))
     params = params.concat(this.buildQueryParamProperty("from", this.state.fromDate))
@@ -36,11 +36,11 @@ class Search extends Component<{}, { projects: Array<Project>, name: string, cat
     //TODO
     //params = params.concat(this.buildQueryParamProperty("keyword", this.state.keyword))
     //params = params.concat(this.buildQueryParamProperty("documentation", this.state.documentation))
-    return params ? "?" + params : "";
+    return params.slice(0, -1);
   }
 
   buildQueryParamProperty(key: string, value: string) {
-    return value ? key + "=" + value : ""
+    return value ? key + "=" + value + "&" : ""
   }
 
   render() {

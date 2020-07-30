@@ -23,8 +23,10 @@ const SearchBox = (props: Props) => (
     </div>
     <div className='qui-search-filter'>
       <div className='qui-font-text'>Fechas</div>
-      <input className="qui-search-input-date" onChange={(e) => props.fromDateCallback(e.target.value)}></input>
-      <input className="qui-search-input-date" onChange={(e) => props.toDateCallback(e.target.value)}></input>
+      <div className='qui-date-filter-container'>
+        <input type="date" className="qui-search-input-date" placeholder="Desde" name="Fecha inicio" onChange={(e) => props.fromDateCallback(e.target.value)}></input>
+        <input type="date" className="qui-search-input-date" placeholder="Hasta" name="Fecha fin" onChange={(e) => props.toDateCallback(e.target.value)}></input>
+      </div>
     </div>
     <div className='qui-search-filter'>
       <div className='qui-font-text'>Palabra clave</div>
