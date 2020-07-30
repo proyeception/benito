@@ -46,8 +46,19 @@
   background-color: #80aef3;
   font-weight: bold;
   font-size: 18px;
+  color: white;
 }
 
 .qui-remarkable-title {
   font-size: 24px;
+}
+
+.card {
+  border-radius: 8px;
+}
+
+.qui-card-image {
+  border-color: #d2d2d2;
+  border-top: 1px solid;
+  border-bottom: 1px solid;
 }

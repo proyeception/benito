@@ -1,6 +1,7 @@
 import React from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
+import { Link } from "react-router-dom";
 
 const HomeSearchBox = (_: any) => (
   <div className="qui-home-search-box-container d-none d-md-block">
@@ -37,9 +38,11 @@ const HomeSearchBox = (_: any) => (
                 <input type="text" className="form-control" />
               </div>
               <div className="col-6">
-                <div className="qui-home-search-box-button pb-2 pt-2 center">
-                  Buscar
-                </div>
+                <Link to="search" style={{ textDecoration: "none" }}>
+                  <div className="qui-home-search-box-button pb-2 pt-2 center">
+                    Buscar
+                  </div>
+                </Link>
               </div>
             </div>
           </div>
