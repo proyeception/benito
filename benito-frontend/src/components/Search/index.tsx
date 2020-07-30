@@ -17,14 +17,14 @@ class Search extends Component<{}, { projects: Array<Project>, name: string, cat
     axios.get(`${benitoHost}/benito/projects`).then((res) => {
       const projects = res.data;
       this.setState({ projects });
-    });
+    }).catch((error) => console.error(error));
   }
 
   search() {
-    axios.get(`${benitoHost}/benito/projects` + this.buildQueryParams()).then((res) => {
+    axios.get(`${benitoHost}/benito/projects${this.buildQueryParams()}`).then((res) => {
       const projects = res.data;
       this.setState({ projects });
-    });
+    }).catch((error) => console.error(error));
   }
 
   buildQueryParams() {
