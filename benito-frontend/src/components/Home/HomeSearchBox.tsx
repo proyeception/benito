@@ -3,7 +3,7 @@ import { hot } from "react-hot-loader";
 import "./styles.scss";
 
 const HomeSearchBox = (_: any) => (
-  <div className="qui-home-search-box-container">
+  <div className="qui-home-search-box-container d-none d-md-block">
     <div className="qui-home-search-box container">
       <div className="qui-home-search-box-title">
         Buscá proyectos que te interesen

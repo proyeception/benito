@@ -16,8 +16,8 @@ const Home = (props: Props) => {
 
   return (
     <div>
-      <RemarkableGallery />
       <HomeSearchBox />
+      <RemarkableGallery />
     </div>
   );
 };

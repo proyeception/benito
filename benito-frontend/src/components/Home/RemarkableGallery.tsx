@@ -35,7 +35,10 @@ const RemarkableGallery = (props: Props) => {
   };
 
   return (
-    <div className="container">
+    <div className="container mt-3">
+      <div className="text-center pt-3 pb-3 text-uppercase font-weight-bold qui-remarkable-title">
+        Los más destacados
+      </div>
       {props.remarkableProjects.length > 0 && (
         <Carousel activeIndex={index} onSelect={handleSelect}>
           {props.remarkableProjects.map((project, index) => (

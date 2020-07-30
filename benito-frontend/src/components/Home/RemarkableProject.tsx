@@ -9,7 +9,7 @@ type Props = {
 
 const RemarkableProject = (props: Props) => (
   <img
-    className="d-block w-100 img-fluid qui-remarkable-project"
+    className="w-100 img-fluid qui-remarkable-project d-none"
     src={props.project.posterUrl}
     alt={props.project.title.valueOf()}
   />
