@@ -71,9 +71,10 @@ $small: 767px;
 .qui-search-input-date {
   border-color: #6b3ca7;
   border-radius: 10px;
-  max-width: 35%;
+  max-width: 100%;
   border-width: 1px;
   margin-right: 5px;
+  text-align: center;
 }
 
 .qui-search-filter{
@@ -105,4 +106,8 @@ $small: 767px;
 
 .qui-box{
   background-color: white;
+}
+
+.qui-date-filter-container {
+  max-width: 90%;
 }
