@@ -23,7 +23,7 @@ const ProjectSummary = (props: Props) => (
   <div className="row container-fluid mt-3 ml-0">
     <div className="col-sm-12 col-md-10">
       <div className="qui-summary-title qui-font-title">
-        {props.project.title}
+        <a href={`/events/${props.project.id}`}> {props.project.title} </a>
       </div>
       <div className="d-sm-block d-md-none">
         <img className="qui-summary-image-sm" src={props.project.posterUrl} />

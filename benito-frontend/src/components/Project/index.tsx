@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import { hot } from "react-hot-loader";
 import axios from "axios";
 import { benitoHost } from "../../config";
-import { Project } from "./ProjectInfo";
+import ProjectInfo, { ProjectData } from "./ProjectInfo";
 import Header from "../Header/index"
 import "./styles.scss";
 
 //let proy : Project = {id: "2", title:"un proyecto", description:"la descripcion del proyecto", posterUrl:"www.url.com", authors:[]}
 
-class ViewProject extends Component<{}, { projectId: String, project: Project } > {
+class ViewProject extends Component<{}, { projectId: String, project: ProjectData } > {
 
     constructor(props: {}, ctx: any) {
       super(props, ctx);
@@ -31,7 +31,8 @@ class ViewProject extends Component<{}, { projectId: String, project: Project } 
             <div className="row">
               <div className="col-md-12">
                 <div className="qui-proyect-title">
-                  {this.state.project.title}
+                  hoal
+                  <ProjectInfo project={this.state.project}/>
                 </div>
               </div>
             </div>

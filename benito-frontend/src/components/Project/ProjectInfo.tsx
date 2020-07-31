@@ -2,7 +2,7 @@ import React from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
 
-export type Project = {
+export type ProjectData = {
     id: String;
     title: String;
     description: String;
@@ -18,7 +18,7 @@ export type Project = {
   };
   
   type Props = {
-    project: Project;
+    project: ProjectData;
   };
 
 const ProjectInfo = (props: Props) => (
@@ -32,9 +32,6 @@ const ProjectInfo = (props: Props) => (
         </div>
         <div className="qui-summary qui-font-text mt-3">
           {props.project.description}
-        </div>
-        <div className="qui-authors">
-          {props.project.authors.map((a) => a.username).join(", ")}
         </div>
       </div>
       <div className="col-md-2 d-none d-lg-block">
