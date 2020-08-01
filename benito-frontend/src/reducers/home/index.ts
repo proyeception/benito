@@ -5,7 +5,7 @@ import {
 } from "../../store/home/types";
 
 const defaultHomeState: HomeState = {
-  remarkableProjects: [],
+  featuredProjects: [],
 };
 
 function homeReducer(state = defaultHomeState, action: HomeAction) {
@@ -13,7 +13,7 @@ function homeReducer(state = defaultHomeState, action: HomeAction) {
     case UPDATE_REMARKABLE_PROJECTS:
       return {
         ...state,
-        remarkableProjects: action.payload,
+        featuredProjects: action.payload,
       };
     default:
       return state;

@@ -1,3 +1,5 @@
+$card-border-radius: 16px;
+
 .qui-remarkable-project {
   width: 100%;
   object-fit: cover;
@@ -49,18 +51,28 @@
   color: white;
 }
 
-.qui-remarkable-title {
+.qui-featured-title {
   font-size: 24px;
 }
 
 .card {
-  border-radius: 8px;
+  border-radius: $card-border-radius;
+}
+
+.qui-featured-card {
+  @media screen and (max-width: 767px) {
+    width: 21rem;
+  }
+  @media screen and (min-width: 768px) {
+    width: 18rem;
+  }
 }
 
 .qui-card-image {
-  border-color: #d2d2d2;
-  border-top: 1px solid;
-  border-bottom: 1px solid;
+  width: 18 rem;
+  height: 320px;
+  border-top-left-radius: $card-border-radius;
+  border-top-right-radius: $card-border-radius;
 }
 
 .qui-search-invitation-image {

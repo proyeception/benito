@@ -49,7 +49,7 @@ const CategoriesSearchCarousel = (_: Props) => {
 
   return (
     <div className="container mt-3">
-      <div className="text-center pt-3 pb-3 text-uppercase font-weight-bold qui-remarkable-title">
+      <div className="text-center pt-3 pb-3 text-uppercase font-weight-bold qui-featured-title">
         Tendencias
       </div>
       <Carousel activeIndex={index} onSelect={handleSelect}>

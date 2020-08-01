@@ -16,7 +16,7 @@ const defaultState: RootState = {
     data: null,
   },
   home: {
-    remarkableProjects: [],
+    featuredProjects: [],
   },
 };
 
