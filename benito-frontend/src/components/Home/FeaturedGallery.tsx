@@ -9,13 +9,13 @@ import { updateRemarkableProjects } from "../../actions/home/index";
 import { RootState } from "../../reducers";
 import { connect } from "react-redux";
 import Carousel from "react-bootstrap/Carousel";
-import RemarkableProject from "./RemarkableProject";
+import RemarkableProject from "./FeaturedProject";
 
 type Props = {
   remarkableProjects: Array<Project>;
 };
 
-const RemarkableGallery = (props: Props) => {
+const FeaturedGallery = (props: Props) => {
   useEffect(() => {
     let config: AxiosRequestConfig = {
       method: "GET",
@@ -58,4 +58,4 @@ const mapStateToProps = (state: RootState) => {
   };
 };
 
-export default hot(module)(connect(mapStateToProps)(RemarkableGallery));
+export default hot(module)(connect(mapStateToProps)(FeaturedGallery));

@@ -1,7 +1,7 @@
 import React from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
-import RemarkableGallery from "./RemarkableGallery";
+import FeaturedGallery from "./FeaturedGallery";
 import { RootState } from "../../reducers";
 import { connect } from "react-redux";
 import { Project } from "../../types";
@@ -17,7 +17,7 @@ const Home = (props: Props) => {
   return (
     <div>
       <HomeSearchBox />
-      <RemarkableGallery />
+      <FeaturedGallery />
     </div>
   );
 };

@@ -7,7 +7,7 @@ type Props = {
   project: Project;
 };
 
-const RemarkableProject = (props: Props) => (
+const FeaturedProject = (props: Props) => (
   <div>
     <img
       className="w-100 img-fluid qui-remarkable-project d-none d-sm-block"
@@ -34,4 +34,4 @@ const RemarkableProject = (props: Props) => (
   </div>
 );
 
-export default hot(module)(RemarkableProject);
+export default hot(module)(FeaturedProject);
