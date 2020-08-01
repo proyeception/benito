@@ -9,7 +9,7 @@ import { updateRemarkableProjects } from "../../actions/home";
 
 type Props = {};
 
-const FeaturedGallery = (props: Props) => {
+const FeaturedGallery = (_: Props) => {
   useEffect(() => {
     let config: AxiosRequestConfig = {
       method: "GET",
