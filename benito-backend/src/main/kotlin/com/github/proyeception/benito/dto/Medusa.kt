@@ -33,7 +33,7 @@ data class PosterDTO(
     val url: String
 )
 
-enum class MedusaFilter(val filterName: String){
+enum class MedusaFilter(val filterName: String) {
     GREATER_OR_EQUAL("gte"),
     LESS_OR_EQUAL("lte"),
     CONTAINS("contains"),
