@@ -10,3 +10,9 @@ export type Person = {
   username: String;
   profileUrl: String;
 };
+
+export type Category = {
+  name: String;
+  imageUrl: String;
+  tagName: String;
+};

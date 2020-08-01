@@ -1,29 +1,18 @@
 import React from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
-import FeaturedGallery from "./FeaturedGallery";
-import { RootState } from "../../reducers";
-import { connect } from "react-redux";
-import { Project } from "../../types";
+import CategoriesSearchCarousel from "./CategoriesSearchCarousel";
 import HomeSearchBox from "./HomeSearchBox";
 
-type Props = {
-  remarkableProjects: Array<Project>;
-};
+type Props = {};
 
-const Home = (props: Props) => {
-  console.log(props);
-
+const Home = (_: Props) => {
   return (
     <div>
       <HomeSearchBox />
-      <FeaturedGallery />
+      <CategoriesSearchCarousel />
     </div>
   );
 };
 
-const mapStateToProps = (state: RootState) => {
-  return { RemarkableProjects: state.home.remarkableProjects };
-};
-
-export default hot(module)(connect(mapStateToProps)(Home));
+export default hot(module)(Home);
