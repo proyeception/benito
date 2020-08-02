@@ -4,10 +4,14 @@ import axios from "axios";
 import { benitoHost } from "../../config";
 import SearchBox from "./SearchBox";
 import ProjectSummary from "./ProjectSummary";
+import { RootState } from "../../reducers";
+import { connect } from "react-redux";
 import { Project } from "../../types";
 
 class Search extends Component<
-  {},
+  {
+    name: String;
+  },
   {
     projects: Array<Project>;
     name: string;
@@ -18,11 +22,11 @@ class Search extends Component<
     documentation: string;
   }
 > {
-  constructor(props: {}, ctx: any) {
+  constructor(props: { name: String }, ctx: any) {
     super(props, ctx);
     this.state = {
       projects: [],
-      name: "",
+      name: props.name.valueOf(),
       category: "",
       fromDate: "",
       toDate: "",
@@ -34,19 +38,23 @@ class Search extends Component<
   }
 
   componentDidMount() {
-    axios.get(`${benitoHost}/benito/projects`).then((res) => {
-      const projects = res.data;
-      this.setState({ projects });
-    });
+    axios
+      .get(`${benitoHost}/benito/projects`)
+      .then((res) => {
+        const projects = res.data;
+        this.setState({ projects });
+      })
+      .catch((error) => console.error(error));
   }
 
   search() {
     axios
-      .get(`${benitoHost}/benito/projects` + this.buildQueryParams())
+      .get(`${benitoHost}/benito/projects${this.buildQueryParams()}`)
       .then((res) => {
         const projects = res.data;
         this.setState({ projects });
-      });
+      })
+      .catch((error) => console.error(error));
   }
 
   buildQueryParams() {
@@ -80,7 +88,6 @@ class Search extends Component<
           <div className="col-md-2 qui-searchbox-md d-none d-lg-block qui-box">
             <SearchBox
               searchCallback={() => this.search()}
-              nameCallback={(name) => this.setName(name)}
               categoryCallback={(category) => this.setCategory(category)}
               fromDateCallback={(fromDate) => this.setFromDate(fromDate)}
               toDateCallback={(toDate) => this.setToDate(toDate)}
@@ -104,9 +111,6 @@ class Search extends Component<
     );
   }
 
-  setName(name: string): void {
-    this.setState({ name: name });
-  }
   setCategory(category: string): void {
     this.setState({ category: category });
   }
@@ -128,4 +132,10 @@ class Search extends Component<
   }
 }
 
-export default hot(module)(Search);
+const mapStateToProps = (root: RootState) => {
+  return {
+    name: root.search.name,
+  };
+};
+
+export default hot(module)(connect(mapStateToProps)(Search));

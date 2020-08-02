@@ -18,6 +18,11 @@ const defaultState: RootState = {
   home: {
     featuredProjects: [],
   },
+  search: {
+    name: "",
+    category: "",
+    projects: [],
+  },
 };
 
 const store = createStore(

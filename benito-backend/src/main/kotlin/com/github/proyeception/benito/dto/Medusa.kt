@@ -43,5 +43,5 @@ enum class MedusaFilter(val filterName: String) {
     GREATER_OR_EQUAL("gte"),
     LESS_OR_EQUAL("lte"),
     CONTAINS("contains"),
-    IN("in"),
+    EQ("eq"),
 }

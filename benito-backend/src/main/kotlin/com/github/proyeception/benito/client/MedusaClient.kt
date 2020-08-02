@@ -24,7 +24,7 @@ open class MedusaClient(
             .appendParam("creation_date", from, MedusaFilter.GREATER_OR_EQUAL)
             .appendParam("creation_date", to, MedusaFilter.LESS_OR_EQUAL)
             .appendParam("title", nameContains.replaceWhitespaces(), MedusaFilter.CONTAINS)
-            .appendParam("tags", tags, MedusaFilter.IN)
+            .appendParam("tags", tags, MedusaFilter.EQ)
             .dropLast(1)
 
         val response = medusaConnector.get(endpoint)
