@@ -33,6 +33,12 @@ data class PosterDTO(
     val url: String
 )
 
+data class CategoryDTO(
+    val name: String,
+    val tagName: String,
+    val imageUrl: String
+)
+
 enum class MedusaFilter(val filterName: String) {
     GREATER_OR_EQUAL("gte"),
     LESS_OR_EQUAL("lte"),
