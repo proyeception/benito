@@ -15,6 +15,11 @@ const defaultState: RootState = {
     username: null,
     data: null,
   },
+  search: {
+    name: "",
+    category: "",
+    projects: [],
+  },
 };
 
 const store = createStore(
