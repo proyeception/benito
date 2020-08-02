@@ -1,14 +1,21 @@
-import { Project } from "../../types";
+import { Project, Category } from "../../types";
 
-export const UPDATE_REMARKABLE_PROJECTS = "UPDATE_REMARKABLE_PROJECTS";
+export const UPDATE_FEATURED_PROJECTS = "UPDATE_FEATURED_PROJECTS";
+export const UPDATE_CATEGORIES = "UPDATE_CATEGORIES";
 
-interface UpdatefeaturedProjects {
-  type: typeof UPDATE_REMARKABLE_PROJECTS;
+interface UpdateFeaturedProjectsAction {
+  type: typeof UPDATE_FEATURED_PROJECTS;
   payload: Array<Project>;
 }
 
-export type HomeAction = UpdatefeaturedProjects;
+interface UpdateCategoriesAction {
+  type: typeof UPDATE_CATEGORIES;
+  payload: Array<Category>;
+}
+
+export type HomeAction = UpdateFeaturedProjectsAction | UpdateCategoriesAction;
 
 export type HomeState = {
   featuredProjects: Array<Project>;
+  categories: Array<Category>;
 };

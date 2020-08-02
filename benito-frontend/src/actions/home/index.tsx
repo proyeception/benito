@@ -1,9 +1,20 @@
-import { Project } from "../../types";
-import { HomeAction, UPDATE_REMARKABLE_PROJECTS } from "../../store/home/types";
+import { Project, Category } from "../../types";
+import {
+  HomeAction,
+  UPDATE_FEATURED_PROJECTS,
+  UPDATE_CATEGORIES,
+} from "../../store/home/types";
 
-export function updatefeaturedProjects(projects: Array<Project>): HomeAction {
+export function updateFeaturedProjects(projects: Array<Project>): HomeAction {
   return {
-    type: UPDATE_REMARKABLE_PROJECTS,
+    type: UPDATE_FEATURED_PROJECTS,
     payload: projects,
+  };
+}
+
+export function updateCategories(categories: Array<Category>): HomeAction {
+  return {
+    type: UPDATE_CATEGORIES,
+    payload: categories,
   };
 }

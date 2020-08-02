@@ -5,7 +5,7 @@ import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { benitoHost } from "../../config";
 import store from "../../store";
 import { Project } from "../../types";
-import { updatefeaturedProjects } from "../../actions/home";
+import { updateFeaturedProjects } from "../../actions/home";
 import { RootState } from "../../reducers";
 import { connect } from "react-redux";
 import FeaturedProject from "./FeaturedProject";
@@ -43,7 +43,7 @@ const FeaturedGallery = ({ featuredProjects }: Props) => {
 
     axios(config)
       .then((response: AxiosResponse<Array<Project>>) => response.data)
-      .then((projects) => store.dispatch(updatefeaturedProjects(projects)))
+      .then((projects) => store.dispatch(updateFeaturedProjects(projects)))
       .catch(console.error);
   }, []);
 
