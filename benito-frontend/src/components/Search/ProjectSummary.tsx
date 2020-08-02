@@ -9,9 +9,11 @@ export type Project = {
   description: String;
   posterUrl: string;
   authors: Array<Person>;
+  creationDate: Date,
+  tags: Array<String>;
 };
 
-type Person = {
+export type Person = {
   username: String;
   profileUrl: String;
 };

@@ -10,11 +10,22 @@ const defaultState: RootState = {
     passwordError: false,
     usernameError: false,
   },
+
   user: {
     session: null,
     username: null,
     data: null,
   },
+
+  project: {
+    id: null,
+    title: null,
+    description: null,
+    posterUrl: null,
+    authors: [],
+    creationDate: new Date (),
+    tags: []
+  }
 };
 
 const store = createStore(
