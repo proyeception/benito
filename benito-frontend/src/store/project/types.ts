@@ -1,4 +1,4 @@
-import { Project, Person } from "../../components/Search/ProjectSummary";
+import { Person } from "../../components/Search/ProjectSummary";
 
 export const UPDATE_ID = "UPDATE_ID";
 export const UPDATE_TITLE = "UPDATE_TITLE";

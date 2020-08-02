@@ -7,15 +7,17 @@ import "./styles.scss";
 
 //let proy : Project = {id: "2", title:"un proyecto", description:"la descripcion del proyecto", posterUrl:"www.url.com", authors:[]}
 
-class ViewProject extends Component<{projectId: String}, { project?: ProjectData } > {
+class ViewProject extends Component<{}, { projectId: String, project?: ProjectData } > {
 
-    constructor(props: {projectId: String}, ctx: any) {
+    constructor(props: {}, ctx: any) {
       super(props, ctx);
-      this.state = {};
-    }
+      this.state = {projectId: "5f1a0a7e3552040017fd532d"}
+    };
 
     componentDidMount() {
-      axios.get(`${benitoHost}/benito/projects/${this.props.projectId}`).then((res) => {
+      console.log('el estado es')
+      console.log(this.state)
+      axios.get(`${benitoHost}/benito/projects/${this.state.projectId}`).then((res) => {
         const project = res.data;
         this.setState({ project });
       }).catch(console.error);
@@ -32,6 +34,7 @@ class ViewProject extends Component<{projectId: String}, { project?: ProjectData
               <div className="col-md-12">
                 <div className="qui-proyect-title">
                   hoal
+                  {this.state.project.id}
                   <ProjectInfo project={this.state.project}/>
                 </div>
               </div>

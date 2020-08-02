@@ -26,7 +26,8 @@ const ProjectSummary = (props: Props) => (
   <div className="row container-fluid mt-3 ml-0">
     <div className="col-sm-12 col-md-10">
       <div className="qui-summary-title qui-font-title">
-        <Link to={{pathname:`/project/${props.project.id}`, state:{ projectId: props.project.id}}}> {props.project.title} </Link>
+        <Link to={{pathname:`/project/${props.project.id}`}}
+        > {props.project.title} </Link>
       </div>
       <div className="d-sm-block d-md-none">
         <img className="qui-summary-image-sm" src={props.project.posterUrl} />
