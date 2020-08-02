@@ -40,17 +40,14 @@ class Search extends Component<
     axios.get(`${benitoHost}/benito/projects`).then((res) => {
       const projects = res.data;
       this.setState({ projects });
-    });
+    }).catch((error) => console.error(error));
   }
 
   search() {
-    console.log(this.state.name);
-    axios
-      .get(`${benitoHost}/benito/projects` + this.buildQueryParams())
-      .then((res) => {
-        const projects = res.data;
-        this.setState({ projects });
-      });
+    axios.get(`${benitoHost}/benito/projects${this.buildQueryParams()}`).then((res) => {
+      const projects = res.data;
+      this.setState({ projects });
+    }).catch((error) => console.error(error));
   }
 
   buildQueryParams() {
@@ -74,7 +71,7 @@ class Search extends Component<
   }
 
   buildQueryParamProperty(key: string, value: string) {
-    return value ? key + "=" + value + "&" : "";
+    return value ? key + "=" + value + "&" : ""
   }
 
   render() {
