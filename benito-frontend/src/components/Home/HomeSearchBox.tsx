@@ -12,15 +12,15 @@ const HomeSearchBox = (_: any) => (
       <div className="qui-home-search-box-subtitle">
         Elegí entre más de 100 categorías de todo tipo
       </div>
-      <div className="row mt-3">
-        <div className="col-4">
-          <div className="qui-home-search-box-item mb-2">Nombre</div>
-          <input type="text" className="form-control" />
-        </div>
-        <div className="col-4">
-          <div className="container-fluid">
-            <div className="qui-home-search-box-item mb-2">Fecha</div>
+      <div className="container-fluid">
+        <div className="row mt-3">
+          <div className="col-4">
+            <div className="qui-home-search-box-item mb-2">Nombre</div>
+            <input type="text" className="form-control" />
+          </div>
+          <div className="col-4">
             <div className="row">
+              <div className="col-12 qui-home-search-box-item mb-2">Fecha</div>
               <div className="col-6">
                 <input type="date" className="form-control" />
               </div>
@@ -29,11 +29,11 @@ const HomeSearchBox = (_: any) => (
               </div>
             </div>
           </div>
-        </div>
-        <div className="col-4">
-          <div className="container">
-            <div className="qui-home-search-box-item mb-2">Categoria</div>
+          <div className="col-4">
             <div className="row">
+              <div className="col-12 qui-home-search-box-item mb-2">
+                Categoria
+              </div>
               <div className="col-6">
                 <input type="text" className="form-control" />
               </div>
