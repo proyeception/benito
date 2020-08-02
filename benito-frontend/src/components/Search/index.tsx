@@ -6,31 +6,43 @@ import SearchBox from "./SearchBox";
 import ProjectSummary, { Project } from "./ProjectSummary";
 import { RootState } from "../../reducers";
 import { connect } from "react-redux";
+import store from "../../store";
+import { SortMethod } from "../../store/search/types";
+import { updateProjects } from "../../actions/search";
 
 class Search extends Component<
   {
     name: String;
-  },
-  {
+    category: String;
+    fromDate: String;
+    toDate: String;
+    keyword: String;
+    documentation: String;
     projects: Array<Project>;
-    name: string;
-    category: string;
-    fromDate: string;
-    toDate: string;
-    keyword: string;
-    documentation: string;
-  }
-> {
-  constructor(props: { name: String }, ctx: any) {
+    sortMethod: SortMethod;
+  },
+  {}
+  > {
+  constructor(props: {
+    name: String, 
+    category: String,
+    fromDate: String,
+    toDate: String,
+    keyword: String,
+    documentation: String,
+    projects: Array<Project>,
+    sortMethod: SortMethod,
+  }, ctx: any) {
     super(props, ctx);
     this.state = {
-      projects: [],
+      projects: props.projects,
       name: props.name.valueOf(),
-      category: "",
-      fromDate: "",
-      toDate: "",
-      keyword: "",
-      documentation: "",
+      category: props.category.valueOf(),
+      fromDate: props.fromDate.valueOf(),
+      toDate: props.toDate.valueOf(),
+      keyword: props.keyword.valueOf(),
+      documentation: props.documentation.valueOf(),
+      sortMethod: props.sortMethod
     };
 
     this.search = this.search.bind(this);
@@ -39,30 +51,34 @@ class Search extends Component<
   componentDidMount() {
     axios.get(`${benitoHost}/benito/projects`).then((res) => {
       const projects = res.data;
-      this.setState({ projects });
+      store.dispatch(updateProjects(projects));
     }).catch((error) => console.error(error));
   }
 
   search() {
     axios.get(`${benitoHost}/benito/projects${this.buildQueryParams()}`).then((res) => {
       const projects = res.data;
-      this.setState({ projects });
+      store.dispatch(updateProjects(projects));
     }).catch((error) => console.error(error));
   }
 
   buildQueryParams() {
     let params = "?";
+    
     params = params.concat(
-      this.buildQueryParamProperty("name", this.state.name)
+      this.buildQueryParamProperty("name", store.getState().search.name.valueOf())
     );
     params = params.concat(
-      this.buildQueryParamProperty("tags", this.state.category)
+      this.buildQueryParamProperty("tags", store.getState().search.category.valueOf())
     );
     params = params.concat(
-      this.buildQueryParamProperty("from", this.state.fromDate)
+      this.buildQueryParamProperty("from", store.getState().search.fromDate.valueOf())
     );
     params = params.concat(
-      this.buildQueryParamProperty("to", this.state.toDate)
+      this.buildQueryParamProperty("to", store.getState().search.toDate.valueOf())
+    );
+    params = params.concat(
+      this.buildQueryParamProperty("orderBy", store.getState().search.sortMethod)
     );
     //TODO
     //params = params.concat(this.buildQueryParamProperty("keyword", this.state.keyword))
@@ -81,13 +97,6 @@ class Search extends Component<
           <div className="col-md-2 qui-searchbox-md d-none d-lg-block qui-box">
             <SearchBox
               searchCallback={() => this.search()}
-              categoryCallback={(category) => this.setCategory(category)}
-              fromDateCallback={(fromDate) => this.setFromDate(fromDate)}
-              toDateCallback={(toDate) => this.setToDate(toDate)}
-              keywordCallback={(keyword) => this.setKeyword(keyword)}
-              documentationCallback={(documentation) =>
-                this.setDocumentation(documentation)
-              }
             />
           </div>
           <div className="col-md-10 qui-box">
@@ -95,7 +104,7 @@ class Search extends Component<
               Proyectos
             </div>
             <div className=""></div>
-            {this.state.projects.map((p, index) => (
+            {store.getState().search.projects.map((p, index) => (
               <ProjectSummary project={p} key={index} />
             ))}
           </div>
@@ -103,31 +112,18 @@ class Search extends Component<
       </div>
     );
   }
-
-  setCategory(category: string): void {
-    this.setState({ category: category });
-  }
-
-  setFromDate(fromDate: string): void {
-    this.setState({ fromDate: fromDate });
-  }
-
-  setToDate(toDate: string): void {
-    this.setState({ toDate: toDate });
-  }
-
-  setKeyword(keyword: string): void {
-    this.setState({ keyword: keyword });
-  }
-
-  setDocumentation(documentation: string): void {
-    this.setState({ documentation: documentation });
-  }
 }
 
 const mapStateToProps = (root: RootState) => {
   return {
     name: root.search.name,
+    projects: root.search.projects,
+    category: root.search.category,
+    fromDate: root.search.fromDate,
+    toDate: root.search.toDate,
+    keyword: root.search.keyword,
+    documentation: root.search.documentation,
+    sortMethod: root.search.sortMethod,
   };
 };
 
