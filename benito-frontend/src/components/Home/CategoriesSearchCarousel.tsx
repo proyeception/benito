@@ -36,24 +36,30 @@ const CategoriesSearchCarousel = ({ categories }: Props) => {
   }, []);
 
   return (
-    <div className="container mt-3">
-      <div className="text-center pt-3 pb-3 text-uppercase font-weight-bold qui-featured-title">
-        Tendencias
-      </div>
-      <div className="mt-3">
-        {categories.length > 0 ? (
-          <Carousel activeIndex={index} onSelect={handleSelect}>
-            {categories.map((category, idx) => {
-              return (
-                <Carousel.Item key={idx}>
-                  <CategorySearch category={category} />
-                </Carousel.Item>
-              );
-            })}
-          </Carousel>
-        ) : (
-          <div></div>
-        )}
+    <div className="container-fluid mt-5 pl-5 pr-5">
+      <div className="row">
+        <div className="col-5 center-vertically">
+          <div className="text-left pt-3 pb-3 font-weight-bold qui-category-search-title">
+            ¿No sabés qué buscar? ¡Empezá por alguna de estas categorías!
+          </div>
+        </div>
+        <div className="col-7">
+          <div className="mt-3">
+            {categories.length > 0 ? (
+              <Carousel activeIndex={index} onSelect={handleSelect}>
+                {categories.map((category, idx) => {
+                  return (
+                    <Carousel.Item key={idx}>
+                      <CategorySearch category={category} />
+                    </Carousel.Item>
+                  );
+                })}
+              </Carousel>
+            ) : (
+              <div></div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
