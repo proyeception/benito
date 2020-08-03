@@ -19,7 +19,7 @@ type Props = {
 const responsive = {
   desktop: {
     breakpoint: { max: 3000, min: 768 },
-    items: 3,
+    items: 4,
   },
   mobile: {
     breakpoint: { max: 767, min: 0 },
@@ -57,7 +57,6 @@ const FeaturedGallery = ({ featuredProjects }: Props) => {
           removeArrowOnDeviceType={["tablet", "mobile"]}
           itemClass="carousel-item-padding-40-px"
           dotListClass="custom-dot-list-style"
-          centerMode={true}
         >
           {featuredProjects.map((project, index) => (
             <FeaturedProject key={index} project={project} />
