@@ -19,8 +19,8 @@ type Props = {
 const responsive = {
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
-    items: 3,
-    partialVisibilityGutter: 30, // this is needed to tell the amount of px that should be visible.
+    items: 4,
+    partialVisibilityGutter: 10, // this is needed to tell the amount of px that should be visible.
   },
   tablet: {
     breakpoint: { max: 1024, min: 464 },
@@ -48,15 +48,17 @@ const FeaturedGallery = ({ featuredProjects }: Props) => {
   }, []);
 
   return (
-    <div className="container mt-3 pt-3">
+    <div className="container-fluid mt-3 pt-3">
       <div className="text-uppercase font-weight-bold text-center qui-featured-title">
         Los más destacados
       </div>
-      <Carousel partialVisible={true} responsive={responsive}>
-        {featuredProjects.map((project, index) => (
-          <FeaturedProject key={index} project={project} />
-        ))}
-      </Carousel>
+      <div className=" qui-featured-container">
+        <Carousel partialVisible={true} responsive={responsive}>
+          {featuredProjects.map((project, index) => (
+            <FeaturedProject key={index} project={project} />
+          ))}
+        </Carousel>
+      </div>
     </div>
   );
 };
