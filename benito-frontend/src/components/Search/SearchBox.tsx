@@ -1,15 +1,11 @@
 import React from "react";
 import { hot } from "react-hot-loader";
 import store from "../../store";
-import { updateName } from "../../actions/search";
+import { updateName, updateCategory, updateFromDate, updateToDate, updateKeyword, updateDocumentation, updateSortMethod } from "../../actions/search";
+import { SortMethod } from "../../store/search/types";
 
 type Props = {
   searchCallback(): void;
-  categoryCallback(category: string): void;
-  fromDateCallback(fromDate: string): void;
-  toDateCallback(toDate: string): void;
-  keywordCallback(keyword: string): void;
-  documentationCallback(documentation: string): void;
 };
 
 const SearchBox = (props: Props) => (
@@ -22,10 +18,10 @@ const SearchBox = (props: Props) => (
       ></input>
     </div>
     <div className="qui-search-filter">
-      <div className="qui-font-text">Categoria</div>
+      <div className="qui-font-text">Categoría</div>
       <input
         className="qui-search-input"
-        onChange={(e) => props.categoryCallback(e.target.value)}
+        onChange={(e) => store.dispatch(updateCategory(e.target.value))}
       ></input>
     </div>
     <div className="qui-search-filter">
@@ -36,14 +32,14 @@ const SearchBox = (props: Props) => (
           className="qui-search-input-date"
           placeholder="Desde"
           name="Fecha inicio"
-          onChange={(e) => props.fromDateCallback(e.target.value)}
+          onChange={(e) => store.dispatch(updateFromDate(e.target.value))}
         ></input>
         <input
           type="date"
           className="qui-search-input-date"
           placeholder="Hasta"
           name="Fecha fin"
-          onChange={(e) => props.toDateCallback(e.target.value)}
+          onChange={(e) => store.dispatch(updateToDate(e.target.value))}
         ></input>
       </div>
     </div>
@@ -51,15 +47,32 @@ const SearchBox = (props: Props) => (
       <div className="qui-font-text">Palabra clave</div>
       <input
         className="qui-search-input"
-        onChange={(e) => props.keywordCallback(e.target.value)}
+        onChange={(e) => store.dispatch(updateKeyword(e.target.value))}
       ></input>
     </div>
     <div className="qui-search-filter">
       <div className="qui-font-text">Documentación</div>
       <input
         className="qui-search-input"
-        onChange={(e) => props.documentationCallback(e.target.value)}
+        onChange={(e) => store.dispatch(updateDocumentation(e.target.value))}
       ></input>
+    </div>
+    <div>
+      <select 
+      name="sortMethod" 
+      id="sort" 
+      onChange={(e) => 
+        store.dispatch(
+          updateSortMethod(Object.values(SortMethod).find((v) => v.valueOf() === e.target.value)))}>
+        <optgroup label="Fecha de creación">
+          <option value={SortMethod.DateDesc}>Más recientes</option>
+          <option value={SortMethod.DateAsc}>Más antiguos</option>
+        </optgroup>        
+        <optgroup label="Alfabético">
+          <option value={SortMethod.AlphaAsc}>A - Z</option>
+          <option value={SortMethod.AlphaDesc}>Z - A</option>
+        </optgroup>
+      </select>
     </div>
     <button
       className="btn-primary qui-search-btn"
