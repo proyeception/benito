@@ -1,4 +1,6 @@
 $card-border-radius: 16px;
+$card-desktop-size: 18rem;
+$card-mobile-size: 21rem;
 
 .qui-remarkable-project {
   width: 100%;
@@ -61,15 +63,21 @@ $card-border-radius: 16px;
 
 .qui-featured-card {
   @media screen and (max-width: 767px) {
-    width: 21rem;
+    width: $card-mobile-size;
   }
   @media screen and (min-width: 768px) {
-    width: 224px;
+    width: $card-desktop-size;
   }
 }
 
 .qui-card-image {
-  width: 224px;
+  @media screen and (max-width: 767px) {
+    width: $card-mobile-size;
+  }
+  @media screen and (min-width: 768px) {
+    width: $card-desktop-size;
+  }
+
   height: 256px;
   border-top-left-radius: $card-border-radius;
   border-top-right-radius: $card-border-radius;

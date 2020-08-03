@@ -18,17 +18,11 @@ type Props = {
 
 const responsive = {
   desktop: {
-    breakpoint: { max: 3000, min: 1024 },
-    items: 4,
-    partialVisibilityGutter: 10, // this is needed to tell the amount of px that should be visible.
-  },
-  tablet: {
-    breakpoint: { max: 1024, min: 464 },
-    items: 2,
-    partialVisibilityGutter: 30, // this is needed to tell the amount of px that should be visible.
+    breakpoint: { max: 3000, min: 768 },
+    items: 3,
   },
   mobile: {
-    breakpoint: { max: 464, min: 0 },
+    breakpoint: { max: 767, min: 0 },
     items: 1,
     partialVisibilityGutter: 0, // this is needed to tell the amount of px that should be visible.
   },
@@ -52,8 +46,19 @@ const FeaturedGallery = ({ featuredProjects }: Props) => {
       <div className="text-uppercase font-weight-bold text-center qui-featured-title">
         Los más destacados
       </div>
-      <div className=" qui-featured-container">
-        <Carousel partialVisible={true} responsive={responsive}>
+      <div className=" qui-featured-container mt-3">
+        <Carousel
+          responsive={responsive}
+          infinite={true}
+          autoPlay={true}
+          autoPlaySpeed={5000}
+          transitionDuration={500}
+          containerClass="carousel-container"
+          removeArrowOnDeviceType={["tablet", "mobile"]}
+          itemClass="carousel-item-padding-40-px"
+          dotListClass="custom-dot-list-style"
+          centerMode={true}
+        >
           {featuredProjects.map((project, index) => (
             <FeaturedProject key={index} project={project} />
           ))}
