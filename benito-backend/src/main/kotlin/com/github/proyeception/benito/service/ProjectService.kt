@@ -2,6 +2,7 @@ package com.github.proyeception.benito.service
 
 import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.dto.OrderDTO
+import com.github.proyeception.benito.dto.ProjectCountDTO
 import com.github.proyeception.benito.dto.ProjectDTO
 
 open class ProjectService(
@@ -20,4 +21,6 @@ open class ProjectService(
     fun top10Projects(): List<ProjectDTO> {
         return medusaClient.top10Projects().map { ProjectDTO(it) }
     }
+
+    fun count(): ProjectCountDTO = ProjectCountDTO(medusaClient.count())
 }

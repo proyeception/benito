@@ -20,6 +20,7 @@ const defaultState: RootState = {
     featuredProjects: [],
     categories: [],
     latestProjects: [],
+    projectTotal: null,
   },
   search: {
     name: "",

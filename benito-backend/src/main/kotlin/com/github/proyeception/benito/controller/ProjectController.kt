@@ -1,6 +1,7 @@
 package com.github.proyeception.benito.controller
 
 import com.github.proyeception.benito.dto.OrderDTO
+import com.github.proyeception.benito.dto.ProjectCountDTO
 import com.github.proyeception.benito.dto.ProjectDTO
 import com.github.proyeception.benito.service.ProjectService
 import org.springframework.stereotype.Controller
@@ -30,4 +31,9 @@ class ProjectController(
     private fun top10Projects(): List<ProjectDTO> {
         return projectService.top10Projects()
     }
+
+    @RequestMapping("/benito/project-count", method = [RequestMethod.GET])
+    @ResponseBody
+    @CrossOrigin
+    private fun count(): ProjectCountDTO = projectService.count()
 }

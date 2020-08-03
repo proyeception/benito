@@ -4,12 +4,14 @@ import {
   HomeState,
   UPDATE_CATEGORIES,
   UPDATE_LATEST_PROJECTS,
+  UPDATE_PROJECT_TOTAL,
 } from "../../store/home/types";
 
 const defaultHomeState: HomeState = {
   featuredProjects: [],
   latestProjects: [],
   categories: [],
+  projectTotal: null,
 };
 
 function homeReducer(state = defaultHomeState, action: HomeAction) {
@@ -28,6 +30,11 @@ function homeReducer(state = defaultHomeState, action: HomeAction) {
       return {
         ...state,
         latestProjects: action.payload,
+      };
+    case UPDATE_PROJECT_TOTAL:
+      return {
+        ...state,
+        projectTotal: action.payload,
       };
     default:
       return state;
