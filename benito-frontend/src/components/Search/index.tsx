@@ -56,7 +56,8 @@ class Search extends Component<
     axios.get(`${benitoHost}/benito/projects${this.buildQueryParams()}`).then((res) => {
       const projects = res.data;
       store.dispatch(updateProjects(projects));
-    }).catch((error) => console.error(error));
+    })
+    .catch(console.error);
   }
 
   buildQueryParams() {
