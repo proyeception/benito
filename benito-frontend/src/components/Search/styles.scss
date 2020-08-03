@@ -97,7 +97,7 @@ $small: 767px;
   width: 80%;
   align-items: center;
   border-radius: 10px;
-  margin-top: 10px;
+  margin-top: 20px;
   margin-left: 20px;
 }
 
@@ -111,4 +111,13 @@ $small: 767px;
 
 .qui-date-filter-container {
   max-width: 90%;
+}
+
+.qui-search-combo {
+  border-color: #6b3ca7;
+  border-radius: 10px;
+  border-width: 1px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  width: 90%;
 }

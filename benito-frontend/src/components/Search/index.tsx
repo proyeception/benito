@@ -49,10 +49,7 @@ class Search extends Component<
   }
 
   componentDidMount() {
-    axios.get(`${benitoHost}/benito/projects`).then((res) => {
-      const projects = res.data;
-      store.dispatch(updateProjects(projects));
-    }).catch((error) => console.error(error));
+    this.search()
   }
 
   search() {
