@@ -17,11 +17,10 @@ const FeaturedProject = ({ project }: Props) => {
       />
       <div className="card-body">
         <h5 className="card-title">{project.title}</h5>
-        <p className="card-text">
-          {project.description.length > 100
-            ? project.description.slice(0, 97) + "..."
-            : project.description}
-        </p>
+        <div className="sidebar-box">
+          <p className="qui-card-text">{project.description}</p>
+          <p className="qui-read-more"></p>
+        </div>
         <Link to={`/projects/${project.id}`}>
           <div className="btn btn-primary">Ver más</div>
         </Link>
