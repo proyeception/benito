@@ -71,13 +71,6 @@ $card-mobile-size: 21rem;
 }
 
 .qui-card-image {
-  @media screen and (max-width: 767px) {
-    width: $card-mobile-size;
-  }
-  @media screen and (min-width: 768px) {
-    width: $card-desktop-size;
-  }
-
   height: 256px;
   border-top-left-radius: $card-border-radius;
   border-top-right-radius: $card-border-radius;
