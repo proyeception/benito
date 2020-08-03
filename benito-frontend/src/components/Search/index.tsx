@@ -11,29 +11,42 @@ import store from "../../store";
 import { SortMethod } from "../../store/search/types";
 import { updateProjects } from "../../actions/search";
 
-class Search extends Component<
-  {
-    name: String;
-    category: String;
-    fromDate: String;
-    toDate: String;
-    keyword: String;
-    documentation: String;
-    projects: Array<Project>;
-    sortMethod: SortMethod;
-  },
-  {}
-  > {
-  constructor(props: {
-    name: String, 
-    category: String,
-    fromDate: String,
-    toDate: String,
-    keyword: String,
-    documentation: String,
-    projects: Array<Project>,
-    sortMethod: SortMethod,
-  }, ctx: any) {
+type Props = {
+  name: String;
+  category: String;
+  fromDate: String;
+  toDate: String;
+  keyword: String;
+  documentation: String;
+  projects: Array<Project>;
+  sortMethod: SortMethod;
+};
+
+type State = {
+  name: String;
+  category: String;
+  fromDate: String;
+  toDate: String;
+  keyword: String;
+  documentation: String;
+  projects: Array<Project>;
+  sortMethod: SortMethod;
+};
+
+class Search extends Component<Props, State> {
+  constructor(
+    props: {
+      name: String;
+      category: String;
+      fromDate: String;
+      toDate: String;
+      keyword: String;
+      documentation: String;
+      projects: Array<Project>;
+      sortMethod: SortMethod;
+    },
+    ctx: any
+  ) {
     super(props, ctx);
     this.state = {
       projects: props.projects,
@@ -43,43 +56,64 @@ class Search extends Component<
       toDate: props.toDate.valueOf(),
       keyword: props.keyword.valueOf(),
       documentation: props.documentation.valueOf(),
-      sortMethod: props.sortMethod
+      sortMethod: props.sortMethod,
     };
 
     this.search = this.search.bind(this);
   }
 
   componentDidMount() {
-    axios.get(`${benitoHost}/benito/projects`).then((res) => {
-      const projects = res.data;
-      store.dispatch(updateProjects(projects));
-    }).catch((error) => console.error(error));
+    axios
+      .get(`${benitoHost}/benito/projects`)
+      .then((res) => {
+        const projects = res.data;
+        store.dispatch(updateProjects(projects));
+      })
+      .catch((error) => console.error(error));
   }
 
   search() {
-    axios.get(`${benitoHost}/benito/projects${this.buildQueryParams()}`).then((res) => {
-      const projects = res.data;
-      store.dispatch(updateProjects(projects));
-    }).catch((error) => console.error(error));
+    axios
+      .get(`${benitoHost}/benito/projects${this.buildQueryParams()}`)
+      .then((res) => {
+        const projects = res.data;
+        store.dispatch(updateProjects(projects));
+      })
+      .catch((error) => console.error(error));
   }
 
   buildQueryParams() {
     let params = "?";
-    
+
     params = params.concat(
-      this.buildQueryParamProperty("name", store.getState().search.name.valueOf())
+      this.buildQueryParamProperty(
+        "name",
+        store.getState().search.name.valueOf()
+      )
     );
     params = params.concat(
-      this.buildQueryParamProperty("tags", store.getState().search.category.valueOf())
+      this.buildQueryParamProperty(
+        "tags",
+        store.getState().search.category.valueOf()
+      )
     );
     params = params.concat(
-      this.buildQueryParamProperty("from", store.getState().search.fromDate.valueOf())
+      this.buildQueryParamProperty(
+        "from",
+        store.getState().search.fromDate.valueOf()
+      )
     );
     params = params.concat(
-      this.buildQueryParamProperty("to", store.getState().search.toDate.valueOf())
+      this.buildQueryParamProperty(
+        "to",
+        store.getState().search.toDate.valueOf()
+      )
     );
     params = params.concat(
-      this.buildQueryParamProperty("orderBy", store.getState().search.sortMethod)
+      this.buildQueryParamProperty(
+        "orderBy",
+        store.getState().search.sortMethod
+      )
     );
     //TODO
     //params = params.concat(this.buildQueryParamProperty("keyword", this.state.keyword))
@@ -96,9 +130,7 @@ class Search extends Component<
       <div className="container-fluid">
         <div className="row">
           <div className="col-md-2 qui-searchbox-md d-none d-lg-block qui-box">
-            <SearchBox
-              searchCallback={() => this.search()}
-            />
+            <SearchBox searchCallback={() => this.search()} />
           </div>
           <div className="col-md-10 qui-box">
             <div className="qui-search-header p-2 pl-4 qui-font-title">

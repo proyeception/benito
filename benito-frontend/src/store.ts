@@ -19,6 +19,7 @@ const defaultState: RootState = {
   home: {
     featuredProjects: [],
     categories: [],
+    latestProjects: [],
   },
   search: {
     name: "",

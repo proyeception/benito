@@ -38,7 +38,7 @@ const FeaturedGallery = ({ featuredProjects }: Props) => {
   useEffect(() => {
     let config: AxiosRequestConfig = {
       method: "GET",
-      url: `${benitoHost}/benito/projects/top-10`,
+      url: `${benitoHost}/benito/projects/featured`,
     };
 
     axios(config)

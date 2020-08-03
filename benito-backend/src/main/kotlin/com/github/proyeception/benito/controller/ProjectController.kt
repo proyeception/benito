@@ -24,7 +24,7 @@ class ProjectController(
         return projectService.findProjects(orderBy, from, to, nameContains, tags)
     }
 
-    @RequestMapping("/benito/projects/top-10", method = [RequestMethod.GET])
+    @RequestMapping("/benito/projects/featured", method = [RequestMethod.GET])
     @ResponseBody
     @CrossOrigin
     private fun top10Projects(): List<ProjectDTO> {
