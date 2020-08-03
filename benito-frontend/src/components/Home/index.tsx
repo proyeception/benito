@@ -4,6 +4,7 @@ import "./styles.scss";
 import CategoriesSearchCarousel from "./CategoriesSearchCarousel";
 import HomeSearchBox from "./HomeSearchBox";
 import FeaturedGallery from "./FeaturedGallery";
+import Proyectate from "./Proyectate";
 
 type Props = {};
 
@@ -12,6 +13,7 @@ const Home = (_: Props) => {
     <div>
       <HomeSearchBox />
       <FeaturedGallery />
+      <Proyectate />
       <CategoriesSearchCarousel />
     </div>
   );
