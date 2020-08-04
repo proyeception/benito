@@ -31,10 +31,8 @@ class ViewProject extends Component<{}, { projectId: String, project?: ProjectDa
         <div>
           <div className="container-fluid">
             <div className="row">
-              <div className="col-md-12">
-                <div className="qui-proyect-title">
-                  hoal
-                  {this.state.project.id}
+              <div className="col-xs-2">
+                <div>
                   <ProjectInfo project={this.state.project}/>
                 </div>
               </div>
