@@ -13,9 +13,9 @@ open class ProjectService(
         from: String?,
         to: String?,
         nameContains: String?,
-        tags: String?
+        category: String?
     ): List<ProjectDTO> {
-        return medusaClient.getProjects(orderBy, from, to, nameContains, tags).map { ProjectDTO(it) }
+        return medusaClient.getProjects(orderBy, from, to, nameContains, category).map { ProjectDTO(it) }
     }
 
     fun top10Projects(): List<ProjectDTO> {

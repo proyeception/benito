@@ -34,19 +34,7 @@ type State = {
 };
 
 class Search extends Component<Props, State> {
-  constructor(
-    props: {
-      name: String;
-      category: String;
-      fromDate: String;
-      toDate: String;
-      keyword: String;
-      documentation: String;
-      projects: Array<Project>;
-      sortMethod: SortMethod;
-    },
-    ctx: any
-  ) {
+  constructor(props: Props, ctx: any) {
     super(props, ctx);
     this.state = {
       projects: props.projects,
@@ -63,13 +51,7 @@ class Search extends Component<Props, State> {
   }
 
   componentDidMount() {
-    axios
-      .get(`${benitoHost}/benito/projects`)
-      .then((res) => {
-        const projects = res.data;
-        store.dispatch(updateProjects(projects));
-      })
-      .catch((error) => console.error(error));
+    this.search();
   }
 
   search() {
@@ -93,7 +75,7 @@ class Search extends Component<Props, State> {
     );
     params = params.concat(
       this.buildQueryParamProperty(
-        "tags",
+        "category",
         store.getState().search.category.valueOf()
       )
     );
@@ -137,7 +119,7 @@ class Search extends Component<Props, State> {
               Proyectos
             </div>
             <div className=""></div>
-            {this.state.projects.map((p, index) => (
+            {store.getState().search.projects.map((p, index) => (
               <ProjectSummary project={p} key={index} />
             ))}
           </div>

@@ -20,9 +20,9 @@ class ProjectController(
         @RequestParam(required = false) from: String?,
         @RequestParam(required = false) to: String?,
         @RequestParam(required = false, name = "name") nameContains: String?,
-        @RequestParam(required = false, name = "tags") tags: String?
+        @RequestParam(required = false, name = "category") category: String?
     ): List<ProjectDTO> {
-        return projectService.findProjects(orderBy, from, to, nameContains, tags)
+        return projectService.findProjects(orderBy, from, to, nameContains, category)
     }
 
     @RequestMapping("/benito/projects/featured", method = [RequestMethod.GET])

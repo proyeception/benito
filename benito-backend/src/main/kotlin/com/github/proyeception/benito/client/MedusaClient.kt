@@ -17,14 +17,14 @@ open class MedusaClient(
         from: String? = null,
         to: String? = null,
         nameContains: String? = null,
-        tags: String? = null
+        category: String? = null
     ): List<MedusaProjectDTO> {
         val endpoint = "/projects?"
             .appendOrder(orderBy)
             .appendParam("creation_date", from, MedusaFilter.GREATER_OR_EQUAL)
             .appendParam("creation_date", to, MedusaFilter.LESS_OR_EQUAL)
             .appendParam("title", nameContains.replaceWhitespaces(), MedusaFilter.CONTAINS)
-            .appendParam("tags", tags, MedusaFilter.EQ)
+            .appendParam("category.tag_name", category, MedusaFilter.EQ)
             .dropLast(1)
 
         val response = medusaConnector.get(endpoint)

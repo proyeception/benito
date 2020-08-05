@@ -2,6 +2,13 @@ import React from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
 import { Link } from "react-router-dom";
+import store from "../../store";
+import {
+  updateName,
+  updateFromDate,
+  updateToDate,
+  updateCategory,
+} from "../../actions/search";
 
 const HomeSearchBox = (_: any) => (
   <div className="qui-home-search-box-container d-none d-md-block">
@@ -16,16 +23,34 @@ const HomeSearchBox = (_: any) => (
         <div className="row mt-3">
           <div className="col-4">
             <div className="qui-home-search-box-item mb-2">Nombre</div>
-            <input type="text" className="form-control" />
+            <input
+              type="text"
+              className="form-control"
+              onChange={(e) =>
+                store.dispatch(updateName(e.currentTarget.value))
+              }
+            />
           </div>
           <div className="col-4">
             <div className="row">
               <div className="col-12 qui-home-search-box-item mb-2">Fecha</div>
               <div className="col-6">
-                <input type="date" className="form-control" />
+                <input
+                  type="date"
+                  className="form-control"
+                  onChange={(e) =>
+                    store.dispatch(updateFromDate(e.currentTarget.value))
+                  }
+                />
               </div>
               <div className="col-6">
-                <input type="date" className="form-control" />
+                <input
+                  type="date"
+                  className="form-control"
+                  onChange={(e) =>
+                    store.dispatch(updateToDate(e.currentTarget.value))
+                  }
+                />
               </div>
             </div>
           </div>
@@ -35,7 +60,13 @@ const HomeSearchBox = (_: any) => (
                 Categoria
               </div>
               <div className="col-6">
-                <input type="text" className="form-control" />
+                <input
+                  type="text"
+                  className="form-control"
+                  onChange={(e) =>
+                    store.dispatch(updateCategory(e.currentTarget.value))
+                  }
+                />
               </div>
               <div className="col-6">
                 <Link to="search" style={{ textDecoration: "none" }}>

@@ -54,7 +54,12 @@ class ProjectServiceTest : WordSpec() {
                 creationDate = LocalDate.of(2020, 2, 6),
                 poster = PosterDTO(url = ""),
                 authorRefs = listOf(author),
-                supervisorRefs = listOf(supervisor)
+                supervisorRefs = listOf(supervisor),
+                category = CategoryDTO(
+                    name = "Systems",
+                    tagName = "systems",
+                    imageUrl = ""
+                )
             )
 
             val projects = listOf(newProject)

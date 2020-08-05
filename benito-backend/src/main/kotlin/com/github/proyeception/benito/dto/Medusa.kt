@@ -12,7 +12,8 @@ data class MedusaProjectDTO(
     val creationDate: LocalDate,
     val poster: PosterDTO,
     val authorRefs: List<AuthorDTO>,
-    val supervisorRefs: List<SupervisorDTO>
+    val supervisorRefs: List<SupervisorDTO>,
+    val category: CategoryDTO
 )
 
 data class AuthorDTO(
