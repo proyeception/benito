@@ -28,7 +28,9 @@ const ProjectInfo = (props: Props) => (
   <div className="container-fluid qui-box">
     <div className="col-md-12">
       <div>
-        <div className="qui-blurred-image">
+        <div className={`style=background-image:url('${props.project.posterUrl}') qui-blurred-image`}   >
+          {console.log('el url es')}
+          {console.log(props.project.posterUrl)}
           <div className="qui-backdrop">
             <p className="qui-project-title qui-font-title">
               {props.project.title}
