@@ -3,14 +3,10 @@ import { hot } from "react-hot-loader";
 import "./styles.scss";
 import { Link } from "react-router-dom";
 import store from "../../store";
-import {
-  updateName,
-  updateFromDate,
-  updateToDate,
-  updateCategory,
-} from "../../actions/search";
+import { updateName, updateFromDate, updateToDate } from "../../actions/search";
 import { RootState } from "../../reducers";
 import { connect } from "react-redux";
+import CategorySelector from "../Common/CategorySelector";
 
 type Props = {
   name: String;
@@ -72,14 +68,7 @@ const HomeSearchBox = (props: Props) => (
                 Categoria
               </div>
               <div className="col-6">
-                <input
-                  type="text"
-                  className="form-control"
-                  value={props.category.valueOf()}
-                  onChange={(e) =>
-                    store.dispatch(updateCategory(e.currentTarget.value))
-                  }
-                />
+                <CategorySelector />
               </div>
               <div className="col-6">
                 <Link to="search" style={{ textDecoration: "none" }}>
