@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
 import { Category } from "../../types";
@@ -6,10 +6,6 @@ import Carousel from "react-bootstrap/Carousel";
 import CategorySearch from "./CategorySearch";
 import { RootState } from "../../reducers";
 import { connect } from "react-redux";
-import axios, { AxiosRequestConfig } from "axios";
-import { benitoHost } from "../../config";
-import store from "../../store";
-import { updateCategories } from "../../actions/home";
 
 type Props = {
   categories: Array<Category>;
@@ -21,19 +17,6 @@ const CategoriesSearchCarousel = ({ categories }: Props) => {
   const handleSelect = (selectedIndex: number, _: any) => {
     setIndex(selectedIndex);
   };
-
-  useEffect(() => {
-    let config: AxiosRequestConfig = {
-      method: "GET",
-      url: `${benitoHost}/benito/categories`,
-    };
-
-    axios
-      .request<Array<Category>>(config)
-      .then((res) => res.data)
-      .then((categories) => store.dispatch(updateCategories(categories)))
-      .catch(console.error);
-  }, []);
 
   return (
     <div className="container-fluid mt-5 pl-5 pr-5">
@@ -66,7 +49,7 @@ const CategoriesSearchCarousel = ({ categories }: Props) => {
 };
 
 const mapStateToProps = (rootState: RootState) => ({
-  categories: rootState.home.categories,
+  categories: rootState.common.categories,
 });
 
 export default hot(module)(connect(mapStateToProps)(CategoriesSearchCarousel));

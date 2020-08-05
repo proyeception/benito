@@ -18,7 +18,6 @@ const defaultState: RootState = {
   },
   home: {
     featuredProjects: [],
-    categories: [],
     latestProjects: [],
     projectTotal: null,
   },
@@ -31,6 +30,9 @@ const defaultState: RootState = {
     keyword: "",
     documentation: "",
     sortMethod: SortMethod.DateDesc,
+  },
+  common: {
+    categories: [],
   },
 };
 
