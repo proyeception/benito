@@ -9,8 +9,17 @@ import {
   updateToDate,
   updateCategory,
 } from "../../actions/search";
+import { RootState } from "../../reducers";
+import { connect } from "react-redux";
 
-const HomeSearchBox = (_: any) => (
+type Props = {
+  name: String;
+  toDate: String;
+  fromDate: String;
+  category: String;
+};
+
+const HomeSearchBox = (props: Props) => (
   <div className="qui-home-search-box-container d-none d-md-block">
     <div className="qui-home-search-box container">
       <div className="qui-home-search-box-title">
@@ -26,6 +35,7 @@ const HomeSearchBox = (_: any) => (
             <input
               type="text"
               className="form-control"
+              value={props.name.valueOf()}
               onChange={(e) =>
                 store.dispatch(updateName(e.currentTarget.value))
               }
@@ -38,6 +48,7 @@ const HomeSearchBox = (_: any) => (
                 <input
                   type="date"
                   className="form-control"
+                  value={props.fromDate.valueOf()}
                   onChange={(e) =>
                     store.dispatch(updateFromDate(e.currentTarget.value))
                   }
@@ -47,6 +58,7 @@ const HomeSearchBox = (_: any) => (
                 <input
                   type="date"
                   className="form-control"
+                  value={props.toDate.valueOf()}
                   onChange={(e) =>
                     store.dispatch(updateToDate(e.currentTarget.value))
                   }
@@ -63,6 +75,7 @@ const HomeSearchBox = (_: any) => (
                 <input
                   type="text"
                   className="form-control"
+                  value={props.category.valueOf()}
                   onChange={(e) =>
                     store.dispatch(updateCategory(e.currentTarget.value))
                   }
@@ -83,4 +96,8 @@ const HomeSearchBox = (_: any) => (
   </div>
 );
 
-export default hot(module)(HomeSearchBox);
+const mapStateToProps = (rootState: RootState) => {
+  return rootState.search;
+};
+
+export default hot(module)(connect(mapStateToProps)(HomeSearchBox));

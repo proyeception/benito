@@ -11,9 +11,17 @@ import {
   updateSortMethod,
 } from "../../actions/search";
 import { SortMethod } from "../../store/search/types";
+import { RootState } from "../../reducers";
+import { connect } from "react-redux";
 
 type Props = {
   searchCallback(): void;
+  name: String;
+  category: String;
+  fromDate: String;
+  toDate: String;
+  keyword: String;
+  documentation: String;
 };
 
 const SearchBox = (props: Props) => (
@@ -22,7 +30,7 @@ const SearchBox = (props: Props) => (
       <div className="qui-font-text">Nombre</div>
       <input
         className="qui-search-input"
-        value={store.getState().search.name.valueOf()}
+        value={props.name.valueOf()}
         onChange={(e) => store.dispatch(updateName(e.target.value))}
       ></input>
     </div>
@@ -30,7 +38,7 @@ const SearchBox = (props: Props) => (
       <div className="qui-font-text">Categoría</div>
       <input
         className="qui-search-input"
-        value={store.getState().search.category.valueOf()}
+        value={props.category.valueOf()}
         onChange={(e) => store.dispatch(updateCategory(e.target.value))}
       ></input>
     </div>
@@ -42,7 +50,7 @@ const SearchBox = (props: Props) => (
           className="qui-search-input-date"
           placeholder="Desde"
           name="Fecha inicio"
-          value={store.getState().search.fromDate.valueOf()}
+          value={props.fromDate.valueOf()}
           onChange={(e) => store.dispatch(updateFromDate(e.target.value))}
         ></input>
         <input
@@ -50,7 +58,7 @@ const SearchBox = (props: Props) => (
           className="qui-search-input-date"
           placeholder="Hasta"
           name="Fecha fin"
-          value={store.getState().search.toDate.valueOf()}
+          value={props.toDate.valueOf()}
           onChange={(e) => store.dispatch(updateToDate(e.target.value))}
         ></input>
       </div>
@@ -59,7 +67,7 @@ const SearchBox = (props: Props) => (
       <div className="qui-font-text">Palabra clave</div>
       <input
         className="qui-search-input"
-        value={store.getState().search.keyword.valueOf()}
+        value={props.keyword.valueOf()}
         onChange={(e) => store.dispatch(updateKeyword(e.target.value))}
       ></input>
     </div>
@@ -67,7 +75,7 @@ const SearchBox = (props: Props) => (
       <div className="qui-font-text">Documentación</div>
       <input
         className="qui-search-input"
-        value={store.getState().search.documentation.valueOf()}
+        value={props.documentation.valueOf()}
         onChange={(e) => store.dispatch(updateDocumentation(e.target.value))}
       ></input>
     </div>
@@ -104,4 +112,8 @@ const SearchBox = (props: Props) => (
   </div>
 );
 
-export default hot(module)(SearchBox);
+const mapStateToprops = (rootState: RootState) => {
+  return rootState.search;
+};
+
+export default hot(module)(connect(mapStateToprops)(SearchBox));
