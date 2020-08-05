@@ -5,7 +5,6 @@ import CategoriesSearchCarousel from "./CategoriesSearchCarousel";
 import HomeSearchBox from "./HomeSearchBox";
 import FeaturedGallery from "./FeaturedGallery";
 import Proyectate from "./Proyectate";
-import Statistics from "./Statistics";
 
 type Props = {};
 
@@ -14,9 +13,8 @@ const Home = (_: Props) => {
     <div>
       <HomeSearchBox />
       <FeaturedGallery />
-      <Proyectate />
-      <Statistics />
       <CategoriesSearchCarousel />
+      <Proyectate />
     </div>
   );
 };

@@ -12,8 +12,10 @@ const Footer = (_: any) => (
   <div className="qui-footer mt-3 pb-3 pt-3 text-muted">
     <div className="container">
       <div className="row justify-content-around">
-        <div className="col-9 center-vertically">©Proyectate 2020-2020</div>
-        <div className="col-3">
+        <div className="col-5 col-md-9 center-vertically">
+          ©Proyectate 2020-2020
+        </div>
+        <div className="col-7 col-md-3">
           <div className="row justify-content-between">
             <div className="col-3">
               <img

@@ -19,14 +19,14 @@ const CategoriesSearchCarousel = ({ categories }: Props) => {
   };
 
   return (
-    <div className="container-fluid mt-5 pl-5 pr-5">
+    <div className="container mt-5 pl-5 pr-5 d-none d-md-block">
       <div className="row">
-        <div className="col-5 center-vertically">
-          <div className="text-left pt-3 pb-3 font-weight-bold qui-category-search-title">
-            ¿No sabés qué buscar? ¡Empezá por alguna de estas categorías!
+        <div className="col-12 center">
+          <div className="pt-3 pb-3 font-weight-bold qui-category-search-title">
+            No sabés qué buscar? Empezá por alguna de estas categorías!
           </div>
         </div>
-        <div className="col-7">
+        <div className="col-12">
           <div className="mt-3">
             {categories.length > 0 ? (
               <Carousel activeIndex={index} onSelect={handleSelect}>
