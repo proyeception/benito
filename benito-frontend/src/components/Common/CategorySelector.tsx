@@ -13,6 +13,7 @@ type Props = {
 
 const CategorySelector = (props: Props) => (
   <select
+    defaultValue={0}
     className={`${props.className ? props.className : ""} form-control`}
     onChange={(e) =>
       store.dispatch(
@@ -22,9 +23,9 @@ const CategorySelector = (props: Props) => (
       )
     }
   >
-    <option disabled />
+    <option disabled value={0} />
     {props.categories.map((cat, idx) => (
-      <option value={cat.name.valueOf()} key={idx}>
+      <option value={idx} key={idx}>
         {cat.name}
       </option>
     ))}
