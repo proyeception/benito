@@ -29,7 +29,7 @@ class ViewProject extends Component<{}, { projectId: String, project?: ProjectDa
       } else {
       return (
         <div>
-          <div className="container-fluid">
+          <div className="container-fluid qui-container">
             <div className="row">
               <div className="col-xs-2">
                 <div>
