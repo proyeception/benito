@@ -12,66 +12,80 @@ import java.time.LocalDate
 
 class ProjectServiceTest : WordSpec() {
     init {
-        "should return list of projects" {
-            val medusaClient: MedusaClient = getMock()
-            val projectService = ProjectService(
-                medusaClient = medusaClient
-            )
+        val medusaClient: MedusaClient = getMock()
+        val projectService = ProjectService(
+            medusaClient = medusaClient
+        )
 
-            val author = AuthorDTO(
-                id = "123",
-                fullName = "Benito Quinquela",
-                username = "author",
-                profileUrl = "/authorUrl"
-            )
+        "findProject" should {
+            "should return list of projects" {
 
-            val supervisor = SupervisorDTO(
-                id = "123",
-                fullName = "Jorge Luis Borges",
-                username = "supervisor",
-                profileUrl = "/supervisorUrl"
-            )
-
-            val project = ProjectDTO(
-                id = "1",
-                title = "project title",
-                subtitle = "project subtitle",
-                description = "project description",
-                summary = "project summary",
-                creationDate = LocalDate.of(2020, 2, 6),
-                posterUrl = "",
-                authors = listOf(PersonDTO(username = "author", profileUrl = "/authorUrl")),
-                supervisors = listOf(PersonDTO(username = "supervisor", profileUrl = "/supervisorUrl")),
-                tags = emptyList()
-            )
-
-            val newProject = MedusaProjectDTO(
-                id = "1",
-                title = "project title",
-                subtitle = "project subtitle",
-                description = "project description",
-                summary = "project summary",
-                creationDate = LocalDate.of(2020, 2, 6),
-                poster = PosterDTO(url = ""),
-                authorRefs = listOf(author),
-                supervisorRefs = listOf(supervisor),
-                category = CategoryDTO(
-                    name = "Systems",
-                    tagName = "systems",
-                    imageUrl = ""
+                val author = AuthorDTO(
+                    id = "123",
+                    fullName = "Benito Quinquela",
+                    username = "author",
+                    profileUrl = "/authorUrl"
                 )
-            )
 
-            val projects = listOf(newProject)
-            val expected = listOf(project)
+                val supervisor = SupervisorDTO(
+                    id = "123",
+                    fullName = "Jorge Luis Borges",
+                    username = "supervisor",
+                    profileUrl = "/supervisorUrl"
+                )
 
-            on(medusaClient.getProjects()).thenReturn(projects)
+                val project = ProjectDTO(
+                    id = "1",
+                    title = "project title",
+                    subtitle = "project subtitle",
+                    description = "project description",
+                    summary = "project summary",
+                    creationDate = LocalDate.of(2020, 2, 6),
+                    posterUrl = "",
+                    authors = listOf(PersonDTO(username = "author", profileUrl = "/authorUrl")),
+                    supervisors = listOf(PersonDTO(username = "supervisor", profileUrl = "/supervisorUrl")),
+                    tags = emptyList()
+                )
 
-            val actual = projectService.findProjects(null, null, null, null, null)
+                val newProject = MedusaProjectDTO(
+                    id = "1",
+                    title = "project title",
+                    subtitle = "project subtitle",
+                    description = "project description",
+                    summary = "project summary",
+                    creationDate = LocalDate.of(2020, 2, 6),
+                    poster = PosterDTO(url = ""),
+                    authorRefs = listOf(author),
+                    supervisorRefs = listOf(supervisor),
+                    category = CategoryDTO(
+                        name = "Systems",
+                        tagName = "systems",
+                        imageUrl = ""
+                    )
+                )
 
-            expected shouldBe actual
+                val projects = listOf(newProject)
+                val expected = listOf(project)
 
-            Mockito.verify(medusaClient).getProjects()
+                on(medusaClient.getProjects()).thenReturn(projects)
+
+                val actual = projectService.findProjects(null, null, null, null, null)
+
+                expected shouldBe actual
+
+                Mockito.verify(medusaClient).getProjects()
+            }
+        }
+
+        "count" should {
+            "wrap the response from Medusa in a ProjectCountDTO" {
+                on(medusaClient.projectCount()).thenReturn(100)
+
+                val expected = CountDTO(100)
+                val actual = projectService.count()
+
+                expected shouldBe actual
+            }
         }
     }
 }

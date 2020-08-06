@@ -52,11 +52,15 @@ open class MedusaClient(
         return response.deserializeAs(object : TypeReference<List<CategoryDTO>>() {})
     }
 
-    open fun projectCount(): Int {
-        val response = medusaConnector.get("/projects/count")
+    open fun projectCount(): Int = count("projects")
+
+    open fun categoriesCount() = count("categories")
+
+    private fun count(collection: String): Int {
+        val response = medusaConnector.get("/$collection/count")
 
         if (response.isError()) {
-            throw FailedDependencyException("Error counting projects from Medusa")
+            throw FailedDependencyException("Error counting $collection from Medusa")
         }
 
         return response.body?.toInt() ?: throw FailedDependencyException("Medusa returned null for count")
@@ -68,7 +72,7 @@ open class MedusaClient(
     private fun String.appendParam(param: String, value: String?, filter: MedusaFilter): String =
         value?.let { "${this}${param}_${filter.filterName}=$it&" } ?: this
 
-    private fun String.appendParam(param: String, value: String?) = value?.let {"$this${param}=$it&"} ?: this
+    private fun String.appendParam(param: String, value: String?) = value?.let { "$this${param}=$it&" } ?: this
 
     private fun String?.replaceWhitespaces(): String? =
         this?.let { this.replace(" ", "+") } ?: this

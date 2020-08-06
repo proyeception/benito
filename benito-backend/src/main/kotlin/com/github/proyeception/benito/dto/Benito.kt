@@ -51,6 +51,6 @@ enum class OrderDTO(val sortMethod: String){
     ALPHA_DESC("title:DESC"),
 }
 
-data class ProjectCountDTO(
+data class CountDTO(
     val total: Int
 )
