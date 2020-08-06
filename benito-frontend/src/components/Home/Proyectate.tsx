@@ -35,7 +35,7 @@ const Proyectate = (props: Props) => {
         <div className="row">
           <div className="col-6 center-horizontally flex-column">
             <div className="font-weight-bold qui-tour-title">
-              Compartí tu proyecto 🤝
+              Compartí tus ideas 🤝
             </div>
             <div className="qui-tour-text">
               Cargá tu proyecto, subí la documentación y compartilo con la
