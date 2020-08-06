@@ -1,6 +1,7 @@
 package com.github.proyeception.benito.controller
 
 import com.github.proyeception.benito.dto.CategoryDTO
+import com.github.proyeception.benito.dto.CountDTO
 import com.github.proyeception.benito.service.CategoriesService
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.CrossOrigin
@@ -16,4 +17,9 @@ open class CategoriesController(
     @ResponseBody
     @CrossOrigin
     open fun categories(): List<CategoryDTO> = categoriesService.categories()
+
+    @RequestMapping("/benito/categories-count")
+    @ResponseBody
+    @CrossOrigin
+    open fun count(): CountDTO = categoriesService.count()
 }
