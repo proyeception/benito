@@ -110,17 +110,19 @@ class Search extends Component<Props, State> {
     return (
       <div className="container-fluid">
         <div className="row">
-          <div className="col-md-2 qui-searchbox-md d-none d-lg-block qui-box">
+          <div className="col-md-2 qui-searchbox-md d-none d-lg-block">
             <SearchBox searchCallback={() => this.search()} />
           </div>
-          <div className="col-md-10 qui-box">
-            <div className="qui-search-header p-2 pl-4 qui-font-title">
-              Proyectos
+          <div className="col-md-10 qui-box mt-5">
+            <div className="container-fluid">
+              <div className="qui-search-header p-2 pl-4 qui-font-title">
+                Proyectos
+              </div>
+              <div className=""></div>
+              {store.getState().search.projects.map((p, idx) => (
+                <ProjectSummary project={p} key={idx} />
+              ))}
             </div>
-            <div className=""></div>
-            {store.getState().search.projects.map((p, index) => (
-              <ProjectSummary project={p} key={index} />
-            ))}
           </div>
         </div>
       </div>

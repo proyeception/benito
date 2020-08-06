@@ -45,22 +45,28 @@ const SearchBox = (props: Props) => (
     <div className="qui-search-filter">
       <div className="qui-font-text">Fechas</div>
       <div className="qui-date-filter-container">
-        <input
-          type="date"
-          className="qui-search-input-date form-control"
-          placeholder="Desde"
-          name="Fecha inicio"
-          value={props.fromDate.valueOf()}
-          onChange={(e) => store.dispatch(updateFromDate(e.target.value))}
-        ></input>
-        <input
-          type="date"
-          className="qui-search-input-date form-control"
-          placeholder="Hasta"
-          name="Fecha fin"
-          value={props.toDate.valueOf()}
-          onChange={(e) => store.dispatch(updateToDate(e.target.value))}
-        ></input>
+        <div className="row no-gutters">
+          <div className="col-6 pr-1">
+            <input
+              type="date"
+              className="qui-search-input-date form-control"
+              placeholder="Desde"
+              name="Fecha inicio"
+              value={props.fromDate.valueOf()}
+              onChange={(e) => store.dispatch(updateFromDate(e.target.value))}
+            ></input>
+          </div>
+          <div className="col-6 pl-1">
+            <input
+              type="date"
+              className="qui-search-input-date form-control"
+              placeholder="Hasta"
+              name="Fecha fin"
+              value={props.toDate.valueOf()}
+              onChange={(e) => store.dispatch(updateToDate(e.target.value))}
+            ></input>
+          </div>
+        </div>
       </div>
     </div>
     <div className="qui-search-filter">
