@@ -10,7 +10,7 @@ const search =
   "https://res.cloudinary.com/proyectate/image/upload/v1596481131/icon_ymdvgz.png";
 
 const Proyectate = (_: any) => (
-  <div className="qui-tour mt-5 mb-3">
+  <div className="qui-tour mt-5 pb-5 mb-5">
     <div className="container-md pt-5">
       <div className="row">
         <div className="col-6 center-horizontally flex-column">
