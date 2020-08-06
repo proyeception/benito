@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import { hot } from "react-hot-loader";
-import axios from "axios";
-import { benitoHost } from "../../config";
 import SearchBox from "./SearchBox";
 import ProjectSummary from "./ProjectSummary";
 import { RootState } from "../../reducers";
@@ -10,6 +8,7 @@ import { Project } from "../../types";
 import store from "../../store";
 import { SortMethod } from "../../store/search/types";
 import { updateProjects } from "../../actions/search";
+import { fetchProjects } from "../../functions/search";
 
 type Props = {
   name: String;
@@ -57,55 +56,12 @@ class Search extends Component<Props, State> {
   }
 
   search() {
-    axios
-      .get(`${benitoHost}/benito/projects${this.buildQueryParams()}`)
+    fetchProjects(store.getState().search)
       .then((res) => {
         const projects = res.data;
         store.dispatch(updateProjects(projects));
       })
       .catch(console.error);
-  }
-
-  buildQueryParams() {
-    return "?"
-      .concat(
-        this.buildQueryParamProperty(
-          "name",
-          store.getState().search.name.valueOf()
-        )
-      )
-      .concat(
-        this.buildQueryParamProperty(
-          "category",
-          store.getState().search.category.valueOf()
-        )
-      )
-      .concat(
-        this.buildQueryParamProperty(
-          "from",
-          store.getState().search.fromDate.valueOf()
-        )
-      )
-      .concat(
-        this.buildQueryParamProperty(
-          "to",
-          store.getState().search.toDate.valueOf()
-        )
-      )
-      .concat(
-        this.buildQueryParamProperty(
-          "orderBy",
-          store.getState().search.sortMethod
-        )
-      )
-      .slice(0, -1);
-    //TODO
-    //params = params.concat(this.buildQueryParamProperty("keyword", this.state.keyword))
-    //params = params.concat(this.buildQueryParamProperty("documentation", this.state.documentation))
-  }
-
-  buildQueryParamProperty(key: string, value: string) {
-    return value ? key + "=" + value + "&" : "";
   }
 
   render() {
