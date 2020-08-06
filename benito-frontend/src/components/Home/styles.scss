@@ -47,8 +47,6 @@ $card-mobile-size: 18rem;
 
 .qui-home-search-box-button {
   border-radius: 32px;
-  background-color: #80aef3;
-  font-weight: bold;
   font-size: 18px;
   color: white;
 }
@@ -124,12 +122,12 @@ $card-mobile-size: 18rem;
   max-width: 480px;
 }
 
-.qui-proyectate-tour {
-  background-color: white;
+.qui-tour {
+  background-color: #fbc072;
   color: black;
 }
 
-.qui-proyectate-tour-title {
+.qui-tour-title {
   @media screen and (max-width: 767px) {
     font-size: 18px;
   }
@@ -139,7 +137,7 @@ $card-mobile-size: 18rem;
   }
 }
 
-.qui-proyectate-tour-text {
+.qui-tour-text {
   @media screen and (max-width: 767px) {
     font-size: 12px;
   }
@@ -147,6 +145,22 @@ $card-mobile-size: 18rem;
   @media screen and (min-width: 768px) {
     font-size: 18px;
   }
+}
+
+.qui-tour-image {
+  max-height: 360px;
+  max-width: 360px;
+}
+
+.qui-tour-search-title {
+  font-size: 32px;
+}
+
+.qui-tour-search-button {
+  color: white;
+  font-size: 24px;
+  background-color: #7553a1;
+  border-radius: 24px;
 }
 
 .qui-category-search-title {

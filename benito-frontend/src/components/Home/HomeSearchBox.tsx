@@ -72,7 +72,7 @@ const HomeSearchBox = (props: Props) => (
               </div>
               <div className="col-6">
                 <Link to="search" style={{ textDecoration: "none" }}>
-                  <div className="qui-home-search-box-button pb-2 pt-2 center">
+                  <div className="btn btn-info qui-home-search-box-button pb-2 pt-2 center font-weight-bold">
                     Buscar
                   </div>
                 </Link>
