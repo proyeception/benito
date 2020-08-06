@@ -22,5 +22,5 @@ open class ProjectService(
         return medusaClient.top10Projects().map { ProjectDTO(it) }
     }
 
-    fun count(): ProjectCountDTO = ProjectCountDTO(medusaClient.count())
+    fun count(): ProjectCountDTO = ProjectCountDTO(medusaClient.projectCount())
 }

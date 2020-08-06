@@ -28,7 +28,6 @@ open class MedusaClient(
             .dropLast(1)
 
         val response = medusaConnector.get(endpoint)
-        LOGGER.info(response.body)
 
         if (response.isError()) {
             throw FailedDependencyException("Error getting projects from Medusa")
@@ -37,10 +36,9 @@ open class MedusaClient(
         return response.deserializeAs(object : TypeReference<List<MedusaProjectDTO>>() {})
     }
 
-    fun top10Projects(): List<MedusaProjectDTO> {
+    open fun top10Projects(): List<MedusaProjectDTO> {
         // TODO: add project click tracking and then ask for projects sorted by most visited
         val response = medusaConnector.get("/projects?_limit=10")
-        LOGGER.info(response.body)
 
         if (response.isError()) {
             throw FailedDependencyException("Error getting top 10 from Medusa")
@@ -51,7 +49,6 @@ open class MedusaClient(
 
     open fun categories(): List<CategoryDTO> {
         val response = medusaConnector.get("/categories")
-        LOGGER.info(response.body)
 
         if (response.isError()) {
             throw FailedDependencyException("Error getting categories from Medusa")
@@ -60,9 +57,8 @@ open class MedusaClient(
         return response.deserializeAs(object : TypeReference<List<CategoryDTO>>() {})
     }
 
-    open fun count(): Int {
+    open fun projectCount(): Int {
         val response = medusaConnector.get("/projects/count")
-        LOGGER.info(response.body)
 
         if (response.isError()) {
             throw FailedDependencyException("Error counting projects from Medusa")
