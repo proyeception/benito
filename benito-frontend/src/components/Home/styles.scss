@@ -153,14 +153,25 @@ $card-mobile-size: 18rem;
 }
 
 .qui-tour-search-title {
-  font-size: 32px;
+  @media screen and (min-width: 768px) {
+    font-size: 32px;
+  }
+  @media screen and (max-width: 767px) {
+    font-size: 24px;
+  }
 }
 
 .qui-tour-search-button {
   color: white;
-  font-size: 24px;
   background-color: #7553a1;
   border-radius: 24px;
+
+  @media screen and (min-width: 768px) {
+    font-size: 24px;
+  }
+  @media screen and (max-width: 767px) {
+    font-size: 18px;
+  }
 }
 
 .qui-category-search-title {
