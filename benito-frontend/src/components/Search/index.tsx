@@ -65,7 +65,6 @@ class Search extends Component<Props, State> {
   }
 
   render() {
-    console.log(this.props);
     return (
       <div className="container-fluid">
         <div className="row">

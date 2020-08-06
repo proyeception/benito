@@ -70,7 +70,7 @@ function login() {
       store.dispatch(setUserSession(user.session, "saraza", user.userInfo))
     )
     .then(() => store.dispatch(setLoginTrue()))
-    .catch((e) => console.log(e.message))
+    .catch(console.error)
     .finally(() => store.dispatch(finishLogin()));
 }
 
