@@ -16,6 +16,8 @@ import io.kotlintest.specs.WordSpec
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyString
+import org.mockito.Mockito
+import org.mockito.Mockito.verify
 import java.time.LocalDate
 
 class MedusaClientTest : WordSpec() {
@@ -211,6 +213,7 @@ class MedusaClientTest : WordSpec() {
                 val actual = medusaClient.projectCount()
 
                 expected shouldBe actual
+                verify(medusaConnector).get(eq("/projects/count"))
             }
 
             "throw a failed dependency if medusa responds with a null body" {
@@ -219,6 +222,7 @@ class MedusaClientTest : WordSpec() {
                 on(responseMock.body).thenReturn(null)
 
                 shouldThrow<FailedDependencyException> { medusaClient.projectCount() }
+                verify(medusaConnector).get(eq("/projects/count"))
             }
 
             "throw a failed dependency if medusa responds with an error" {
@@ -226,6 +230,19 @@ class MedusaClientTest : WordSpec() {
                 on(responseMock.isError()).thenReturn(true)
 
                 shouldThrow<FailedDependencyException> { medusaClient.projectCount() }
+                verify(medusaConnector).get(eq("/projects/count"))
+            }
+        }
+
+        "top10Projects" should {
+            val responseMock: Response = getMock()
+
+            "make a GET to /projects with limit 10" {
+                on(medusaConnector.get(anyString())).thenReturn(responseMock)
+                on(responseMock.isError()).thenReturn(false)
+                on(responseMock.deserializeAs(any(TypeReference::class.java))).thenReturn(null)
+                medusaClient.top10Projects()
+                verify(medusaConnector).get(eq("/projects?_limit=10"))
             }
         }
     }

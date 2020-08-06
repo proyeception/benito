@@ -17,7 +17,9 @@ open class MedusaClient(
         from: String? = null,
         to: String? = null,
         nameContains: String? = null,
-        category: String? = null
+        category: String? = null,
+        limit: Int? = null,
+        offset: Int? = null
     ): List<MedusaProjectDTO> {
         val endpoint = "/projects?"
             .appendOrder(orderBy)
@@ -25,6 +27,8 @@ open class MedusaClient(
             .appendParam("creation_date", to, MedusaFilter.LESS_OR_EQUAL)
             .appendParam("title", nameContains.replaceWhitespaces(), MedusaFilter.CONTAINS)
             .appendParam("category.tag_name", category, MedusaFilter.EQ)
+            .appendParam("_limit", limit?.toString())
+            .appendParam("_start", offset?.toString())
             .dropLast(1)
 
         val response = medusaConnector.get(endpoint)
@@ -36,16 +40,7 @@ open class MedusaClient(
         return response.deserializeAs(object : TypeReference<List<MedusaProjectDTO>>() {})
     }
 
-    open fun top10Projects(): List<MedusaProjectDTO> {
-        // TODO: add project click tracking and then ask for projects sorted by most visited
-        val response = medusaConnector.get("/projects?_limit=10")
-
-        if (response.isError()) {
-            throw FailedDependencyException("Error getting top 10 from Medusa")
-        }
-
-        return response.deserializeAs(object : TypeReference<List<MedusaProjectDTO>>() {})
-    }
+    open fun top10Projects(): List<MedusaProjectDTO> = getProjects(limit = 10)
 
     open fun categories(): List<CategoryDTO> {
         val response = medusaConnector.get("/categories")
@@ -72,6 +67,8 @@ open class MedusaClient(
 
     private fun String.appendParam(param: String, value: String?, filter: MedusaFilter): String =
         value?.let { "${this}${param}_${filter.filterName}=$it&" } ?: this
+
+    private fun String.appendParam(param: String, value: String?) = value?.let {"$this${param}=$it&"} ?: this
 
     private fun String?.replaceWhitespaces(): String? =
         this?.let { this.replace(" ", "+") } ?: this
