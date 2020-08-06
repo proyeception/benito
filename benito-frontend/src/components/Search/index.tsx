@@ -65,42 +65,41 @@ class Search extends Component<Props, State> {
   }
 
   buildQueryParams() {
-    let params = "?";
-
-    params = params.concat(
-      this.buildQueryParamProperty(
-        "name",
-        store.getState().search.name.valueOf()
+    return "?"
+      .concat(
+        this.buildQueryParamProperty(
+          "name",
+          store.getState().search.name.valueOf()
+        )
       )
-    );
-    params = params.concat(
-      this.buildQueryParamProperty(
-        "category",
-        store.getState().search.category.valueOf()
+      .concat(
+        this.buildQueryParamProperty(
+          "category",
+          store.getState().search.category.valueOf()
+        )
       )
-    );
-    params = params.concat(
-      this.buildQueryParamProperty(
-        "from",
-        store.getState().search.fromDate.valueOf()
+      .concat(
+        this.buildQueryParamProperty(
+          "from",
+          store.getState().search.fromDate.valueOf()
+        )
       )
-    );
-    params = params.concat(
-      this.buildQueryParamProperty(
-        "to",
-        store.getState().search.toDate.valueOf()
+      .concat(
+        this.buildQueryParamProperty(
+          "to",
+          store.getState().search.toDate.valueOf()
+        )
       )
-    );
-    params = params.concat(
-      this.buildQueryParamProperty(
-        "orderBy",
-        store.getState().search.sortMethod
+      .concat(
+        this.buildQueryParamProperty(
+          "orderBy",
+          store.getState().search.sortMethod
+        )
       )
-    );
+      .slice(0, -1);
     //TODO
     //params = params.concat(this.buildQueryParamProperty("keyword", this.state.keyword))
     //params = params.concat(this.buildQueryParamProperty("documentation", this.state.documentation))
-    return params.slice(0, -1);
   }
 
   buildQueryParamProperty(key: string, value: string) {
