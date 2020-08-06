@@ -61,7 +61,7 @@ class Search extends Component<Props, State> {
         const projects = res.data;
         store.dispatch(updateProjects(projects));
       })
-      .catch((error) => console.error(error));
+      .catch(console.error);
   }
 
   buildQueryParams() {

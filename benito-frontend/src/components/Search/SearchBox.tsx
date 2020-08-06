@@ -79,20 +79,15 @@ const SearchBox = (props: Props) => (
         onChange={(e) => store.dispatch(updateDocumentation(e.target.value))}
       ></input>
     </div>
-    <div>
+    <div className="qui-search-filter">
+      <div className="qui-font-text">Ordenar proyectos</div>
       <select
+        className="qui-search-combo"
         name="sortMethod"
         id="sort"
         onChange={(e) =>
           store.dispatch(
-            updateSortMethod(
-              Object.values(SortMethod).find(
-                (v) => v.valueOf() === e.target.value
-              )
-            )
-          )
-        }
-      >
+            updateSortMethod(Object.values(SortMethod).find((v) => v.valueOf() === e.target.value)))}>
         <optgroup label="Fecha de creación">
           <option value={SortMethod.DateDesc}>Más recientes</option>
           <option value={SortMethod.DateAsc}>Más antiguos</option>
