@@ -51,7 +51,9 @@ class Search extends Component<Props, State> {
   }
 
   componentDidMount() {
-    this.search();
+    if (this.state.projects.length == 0) {
+      this.search();
+    }
   }
 
   search() {
@@ -107,6 +109,7 @@ class Search extends Component<Props, State> {
   }
 
   render() {
+    console.log(this.props);
     return (
       <div className="container-fluid">
         <div className="row">
@@ -119,7 +122,7 @@ class Search extends Component<Props, State> {
                 Proyectos
               </div>
               <div className=""></div>
-              {store.getState().search.projects.map((p, idx) => (
+              {this.props.projects.map((p, idx) => (
                 <ProjectSummary project={p} key={idx} />
               ))}
             </div>
