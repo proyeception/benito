@@ -29,7 +29,7 @@ const SearchBox = (props: Props) => (
     <div className="qui-search-filter">
       <div className="qui-font-text">Nombre</div>
       <input
-        className="qui-search-input"
+        className="qui-search-input form-control"
         value={props.name.valueOf()}
         onChange={(e) => store.dispatch(updateName(e.target.value))}
       ></input>
@@ -37,7 +37,7 @@ const SearchBox = (props: Props) => (
     <div className="qui-search-filter">
       <div className="qui-font-text">Categoría</div>
       <input
-        className="qui-search-input"
+        className="qui-search-input form-control"
         value={props.category.valueOf()}
         onChange={(e) => store.dispatch(updateCategory(e.target.value))}
       ></input>
@@ -47,7 +47,7 @@ const SearchBox = (props: Props) => (
       <div className="qui-date-filter-container">
         <input
           type="date"
-          className="qui-search-input-date"
+          className="qui-search-input-date form-control"
           placeholder="Desde"
           name="Fecha inicio"
           value={props.fromDate.valueOf()}
@@ -55,7 +55,7 @@ const SearchBox = (props: Props) => (
         ></input>
         <input
           type="date"
-          className="qui-search-input-date"
+          className="qui-search-input-date form-control"
           placeholder="Hasta"
           name="Fecha fin"
           value={props.toDate.valueOf()}
@@ -66,7 +66,7 @@ const SearchBox = (props: Props) => (
     <div className="qui-search-filter">
       <div className="qui-font-text">Palabra clave</div>
       <input
-        className="qui-search-input"
+        className="qui-search-input form-control"
         value={props.keyword.valueOf()}
         onChange={(e) => store.dispatch(updateKeyword(e.target.value))}
       ></input>
@@ -74,7 +74,7 @@ const SearchBox = (props: Props) => (
     <div className="qui-search-filter">
       <div className="qui-font-text">Documentación</div>
       <input
-        className="qui-search-input"
+        className="qui-search-input form-control"
         value={props.documentation.valueOf()}
         onChange={(e) => store.dispatch(updateDocumentation(e.target.value))}
       ></input>
@@ -82,12 +82,19 @@ const SearchBox = (props: Props) => (
     <div className="qui-search-filter">
       <div className="qui-font-text">Ordenar proyectos</div>
       <select
-        className="qui-search-combo"
+        className="qui-search-combo form-control"
         name="sortMethod"
         id="sort"
         onChange={(e) =>
           store.dispatch(
-            updateSortMethod(Object.values(SortMethod).find((v) => v.valueOf() === e.target.value)))}>
+            updateSortMethod(
+              Object.values(SortMethod).find(
+                (v) => v.valueOf() === e.target.value
+              )
+            )
+          )
+        }
+      >
         <optgroup label="Fecha de creación">
           <option value={SortMethod.DateDesc}>Más recientes</option>
           <option value={SortMethod.DateAsc}>Más antiguos</option>
