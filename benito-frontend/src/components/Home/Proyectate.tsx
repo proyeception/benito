@@ -63,9 +63,9 @@ const Proyectate = (props: Props) => {
           </div>
           <div className="col-12 pt-5 center-horizontally flex-column">
             <div className="font-weight-bold qui-tour-title text-center">
-              Más de {props.projectCount.valueOf() - 2} proyectos en{" "}
-              {props.categoryCount}
-              categorías!
+              Más de{" "}
+              {props.projectCount ? props.projectCount.valueOf() - 2 : ""}{" "}
+              proyectos en {props.categoryCount} categorías!
             </div>
             <div className="font-weight-bold qui-tour-search-title text-center">
               Empezá a buscar ya! 👀

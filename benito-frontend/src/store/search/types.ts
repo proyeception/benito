@@ -59,20 +59,20 @@ export enum SortMethod {
 export type SearchAction =
   | UpdateNameAction
   | UpdateCategoryAction
-  | UpdateProjects 
-  | UpdateFromDateAction 
-  | UpdateToDateAction 
-  | UpdateKeywordAction 
+  | UpdateProjects
+  | UpdateFromDateAction
+  | UpdateToDateAction
+  | UpdateKeywordAction
   | UpdateDocumentationAction
-  | UpdateSortMethod
+  | UpdateSortMethod;
 
 export type SearchState = {
   name: String;
   projects: Array<Project>;
-  category: String,
-  fromDate: String,
-  toDate: String,
-  keyword: String,
-  documentation: String,
-  sortMethod: SortMethod,
+  category: String;
+  fromDate: String;
+  toDate: String;
+  keyword: String;
+  documentation: String;
+  sortMethod: SortMethod;
 };

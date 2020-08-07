@@ -7,10 +7,29 @@ import { connect } from "react-redux";
 import { Project } from "../../types";
 import store from "../../store";
 import { SortMethod } from "../../store/search/types";
-import { updateProjects } from "../../actions/search";
+import {
+  updateProjects,
+  updateCategory,
+  updateName,
+  updateDocumentation,
+  updateFromDate,
+  updateToDate,
+  updateKeyword,
+} from "../../actions/search";
 import { fetchProjects } from "../../functions/search";
+import qs from "qs";
+import { RouteChildrenProps } from "react-router-dom";
 
-type Props = {
+type MatchParams = {
+  name?: string;
+  category?: string;
+  fromDate?: string;
+  toDate?: string;
+  keyword?: string;
+  documentation?: string;
+};
+
+interface Props extends RouteChildrenProps<MatchParams> {
   name: String;
   category: String;
   fromDate: String;
@@ -19,7 +38,7 @@ type Props = {
   documentation: String;
   projects: Array<Project>;
   sortMethod: SortMethod;
-};
+}
 
 type State = {
   name: String;
@@ -37,8 +56,8 @@ class Search extends Component<Props, State> {
     super(props, ctx);
     this.state = {
       projects: props.projects,
-      name: props.name.valueOf(),
-      category: props.category.valueOf(),
+      name: props.name,
+      category: props.category,
       fromDate: props.fromDate.valueOf(),
       toDate: props.toDate.valueOf(),
       keyword: props.keyword.valueOf(),
@@ -50,6 +69,25 @@ class Search extends Component<Props, State> {
   }
 
   componentDidMount() {
+    let queryParams: MatchParams = qs.parse(this.props.location.search, {
+      ignoreQueryPrefix: true,
+    });
+
+    queryParams.category
+      ? store.dispatch(updateCategory(queryParams.category))
+      : {};
+    queryParams.name ? store.dispatch(updateName(queryParams.name)) : {};
+    queryParams.documentation
+      ? store.dispatch(updateDocumentation(queryParams.documentation))
+      : {};
+    queryParams.fromDate
+      ? store.dispatch(updateFromDate(queryParams.fromDate))
+      : {};
+    queryParams.toDate ? store.dispatch(updateToDate(queryParams.toDate)) : {};
+    queryParams.keyword
+      ? store.dispatch(updateKeyword(queryParams.keyword))
+      : {};
+
     if (this.state.projects.length == 0) {
       this.search();
     }
@@ -57,10 +95,8 @@ class Search extends Component<Props, State> {
 
   search() {
     fetchProjects(store.getState().search)
-      .then((res) => {
-        const projects = res.data;
-        store.dispatch(updateProjects(projects));
-      })
+      .then((res) => res.data)
+      .then((projects) => store.dispatch(updateProjects(projects)))
       .catch(console.error);
   }
 
