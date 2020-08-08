@@ -1,7 +1,15 @@
 import React from "react";
 import { hot } from "react-hot-loader";
 import store from "../../store";
-import { updateName, updateCategory, updateFromDate, updateToDate, updateKeyword, updateDocumentation, updateSortMethod } from "../../actions/search";
+import {
+  updateName,
+  updateCategory,
+  updateFromDate,
+  updateToDate,
+  updateKeyword,
+  updateDocumentation,
+  updateSortMethod,
+} from "../../actions/search";
 import { SortMethod } from "../../store/search/types";
 
 type Props = {
@@ -20,7 +28,7 @@ const SearchBox = (props: Props) => (
     <div className="qui-search-filter">
       <div className="qui-font-text">Categoría</div>
       <input
-        className="qui-search-input"
+        className="qui-search-input text-center"
         onChange={(e) => store.dispatch(updateCategory(e.target.value))}
       ></input>
     </div>
@@ -29,7 +37,7 @@ const SearchBox = (props: Props) => (
       <div className="qui-date-filter-container">
         <input
           type="date"
-          className="qui-search-input-date"
+          className="qui-search-input-date text-center"
           placeholder="Desde"
           name="Fecha inicio"
           onChange={(e) => store.dispatch(updateFromDate(e.target.value))}
@@ -65,7 +73,14 @@ const SearchBox = (props: Props) => (
         id="sort"
         onChange={(e) =>
           store.dispatch(
-            updateSortMethod(Object.values(SortMethod).find((v) => v.valueOf() === e.target.value)))}>
+            updateSortMethod(
+              Object.values(SortMethod).find(
+                (v) => v.valueOf() === e.target.value
+              )
+            )
+          )
+        }
+      >
         <optgroup label="Fecha de creación">
           <option value={SortMethod.DateDesc}>Más recientes</option>
           <option value={SortMethod.DateAsc}>Más antiguos</option>
