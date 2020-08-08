@@ -67,3 +67,10 @@ export function updateSortMethod(sortMethod: SortMethod): SearchAction {
     payload: sortMethod,
   };
 }
+
+export function emptyProjects(): SearchAction {
+  return {
+    type: UPDATE_PROJECTS,
+    payload: [],
+  };
+}

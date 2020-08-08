@@ -14,6 +14,7 @@ import {
   updateFromDate,
   updateToDate,
   updateKeyword,
+  emptyProjects,
 } from "../../actions/search";
 import { fetchProjects, buildQueryParams } from "../../functions/search";
 import qs from "qs";
@@ -31,21 +32,10 @@ type MatchParams = {
 
 interface Props extends RouteChildrenProps<MatchParams> {
   projects: Array<Project>;
-  name: String;
-  category: String;
-  fromDate: String;
-  toDate: String;
-  keyword: String;
-  documentation: String;
 }
 
-function search(props: Props) {
-  history.push({
-    pathname: "/search",
-    search: `${buildQueryParams(props)}`,
-  });
-
-  fetchProjects(props)
+function search(params: MatchParams) {
+  fetchProjects(params)
     .then((res) => res.data)
     .then((projects) => store.dispatch(updateProjects(projects)))
     .catch(console.error);
@@ -73,15 +63,27 @@ const Search = (props: Props) => {
       : {};
 
     if (props.projects.length == 0) {
-      search(props);
+      search(queryParams);
     }
+
+    return () => {
+      store.dispatch(emptyProjects());
+    };
   }, []);
 
   return (
     <div className="container-fluid">
       <div className="row">
         <div className="col-md-2 qui-searchbox-md d-none d-lg-block">
-          <SearchBox searchCallback={() => search(props)} />
+          <SearchBox
+            searchCallback={() => {
+              history.push({
+                pathname: "/search",
+                search: `${buildQueryParams(queryParams)}`,
+              });
+              search(queryParams);
+            }}
+          />
         </div>
         <div className="col-md-10 qui-box mt-5">
           <div className="container-fluid">
