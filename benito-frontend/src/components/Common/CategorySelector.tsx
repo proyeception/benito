@@ -8,12 +8,17 @@ import { updateCategory } from "../../actions/search";
 
 type Props = {
   categories: Array<Category>;
+  selected?: String;
   className?: String;
 };
 
 const CategorySelector = (props: Props) => (
   <select
-    defaultValue={0}
+    defaultValue={
+      props.selected
+        ? props.categories.findIndex((e) => e.tagName == props.selected)
+        : 0
+    }
     className={`${props.className ? props.className : ""} form-control`}
     onChange={(e) =>
       store.dispatch(
@@ -35,6 +40,7 @@ const CategorySelector = (props: Props) => (
 const mapStateToProps = (rootState: RootState) => {
   return {
     categories: rootState.common.categories,
+    selected: rootState.search.category,
   };
 };
 
