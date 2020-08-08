@@ -33,10 +33,15 @@ type MatchParams = {
 
 interface Props extends RouteChildrenProps<MatchParams> {
   projects: Array<Project>;
+  name: String;
+  category: String;
+  fromDate: String;
+  toDate: String;
+  sortMethod: String;
 }
 
-function search(params: MatchParams) {
-  fetchProjects(params)
+function search() {
+  fetchProjects()
     .then((res) => res.data)
     .then((projects) => store.dispatch(updateProjects(projects)))
     .catch(console.error);
@@ -64,7 +69,7 @@ const Search = (props: Props) => {
       : {};
 
     if (props.projects.length == 0) {
-      search(queryParams);
+      search();
     }
 
     return () => {
@@ -85,9 +90,9 @@ const Search = (props: Props) => {
             searchCallback={() => {
               history.push({
                 pathname: "/search",
-                search: `${buildQueryParams(queryParams)}`,
+                search: `${buildQueryParams(props)}`,
               });
-              search(queryParams);
+              search();
             }}
           />
         </div>

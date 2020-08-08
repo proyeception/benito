@@ -37,7 +37,7 @@ class HomeSearchBox extends React.Component<Props, State> {
 
   search() {
     this.setState({ loading: true }, () =>
-      fetchProjects(this.props)
+      fetchProjects()
         .then((res) => res.data)
         .then((projects) => store.dispatch(updateProjects(projects)))
         .then(() => this.setState({ loading: false }))
