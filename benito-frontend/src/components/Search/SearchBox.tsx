@@ -24,101 +24,103 @@ type Props = {
   documentation: String;
 };
 
-const SearchBox = (props: Props) => (
-  <div className="qui-search-box">
-    <div className="qui-search-filter">
-      <div className="qui-font-text">Nombre</div>
-      <input
-        className="qui-search-input form-control"
-        value={props.name.valueOf()}
-        onChange={(e) => store.dispatch(updateName(e.target.value))}
-      ></input>
-    </div>
-    <div className="qui-search-filter">
-      <div className="qui-font-text">Categoría</div>
-      <input
-        className="qui-search-input form-control"
-        value={props.category.valueOf()}
-        onChange={(e) => store.dispatch(updateCategory(e.target.value))}
-      ></input>
-    </div>
-    <div className="qui-search-filter">
-      <div className="qui-font-text">Fechas</div>
-      <div className="qui-date-filter-container">
-        <div className="row no-gutters">
-          <div className="col-6 pr-1">
-            <input
-              type="date"
-              className="qui-search-input-date form-control"
-              placeholder="Desde"
-              name="Fecha inicio"
-              value={props.fromDate.valueOf()}
-              onChange={(e) => store.dispatch(updateFromDate(e.target.value))}
-            ></input>
-          </div>
-          <div className="col-6 pl-1">
-            <input
-              type="date"
-              className="qui-search-input-date form-control"
-              placeholder="Hasta"
-              name="Fecha fin"
-              value={props.toDate.valueOf()}
-              onChange={(e) => store.dispatch(updateToDate(e.target.value))}
-            ></input>
+const SearchBox = (props: Props) => {
+  return (
+    <div className="qui-search-box">
+      <div className="qui-search-filter">
+        <div className="qui-font-text">Nombre</div>
+        <input
+          className="qui-search-input form-control"
+          value={props.name.valueOf()}
+          onChange={(e) => store.dispatch(updateName(e.target.value))}
+        ></input>
+      </div>
+      <div className="qui-search-filter">
+        <div className="qui-font-text">Categoría</div>
+        <input
+          className="qui-search-input form-control"
+          value={props.category.valueOf()}
+          onChange={(e) => store.dispatch(updateCategory(e.target.value))}
+        ></input>
+      </div>
+      <div className="qui-search-filter">
+        <div className="qui-font-text">Fechas</div>
+        <div className="qui-date-filter-container">
+          <div className="row no-gutters">
+            <div className="col-6 pr-1">
+              <input
+                type="date"
+                className="qui-search-input-date form-control"
+                placeholder="Desde"
+                name="Fecha inicio"
+                value={props.fromDate.valueOf()}
+                onChange={(e) => store.dispatch(updateFromDate(e.target.value))}
+              ></input>
+            </div>
+            <div className="col-6 pl-1">
+              <input
+                type="date"
+                className="qui-search-input-date form-control"
+                placeholder="Hasta"
+                name="Fecha fin"
+                value={props.toDate.valueOf()}
+                onChange={(e) => store.dispatch(updateToDate(e.target.value))}
+              ></input>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div className="qui-search-filter">
-      <div className="qui-font-text">Palabra clave</div>
-      <input
-        className="qui-search-input form-control"
-        value={props.keyword.valueOf()}
-        onChange={(e) => store.dispatch(updateKeyword(e.target.value))}
-      ></input>
-    </div>
-    <div className="qui-search-filter">
-      <div className="qui-font-text">Documentación</div>
-      <input
-        className="qui-search-input form-control"
-        value={props.documentation.valueOf()}
-        onChange={(e) => store.dispatch(updateDocumentation(e.target.value))}
-      ></input>
-    </div>
-    <div className="qui-search-filter">
-      <div className="qui-font-text">Ordenar proyectos</div>
-      <select
-        className="qui-search-combo form-control"
-        name="sortMethod"
-        id="sort"
-        onChange={(e) =>
-          store.dispatch(
-            updateSortMethod(
-              Object.values(SortMethod).find(
-                (v) => v.valueOf() === e.target.value
+      <div className="qui-search-filter">
+        <div className="qui-font-text">Palabra clave</div>
+        <input
+          className="qui-search-input form-control"
+          value={props.keyword.valueOf()}
+          onChange={(e) => store.dispatch(updateKeyword(e.target.value))}
+        ></input>
+      </div>
+      <div className="qui-search-filter">
+        <div className="qui-font-text">Documentación</div>
+        <input
+          className="qui-search-input form-control"
+          value={props.documentation.valueOf()}
+          onChange={(e) => store.dispatch(updateDocumentation(e.target.value))}
+        ></input>
+      </div>
+      <div className="qui-search-filter">
+        <div className="qui-font-text">Ordenar proyectos</div>
+        <select
+          className="qui-search-combo form-control"
+          name="sortMethod"
+          id="sort"
+          onChange={(e) =>
+            store.dispatch(
+              updateSortMethod(
+                Object.values(SortMethod).find(
+                  (v) => v.valueOf() === e.target.value
+                )
               )
             )
-          )
-        }
+          }
+        >
+          <optgroup label="Fecha de creación">
+            <option value={SortMethod.DateDesc}>Más recientes</option>
+            <option value={SortMethod.DateAsc}>Más antiguos</option>
+          </optgroup>
+          <optgroup label="Alfabético">
+            <option value={SortMethod.AlphaAsc}>A - Z</option>
+            <option value={SortMethod.AlphaDesc}>Z - A</option>
+          </optgroup>
+        </select>
+      </div>
+      <button
+        className="btn-primary qui-search-btn"
+        onClick={() => props.searchCallback()}
       >
-        <optgroup label="Fecha de creación">
-          <option value={SortMethod.DateDesc}>Más recientes</option>
-          <option value={SortMethod.DateAsc}>Más antiguos</option>
-        </optgroup>
-        <optgroup label="Alfabético">
-          <option value={SortMethod.AlphaAsc}>A - Z</option>
-          <option value={SortMethod.AlphaDesc}>Z - A</option>
-        </optgroup>
-      </select>
+        Buscar
+      </button>
     </div>
-    <button
-      className="btn-primary qui-search-btn"
-      onClick={() => props.searchCallback()}
-    >
-      Buscar
-    </button>
-  </div>
-);
+  );
+};
 
 const mapStateToprops = (rootState: RootState) => {
   return rootState.search;

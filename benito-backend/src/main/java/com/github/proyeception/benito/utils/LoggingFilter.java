@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+
 public class LoggingFilter implements Filter {
     public static final String AUTHORIZATION_HEADER = "authorization";
 

@@ -19,6 +19,7 @@ import {
 import { fetchProjects } from "../../functions/search";
 import qs from "qs";
 import { RouteChildrenProps } from "react-router-dom";
+import { history } from "../../entry";
 
 type MatchParams = {
   name?: string;
@@ -97,6 +98,12 @@ class Search extends Component<Props, State> {
     fetchProjects(store.getState().search)
       .then((res) => res.data)
       .then((projects) => store.dispatch(updateProjects(projects)))
+      .then(() => {
+        history.push({
+          pathname: "/search",
+          search: `?category=${this.props.category}`,
+        });
+      })
       .catch(console.error);
   }
 
