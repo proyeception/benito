@@ -8,7 +8,7 @@ import {
   UPDATE_KEYWORD,
   UPDATE_DOCUMENTATION,
   UPDATE_SORT_METHOD,
-  SortMethod
+  SortMethod,
 } from "../../store/search/types";
 import { Project } from "../../components/Search/ProjectSummary";
 
