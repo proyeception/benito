@@ -3,7 +3,6 @@ import { hot } from "react-hot-loader";
 import store from "../../store";
 import {
   updateName,
-  updateCategory,
   updateFromDate,
   updateToDate,
   updateKeyword,
@@ -13,6 +12,7 @@ import {
 import { SortMethod } from "../../store/search/types";
 import { RootState } from "../../reducers";
 import { connect } from "react-redux";
+import CategorySelector from "../Common/CategorySelector";
 
 type Props = {
   searchCallback(): void;
@@ -37,11 +37,7 @@ const SearchBox = (props: Props) => {
       </div>
       <div className="qui-search-filter">
         <div className="qui-font-text">Categoría</div>
-        <input
-          className="qui-search-input form-control"
-          value={props.category.valueOf()}
-          onChange={(e) => store.dispatch(updateCategory(e.target.value))}
-        ></input>
+        <CategorySelector className="qui-search-input" />
       </div>
       <div className="qui-search-filter">
         <div className="qui-font-text">Fechas</div>
