@@ -6,8 +6,16 @@ import HomeSearchBox from "./HomeSearchBox";
 import FeaturedGallery from "./FeaturedGallery";
 import Proyectate from "./Proyectate";
 import { Redirect } from "react-router-dom";
+import { buildQueryParams } from "../../functions/search";
+import { RootState } from "../../reducers";
+import { connect } from "react-redux";
 
-type Props = {};
+type Props = {
+  name: String;
+  category: String;
+  fromDate: String;
+  toDate: String;
+};
 type State = {
   doRedirect: Boolean;
 };
@@ -22,7 +30,7 @@ class Home extends React.Component<Props, State> {
 
   render() {
     if (this.state.doRedirect) {
-      return <Redirect to="/search" />;
+      return <Redirect to={`/search${buildQueryParams(this.props)}`} />;
     }
 
     return (
@@ -38,4 +46,8 @@ class Home extends React.Component<Props, State> {
   }
 }
 
-export default hot(module)(Home);
+const mapStateToProps = (rootState: RootState) => {
+  return rootState.search;
+};
+
+export default hot(module)(connect(mapStateToProps)(Home));

@@ -15,6 +15,7 @@ interface Params {
 export function fetchProjects(
   params: Params = {}
 ): AxiosPromise<Array<Project>> {
+  console.log(params);
   let config: AxiosRequestConfig = {
     method: "GET",
     url: `${benitoHost}/benito/projects${buildQueryParams(params)}`,
@@ -23,7 +24,7 @@ export function fetchProjects(
   return axios.request<Array<Project>>(config);
 }
 
-function buildQueryParams({
+export function buildQueryParams({
   name,
   category,
   fromDate,
