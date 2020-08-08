@@ -2,13 +2,19 @@ import React from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
 import { Project } from "../../types";
+import { motion } from "framer-motion";
 
 type Props = {
   project: Project;
 };
 
 const ProjectSummary = (props: Props) => (
-  <div className="container-fluid">
+  <motion.div
+    className="container-fluid"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+  >
     <div className="row mt-3 ml-0">
       <div className="col-sm-12 col-md-10">
         <div className="qui-summary-title qui-font-title">
@@ -28,7 +34,7 @@ const ProjectSummary = (props: Props) => (
         <img className="qui-summary-image-md" src={props.project.posterUrl} />
       </div>
     </div>
-  </div>
+  </motion.div>
 );
 
 export default hot(module)(ProjectSummary);

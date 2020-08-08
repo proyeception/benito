@@ -9,6 +9,7 @@ import { Redirect } from "react-router-dom";
 import { buildQueryParams } from "../../functions/search";
 import { RootState } from "../../reducers";
 import { connect } from "react-redux";
+import { motion } from "framer-motion";
 
 type Props = {
   name: String;
@@ -34,14 +35,18 @@ class Home extends React.Component<Props, State> {
     }
 
     return (
-      <div>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
         <HomeSearchBox
           setDoRedirect={() => this.setState({ doRedirect: true })}
         />
         <FeaturedGallery />
         <CategoriesSearchCarousel />
         <Proyectate />
-      </div>
+      </motion.div>
     );
   }
 }

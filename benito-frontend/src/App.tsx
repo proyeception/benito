@@ -11,6 +11,7 @@ import { benitoHost } from "./config";
 import { Category } from "./types";
 import store from "./store";
 import { updateCategories } from "./actions/common";
+import { AnimatePresence } from "framer-motion";
 
 const App = (_: any) => {
   useEffect(() => {
@@ -29,10 +30,12 @@ const App = (_: any) => {
   return (
     <div className="qui-app">
       <Header />
-      <Switch>
-        <Route exact path="/" component={Home} />
-        <Route exact path="/search" component={Search} />
-      </Switch>
+      <AnimatePresence>
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/search" component={Search} />
+        </Switch>
+      </AnimatePresence>
       <Footer />
     </div>
   );

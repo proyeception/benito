@@ -20,6 +20,7 @@ import { fetchProjects, buildQueryParams } from "../../functions/search";
 import qs from "qs";
 import { RouteChildrenProps } from "react-router-dom";
 import { history } from "../../entry";
+import { motion } from "framer-motion";
 
 type MatchParams = {
   name?: string;
@@ -72,7 +73,12 @@ const Search = (props: Props) => {
   }, []);
 
   return (
-    <div className="container-fluid">
+    <motion.div
+      className="container-fluid"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
       <div className="row">
         <div className="col-md-2 qui-searchbox-md d-none d-lg-block">
           <SearchBox
@@ -96,7 +102,7 @@ const Search = (props: Props) => {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
