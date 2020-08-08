@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import { hot } from "react-hot-loader";
 import SearchBox from "./SearchBox";
 import ProjectSummary from "./ProjectSummary";
