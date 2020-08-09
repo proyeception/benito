@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { hot } from "react-hot-loader";
 import SearchBox from "./SearchBox";
 import ProjectSummary from "./ProjectSummary";
@@ -20,6 +20,8 @@ import { fetchProjects, buildQueryParams } from "../../functions/search";
 import qs from "qs";
 import { RouteChildrenProps } from "react-router-dom";
 import { motion } from "framer-motion";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Loader from "react-loader-spinner";
 
 type MatchParams = {
   name?: string;
@@ -39,17 +41,20 @@ interface Props extends RouteChildrenProps<MatchParams> {
   sortMethod: String;
 }
 
-function search() {
-  fetchProjects()
-    .then((res) => res.data)
-    .then((projects) => store.dispatch(updateProjects(projects)))
-    .catch(console.error);
-}
-
 const Search = (props: Props) => {
   let queryParams: MatchParams = qs.parse(props.location.search, {
     ignoreQueryPrefix: true,
   });
+
+  const [loading, setLoading] = useState(props.projects.length == 0);
+
+  const search = () => {
+    fetchProjects()
+      .then((res) => res.data)
+      .then((projects) => store.dispatch(updateProjects(projects)))
+      .then(() => setLoading(false))
+      .catch(console.error);
+  };
 
   useEffect(() => {
     queryParams.category
@@ -91,6 +96,7 @@ const Search = (props: Props) => {
                 pathname: "/search",
                 search: `${buildQueryParams(props)}`,
               });
+              setLoading(true);
               search();
             }}
           />
@@ -100,9 +106,15 @@ const Search = (props: Props) => {
             Proyectos
           </div>
           <div className="pl-4 pr-2 uncol-sm-l-3 uncol-sm-r-1">
-            {props.projects.map((p, idx) => (
-              <ProjectSummary project={p} key={idx} />
-            ))}
+            {loading ? (
+              <div className="center">
+                <Loader type="TailSpin" color="black" height={80} width={80} />
+              </div>
+            ) : (
+              props.projects.map((p, idx) => (
+                <ProjectSummary project={p} key={idx} />
+              ))
+            )}
           </div>
         </div>
       </div>
