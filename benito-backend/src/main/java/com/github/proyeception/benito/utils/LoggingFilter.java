@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 public class LoggingFilter implements Filter {
     public static final String AUTHORIZATION_HEADER = "authorization";
 
-    private static final Collection<String> EXCLUDED_URIS = ImmutableList.of("");
+    private static final Collection<String> EXCLUDED_URIS = Collections.emptyList();
     private static final Collection<String> EXCLUDED_HEADERS = ImmutableList.of(AUTHORIZATION_HEADER.toLowerCase());
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LoggingFilter.class);

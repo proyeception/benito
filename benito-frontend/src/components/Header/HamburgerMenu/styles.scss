@@ -5,24 +5,30 @@
   height: 24px;
 }
 
+.qui-search-icon-button {
+  border: none;
+}
+
 .invert-colors {
   -webkit-filter: invert(1);
   filter: invert(1);
 }
 
-.qui-mobile-search-container {
-  background-color: #f1f1f1;
-}
-
 .qui-mobile-search {
-  background-color: #f1f1f1;
   height: 64px;
-  border-radius: 0px;
-  border: none;
+  border-bottom: none;
+  border-left: none;
+  border-right: none;
   text-indent: 16px;
 }
 
-.qui-hamburger-category {
+.qui-hamburger-accordion-card-header {
+  border-radius: 0px;
+  border-left: none;
+  border-right: none;
+  font-size: 18px;
+}
+
+.qui-hamburger-accordion-card-category {
   font-size: 16px;
-  cursor: pointer;
 }
