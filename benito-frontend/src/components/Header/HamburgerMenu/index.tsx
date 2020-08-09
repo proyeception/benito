@@ -9,6 +9,7 @@ import store from "../../../store";
 import { toggleHamburgerButton } from "../../../actions/common";
 import Search from "./Search";
 import { searchIconUrl } from "./constants";
+import Categories from "./Categories";
 
 type Props = {
   isOpen: Boolean;
@@ -26,6 +27,7 @@ const HamburgerMenu = (props: Props) => {
         onStateChange={(it) => store.dispatch(toggleHamburgerButton(it.isOpen))}
       >
         <Search />
+        <Categories />
       </Menu>
     </div>
   );
