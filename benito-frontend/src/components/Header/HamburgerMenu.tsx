@@ -18,72 +18,55 @@ interface Props extends RouteComponentProps<any> {
   isOpen: Boolean;
 }
 
-type State = {
-  doRedirect: Boolean;
-};
-
-class HamburgerMenu extends React.Component<Props, State> {
-  constructor(props: Props, ctx: any) {
-    super(props, ctx);
-    this.state = {
-      doRedirect: false,
-    };
-  }
-  render() {
-    return (
-      <div className="d-block d-md-none">
-        <Menu
-          width={296}
-          customBurgerIcon={
-            <img
-              src={searchIconUrl}
-              className="qui-search-icon invert-colors"
-            />
-          }
-          isOpen={this.props.isOpen.valueOf()}
-          onStateChange={(it) =>
-            store.dispatch(toggleHamburgerButton(it.isOpen))
-          }
-        >
-          <div className="container-fluid qui-mobile-search-container">
-            <div className="row no-gutters">
-              <div className="col-11" style={{ marginLeft: "-15px" }}>
-                <input
-                  type="text"
-                  className="form-control qui-mobile-search"
-                  placeholder="Buscar"
-                />
-              </div>
-              <div
-                className="col-1 center qui-search-icon-button"
-                style={{ marginRight: "-15px" }}
-              >
-                <img
-                  src={searchIconUrl}
-                  className="qui-search-icon-button"
-                  onClick={() => {
-                    fetchProjects()
-                      .then((res) => res.data)
-                      .then((projects) =>
-                        store.dispatch(updateProjects(projects))
-                      )
-                      .then(() => store.dispatch(toggleHamburgerButton(false)))
-                      .then(() =>
-                        this.props.history.push({
-                          pathname: "/search",
-                        })
-                      )
-                      .catch(console.error);
-                  }}
-                ></img>
-              </div>
+const HamburgerMenu = (props: Props) => {
+  return (
+    <div className="d-block d-md-none">
+      <Menu
+        width={296}
+        customBurgerIcon={
+          <img src={searchIconUrl} className="qui-search-icon invert-colors" />
+        }
+        isOpen={props.isOpen.valueOf()}
+        onStateChange={(it) => store.dispatch(toggleHamburgerButton(it.isOpen))}
+      >
+        <div className="container-fluid qui-mobile-search-container">
+          <div className="row no-gutters">
+            <div className="col-11" style={{ marginLeft: "-15px" }}>
+              <input
+                type="text"
+                className="form-control qui-mobile-search"
+                placeholder="Buscar"
+              />
+            </div>
+            <div
+              className="col-1 center qui-search-icon-button"
+              style={{ marginRight: "-15px" }}
+            >
+              <img
+                src={searchIconUrl}
+                className="qui-search-icon-button"
+                onClick={() => {
+                  fetchProjects()
+                    .then((res) => res.data)
+                    .then((projects) =>
+                      store.dispatch(updateProjects(projects))
+                    )
+                    .then(() => store.dispatch(toggleHamburgerButton(false)))
+                    .then(() =>
+                      props.history.push({
+                        pathname: "/search",
+                      })
+                    )
+                    .catch(console.error);
+                }}
+              ></img>
             </div>
           </div>
-        </Menu>
-      </div>
-    );
-  }
-}
+        </div>
+      </Menu>
+    </div>
+  );
+};
 
 const mapStateToProps = (rootState: RootState) => {
   return {
