@@ -1,14 +1,18 @@
 import React from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
-import { updateProjects } from "../../../actions/search";
-import { fetchProjects } from "../../../functions/search";
+import { updateProjects, updateName } from "../../../actions/search";
+import { fetchProjects, buildQueryParams } from "../../../functions/search";
 import { searchIconUrl } from "./constants";
 import store from "../../../store";
 import { toggleHamburgerButton } from "../../../actions/common";
 import { RouteComponentProps, withRouter } from "react-router-dom";
+import { RootState } from "../../../reducers";
+import { connect } from "react-redux";
 
-interface Props extends RouteComponentProps {}
+interface Props extends RouteComponentProps {
+  name: String;
+}
 
 const Search = (props: Props) => (
   <div className="container-fluid qui-mobile-search-container">
@@ -18,6 +22,10 @@ const Search = (props: Props) => (
           type="text"
           className="form-control qui-mobile-search"
           placeholder="Buscar"
+          onChange={(e) => {
+            console.log(e.currentTarget.value);
+            store.dispatch(updateName(e.currentTarget.value));
+          }}
         />
       </div>
       <div
@@ -35,6 +43,7 @@ const Search = (props: Props) => (
               .then(() =>
                 props.history.push({
                   pathname: "/search",
+                  search: `${buildQueryParams(props)}`,
                 })
               )
               .catch(console.error);
@@ -45,4 +54,8 @@ const Search = (props: Props) => (
   </div>
 );
 
-export default hot(module)(withRouter(Search));
+const mapStateToProps = (rootState: RootState) => {
+  return rootState.search;
+};
+
+export default hot(module)(withRouter(connect(mapStateToProps)(Search)));
