@@ -10,11 +10,10 @@ type Props = {
 };
 
 function Image(props: any) {
-  return <img {...props} style={{maxWidth: '100%'}} />
+  return <img {...props} style={{ maxWidth: '100%' }} />
 }
 
 const ProjectInfo = (props: Props) => (
-
   <div>
     <div className="qui-blurred-image" style={{ backgroundImage: `url(${props.project.posterUrl})` }} >
       <div className="qui-backdrop">
@@ -94,13 +93,18 @@ const ProjectInfo = (props: Props) => (
 
           <div className="row qui-separator"></div>
 
-          <div className="qui-project-subtitle">
-            Contenido adicional
-      </div>
+          {props.project.extraContent != ""?
+            <div>
+              <div className="qui-project-subtitle">
+                Contenido adicional
+              </div>
 
-          <div className="row qui-summary qui-font-text mt-3">
-            <ReactMarkdown source={props.project.extraContent} renderers={{image: Image}}/>
-          </div>
+              <div className="row qui-summary qui-font-text mt-3">
+                <ReactMarkdown source={props.project.extraContent} renderers={{ image: Image }} />
+              </div>
+            </div>
+          : <div></div>
+          }
 
 
         </div>

@@ -17,7 +17,7 @@ data class ProjectDTO(
         id = medusaProjectDTO.id,
         title = medusaProjectDTO.title,
         description = medusaProjectDTO.description,
-        extraContent = medusaProjectDTO.extraContent,
+        extraContent = medusaProjectDTO.extraContent.orEmpty(),
         creationDate = medusaProjectDTO.creationDate,
         posterUrl = medusaProjectDTO.poster.url,
         authors = medusaProjectDTO.authorRefs.map {
