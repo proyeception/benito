@@ -19,7 +19,6 @@ import {
 import { fetchProjects, buildQueryParams } from "../../functions/search";
 import qs from "qs";
 import { RouteChildrenProps } from "react-router-dom";
-import { history } from "../../entry";
 import { motion } from "framer-motion";
 
 type MatchParams = {
@@ -88,7 +87,7 @@ const Search = (props: Props) => {
         <div className="col-md-2 qui-searchbox-md d-none d-lg-block">
           <SearchBox
             searchCallback={() => {
-              history.push({
+              props.history.push({
                 pathname: "/search",
                 search: `${buildQueryParams(props)}`,
               });

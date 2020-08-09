@@ -8,15 +8,15 @@ import { connect } from "react-redux";
 import store from "../../store";
 import { toggleHamburgerButton } from "../../actions/common";
 import { updateProjects } from "../../actions/search";
-import { Redirect } from "react-router-dom";
 import { fetchProjects } from "../../functions/search";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 
 const searchIconUrl =
   "https://cdn2.iconfinder.com/data/icons/font-awesome/1792/search-512.png";
 
-type Props = {
+interface Props extends RouteComponentProps<any> {
   isOpen: Boolean;
-};
+}
 
 type State = {
   doRedirect: Boolean;
@@ -30,11 +30,6 @@ class HamburgerMenu extends React.Component<Props, State> {
     };
   }
   render() {
-    if (this.state.doRedirect) {
-      this.setState({ doRedirect: false });
-      return <Redirect to="/search" />;
-    }
-
     return (
       <div className="d-block d-md-none">
         <Menu
@@ -73,7 +68,11 @@ class HamburgerMenu extends React.Component<Props, State> {
                         store.dispatch(updateProjects(projects))
                       )
                       .then(() => store.dispatch(toggleHamburgerButton(false)))
-                      .then(() => this.setState({ doRedirect: true }))
+                      .then(() =>
+                        this.props.history.push({
+                          pathname: "/search",
+                        })
+                      )
                       .catch(console.error);
                   }}
                 ></img>
@@ -92,4 +91,4 @@ const mapStateToProps = (rootState: RootState) => {
   };
 };
 
-export default hot(module)(connect(mapStateToProps)(HamburgerMenu));
+export default hot(module)(withRouter(connect(mapStateToProps)(HamburgerMenu)));
