@@ -1,27 +1,11 @@
 import React from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
-import moment from 'moment';
-
-export type ProjectData = {
-  id: String;
-  title: String;
-  description: String;
-  posterUrl: string;
-  authors: Array<Person>;
-  creationDate: Date;
-  tags: Array<String>
-  
-};
-
-type Person = {
-  username: String;
-  fullName: String;
-  profileUrl: String;
-};
+import moment from "moment";
+import { Project } from "../Search/ProjectSummary";
 
 type Props = {
-  project: ProjectData;
+  project: Project;
 };
 
 const ProjectInfo = (props: Props) => (
@@ -118,7 +102,6 @@ const ProjectInfo = (props: Props) => (
       </div>
     </div>
   </div>
-
 );
 
 export default hot(module)(ProjectInfo);

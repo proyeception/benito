@@ -2,32 +2,48 @@ import React, { Component } from "react";
 import { hot } from "react-hot-loader";
 import axios from "axios";
 import { benitoHost } from "../../config";
-import ProjectInfo, { ProjectData } from "./ProjectInfo";
+import ProjectInfo from "./ProjectInfo";
 import "./styles.scss";
+import { RouteComponentProps } from "react-router";
+import { Project } from "../Search/ProjectSummary";
+import store from "../../store";
 
 //let proy : Project = {id: "2", title:"un proyecto", description:"la descripcion del proyecto", posterUrl:"www.url.com", authors:[]}
 
-class ViewProject extends Component<{}, { projectId: String, project?: ProjectData }> {
+type MatchParams = {
+  projectId: string;
+};
 
-  constructor(props: any, ctx: any) {
+interface Props extends RouteComponentProps<MatchParams> {}
+
+type State = {
+  projectId: String;
+  project?: Project;
+};
+
+class ViewProject extends Component<Props, State> {
+  constructor(props: Props, ctx: any) {
     super(props, ctx);
-    this.state = { projectId: props.match.params.projectId }
-  };
+    this.state = { projectId: props.match.params.projectId };
+  }
 
   componentDidMount() {
-    console.log('el estado es')
-    console.log(this.state)
+    console.log("el estado es");
+    console.log(this.state);
 
-    axios.get(`${benitoHost}/benito/projects/${this.state.projectId}`).then((res) => {
-      const project = res.data;
+    axios
+      .get(`${benitoHost}/benito/projects/${this.state.projectId}`)
+      .then((res) => {
+        const project = res.data;
 
-      this.setState({ project });
-    }).catch(console.error);
+        this.setState({ project });
+      })
+      .catch(console.error);
   }
 
   render() {
     if (this.state.project === undefined) {
-      return <div> cargando </div>
+      return <div> cargando </div>;
     } else {
       return (
         <div>
@@ -37,7 +53,7 @@ class ViewProject extends Component<{}, { projectId: String, project?: ProjectDa
             </div>
           </div>
         </div>
-      )
+      );
     }
   }
 }
