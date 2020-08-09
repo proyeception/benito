@@ -37,9 +37,8 @@ class MedusaClientTest : WordSpec() {
             val project = ProjectDTO(
                 id = "1",
                 title = "project title",
-                subtitle = "project subtitle",
                 description = "project description",
-                summary = "project summary",
+                extraContent = "nicely formatted content",
                 creationDate = LocalDate.of(2020, 2, 6),
                 posterUrl = "",
                 authors = listOf(author),
@@ -87,9 +86,8 @@ class MedusaClientTest : WordSpec() {
             val project = ProjectDTO(
                     id = "1",
                     title = "project title",
-                    subtitle = "project subtitle",
                     description = "project description",
-                    summary = "project summary",
+                    extraContent = "nice formatted content",
                     creationDate = LocalDate.of(2020, 2, 6),
                     posterUrl = "",
                     authors = listOf(author),

@@ -35,9 +35,8 @@ class ProjectServiceTest : WordSpec() {
             val project = ProjectDTO(
                 id = "1",
                 title = "project title",
-                subtitle = "project subtitle",
                 description = "project description",
-                summary = "project summary",
+                extraContent = "nicely formatted content",
                 creationDate = LocalDate.of(2020, 2, 6),
                 posterUrl = "",
                 authors = listOf(PersonDTO(username = "author", fullName = "UnNombre", profileUrl = "/authorUrl")),
@@ -48,9 +47,8 @@ class ProjectServiceTest : WordSpec() {
             val newProject = MedusaProjectDTO(
                 id = "1",
                 title = "project title",
-                subtitle = "project subtitle",
                 description = "project description",
-                summary = "project summary",
+                extraContent = "nicely formatted content",
                 creationDate = LocalDate.of(2020, 2, 6),
                 poster = PosterDTO(url = ""),
                 authorRefs = listOf(author),
@@ -92,9 +90,8 @@ class ProjectServiceTest : WordSpec() {
             val project = ProjectDTO(
                     id = "1",
                     title = "project title",
-                    subtitle = "project subtitle",
                     description = "project description",
-                    summary = "project summary",
+                    extraContent = "nicely formatted content",
                     creationDate = LocalDate.of(2020, 2, 6),
                     posterUrl = "",
                     authors = listOf(PersonDTO(username = "author", fullName = "UnNombre", profileUrl = "/authorUrl")),
@@ -105,9 +102,8 @@ class ProjectServiceTest : WordSpec() {
             val newProject = MedusaProjectDTO(
                     id = "1",
                     title = "project title",
-                    subtitle = "project subtitle",
                     description = "project description",
-                    summary = "project summary",
+                    extraContent = "nicely formatted content",
                     creationDate = LocalDate.of(2020, 2, 6),
                     poster = PosterDTO(url = ""),
                     authorRefs = listOf(author),

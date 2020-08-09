@@ -7,6 +7,7 @@ export type Project = {
   id: String;
   title: String;
   description: String;
+  extraContent: string,
   posterUrl: string;
   authors: Array<Person>;
   creationDate: Date,

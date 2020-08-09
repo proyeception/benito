@@ -1,4 +1,5 @@
 import React from "react";
+import ReactMarkdown from "react-markdown";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
 import moment from "moment";
@@ -7,6 +8,10 @@ import { Project } from "../Search/ProjectSummary";
 type Props = {
   project: Project;
 };
+
+function Image(props: any) {
+  return <img {...props} style={{maxWidth: '100%'}} />
+}
 
 const ProjectInfo = (props: Props) => (
 
@@ -94,8 +99,8 @@ const ProjectInfo = (props: Props) => (
       </div>
 
           <div className="row qui-summary qui-font-text mt-3">
-            Poner el contenido adicional
-      </div>
+            <ReactMarkdown source={props.project.extraContent} renderers={{image: Image}}/>
+          </div>
 
 
         </div>
