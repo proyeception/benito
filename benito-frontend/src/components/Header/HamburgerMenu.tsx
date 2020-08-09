@@ -3,17 +3,27 @@ import { hot } from "react-hot-loader";
 import "./styles.scss";
 import "./hamburger.scss";
 import { slide as Menu } from "react-burger-menu";
+import { RootState } from "../../reducers";
+import { connect } from "react-redux";
+import store from "../../store";
+import { toggleHamburgerButton } from "../../actions/common";
 
 const searchIconUrl =
   "https://cdn2.iconfinder.com/data/icons/font-awesome/1792/search-512.png";
 
-const HamburgerMenu = (_: any) => (
+type Props = {
+  isOpen: Boolean;
+};
+
+const HamburgerMenu = (props: Props) => (
   <div className="d-block d-md-none">
     <Menu
       width={296}
       customBurgerIcon={
         <img src={searchIconUrl} className="qui-search-icon invert-colors" />
       }
+      isOpen={props.isOpen.valueOf()}
+      onStateChange={(it) => store.dispatch(toggleHamburgerButton(it.isOpen))}
     >
       <div className="container-fluid qui-mobile-search-container">
         <div className="row no-gutters">
@@ -33,4 +43,10 @@ const HamburgerMenu = (_: any) => (
   </div>
 );
 
-export default hot(module)(HamburgerMenu);
+const mapStateToProps = (rootState: RootState) => {
+  return {
+    isOpen: rootState.common.isMenuOpen,
+  };
+};
+
+export default hot(module)(connect(mapStateToProps)(HamburgerMenu));

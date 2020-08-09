@@ -5,8 +5,10 @@ import Brand from "./Brand";
 
 const Header = (_: any) => (
   <div className="qui-header pt-3 pb-3">
-    <div className="container justify-content-center">
-      <Brand />
+    <div className="container">
+      <div className="center qui-brand-col">
+        <Brand />
+      </div>
     </div>
   </div>
 );

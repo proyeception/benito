@@ -19,7 +19,7 @@ const defaultState: RootState = {
   home: {
     featuredProjects: [],
     latestProjects: [],
-    projectTotal: null,
+    projectTotal: 0,
   },
   search: {
     name: "",
@@ -33,6 +33,7 @@ const defaultState: RootState = {
   },
   common: {
     categories: [],
+    isMenuOpen: false,
   },
 };
 
