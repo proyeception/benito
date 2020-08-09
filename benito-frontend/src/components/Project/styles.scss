@@ -3,10 +3,14 @@ $primary: #6b3ca7;
 
 .qui-box {
   background-color: white;
+  margin-bottom: 20px;
+  padding-bottom: 50px;
 }
 
 .qui-blurred-image {
+  object-fit: cover;
   height: 250px;
+  width: 100%;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -23,11 +27,14 @@ $primary: #6b3ca7;
 .qui-project-title {
   vertical-align: bottom;
   text-align: bottom;
-  font-size: 60px;
+  font-size: 45px;
   height: 250px;
   display: flex;
   align-items: flex-end;
   font-family: $font-family-sans-serif;
+  padding-left: 30px;
+  padding-right: 30px;
+  text-overflow: ellipsis;
 }
 
 .qui-project-subtitle {
@@ -43,7 +50,7 @@ $primary: #6b3ca7;
   margin-left: auto;
   margin-right: auto;
   align-items: center;
-  justify-content: center
+  justify-content: center;
 }
 
 .qui-separator {
@@ -61,6 +68,7 @@ $primary: #6b3ca7;
   margin-left: -20px;
   border-right-color: purple;
   border-right-style: solid;
+  margin-right: 15px;
 }
 
 .qui-column-50 {
