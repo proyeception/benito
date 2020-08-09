@@ -16,6 +16,7 @@ export type Project = {
 export type Person = {
   username: String;
   profileUrl: String;
+  fullName:String;
 };
 
 type Props = {
@@ -36,7 +37,7 @@ const ProjectSummary = (props: Props) => (
         {props.project.description}
       </div>
       <div className="qui-authors">
-        {props.project.authors.map((a) => a.username).join(", ")}
+        {props.project.authors.map((a) => a.fullName).join(", ")}
       </div>
     </div>
     <div className="col-md-2 d-none d-lg-block">

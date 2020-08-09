@@ -24,11 +24,13 @@ class MedusaClientTest : WordSpec() {
             val responseMock: Response = getMock()
             val author = PersonDTO(
                 username = "author",
+                fullName = "UnNombre",
                 profileUrl = "/authorUrl"
             )
 
             val supervisor = PersonDTO(
                 username = "supervisor",
+                fullName = "UnNombre",
                 profileUrl = "/supervisorUrl"
             )
 
@@ -72,11 +74,13 @@ class MedusaClientTest : WordSpec() {
             val responseMock: Response = getMock()
             val author = PersonDTO(
                     username = "author",
+                    fullName = "UnNombre",
                     profileUrl = "/authorUrl"
             )
 
             val supervisor = PersonDTO(
                     username = "supervisor",
+                    fullName = "UnNombre",
                     profileUrl = "/supervisorUrl"
             )
 

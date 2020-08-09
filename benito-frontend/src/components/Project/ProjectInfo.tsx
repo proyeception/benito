@@ -59,7 +59,7 @@ const ProjectInfo = (props: Props) => (
                   Autores
             </div>
                 <div className="qui-column-50 qui-summary qui-font-text">
-                  {props.project.authors.map((a) => a.username).join(", ")}
+                  {props.project.authors.map((a) => a.fullName).join(", ")}
                 </div>
               </div>
 

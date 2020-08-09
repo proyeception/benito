@@ -25,12 +25,14 @@ data class ProjectDTO(
         authors = medusaProjectDTO.authorRefs.map {
             PersonDTO(
                 username = it.username,
+                fullName = it.fullName,
                 profileUrl = it.profileUrl
             )
         },
         supervisors = medusaProjectDTO.supervisorRefs.map {
             PersonDTO(
                 username = it.username,
+                fullName = it.fullName,
                 profileUrl = it.profileUrl
             )
         },
@@ -40,5 +42,6 @@ data class ProjectDTO(
 
 data class PersonDTO(
     val username: String,
+    val fullName: String,
     val profileUrl: String
 )

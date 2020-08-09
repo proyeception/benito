@@ -40,8 +40,8 @@ class ProjectServiceTest : WordSpec() {
                 summary = "project summary",
                 creationDate = LocalDate.of(2020, 2, 6),
                 posterUrl = "",
-                authors = listOf(PersonDTO(username = "author", profileUrl = "/authorUrl")),
-                supervisors = listOf(PersonDTO(username = "supervisor", profileUrl = "/supervisorUrl")),
+                authors = listOf(PersonDTO(username = "author", fullName = "UnNombre", profileUrl = "/authorUrl")),
+                supervisors = listOf(PersonDTO(username = "supervisor", fullName = "UnNombre", profileUrl = "/supervisorUrl")),
                 tags = emptyList()
             )
 
@@ -97,8 +97,8 @@ class ProjectServiceTest : WordSpec() {
                     summary = "project summary",
                     creationDate = LocalDate.of(2020, 2, 6),
                     posterUrl = "",
-                    authors = listOf(PersonDTO(username = "author", profileUrl = "/authorUrl")),
-                    supervisors = listOf(PersonDTO(username = "supervisor", profileUrl = "/supervisorUrl")),
+                    authors = listOf(PersonDTO(username = "author", fullName = "UnNombre", profileUrl = "/authorUrl")),
+                    supervisors = listOf(PersonDTO(username = "supervisor", fullName = "UnNombre", profileUrl = "/supervisorUrl")),
                     tags = emptyList()
             )
 
