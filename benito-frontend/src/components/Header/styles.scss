@@ -27,42 +27,26 @@ $large: 768;
   height: 64px;
 }
 
+.qui-search-icon {
+  left: 24px;
+  top: 20px;
+  width: 24px;
+  height: 24px;
+}
+
 .invert-colors {
   -webkit-filter: invert(1);
   filter: invert(1);
 }
 
-.qui-search-icon {
-  width: 32px;
-  height: 32px;
+.qui-mobile-search-container {
+  background-color: #f1f1f1;
 }
 
-.qui-login {
-  color: white;
-}
-
-.qui-user-image-crop {
-  position: relative;
-  overflow: hidden;
-  border-radius: 50%;
-  display: flex;
-}
-
-.qui-user-image {
-  @media screen and(max-width: 767px) {
-    width: 40px;
-    height: 40px;
-  }
-  @media screen and(min-width: 768px) {
-    max-width: 64px;
-    max-height: 64px;
-  }
-  display: inline;
-  margin: 0 auto;
-}
-
-.qui-brand-col {
-  @media screen and (min-width: 768px) {
-    justify-content: center;
-  }
+.qui-mobile-search {
+  background-color: #f1f1f1;
+  height: 64px;
+  border-radius: 0px;
+  border: none;
+  text-indent: 16px;
 }

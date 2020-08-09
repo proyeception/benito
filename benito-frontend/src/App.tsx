@@ -12,6 +12,7 @@ import { Category } from "./types";
 import store from "./store";
 import { updateCategories } from "./actions/common";
 import { AnimatePresence } from "framer-motion";
+import HamburgerMenu from "./components/Header/HamburgerMenu";
 
 const App = (_: any) => {
   useEffect(() => {
@@ -29,6 +30,7 @@ const App = (_: any) => {
 
   return (
     <div className="qui-app">
+      <HamburgerMenu />
       <Header />
       <AnimatePresence>
         <Switch>
