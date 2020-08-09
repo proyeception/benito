@@ -96,16 +96,10 @@ const Search = (props: Props) => {
           />
         </div>
         <div className="col-md-10 qui-box mt-md-5">
-          <div
-            className="qui-search-header p-2 pl-4 qui-font-title"
-            style={{ marginLeft: "-15px", marginRight: "-15px" }}
-          >
+          <div className="qui-search-header p-2 pl-4 qui-font-title uncol-sm-l-1 uncol-sm-r-1">
             Proyectos
           </div>
-          <div
-            style={{ marginLeft: "-45px", marginRight: "-15px" }}
-            className="pl-4 pr-2"
-          >
+          <div className="pl-4 pr-2 uncol-sm-l-3 uncol-sm-r-1">
             {props.projects.map((p, idx) => (
               <ProjectSummary project={p} key={idx} />
             ))}

@@ -48,3 +48,21 @@ body {
 .qui-link {
   text-decoration: none;
 }
+
+.uncol-sm-l-1 {
+  @media screen and (max-width: 767px) {
+    margin-left: -15px;
+  }
+}
+
+.uncol-sm-l-3 {
+  @media screen and (max-width: 767px) {
+    margin-left: -45px;
+  }
+}
+
+.uncol-sm-r-1 {
+  @media screen and (max-width: 767px) {
+    margin-right: -15px;
+  }
+}
