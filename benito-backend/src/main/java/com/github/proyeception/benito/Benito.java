@@ -12,6 +12,7 @@ import org.eclipse.jetty.util.log.Log;
 import org.joda.time.DateTimeZone;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
@@ -22,6 +23,7 @@ import java.lang.management.ManagementFactory;
 import java.util.EnumSet;
 import java.util.TimeZone;
 
+@SpringBootApplication
 public class Benito {
     private static final String GMT = "GMT";
     private static final String CONTEXT_NAME = "/";
