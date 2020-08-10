@@ -10,20 +10,15 @@ import ToDateInput from "../../Common/ToDateInput";
 import DocumentationInput from "../../Common/DocumentationInput";
 import KeywordInput from "../../Common/KeywordInput";
 import SearchButton from "../../Common/SearchButton";
-import { RouteComponentProps, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import store from "../../../store";
 import { toggleHamburgerButton } from "../../../actions/common";
 
-interface Props extends RouteComponentProps {}
-
-const AdvancedSearch = (props: Props) => {
+const AdvancedSearch = (_: any) => {
   const [doRedirect, setDoRedirect] = useState(false);
 
   if (doRedirect) {
     store.dispatch(toggleHamburgerButton(false));
-    props.history.push({
-      pathname: "/search",
-    });
     setDoRedirect(false);
   }
 

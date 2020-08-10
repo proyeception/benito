@@ -2,20 +2,16 @@ import React from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
 import { updateProjects } from "../../../actions/search";
-import { fetchProjects, buildQueryParams } from "../../../functions/search";
+import { fetchProjects } from "../../../functions/search";
 import { searchIconUrl } from "./constants";
 import store from "../../../store";
 import { toggleHamburgerButton } from "../../../actions/common";
-import { RouteComponentProps, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { RootState } from "../../../reducers";
 import { connect } from "react-redux";
 import NameInput from "../../Common/NameInput";
 
-interface Props extends RouteComponentProps {
-  name: String;
-}
-
-const Search = (props: Props) => (
+const Search = (_: any) => (
   <div className="container-fluid qui-mobile-search-container">
     <div className="row no-gutters">
       <div className="col-11" style={{ marginLeft: "-15px" }}>
@@ -33,12 +29,6 @@ const Search = (props: Props) => (
               .then((res) => res.data)
               .then((projects) => store.dispatch(updateProjects(projects)))
               .then(() => store.dispatch(toggleHamburgerButton(false)))
-              .then(() =>
-                props.history.push({
-                  pathname: "/search",
-                  search: `${buildQueryParams(props)}`,
-                })
-              )
               .catch(console.error);
           }}
         />

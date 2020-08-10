@@ -16,7 +16,7 @@ import {
   updateKeyword,
   emptyProjects,
 } from "../../actions/search";
-import { fetchProjects, buildQueryParams } from "../../functions/search";
+import { fetchProjects } from "../../functions/search";
 import qs from "qs";
 import { RouteChildrenProps } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -92,10 +92,6 @@ const Search = (props: Props) => {
         <div className="col-md-2 qui-searchbox-md d-none d-lg-block">
           <SearchBox
             searchCallback={() => {
-              props.history.push({
-                pathname: "/search",
-                search: `${buildQueryParams(props)}`,
-              });
               setLoading(true);
               search();
             }}

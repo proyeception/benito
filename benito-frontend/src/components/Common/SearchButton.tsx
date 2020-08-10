@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
-import { fetchProjects } from "../../functions/search";
+import { fetchProjects, buildQueryParams } from "../../functions/search";
 import store from "../../store";
 import { updateProjects } from "../../actions/search";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 
-type Props = {
+interface Props extends RouteComponentProps {
   className: string;
   onSuccess: () => void;
   text?: string;
-};
+}
 
 const SearchButton = (props: Props) => {
   const [loading, setLoading] = useState(false);
@@ -20,6 +21,12 @@ const SearchButton = (props: Props) => {
       .then((res) => res.data)
       .then((projects) => store.dispatch(updateProjects(projects)))
       .then(() => setLoading(false))
+      .then(() =>
+        props.history.push({
+          pathname: "/search",
+          search: buildQueryParams(store.getState().search),
+        })
+      )
       .then(props.onSuccess)
       .catch(console.error);
   };
@@ -39,4 +46,4 @@ const SearchButton = (props: Props) => {
   );
 };
 
-export default hot(module)(SearchButton);
+export default hot(module)(withRouter(SearchButton));
