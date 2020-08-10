@@ -1,7 +1,7 @@
 import React from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
-import { updateProjects, updateName } from "../../../actions/search";
+import { updateProjects } from "../../../actions/search";
 import { fetchProjects, buildQueryParams } from "../../../functions/search";
 import { searchIconUrl } from "./constants";
 import store from "../../../store";
@@ -9,6 +9,7 @@ import { toggleHamburgerButton } from "../../../actions/common";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { RootState } from "../../../reducers";
 import { connect } from "react-redux";
+import NameInput from "../../Common/NameInput";
 
 interface Props extends RouteComponentProps {
   name: String;
@@ -18,15 +19,7 @@ const Search = (props: Props) => (
   <div className="container-fluid qui-mobile-search-container">
     <div className="row no-gutters">
       <div className="col-11" style={{ marginLeft: "-15px" }}>
-        <input
-          type="text"
-          className="form-control qui-mobile-search"
-          placeholder="Buscar"
-          onChange={(e) => {
-            console.log(e.currentTarget.value);
-            store.dispatch(updateName(e.currentTarget.value));
-          }}
-        />
+        <NameInput className="qui-mobile-search" placeholder="Buscar" />
       </div>
       <div
         className="col-1 center qui-search-icon-button"

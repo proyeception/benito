@@ -2,16 +2,14 @@ import React from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
 import store from "../../store";
-import {
-  updateName,
-  updateFromDate,
-  updateToDate,
-  updateProjects,
-} from "../../actions/search";
+import { updateProjects } from "../../actions/search";
 import { RootState } from "../../reducers";
 import { connect } from "react-redux";
 import CategorySelector from "../Common/CategorySelector";
 import { fetchProjects } from "../../functions/search";
+import NameInput from "../Common/NameInput";
+import FromDateInput from "../Common/FromDateInput";
+import ToDateInput from "../Common/ToDateInput";
 
 type Props = {
   name: String;
@@ -60,14 +58,7 @@ class HomeSearchBox extends React.Component<Props, State> {
             <div className="row mt-3">
               <div className="col-4">
                 <div className="qui-home-search-box-item mb-2">Nombre</div>
-                <input
-                  type="text"
-                  className="form-control"
-                  value={this.props.name.valueOf()}
-                  onChange={(e) =>
-                    store.dispatch(updateName(e.currentTarget.value))
-                  }
-                />
+                <NameInput />
               </div>
               <div className="col-4">
                 <div className="row">
@@ -75,24 +66,10 @@ class HomeSearchBox extends React.Component<Props, State> {
                     Fecha
                   </div>
                   <div className="col-6">
-                    <input
-                      type="date"
-                      className="form-control"
-                      value={this.props.fromDate.valueOf()}
-                      onChange={(e) =>
-                        store.dispatch(updateFromDate(e.currentTarget.value))
-                      }
-                    />
+                    <FromDateInput />
                   </div>
                   <div className="col-6">
-                    <input
-                      type="date"
-                      className="form-control"
-                      value={this.props.toDate.valueOf()}
-                      onChange={(e) =>
-                        store.dispatch(updateToDate(e.currentTarget.value))
-                      }
-                    />
+                    <ToDateInput />
                   </div>
                 </div>
               </div>

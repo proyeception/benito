@@ -1,18 +1,16 @@
 import React from "react";
 import { hot } from "react-hot-loader";
 import store from "../../store";
-import {
-  updateName,
-  updateFromDate,
-  updateToDate,
-  updateKeyword,
-  updateDocumentation,
-  updateSortMethod,
-} from "../../actions/search";
+import { updateSortMethod } from "../../actions/search";
 import { SortMethod } from "../../store/search/types";
 import { RootState } from "../../reducers";
 import { connect } from "react-redux";
 import CategorySelector from "../Common/CategorySelector";
+import NameInput from "../Common/NameInput";
+import FromDateInput from "../Common/FromDateInput";
+import ToDateInput from "../Common/ToDateInput";
+import KeywordInput from "../Common/KeywordInput";
+import DocumentationInput from "../Common/DocumentationInput";
 
 type Props = {
   searchCallback(): void;
@@ -29,11 +27,7 @@ const SearchBox = (props: Props) => {
     <div className="qui-search-box">
       <div className="qui-search-filter">
         <div className="qui-font-text">Nombre</div>
-        <input
-          className="qui-search-input form-control"
-          value={props.name.valueOf()}
-          onChange={(e) => store.dispatch(updateName(e.target.value))}
-        ></input>
+        <NameInput className="qui-search-input" />
       </div>
       <div className="qui-search-filter">
         <div className="qui-font-text">Categoría</div>
@@ -44,43 +38,27 @@ const SearchBox = (props: Props) => {
         <div className="qui-date-filter-container">
           <div className="row no-gutters">
             <div className="col-6 pr-1">
-              <input
-                type="date"
-                className="qui-search-input-date form-control"
+              <FromDateInput
                 placeholder="Desde"
-                name="Fecha inicio"
-                value={props.fromDate.valueOf()}
-                onChange={(e) => store.dispatch(updateFromDate(e.target.value))}
-              ></input>
+                className="qui-search-input-date"
+              />
             </div>
             <div className="col-6 pl-1">
-              <input
-                type="date"
-                className="qui-search-input-date form-control"
+              <ToDateInput
                 placeholder="Hasta"
-                name="Fecha fin"
-                value={props.toDate.valueOf()}
-                onChange={(e) => store.dispatch(updateToDate(e.target.value))}
-              ></input>
+                className="qui-search-input-date"
+              />
             </div>
           </div>
         </div>
       </div>
       <div className="qui-search-filter">
         <div className="qui-font-text">Palabra clave</div>
-        <input
-          className="qui-search-input form-control"
-          value={props.keyword.valueOf()}
-          onChange={(e) => store.dispatch(updateKeyword(e.target.value))}
-        ></input>
+        <KeywordInput className="qui-search-input" />
       </div>
       <div className="qui-search-filter">
         <div className="qui-font-text">Documentación</div>
-        <input
-          className="qui-search-input form-control"
-          value={props.documentation.valueOf()}
-          onChange={(e) => store.dispatch(updateDocumentation(e.target.value))}
-        ></input>
+        <DocumentationInput className="qui-search-input" />
       </div>
       <div className="qui-search-filter">
         <div className="qui-font-text">Ordenar proyectos</div>
