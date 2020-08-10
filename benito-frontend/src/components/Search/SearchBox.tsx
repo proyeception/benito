@@ -11,6 +11,7 @@ import FromDateInput from "../Common/FromDateInput";
 import ToDateInput from "../Common/ToDateInput";
 import KeywordInput from "../Common/KeywordInput";
 import DocumentationInput from "../Common/DocumentationInput";
+import SearchButton from "../Common/SearchButton";
 
 type Props = {
   searchCallback(): void;
@@ -86,12 +87,10 @@ const SearchBox = (props: Props) => {
           </optgroup>
         </select>
       </div>
-      <button
+      <SearchButton
         className="btn-primary qui-search-btn"
-        onClick={() => props.searchCallback()}
-      >
-        Buscar
-      </button>
+        onSuccess={props.searchCallback}
+      />
     </div>
   );
 };

@@ -10,6 +10,7 @@ import { fetchProjects } from "../../functions/search";
 import NameInput from "../Common/NameInput";
 import FromDateInput from "../Common/FromDateInput";
 import ToDateInput from "../Common/ToDateInput";
+import SearchButton from "../Common/SearchButton";
 
 type Props = {
   name: String;
@@ -82,24 +83,10 @@ class HomeSearchBox extends React.Component<Props, State> {
                     <CategorySelector />
                   </div>
                   <div className="col-6">
-                    <button
-                      type="button"
+                    <SearchButton
                       className="btn btn-block btn-info qui-home-search-box-button pb-2 pt-2 center font-weight-bold"
-                      onClick={() => {
-                        if (!this.state.loading) {
-                          this.search();
-                        }
-                      }}
-                      disabled={this.state.loading.valueOf()}
-                    >
-                      <span hidden={this.state.loading.valueOf()}>Buscar</span>
-                      <span
-                        className="spinner-border spinner-border-sm"
-                        role="status"
-                        aria-hidden="true"
-                        hidden={!this.state.loading.valueOf()}
-                      />
-                    </button>
+                      onSuccess={() => this.props.setDoRedirect()}
+                    />
                   </div>
                 </div>
               </div>
