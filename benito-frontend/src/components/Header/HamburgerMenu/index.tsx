@@ -11,6 +11,7 @@ import Search from "./Search";
 import { searchIconUrl } from "./constants";
 import Categories from "./Categories";
 import { Accordion, Card } from "react-bootstrap";
+import AdvancedSearch from "./AdvancedSearch";
 
 type Props = {
   isOpen: Boolean;
@@ -27,29 +28,22 @@ const HamburgerMenu = (props: Props) => {
         isOpen={props.isOpen.valueOf()}
         onStateChange={(it) => store.dispatch(toggleHamburgerButton(it.isOpen))}
       >
-        <Accordion>
+        <Search />
+        <Accordion className="mt-5" defaultActiveKey="0">
           <Card className="qui-hamburger-accordion-card-header cursor-pointer">
-            <Accordion.Toggle
-              as={Card.Header}
-              className="text-uppercase font-weight-bold"
-              eventKey="0"
-            >
-              Buscar
+            <Accordion.Toggle as={Card.Header} eventKey="0">
+              Categorías
             </Accordion.Toggle>
             <Accordion.Collapse eventKey="0">
-              <Search />
+              <Categories />
             </Accordion.Collapse>
           </Card>
           <Card className="qui-hamburger-accordion-card-header cursor-pointer">
-            <Accordion.Toggle
-              as={Card.Header}
-              className="text-uppercase font-weight-bold"
-              eventKey="1"
-            >
-              Categorías
+            <Accordion.Toggle as={Card.Header} eventKey="1">
+              Buscador avanzado
             </Accordion.Toggle>
             <Accordion.Collapse eventKey="1">
-              <Categories />
+              <AdvancedSearch />
             </Accordion.Collapse>
           </Card>
         </Accordion>
