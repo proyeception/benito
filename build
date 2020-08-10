@@ -1,0 +1,35 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]
+then
+  echo "Usage: ./build <env> <version>"
+  exit -1
+fi
+
+OPTIND=1
+
+FRONTEND="benito-frontend"
+BACKEND="benito-backend"
+BACKEND_RESOURCES=$BACKEND/src/main/resources
+ARTIFACT="benito-jar-with-dependencies"
+FINAL_ARTIFACT_NAME="benito"
+ENVIRONMENT=$1
+VERSION=$2
+
+npm install --prefix $FRONTEND
+npm run "build-$VERSION" --prefix $FRONTEND
+
+rm -rf $BACKEND_RESOURCES/templates
+rm -rf $BACKEND_RESOURCES/static
+
+mkdir $BACKEND_RESOURCES/templates
+mkdir $BACKEND_RESOURCES/static
+
+cp -r $FRONTEND/build/index.html $BACKEND_RESOURCES/templates/index.ftl
+cp -r $FRONTEND/build/static/* $BACKEND_RESOURCES/static/
+
+find $BACKEND_RESOURCES -type f -print0 | xargs -0 sed -i -e 's/\/static\///g'
+
+mvn -f $BACKEND/pom.xml -Dmaven.test.skip=true clean package
+mv $BACKEND/target/$ARTIFACT.jar $BACKEND/target/$FINAL_ARTIFACT_NAME-$VERSION.jar
+
