@@ -15,7 +15,6 @@ interface Params {
 
 export function fetchProjects(): AxiosPromise<Array<Project>> {
   let params = store.getState().search;
-  console.log(params);
   let config: AxiosRequestConfig = {
     url: `${benitoHost}/benito/projects${buildQueryParams(params)}`,
   };

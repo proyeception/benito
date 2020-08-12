@@ -16,7 +16,7 @@ const CategorySelector = (props: Props) => (
   <select
     defaultValue={
       props.selected
-        ? props.categories.findIndex((e) => e.tagName == props.selected)
+        ? props.categories.findIndex((e) => e.tagName == props.selected) + 1
         : 0
     }
     className={`${props.className ? props.className : ""} form-control`}
@@ -30,7 +30,7 @@ const CategorySelector = (props: Props) => (
   >
     <option disabled value={0} />
     {props.categories.map((cat, idx) => (
-      <option value={idx} key={idx}>
+      <option value={idx + 1} key={idx}>
         {cat.name}
       </option>
     ))}
