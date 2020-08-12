@@ -1,8 +1,8 @@
 import React from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
-import SearchInput from "./SearchInput";
 import { updateFromDate } from "../../actions/search";
+import DateInput from "./DateInput";
 
 type Props = {
   className?: string;
@@ -10,9 +10,8 @@ type Props = {
 };
 
 const FromDateInput = (props: Props) => (
-  <SearchInput
+  <DateInput
     className={props.className}
-    placeholder={props.placeholder}
     action={updateFromDate}
     mapper={(search) => search.fromDate}
   />
