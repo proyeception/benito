@@ -23,7 +23,7 @@ const AdvancedSearch = (_: any) => {
   }
 
   return (
-    <div className="qui-hamburger-advaned-search-container">
+    <div className="qui-hamburger-advanced-search-container">
       <div className="container-fluid pt-3 pb-4">
         <div className="row no-gutters ">
           <div className="col-12 text-uppercase font-weight-bold">Nombre</div>
