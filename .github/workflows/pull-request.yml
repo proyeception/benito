@@ -31,6 +31,6 @@ jobs:
         with:
           repo-token: '${{ secrets.GITHUB_TOKEN }}'
           event: REQUEST_CHANGES
-          body: 'Sólido :thumbsup:'
+          body: 'Pará loco, así no se puede!! :thumbsdown:'
         
 
