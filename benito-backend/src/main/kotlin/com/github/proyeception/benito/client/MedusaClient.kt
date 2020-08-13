@@ -66,6 +66,17 @@ open class MedusaClient(
         return response.body?.toInt() ?: throw FailedDependencyException("Medusa returned null for count")
     }
 
+    open fun project(id: String): MedusaProjectDTO {
+        val response = medusaConnector.get("/projects/${id}")
+        LOGGER.info(response.body)
+
+        if (response.isError()) {
+            throw FailedDependencyException("Error getting project from Medusa")
+        }
+
+        return response.deserializeAs(object : TypeReference<MedusaProjectDTO>() {})
+    }
+
     private fun String.appendOrder(orderBy: OrderDTO?): String = orderBy?.sortMethod?.let { "${this}_sort=$it&" }
         ?: this
 

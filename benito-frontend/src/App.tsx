@@ -13,6 +13,7 @@ import store from "./store";
 import { updateCategories } from "./actions/common";
 import { AnimatePresence } from "framer-motion";
 import HamburgerMenu from "./components/Header/HamburgerMenu";
+import ViewProject from "./components/Project/index";
 
 const App = (_: any) => {
   useEffect(() => {
@@ -34,6 +35,7 @@ const App = (_: any) => {
       <Header />
       <AnimatePresence>
         <Switch>
+          <Route exact path="/project/:projectId" component={ViewProject} />
           <Route exact path="/" component={Home} />
           <Route exact path="/search" component={Search} />
         </Switch>

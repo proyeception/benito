@@ -3,6 +3,7 @@ import { hot } from "react-hot-loader";
 import "./styles.scss";
 import { Project } from "../../types";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 type Props = {
   project: Project;
@@ -18,7 +19,9 @@ const ProjectSummary = (props: Props) => (
     <div className="row mt-3 ml-0">
       <div className="col-sm-12 col-md-10">
         <div className="qui-summary-title qui-font-title">
-          {props.project.title}
+          <Link to={{pathname:`/project/${props.project.id}`}}>          
+            {props.project.title}
+          </Link>
         </div>
         <div className="d-sm-block d-md-none">
           <img className="qui-summary-image-sm" src={props.project.posterUrl} />
@@ -27,7 +30,7 @@ const ProjectSummary = (props: Props) => (
           {props.project.description}
         </div>
         <div className="qui-authors">
-          {props.project.authors.map((a) => a.username).join(", ")}
+          {props.project.authors.map((a) => a.fullName).join(", ")}
         </div>
       </div>
       <div className="col-md-2 d-none d-lg-block">

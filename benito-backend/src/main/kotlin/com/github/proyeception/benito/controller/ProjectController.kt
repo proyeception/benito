@@ -36,4 +36,11 @@ class ProjectController(
     @ResponseBody
     @CrossOrigin
     private fun count(): CountDTO = projectService.count()
+
+    @RequestMapping("/benito/projects/{id}", method = [RequestMethod.GET])
+    @ResponseBody
+    @CrossOrigin
+    private fun findProjects(@PathVariable id: String): ProjectDTO {
+        return projectService.findProject(id)
+    }
 }

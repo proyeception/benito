@@ -25,4 +25,8 @@ open class ProjectService(
     fun top10Projects(): List<ProjectDTO> = medusaClient.top10Projects().map { ProjectDTO(it) }
 
     fun count(): CountDTO = CountDTO(medusaClient.projectCount())
+
+    fun findProject(id: String): ProjectDTO {
+        return ProjectDTO(medusaClient.project(id))
+    }
 }

@@ -37,22 +37,32 @@ class ProjectServiceTest : WordSpec() {
                 val project = ProjectDTO(
                     id = "1",
                     title = "project title",
-                    subtitle = "project subtitle",
+                    extraContent = "extra content",
                     description = "project description",
-                    summary = "project summary",
                     creationDate = LocalDate.of(2020, 2, 6),
                     posterUrl = "",
-                    authors = listOf(PersonDTO(username = "author", profileUrl = "/authorUrl")),
-                    supervisors = listOf(PersonDTO(username = "supervisor", profileUrl = "/supervisorUrl")),
+                    authors = listOf(
+                        PersonDTO(
+                            username = "author",
+                            profileUrl = "/authorUrl",
+                            fullName = "Benito Quinquela"
+                        )
+                    ),
+                    supervisors = listOf(
+                        PersonDTO(
+                            username = "supervisor",
+                            profileUrl = "/supervisorUrl",
+                            fullName = "Jorge Luis Borges"
+                        )
+                    ),
                     tags = emptyList()
                 )
 
                 val newProject = MedusaProjectDTO(
                     id = "1",
                     title = "project title",
-                    subtitle = "project subtitle",
                     description = "project description",
-                    summary = "project summary",
+                    extraContent = "extra content",
                     creationDate = LocalDate.of(2020, 2, 6),
                     poster = PosterDTO(url = ""),
                     authorRefs = listOf(author),
@@ -87,5 +97,64 @@ class ProjectServiceTest : WordSpec() {
                 expected shouldBe actual
             }
         }
+
+        "project" should {
+            "should return a specific project" {
+                val medusaClient: MedusaClient = getMock()
+                val projectService = ProjectService(
+                    medusaClient = medusaClient
+                )
+
+                val author = AuthorDTO(
+                    id = "123",
+                    fullName = "Benito Quinquela",
+                    username = "author",
+                    profileUrl = "/authorUrl"
+                )
+
+                val supervisor = SupervisorDTO(
+                    id = "123",
+                    fullName = "Jorge Luis Borges",
+                    username = "supervisor",
+                    profileUrl = "/supervisorUrl"
+                )
+
+                val project = ProjectDTO(
+                    id = "1",
+                    title = "project title",
+                    description = "project description",
+                    extraContent = "nicely formatted content",
+                    creationDate = LocalDate.of(2020, 2, 6),
+                    posterUrl = "",
+                    authors = listOf(PersonDTO(username = "author", fullName = "Benito Quinquela", profileUrl = "/authorUrl")),
+                    supervisors = listOf(PersonDTO(username = "supervisor", fullName = "Jorge Luis Borges", profileUrl = "/supervisorUrl")),
+                    tags = emptyList()
+                )
+
+                val newProject = MedusaProjectDTO(
+                    id = "1",
+                    title = "project title",
+                    description = "project description",
+                    extraContent = "nicely formatted content",
+                    creationDate = LocalDate.of(2020, 2, 6),
+                    poster = PosterDTO(url = ""),
+                    authorRefs = listOf(author),
+                    supervisorRefs = listOf(supervisor),
+                    category = CategoryDTO("Systems", "systems", "")
+                )
+
+                val projectResult = newProject
+                val expected = project
+
+                on(medusaClient.project("1")).thenReturn(projectResult)
+
+                val actual = projectService.findProject("1")
+
+                expected shouldBe actual
+
+                Mockito.verify(medusaClient).project("1")
+            }
+        }
+
     }
 }
