@@ -3,9 +3,7 @@ package com.github.proyeception.benito.client
 import com.fasterxml.jackson.core.type.TypeReference
 import com.github.proyeception.benito.connector.Connector
 import com.github.proyeception.benito.connector.Response
-import com.github.proyeception.benito.dto.OrderDTO
-import com.github.proyeception.benito.dto.PersonDTO
-import com.github.proyeception.benito.dto.ProjectDTO
+import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.FailedDependencyException
 import com.github.proyeception.benito.mock.eq
 import com.github.proyeception.benito.mock.getMock
@@ -13,6 +11,7 @@ import com.github.proyeception.benito.mock.on
 import io.kotlintest.matchers.shouldBe
 import io.kotlintest.matchers.shouldThrow
 import io.kotlintest.specs.WordSpec
+import kotlinx.coroutines.SupervisorJob
 import org.mockito.ArgumentMatchers
 import java.time.LocalDate
 
@@ -200,28 +199,29 @@ class MedusaClientTest : WordSpec() {
 
         "findProject" should {
             val responseMock: Response = getMock()
-            val author = PersonDTO(
+            val author = AuthorDTO(
+                    id = "123",
                     username = "author",
                     fullName = "UnNombre",
                     profileUrl = "/authorUrl"
             )
 
-            val supervisor = PersonDTO(
+            val supervisor = SupervisorDTO(
+                    id = "1234",
                     username = "supervisor",
                     fullName = "UnNombre",
                     profileUrl = "/supervisorUrl"
             )
 
-            val project = ProjectDTO(
+            val project = MedusaProjectDTO(
                     id = "1",
                     title = "project title",
                     description = "project description",
                     extraContent = "nice formatted content",
                     creationDate = LocalDate.of(2020, 2, 6),
-                    posterUrl = "",
-                    authors = listOf(author),
-                    supervisors = listOf(supervisor),
-                    tags = listOf("tag1", "tag2")
+                    poster = PosterDTO("poster"),
+                    authorRefs = listOf(author),
+                    supervisorRefs = listOf(supervisor)
             )
 
             "get to /projects/{id} returns specified project" {
