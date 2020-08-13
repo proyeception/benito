@@ -16,5 +16,5 @@ jobs:
         with:
           java-version: 1.8
       - name: Build with Maven
-        run: mvn --batch-mode clean test --file pom.xml
+        run: mvn --batch-mode clean test -f benito-backend/pom.xml
 
