@@ -3,8 +3,12 @@ package com.github.proyeception.benito.controller
 import com.github.proyeception.benito.dto.OrderDTO
 import com.github.proyeception.benito.dto.ProjectDTO
 import com.github.proyeception.benito.service.ProjectService
+import org.apache.el.stream.Stream
 import org.springframework.stereotype.Controller
+import org.springframework.ui.ModelMap
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
+
 
 @Controller
 class ProjectController(
@@ -29,5 +33,13 @@ class ProjectController(
     @CrossOrigin
     private fun findProjects(@PathVariable id: String): ProjectDTO {
         return projectService.findProject(id)
+    }
+
+    @RequestMapping(value = ["/benito/projects/{projectId}"], method = [RequestMethod.POST])
+    fun saveFile(@RequestParam("projectId") projectId: String,
+                 @RequestBody() file: MultipartFile?,
+                 modelMap: ModelMap): String? {
+        modelMap.addAttribute("file", file)
+        return "fileUploadView"
     }
 }
