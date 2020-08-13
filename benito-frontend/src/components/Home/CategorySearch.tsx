@@ -4,13 +4,18 @@ import "./styles.scss";
 import { Category } from "../../types";
 import Carousel from "react-bootstrap/Carousel";
 import { Link } from "react-router-dom";
+import store from "../../store";
+import { updateCategory } from "../../actions/search";
 
 type Props = {
   category: Category;
 };
 
 const CategorySearch = ({ category }: Props) => (
-  <Link to={`/search?category=${category.tagName}`}>
+  <Link
+    to={`/search?category=${category.tagName}`}
+    onClick={() => store.dispatch(updateCategory(category.tagName))}
+  >
     <div>
       <img
         src={category.imageUrl.valueOf()}

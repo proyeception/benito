@@ -8,7 +8,7 @@ import { updateProjectTotal } from "../../actions/home";
 import store from "../../store";
 import { RootState } from "../../reducers";
 import { connect } from "react-redux";
-import { emptyProjects } from "../../actions/search";
+import { resetSearchParameters } from "../../actions/search";
 
 const shareProjects =
   "https://res.cloudinary.com/proyectate/image/upload/v1596677419/idea_toazgb.png";
@@ -75,7 +75,7 @@ const Proyectate = (props: Props) => {
               <Link
                 to="search"
                 style={{ textDecoration: "none" }}
-                onClick={() => store.dispatch(emptyProjects())}
+                onClick={() => store.dispatch(resetSearchParameters())}
               >
                 <div className="btn btn-primary qui-tour-search-button font-weight-bold">
                   Ver todos los proyectos
