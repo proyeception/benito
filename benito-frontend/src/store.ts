@@ -11,11 +11,24 @@ const defaultState: RootState = {
     passwordError: false,
     usernameError: false,
   },
+
   user: {
     session: null,
     username: null,
     data: null,
   },
+
+
+  project: {
+    id: null,
+    title: null,
+    description: null,
+    posterUrl: null,
+    authors: [],
+    creationDate: new Date (),
+    tags: []
+  },
+
   search: {
     name: "",
     category: "",
@@ -26,6 +39,7 @@ const defaultState: RootState = {
     documentation: "",
     sortMethod: SortMethod.DateDesc,
   },
+
 };
 
 const store = createStore(

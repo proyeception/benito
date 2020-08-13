@@ -23,4 +23,11 @@ class ProjectController(
     ): List<ProjectDTO> {
         return projectService.findProjects(orderBy, from, to, nameContains, tags)
     }
+
+    @RequestMapping("/benito/projects/{id}", method = [RequestMethod.GET])
+    @ResponseBody
+    @CrossOrigin
+    private fun findProjects(@PathVariable id: String): ProjectDTO {
+        return projectService.findProject(id)
+    }
 }

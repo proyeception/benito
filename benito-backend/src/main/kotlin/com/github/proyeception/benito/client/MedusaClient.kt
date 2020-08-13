@@ -36,6 +36,18 @@ open class MedusaClient(
         return response.deserializeAs(object : TypeReference<List<MedusaProjectDTO>>() {})
     }
 
+
+    open fun project(id: String): MedusaProjectDTO {
+        val response = medusaConnector.get("/projects/${id}")
+        LOGGER.info(response.body)
+
+        if (response.isError()) {
+            throw FailedDependencyException("Error getting project from Medusa")
+        }
+
+        return response.deserializeAs(object : TypeReference<MedusaProjectDTO>() {})
+    }
+
     private fun String.appendOrder(orderBy: OrderDTO?): String = orderBy?.sortMethod?.let { "${this}_sort=$it&" } ?: this
 
     private fun String.appendParam(param: String, value: String?, filter: MedusaFilter): String =
@@ -43,6 +55,7 @@ open class MedusaClient(
 
     private fun String?.replaceWhitespaces(): String? =
             this?.let { this.replace(" ", "+") } ?: this
+
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(MedusaClient::class.java)

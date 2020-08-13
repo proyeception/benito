@@ -1,6 +1,7 @@
 import loginReducer from "./login";
 import { combineReducers } from "redux";
 import userReducer from "./user";
+
 import searchReducer from "./search";
 
 const rootReducer = combineReducers({
