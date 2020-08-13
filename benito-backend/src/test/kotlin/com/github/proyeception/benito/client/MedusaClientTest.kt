@@ -3,6 +3,7 @@ package com.github.proyeception.benito.client
 import com.fasterxml.jackson.core.type.TypeReference
 import com.github.proyeception.benito.connector.Connector
 import com.github.proyeception.benito.connector.Response
+import com.github.proyeception.benito.dto.OrderDTO
 import com.github.proyeception.benito.dto.PersonDTO
 import com.github.proyeception.benito.dto.ProjectDTO
 import com.github.proyeception.benito.exception.FailedDependencyException
@@ -49,23 +50,151 @@ class MedusaClientTest : WordSpec() {
             "get to /projects returns all projects" {
                 val projectsResponse = listOf<ProjectDTO>(project)
 
-                on(medusaConnector.get(eq("/projects"))).thenReturn(responseMock)
+                on(medusaConnector.get(eq(PROJECTS_PATH))).thenReturn(responseMock)
                 on(responseMock.isError()).thenReturn(false)
                 on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
 
                 val expected = projectsResponse
-                val actual = medusaClient.projects()
+                val actual = medusaClient.getProjects()
 
                 expected shouldBe actual
             }
 
-            "throw if mango returns error" {
-                on(medusaConnector.get(eq("/projects"))).thenReturn(responseMock)
+            "throw if medusa returns error" {
+                on(medusaConnector.get(eq(PROJECTS_PATH))).thenReturn(responseMock)
                 on(responseMock.isError()).thenReturn(true)
 
                 shouldThrow<FailedDependencyException> {
-                    medusaClient.projects()
+                    medusaClient.getProjects()
                 }
+            }
+
+            "should get to strapi's ascending date sort by creationDate when using DATE_ASC" {
+                val projectsResponse = listOf<ProjectDTO>(project)
+
+                val expectedEndpoint =
+                        PROJECTS_PATH + QUERY_PARAM_START + STRAPI_SORT_QUERY_PARAM + STRAPI_DATE_FIELD + STRAPI_ASC_IDENTIFIER
+                on(medusaConnector.get(eq(expectedEndpoint))).thenReturn(responseMock)
+                on(responseMock.isError()).thenReturn(false)
+                on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
+
+                val expected = projectsResponse
+                val actual = medusaClient.getProjects(OrderDTO.DATE_ASC)
+
+                expected shouldBe actual
+            }
+
+            "should get to strapi's descending date sort by creationDate when using DATE_DESC" {
+                val projectsResponse = listOf<ProjectDTO>(project)
+
+                val expectedEndpoint =
+                        PROJECTS_PATH + QUERY_PARAM_START + STRAPI_SORT_QUERY_PARAM + STRAPI_DATE_FIELD + STRAPI_DESC_IDENTIFIER
+                on(medusaConnector.get(eq(expectedEndpoint))).thenReturn(responseMock)
+                on(responseMock.isError()).thenReturn(false)
+                on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
+
+                val expected = projectsResponse
+                val actual = medusaClient.getProjects(OrderDTO.DATE_DESC)
+
+                expected shouldBe actual
+            }
+
+            "should get to strapi's ascending alphabetic sort by title when using ALPHA_ASC" {
+                val projectsResponse = listOf<ProjectDTO>(project)
+
+                val expectedEndpoint =
+                        PROJECTS_PATH + QUERY_PARAM_START + STRAPI_SORT_QUERY_PARAM + STRAPI_TITLE_FIELD + STRAPI_ASC_IDENTIFIER
+                on(medusaConnector.get(eq(expectedEndpoint))).thenReturn(responseMock)
+                on(responseMock.isError()).thenReturn(false)
+                on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
+
+                val expected = projectsResponse
+                val actual = medusaClient.getProjects(OrderDTO.ALPHA_ASC)
+
+                expected shouldBe actual
+            }
+
+            "should get to strapi's descending alphabetic sort by title when using ALPHA_DESC" {
+                val projectsResponse = listOf<ProjectDTO>(project)
+
+                val expectedEndpoint =
+                        PROJECTS_PATH + QUERY_PARAM_START + STRAPI_SORT_QUERY_PARAM + STRAPI_TITLE_FIELD + STRAPI_DESC_IDENTIFIER
+                on(medusaConnector.get(eq(expectedEndpoint))).thenReturn(responseMock)
+                on(responseMock.isError()).thenReturn(false)
+                on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
+
+                val expected = projectsResponse
+                val actual = medusaClient.getProjects(OrderDTO.ALPHA_DESC)
+
+                expected shouldBe actual
+            }
+
+            "should get to strapi's filter by creationDate with greater than equal when receiving from date" {
+                val projectsResponse = listOf<ProjectDTO>(project)
+
+                val fromDate = "2020-06-06"
+
+                val expectedEndpoint =
+                        PROJECTS_PATH + QUERY_PARAM_START + STRAPI_DATE_FIELD + STRAPI_GTE_OPERATOR + fromDate
+                on(medusaConnector.get(eq(expectedEndpoint))).thenReturn(responseMock)
+                on(responseMock.isError()).thenReturn(false)
+                on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
+
+                val expected = projectsResponse
+                val actual = medusaClient.getProjects(from = fromDate)
+
+                expected shouldBe actual
+            }
+
+            "should get to strapi's filter by creationDate with less than equal when receiving to date" {
+                val projectsResponse = listOf<ProjectDTO>(project)
+
+                val toDate = "2020-06-06"
+
+                val expectedEndpoint =
+                        PROJECTS_PATH + QUERY_PARAM_START + STRAPI_DATE_FIELD + STRAPI_LTE_OPERATOR + toDate
+                on(medusaConnector.get(eq(expectedEndpoint))).thenReturn(responseMock)
+                on(responseMock.isError()).thenReturn(false)
+                on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
+
+                val expected = projectsResponse
+                val actual = medusaClient.getProjects(to = toDate)
+
+                expected shouldBe actual
+            }
+
+            "should get to strapi's filter by title with contains when receiving a nameContains" {
+                val projectsResponse = listOf<ProjectDTO>(project)
+
+                val projectName = "name"
+
+                val expectedEndpoint =
+                        PROJECTS_PATH + QUERY_PARAM_START + STRAPI_TITLE_FIELD + STRAPI_CONTAINS_OPERATOR + projectName
+                on(medusaConnector.get(eq(expectedEndpoint))).thenReturn(responseMock)
+                on(responseMock.isError()).thenReturn(false)
+                on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
+
+                val expected = projectsResponse
+                val actual = medusaClient.getProjects(nameContains = projectName)
+
+                expected shouldBe actual
+            }
+
+            "should concat multiple filter and sort" {
+                val projectsResponse = listOf<ProjectDTO>(project)
+
+                val projectName = "name"
+
+                val expectedEndpoint =
+                        PROJECTS_PATH + QUERY_PARAM_START + STRAPI_SORT_QUERY_PARAM + STRAPI_DATE_FIELD + STRAPI_ASC_IDENTIFIER + QUERY_PARAM_SEPARATOR + STRAPI_TITLE_FIELD + STRAPI_CONTAINS_OPERATOR + projectName
+                on(medusaConnector.get(eq(expectedEndpoint))).thenReturn(responseMock)
+                on(responseMock.isError()).thenReturn(false)
+                on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
+
+                val expected = projectsResponse
+                val actual = medusaClient.getProjects(orderBy = OrderDTO.DATE_ASC, nameContains = projectName)
+
+                expected shouldBe actual
             }
         }
 
@@ -117,5 +246,22 @@ class MedusaClientTest : WordSpec() {
                 }
             }
         }
+    }
+
+    companion object {
+        const val PROJECTS_PATH = "/projects"
+        const val QUERY_PARAM_START = "?"
+        const val QUERY_PARAM_SEPARATOR = "&"
+
+        const val STRAPI_SORT_QUERY_PARAM = "_sort="
+        const val STRAPI_ASC_IDENTIFIER = ":ASC"
+        const val STRAPI_DESC_IDENTIFIER = ":DESC"
+
+        const val STRAPI_GTE_OPERATOR = "_gte="
+        const val STRAPI_LTE_OPERATOR = "_lte="
+        const val STRAPI_CONTAINS_OPERATOR = "_contains="
+
+        const val STRAPI_DATE_FIELD = "creation_date"
+        const val STRAPI_TITLE_FIELD = "title"
     }
 }

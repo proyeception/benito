@@ -1,5 +1,6 @@
 import { createStore, compose } from "redux";
 import rootReducer, { RootState } from "./reducers/index";
+import { SortMethod } from "./store/search/types";
 
 const defaultState: RootState = {
   login: {
@@ -17,6 +18,7 @@ const defaultState: RootState = {
     data: null,
   },
 
+
   project: {
     id: null,
     title: null,
@@ -25,7 +27,19 @@ const defaultState: RootState = {
     authors: [],
     creationDate: new Date (),
     tags: []
-  }
+  },
+
+  search: {
+    name: "",
+    category: "",
+    projects: [],
+    fromDate: "",
+    toDate: "",
+    keyword: "",
+    documentation: "",
+    sortMethod: SortMethod.DateDesc,
+  },
+
 };
 
 const store = createStore(

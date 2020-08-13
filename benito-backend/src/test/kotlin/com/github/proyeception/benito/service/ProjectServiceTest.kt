@@ -58,13 +58,13 @@ class ProjectServiceTest : WordSpec() {
             val projects = listOf(newProject)
             val expected = listOf(project)
 
-            on(medusaClient.projects()).thenReturn(projects)
+            on(medusaClient.getProjects()).thenReturn(projects)
 
-            val actual = projectService.findProjects()
+            val actual = projectService.findProjects(null, null, null, null, null)
 
             expected shouldBe actual
 
-            Mockito.verify(medusaClient).projects()
+            Mockito.verify(medusaClient).getProjects()
         }
 
         "should return specific project" {
