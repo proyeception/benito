@@ -11,11 +11,13 @@ const defaultState: RootState = {
     passwordError: false,
     usernameError: false,
   },
+
   user: {
     session: null,
     username: null,
     data: null,
   },
+
   search: {
     name: "",
     category: "",
