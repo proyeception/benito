@@ -1,0 +1,122 @@
+$large: 768px;
+$small: 767px;
+
+.qui-summary-title {
+  @media screen and (max-width: $small) {
+    font-size: 13px;
+  }
+  @media screen and (min-width: $large) {
+    font-size: 24px;
+  }
+}
+
+.qui-summary-image-container {
+  position: relative;
+  margin: -50% auto; /* virtualy height needed turn don to zero */
+  width: 100%; /* height will follow within image ratio */
+  height: auto; /* to overrride attribute height set in tag */
+  vertical-align: middle; /* finalise vertical centering on baseline*/
+}
+
+.qui-summary-image-sm {
+  display: block;
+  max-width: 100%;
+}
+
+.qui-summary {
+  @media screen and (min-width: 768px) {
+    padding-left: 32px;
+    font-size: 16px;
+  }
+  @media screen and (max-width: $small) {
+    font-size: 11px;
+  }
+  font-weight: lighter;
+}
+
+.qui-authors {
+  @media screen and (max-width: $small) {
+    font-size: 10px;
+  }
+  @media screen and(min-width: $large) {
+    font-size: 16px;
+  }
+
+  text-align: right;
+  color: #a3a3a3;
+}
+
+.qui-search-header {
+  @media screen and (max-width: 768px) {
+    background: rgba(107, 60, 167, 0.1);
+  }
+}
+
+.qui-summary-image-md {
+  display: block;
+  max-width: 100%;
+}
+
+.qui-searchbox-md {
+  display: flex;
+}
+
+.qui-search-input {
+  border-color: #6b3ca7;
+  border-radius: 10px;
+  max-width: 90%;
+  border-width: 1px;
+}
+
+.qui-search-input-date {
+  border-color: #6b3ca7;
+  border-radius: 10px;
+  max-width: 100%;
+  border-width: 1px;
+  margin-right: 5px;
+  margin-top: 5px;
+}
+
+.qui-search-filter {
+  padding-left: 20px;
+  padding-top: 10px;
+}
+
+.qui-search-box {
+  margin-left: 10px;
+  margin-top: 60px;
+  border: #6b3ca7;
+  border-radius: 10px;
+  border-style: solid;
+  padding-bottom: 10px;
+  border-width: 1px;
+}
+
+.qui-search-btn {
+  width: 80%;
+  align-items: center;
+  border-radius: 10px;
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+.qui-background {
+  background-color: gray;
+}
+
+.qui-box {
+  background-color: white;
+}
+
+.qui-date-filter-container {
+  max-width: 90%;
+}
+
+.qui-search-combo {
+  border-color: #6b3ca7;
+  border-radius: 10px;
+  border-width: 1px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  width: 90%;
+}

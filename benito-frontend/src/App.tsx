@@ -1,23 +1,21 @@
-import React from 'react';
-import { hot } from 'react-hot-loader';
-import './styles.scss';
+import React from "react";
+import { hot } from "react-hot-loader";
+import "./styles.scss";
+import Header from "./components/Header/index";
+import Footer from "./components/Footer";
+import { Switch, Route } from "react-router-dom";
+import Search from "./components/Search";
+import ViewProject from "./components/Project/index";
 
-type Props = {}
-type State = {}
-
-class App extends React.Component<Props, State> {
-  constructor(props: Props, ctx: any) {
-    super(props, ctx);
-    this.state = {};
-  }
-
-  render() {
-    return (
-      <div>
-        Hello, world!
-      </div>
-    );
-  }
-}
+const App = (_: any) => (
+  <div className="qui-app">
+    <Header />
+    <Switch>
+      <Route exact path="/project/:projectId" component={ViewProject} />
+      <Route exact path="/search" component={Search} />
+    </Switch>
+    <Footer />
+  </div>
+);
 
 export default hot(module)(App);
