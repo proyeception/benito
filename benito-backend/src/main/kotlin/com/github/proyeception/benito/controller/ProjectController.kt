@@ -3,9 +3,10 @@ package com.github.proyeception.benito.controller
 import com.github.proyeception.benito.dto.OrderDTO
 import com.github.proyeception.benito.dto.ProjectDTO
 import com.github.proyeception.benito.service.ProjectService
-import org.apache.el.stream.Stream
+import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
-import org.springframework.ui.ModelMap
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 
@@ -35,11 +36,12 @@ class ProjectController(
         return projectService.findProject(id)
     }
 
-    @RequestMapping(value = ["/benito/projects/{projectId}"], method = [RequestMethod.POST])
-    fun saveFile(@RequestParam("projectId") projectId: String,
-                 @RequestBody() file: MultipartFile?,
-                 modelMap: ModelMap): String? {
-        modelMap.addAttribute("file", file)
-        return "fileUploadView"
+
+    @RequestMapping("/benito/projects/{projectId}", method = [RequestMethod.POST], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    private fun saveFile(@PathVariable projectId: String,
+                 @RequestParam("file") file: MultipartFile) : ResponseEntity.BodyBuilder {
+        //projectService.saveFile(projectId, file)
+        System.out.println("holi")
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
     }
 }
