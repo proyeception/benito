@@ -105,11 +105,7 @@ public class Benito {
             characterEncodingFilterHolder,
             "/*",
             EnumSet.of(DispatcherType.REQUEST, DispatcherType.ERROR)
-        );
-
-        LoggingFilter loggingFilter = new LoggingFilter();
-        FilterHolder loggingFilterHolder = new FilterHolder(loggingFilter);
-        handler.addFilter(loggingFilterHolder, "/*", EnumSet.of(DispatcherType.REQUEST));
+        );;
     }
 
     private int port(String[] args) {
