@@ -3,6 +3,7 @@ package com.github.proyeception.benito.controller
 import com.github.proyeception.benito.config.Environment
 import com.github.proyeception.benito.dto.ErrorDTO
 import com.github.proyeception.benito.exception.HttpException
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -21,6 +22,7 @@ open class ExceptionController(
         message = e.message,
         stackTrace = appendStackTrace(e)
     ).also { response.status = e.status }
+        .also { LOGGER.error("Error: ${e.message}", e) }
 
     @ExceptionHandler(Exception::class)
     @ResponseBody
@@ -29,8 +31,12 @@ open class ExceptionController(
         status = 500,
         message = e.message,
         stackTrace = appendStackTrace(e)
-    )
+    ).also { LOGGER.error("Error: ${e.message}", e) }
 
     private fun appendStackTrace(t: Throwable): List<String>? = if (!environment.isProd) t.stackTrace.map { it.toString() }
     else null
+
+    companion object {
+        private val LOGGER = LoggerFactory.getLogger(ExceptionController::class.java)
+    }
 }

@@ -5,7 +5,7 @@ $large: 768;
   color: white;
 }
 
-.qui-brand {
+.qui-brand-name {
   font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: bold;
   color: white;
@@ -16,10 +16,15 @@ $large: 768;
   }
 
   @media screen and (min-width: 768px) {
-    text-align: left;
+    text-align: center;
     font-size: 36px;
-    justify-content: flex-start;
+    justify-content: center;
   }
+}
+
+.qui-brand-logo {
+  width: 64px;
+  height: 64px;
 }
 
 .invert-colors {
@@ -56,14 +61,8 @@ $large: 768;
   margin: 0 auto;
 }
 
-.center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .qui-brand-col {
   @media screen and (min-width: 768px) {
-    justify-content: flex-start;
+    justify-content: center;
   }
 }

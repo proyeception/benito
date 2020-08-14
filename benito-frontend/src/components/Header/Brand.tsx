@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const Brand = (_: any) => (
   <Link to="/" className="center">
-    <div className="qui-brand">Proyectate</div>
+    <div className="qui-brand-name">Proyectate</div>
   </Link>
 );
 
