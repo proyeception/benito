@@ -35,7 +35,7 @@ const App = (_: any) => {
       <Header />
       <AnimatePresence>
         <Switch>
-          <Route exact path="/project/:projectId" component={ViewProject} />
+          <Route exact path="/projects/:projectId" component={ViewProject} />
           <Route exact path="/" component={Home} />
           <Route exact path="/search" component={Search} />
         </Switch>

@@ -21,7 +21,7 @@ import qs from "qs";
 import { RouteChildrenProps } from "react-router-dom";
 import { motion } from "framer-motion";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-import Loader from "react-loader-spinner";
+import Loader from "../Common/Loader";
 
 type MatchParams = {
   name?: string;
@@ -104,7 +104,7 @@ const Search = (props: Props) => {
           <div className="pl-4 pr-2 uncol-sm-l-3 uncol-sm-r-1">
             {loading ? (
               <div className="center">
-                <Loader type="TailSpin" color="black" height={80} width={80} />
+                <Loader />
               </div>
             ) : (
               props.projects.map((p, idx) => (

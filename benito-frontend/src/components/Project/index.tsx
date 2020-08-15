@@ -1,13 +1,12 @@
 import React, { Component } from "react";
 import { hot } from "react-hot-loader";
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import { benitoHost } from "../../config";
 import ProjectInfo from "./ProjectInfo";
 import "./styles.scss";
 import { RouteComponentProps } from "react-router";
 import { Project } from "../../types";
-
-//let proy : Project = {id: "2", title:"un proyecto", description:"la descripcion del proyecto", posterUrl:"www.url.com", authors:[]}
+import { motion } from "framer-motion";
 
 type MatchParams = {
   projectId: string;
@@ -23,37 +22,42 @@ type State = {
 class ViewProject extends Component<Props, State> {
   constructor(props: Props, ctx: any) {
     super(props, ctx);
-    this.state = { projectId: props.match.params.projectId };
+    this.state = {
+      projectId: props.match.params.projectId,
+    };
   }
 
   componentDidMount() {
     console.log("el estado es");
     console.log(this.state);
 
-    axios
-      .get(`${benitoHost}/benito/projects/${this.state.projectId}`)
-      .then((res) => {
-        const project = res.data;
+    let config: AxiosRequestConfig = {
+      method: "GET",
+      url: `${benitoHost}/benito/projects/${this.state.projectId}`,
+    };
 
-        this.setState({ project });
-      })
-      .catch(console.error);
+    axios
+      .request<Project>(config)
+      .then((res) => res.data)
+      .then((project) => this.setState({ project: project }))
+      .catch((e) => {
+        console.log(e);
+      });
   }
 
   render() {
-    if (this.state.project === undefined) {
-      return <div> cargando </div>;
-    } else {
-      return (
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="container-fluid qui-container"
+      >
         <div>
-          <div className="container-fluid qui-container">
-            <div>
-              <ProjectInfo project={this.state.project} />
-            </div>
-          </div>
+          <ProjectInfo project={this.state.project} />
         </div>
-      );
-    }
+      </motion.div>
+    );
   }
 }
 
