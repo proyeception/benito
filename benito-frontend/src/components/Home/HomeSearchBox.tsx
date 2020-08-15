@@ -49,13 +49,13 @@ class HomeSearchBox extends React.Component<Props, State> {
     return (
       <div className="qui-home-search-box-container d-none d-md-block">
         <div className="qui-home-search-box container">
-          <div className="qui-home-search-box-title">
-            Buscá proyectos que te interesen
-          </div>
-          <div className="qui-home-search-box-subtitle">
-            Elegí entre más de 100 categorías de todo tipo
-          </div>
           <div className="container-fluid">
+            <div className="qui-home-search-box-title ml-3">
+              Buscá proyectos que te interesen
+            </div>
+            <div className="qui-home-search-box-subtitle ml-3">
+              Elegí entre más de 100 categorías de todo tipo
+            </div>
             <div className="row mt-3">
               <div className="col-4">
                 <div className="qui-home-search-box-item mb-2">Nombre</div>
