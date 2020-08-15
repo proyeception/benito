@@ -5,6 +5,7 @@ import "./styles.scss";
 import moment from "moment";
 import { Project } from "../../types";
 import Loader from "../Common/Loader";
+import { motion } from "framer-motion";
 
 type Props = {
   project?: Project;
@@ -24,7 +25,11 @@ const ProjectInfo = (props: Props) => {
   }
 
   return (
-    <div>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
       <div
         className="qui-blurred-image"
         style={{ backgroundImage: `url(${props.project.posterUrl})` }}
@@ -92,7 +97,7 @@ const ProjectInfo = (props: Props) => {
           )}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

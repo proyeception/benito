@@ -46,12 +46,20 @@ const Search = (props: Props) => {
     ignoreQueryPrefix: true,
   });
 
-  const [loading, setLoading] = useState(props.projects.length == 0);
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(projects.length == 0);
+  let index = 0;
 
   const search = () => {
     fetchProjects()
       .then((res) => res.data)
-      .then((projects) => store.dispatch(updateProjects(projects)))
+      .then((ps) => {
+        store.dispatch(updateProjects(ps));
+        setInterval(() => {
+          setProjects(ps.slice(0, index));
+          index++;
+        }, 50);
+      })
       .then(() => setLoading(false))
       .catch(console.error);
   };
@@ -72,7 +80,7 @@ const Search = (props: Props) => {
       ? store.dispatch(updateKeyword(queryParams.keyword))
       : {};
 
-    if (props.projects.length == 0) {
+    if (projects.length == 0) {
       search();
     }
 
@@ -107,8 +115,14 @@ const Search = (props: Props) => {
                 <Loader />
               </div>
             ) : (
-              props.projects.map((p, idx) => (
-                <ProjectSummary project={p} key={idx} />
+              projects.map((p, idx) => (
+                <motion.div
+                  initial={{ x: 150, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  exit={{ x: -300, opacity: 0 }}
+                >
+                  <ProjectSummary project={p} key={idx} />
+                </motion.div>
               ))
             )}
           </div>
