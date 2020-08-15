@@ -25,7 +25,6 @@ $small: 767px;
 
 .qui-summary {
   @media screen and (min-width: 768px) {
-    padding-left: 32px;
     font-size: 16px;
   }
   @media screen and (max-width: $small) {
@@ -119,4 +118,8 @@ $small: 767px;
   padding-top: 4px;
   padding-bottom: 4px;
   width: 90%;
+}
+
+.qui-vertical-separator {
+  border-right: 2px solid #6b3ca7;
 }
