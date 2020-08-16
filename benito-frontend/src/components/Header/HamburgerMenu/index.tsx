@@ -7,7 +7,6 @@ import { RootState } from "../../../reducers";
 import { connect } from "react-redux";
 import store from "../../../store";
 import { toggleHamburgerButton } from "../../../actions/common";
-import Search from "./Search";
 import { searchIconUrl } from "./constants";
 import Categories from "./Categories";
 import { Accordion, Card } from "react-bootstrap";
@@ -28,7 +27,6 @@ const HamburgerMenu = (props: Props) => {
         isOpen={props.isOpen.valueOf()}
         onStateChange={(it) => store.dispatch(toggleHamburgerButton(it.isOpen))}
       >
-        <Search />
         <Accordion className="mt-5" defaultActiveKey="0">
           <Card className="qui-hamburger-accordion-card-header cursor-pointer">
             <Accordion.Toggle as={Card.Header} eventKey="0">
