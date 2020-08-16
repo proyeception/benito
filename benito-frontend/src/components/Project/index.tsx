@@ -51,9 +51,11 @@ class ViewProject extends Component<Props, State> {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="container-fluid qui-container"
       >
-        <div>
+        <div className="d-block d-md-none">
+          <ProjectInfo project={this.state.project} />
+        </div>
+        <div className="d-none d-md-block container-fluid">
           <ProjectInfo project={this.state.project} />
         </div>
       </motion.div>
