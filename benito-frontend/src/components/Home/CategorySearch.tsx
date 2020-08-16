@@ -19,7 +19,7 @@ const CategorySearch = ({ category }: Props) => (
     <div>
       <img
         src={category.imageUrl.valueOf()}
-        className="w-100 img-fluid qui-search-invitation-image"
+        className="w-100 qui-search-invitation-image"
       />
       <Carousel.Caption>
         <h3>{category.name}</h3>

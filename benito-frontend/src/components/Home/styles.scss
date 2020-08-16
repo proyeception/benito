@@ -77,7 +77,7 @@ $card-mobile-size: 21rem;
 
 .qui-search-invitation-image {
   @media screen and(max-width: 767px) {
-    max-height: 144px;
+    height: 144px;
   }
   @media screen and(min-width: 768px) {
     height: 440px;
@@ -148,7 +148,7 @@ $card-mobile-size: 21rem;
 }
 
 .qui-tour-image {
-  max-height: 360px;
+  max-height: 480px;
   max-width: 360px;
 }
 
