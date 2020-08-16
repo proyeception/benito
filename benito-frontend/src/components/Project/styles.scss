@@ -1,10 +1,7 @@
-$font-family-sans-serif: "Raleway", sans-serif;
-$primary: #6b3ca7;
+@import "../../styles.scss";
 
 .qui-box {
   background-color: white;
-  margin-bottom: 20px;
-  padding-bottom: 50px;
 }
 
 .qui-blurred-image {
@@ -14,73 +11,52 @@ $primary: #6b3ca7;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  z-index: -1;
 }
 
 .qui-backdrop {
-    background-color: rgba(255, 255, 255, 0.4); 
-    height: 250px;
-    backdrop-filter: blur(10px);  
-    width: 100%;
-  }
+  background-color: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+  width: 100%;
+}
 
 .qui-project-title {
-  vertical-align: bottom;
-  text-align: bottom;
-  font-size: 45px;
-  height: 250px;
+  @media screen and (max-width: $small) {
+    font-size: 24px;
+  }
+  @media screen and (min-width: $large) {
+    font-size: 45px;
+  }
+
   display: flex;
   align-items: flex-end;
   font-family: $font-family-sans-serif;
-  padding-left: 30px;
-  padding-right: 30px;
   text-overflow: ellipsis;
 }
 
 .qui-project-subtitle {
-  font-size:30px;
+  @media screen and (max-width: $small) {
+    font-size: 13px;
+    font-weight: normal;
+  }
+  @media screen and (min-width: $large) {
+    font-size: 30px;
+  }
   display: flex;
   font-family: $font-family-sans-serif;
 }
 
-.qui-border { 
-  border: 1.5px solid;
-  color: $primary;
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-  align-items: center;
-  justify-content: center;
-}
-
 .qui-separator {
-    height: 30px;
+  border-color: $primary;
 }
 
-.qui-column{
-  float: left;
-  width: 100%;
+.qui-vertical-separator {
+  @media screen and (min-width: $large) {
+    border-right: 2px solid #6b3ca7;
+  }
 }
 
-.qui-column-50-with-border {
-  float: left;
-  width: 50%;
-  margin-left: -20px;
-  border-right-color: purple;
-  border-right-style: solid;
-  margin-right: 15px;
-}
-
-.qui-column-50 {
-  float: left;
-  width: 50%;
-}
-
-.row {
-  margin-left: 0px;
-  margin-right: 0px;
-}
-
-.qui-container{
-  padding: 15px 70px;
+.qui-sticky-title {
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;
 }

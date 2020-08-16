@@ -46,10 +46,11 @@ class ViewProject extends Component<Props, State> {
     } else {
       return (
         <div>
-          <div className="container-fluid qui-container">
-            <div>
-              <ProjectInfo project={this.state.project} />
-            </div>
+          <div className="d-block d-md-none">
+            <ProjectInfo project={this.state.project} />
+          </div>
+          <div className="d-none d-md-block container-fluid">
+            <ProjectInfo project={this.state.project} />
           </div>
         </div>
       );
