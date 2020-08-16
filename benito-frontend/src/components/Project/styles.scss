@@ -34,7 +34,13 @@
 }
 
 .qui-project-subtitle {
-  font-size: 30px;
+  @media screen and (max-width: $small) {
+    font-size: 13px;
+    font-weight: normal;
+  }
+  @media screen and (min-width: $large) {
+    font-size: 30px;
+  }
   display: flex;
   font-family: $font-family-sans-serif;
 }

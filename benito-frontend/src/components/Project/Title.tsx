@@ -10,7 +10,7 @@ type Props = {
   display: String;
 };
 
-const ProjectTitle = (props: Props) => {
+const Title = (props: Props) => {
   const [height, setHeight] = useState(props.maxHeight);
   const handleScroll = () => {
     let scrollTop = window.scrollY;
@@ -47,4 +47,4 @@ const ProjectTitle = (props: Props) => {
   );
 };
 
-export default hot(module)(ProjectTitle);
+export default hot(module)(Title);
