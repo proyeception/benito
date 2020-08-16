@@ -11,26 +11,25 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  z-index: -1;
 }
 
 .qui-backdrop {
   background-color: rgba(255, 255, 255, 0.4);
-  height: 250px;
   backdrop-filter: blur(10px);
   width: 100%;
 }
 
 .qui-project-title {
-  vertical-align: bottom;
-  text-align: bottom;
-  font-size: 45px;
-  height: 250px;
+  @media screen and (max-width: $small) {
+    font-size: 24px;
+  }
+  @media screen and (min-width: $large) {
+    font-size: 45px;
+  }
+
   display: flex;
   align-items: flex-end;
   font-family: $font-family-sans-serif;
-  padding-left: 30px;
-  padding-right: 30px;
   text-overflow: ellipsis;
 }
 
@@ -48,4 +47,10 @@
   @media screen and (min-width: $large) {
     border-right: 2px solid #6b3ca7;
   }
+}
+
+.qui-sticky-title {
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;
 }
