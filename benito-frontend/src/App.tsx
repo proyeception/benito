@@ -11,7 +11,7 @@ const App = (_: any) => (
   <div className="qui-app">
     <Header />
     <Switch>
-      <Route exact path="/project/:projectId" component={ViewProject} />
+      <Route exact path="/projects/:projectId" component={ViewProject} />
       <Route exact path="/search" component={Search} />
     </Switch>
     <Footer />
