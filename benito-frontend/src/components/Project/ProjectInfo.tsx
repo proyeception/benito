@@ -18,7 +18,6 @@ const MIN_POSTER_HEIGHT = 60;
 
 const ProjectInfo = (props: Props) => {
   const [height, setHeight] = useState(MAX_POSTER_HEIGHT);
-  height;
   const handleScroll = () => {
     let scrollTop = window.scrollY;
     setHeight(Math.max(MIN_POSTER_HEIGHT, MAX_POSTER_HEIGHT - scrollTop));
