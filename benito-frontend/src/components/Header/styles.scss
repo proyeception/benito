@@ -1,7 +1,7 @@
-$large: 768;
+@import "../../styles.scss";
 
 .qui-header {
-  background-color: #6b3ca7;
+  background-color: $primary;
   color: white;
 }
 
@@ -15,7 +15,7 @@ $large: 768;
     font-size: 24px;
   }
 
-  @media screen and (min-width: 768px) {
+  @media screen and (min-width: $large) {
     text-align: center;
     font-size: 36px;
     justify-content: center;
