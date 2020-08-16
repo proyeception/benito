@@ -28,9 +28,6 @@ class ViewProject extends Component<Props, State> {
   }
 
   componentDidMount() {
-    console.log("el estado es");
-    console.log(this.state);
-
     let config: AxiosRequestConfig = {
       method: "GET",
       url: `${benitoHost}/benito/projects/${this.state.projectId}`,

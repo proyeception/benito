@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { CSSProperties } from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
 import { fetchProjects, buildQueryParams } from "../../functions/search";
@@ -8,40 +8,32 @@ import { RouteComponentProps, withRouter } from "react-router-dom";
 
 interface Props extends RouteComponentProps {
   className: string;
-  onSuccess: () => void;
+  onSuccess?: () => void;
   text?: string;
+  style?: CSSProperties;
 }
 
 const SearchButton = (props: Props) => {
-  const [loading, setLoading] = useState(false);
-
   const search = () => {
-    setLoading(true);
+    props.history.push({
+      pathname: "/search",
+      search: buildQueryParams(store.getState().search),
+    });
     fetchProjects()
       .then((res) => res.data)
       .then((projects) => store.dispatch(updateProjects(projects)))
-      .then(() => setLoading(false))
-      .then(() =>
-        props.history.push({
-          pathname: "/search",
-          search: buildQueryParams(store.getState().search),
-        })
-      )
-      .then(props.onSuccess)
+      .then(() => (props.onSuccess ? props.onSuccess() : {}))
       .catch(console.error);
   };
 
   return (
-    <button type="button" className={props.className} onClick={search}>
-      <span hidden={loading.valueOf()}>
-        {props.text ? props.text : "Buscar"}
-      </span>
-      <span
-        className="spinner-border spinner-border-sm"
-        role="status"
-        aria-hidden="true"
-        hidden={!loading.valueOf()}
-      />
+    <button
+      type="button"
+      className={props.className}
+      style={props.style}
+      onClick={search}
+    >
+      <span>{props.text ? props.text : "Buscar"}</span>
     </button>
   );
 };

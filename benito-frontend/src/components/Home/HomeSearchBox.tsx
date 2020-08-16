@@ -1,12 +1,9 @@
 import React from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
-import store from "../../store";
-import { updateProjects } from "../../actions/search";
 import { RootState } from "../../reducers";
 import { connect } from "react-redux";
 import CategorySelector from "../Common/CategorySelector";
-import { fetchProjects } from "../../functions/search";
 import NameInput from "../Common/NameInput";
 import FromDateInput from "../Common/FromDateInput";
 import ToDateInput from "../Common/ToDateInput";
@@ -20,29 +17,9 @@ type Props = {
   setDoRedirect: () => void;
 };
 
-type State = {
-  loading: Boolean;
-};
-
-class HomeSearchBox extends React.Component<Props, State> {
+class HomeSearchBox extends React.Component<Props> {
   constructor(props: Props, ctx: any) {
     super(props, ctx);
-    this.state = {
-      loading: false,
-    };
-
-    this.search = this.search.bind(this);
-  }
-
-  search() {
-    this.setState({ loading: true }, () =>
-      fetchProjects()
-        .then((res) => res.data)
-        .then((projects) => store.dispatch(updateProjects(projects)))
-        .then(() => this.setState({ loading: false }))
-        .then(() => this.props.setDoRedirect())
-        .catch(console.error)
-    );
   }
 
   render() {
@@ -84,8 +61,8 @@ class HomeSearchBox extends React.Component<Props, State> {
                   </div>
                   <div className="col-6">
                     <SearchButton
-                      className="btn btn-block btn-info qui-home-search-box-button pb-2 pt-2 center font-weight-bold"
-                      onSuccess={() => this.props.setDoRedirect()}
+                      className="qui-home-search-box-button btn btn-block btn-info pb-2 pt-2 center font-weight-bold"
+                      style={{ color: "white", borderRadius: "32px" }}
                     />
                   </div>
                 </div>
