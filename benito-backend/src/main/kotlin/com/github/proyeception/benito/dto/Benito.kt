@@ -1,5 +1,7 @@
 package com.github.proyeception.benito.dto
 
+import org.springframework.core.io.ByteArrayResource
+
 enum class UserTypeDTO {
     TEACHER,
     STUDENT,
@@ -50,3 +52,8 @@ enum class OrderDTO(val sortMethod: String){
     ALPHA_ASC("title:ASC"),
     ALPHA_DESC("title:DESC"),
 }
+
+data class DownloadableFile(
+        val fileName: String,
+        val file: ByteArrayResource
+)
