@@ -12,7 +12,8 @@ data class MedusaProjectDTO(
     val creationDate: LocalDate,
     val poster: PosterDTO,
     val authorRefs: List<AuthorDTO>,
-    val supervisorRefs: List<SupervisorDTO>
+    val supervisorRefs: List<SupervisorDTO>,
+    val documentation: List<DocumentationDTO>
 )
 
 data class AuthorDTO(
@@ -31,6 +32,11 @@ data class SupervisorDTO(
 
 data class PosterDTO(
     val url: String
+)
+
+data class DocumentationDTO(
+        @JsonProperty("_id") val id: String,
+        val fileName: String
 )
 
 enum class MedusaFilter(val filterName: String){

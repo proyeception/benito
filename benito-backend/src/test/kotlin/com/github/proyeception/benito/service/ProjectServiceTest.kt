@@ -32,6 +32,11 @@ class ProjectServiceTest : WordSpec() {
                 profileUrl = "/supervisorUrl"
             )
 
+            val documentation = DocumentationDTO(
+                    id = "asd",
+                    fileName = "Acta de proyecto"
+            )
+
             val project = ProjectDTO(
                 id = "1",
                 title = "project title",
@@ -41,7 +46,8 @@ class ProjectServiceTest : WordSpec() {
                 posterUrl = "",
                 authors = listOf(PersonDTO(username = "author", fullName = "Benito Quinquela", profileUrl = "/authorUrl")),
                 supervisors = listOf(PersonDTO(username = "supervisor", fullName = "Jorge Luis Borges", profileUrl = "/supervisorUrl")),
-                tags = emptyList()
+                tags = emptyList(),
+                documentations = listOf(documentation)
             )
 
             val newProject = MedusaProjectDTO(
@@ -52,7 +58,8 @@ class ProjectServiceTest : WordSpec() {
                 creationDate = LocalDate.of(2020, 2, 6),
                 poster = PosterDTO(url = ""),
                 authorRefs = listOf(author),
-                supervisorRefs = listOf(supervisor)
+                supervisorRefs = listOf(supervisor),
+                documentation = listOf(documentation)
             )
 
             val projects = listOf(newProject)
@@ -87,6 +94,11 @@ class ProjectServiceTest : WordSpec() {
                     profileUrl = "/supervisorUrl"
             )
 
+            val documentation = DocumentationDTO(
+                    id = "asd",
+                    fileName = "Acta de proyecto"
+            )
+
             val project = ProjectDTO(
                     id = "1",
                     title = "project title",
@@ -96,7 +108,8 @@ class ProjectServiceTest : WordSpec() {
                     posterUrl = "",
                     authors = listOf(PersonDTO(username = "author", fullName = "Benito Quinquela", profileUrl = "/authorUrl")),
                     supervisors = listOf(PersonDTO(username = "supervisor", fullName = "Jorge Luis Borges", profileUrl = "/supervisorUrl")),
-                    tags = emptyList()
+                    tags = emptyList(),
+                    documentations = listOf(documentation)
             )
 
             val newProject = MedusaProjectDTO(
@@ -107,7 +120,8 @@ class ProjectServiceTest : WordSpec() {
                     creationDate = LocalDate.of(2020, 2, 6),
                     poster = PosterDTO(url = ""),
                     authorRefs = listOf(author),
-                    supervisorRefs = listOf(supervisor)
+                    supervisorRefs = listOf(supervisor),
+                    documentation = listOf(documentation)
             )
 
             val projectResult = newProject

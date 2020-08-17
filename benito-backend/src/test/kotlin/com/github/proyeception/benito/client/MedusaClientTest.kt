@@ -34,6 +34,11 @@ class MedusaClientTest : WordSpec() {
                 profileUrl = "/supervisorUrl"
             )
 
+            val documentation = DocumentationDTO(
+                    id = "asd",
+                    fileName = "Acta de proyecto"
+            )
+
             val project = ProjectDTO(
                 id = "1",
                 title = "project title",
@@ -43,7 +48,8 @@ class MedusaClientTest : WordSpec() {
                 posterUrl = "",
                 authors = listOf(author),
                 supervisors = listOf(supervisor),
-                tags = listOf("tag1", "tag2")
+                tags = listOf("tag1", "tag2"),
+                documentations = listOf(documentation)
             )
 
             "get to /projects returns all projects" {
@@ -213,6 +219,11 @@ class MedusaClientTest : WordSpec() {
                     profileUrl = "/supervisorUrl"
             )
 
+            val documentation = DocumentationDTO(
+                    id = "asd",
+                    fileName = "Acta de proyecto"
+            )
+
             val project = MedusaProjectDTO(
                     id = "1",
                     title = "project title",
@@ -221,7 +232,8 @@ class MedusaClientTest : WordSpec() {
                     creationDate = LocalDate.of(2020, 2, 6),
                     poster = PosterDTO("poster"),
                     authorRefs = listOf(author),
-                    supervisorRefs = listOf(supervisor)
+                    supervisorRefs = listOf(supervisor),
+                    documentation = listOf(documentation)
             )
 
             "get to /projects/{id} returns specified project" {
