@@ -49,7 +49,7 @@ class MedusaClientTest : WordSpec() {
                 authors = listOf(author),
                 supervisors = listOf(supervisor),
                 tags = listOf("tag1", "tag2"),
-                documentations = listOf(documentation)
+                documentation = listOf(documentation)
             )
 
             "get to /projects returns all projects" {

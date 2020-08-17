@@ -47,7 +47,7 @@ class ProjectServiceTest : WordSpec() {
                 authors = listOf(PersonDTO(username = "author", fullName = "Benito Quinquela", profileUrl = "/authorUrl")),
                 supervisors = listOf(PersonDTO(username = "supervisor", fullName = "Jorge Luis Borges", profileUrl = "/supervisorUrl")),
                 tags = emptyList(),
-                documentations = listOf(documentation)
+                documentation = listOf(documentation)
             )
 
             val newProject = MedusaProjectDTO(
@@ -109,7 +109,7 @@ class ProjectServiceTest : WordSpec() {
                     authors = listOf(PersonDTO(username = "author", fullName = "Benito Quinquela", profileUrl = "/authorUrl")),
                     supervisors = listOf(PersonDTO(username = "supervisor", fullName = "Jorge Luis Borges", profileUrl = "/supervisorUrl")),
                     tags = emptyList(),
-                    documentations = listOf(documentation)
+                    documentation = listOf(documentation)
             )
 
             val newProject = MedusaProjectDTO(

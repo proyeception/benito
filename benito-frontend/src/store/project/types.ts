@@ -1,4 +1,4 @@
-import { Person } from "../../components/Search/ProjectSummary";
+import { Person, Documentation } from "../../components/Search/ProjectSummary";
 
 export const UPDATE_ID = "UPDATE_ID";
 export const UPDATE_TITLE = "UPDATE_TITLE";
@@ -7,6 +7,7 @@ export const UPDATE_POSTERURL = "UPDATE_POSTERURL";
 export const UPDATE_AUTHORS = "UPDATE_AUTHORS";
 export const UPDATE_CREATIONDATE = "UPDATE_CREATIONDATE";
 export const UPDATE_TAGS = "UPDATE_TAGS";
+export const UPDATE_DOCUMENTATION = "UPDATE_DOCUMENTATION";
 
 interface UpdateIdAction {
   type: typeof UPDATE_ID;
@@ -44,6 +45,11 @@ interface UpdatePosterUrlAction {
     payload: Array<String>;
   }
 
+  interface UpdateDocumentationAction {
+    type: typeof UPDATE_DOCUMENTATION;
+    payload: Array<Documentation>;
+  }
+
 export type ProjectAction =
   | UpdateIdAction
   | UpdateTitleAction
@@ -51,7 +57,8 @@ export type ProjectAction =
   | UpdatePosterUrlAction
   | UpdateAuthorsAction
   | UpdateCreationDateAction
-  | UpdateTagsAction;
+  | UpdateTagsAction
+  | UpdateDocumentationAction;
 
 export type ProjectState = {
   id: String;
@@ -60,5 +67,6 @@ export type ProjectState = {
   posterUrl: String,
   authors: Array<Person>;
   creationDate: Date;
-  tags: Array<String>
+  tags: Array<String>;
+  documentation: Array<Documentation>;
 };

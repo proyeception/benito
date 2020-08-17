@@ -12,6 +12,7 @@ export type Project = {
   authors: Array<Person>;
   creationDate: Date;
   tags: Array<String>;
+  documentation: Array<Documentation>;
 };
 
 export type Person = {
@@ -19,6 +20,11 @@ export type Person = {
   profileUrl: String;
   fullName: String;
 };
+
+export type Documentation = {
+  fileName: String;
+  id: String;
+}
 
 type Props = {
   project: Project;
