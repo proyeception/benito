@@ -5,7 +5,7 @@ import { benitoHost } from "../../config";
 import ProjectInfo from "./ProjectInfo";
 import "./styles.scss";
 import { RouteComponentProps } from "react-router";
-import { Project } from "../Search/ProjectSummary";
+import { Project } from "../../types";
 
 //let proy : Project = {id: "2", title:"un proyecto", description:"la descripcion del proyecto", posterUrl:"www.url.com", authors:[]}
 

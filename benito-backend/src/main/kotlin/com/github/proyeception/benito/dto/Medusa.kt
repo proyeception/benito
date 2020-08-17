@@ -1,6 +1,5 @@
 package com.github.proyeception.benito.dto
 
-import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDate
 
@@ -12,7 +11,8 @@ data class MedusaProjectDTO(
     val creationDate: LocalDate,
     val poster: PosterDTO,
     val authorRefs: List<AuthorDTO>,
-    val supervisorRefs: List<SupervisorDTO>
+    val supervisorRefs: List<SupervisorDTO>,
+    val category: CategoryDTO
 )
 
 data class AuthorDTO(
@@ -33,7 +33,13 @@ data class PosterDTO(
     val url: String
 )
 
-enum class MedusaFilter(val filterName: String){
+data class CategoryDTO(
+    val name: String,
+    val tagName: String,
+    val imageUrl: String
+)
+
+enum class MedusaFilter(val filterName: String) {
     GREATER_OR_EQUAL("gte"),
     LESS_OR_EQUAL("lte"),
     CONTAINS("contains"),

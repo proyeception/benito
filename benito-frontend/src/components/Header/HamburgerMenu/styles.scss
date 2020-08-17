@@ -1,0 +1,51 @@
+$purple: #6b3ca7;
+
+.qui-search-icon {
+  left: 24px;
+  top: 20px;
+  width: 24px;
+  height: 24px;
+}
+
+.qui-search-icon-button {
+  border: none;
+  background-color: #f1f1f1;
+}
+
+.qui-mobile-search-container {
+  background-color: #f1f1f1;
+}
+
+.invert-colors {
+  -webkit-filter: invert(1);
+  filter: invert(1);
+}
+
+.qui-mobile-search {
+  background-color: #f1f1f1;
+  height: 64px;
+  border: none;
+  text-indent: 16px;
+}
+
+.qui-hamburger-accordion-card-header {
+  border-radius: 0px;
+  border-left: none;
+  border-right: none;
+  font-size: 18px;
+}
+
+.qui-hamburger-accordion-card-category {
+  font-size: 16px;
+}
+
+.qui-hamburger-advanced-search-container {
+  font-size: 13px;
+}
+
+.qui-hamburger-advanced-search-button {
+  background-color: $purple;
+  color: white;
+  border-radius: 32px;
+  font-size: 18px;
+}

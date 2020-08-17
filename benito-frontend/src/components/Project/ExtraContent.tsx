@@ -1,9 +1,9 @@
 import React from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
-import { Project } from "../Search/ProjectSummary";
 import ReactMarkdown from "react-markdown";
 import Separator from "./Separator";
+import { Project } from "../../types";
 
 type Props = {
   project: Project;
@@ -20,7 +20,7 @@ const ExtraContent = (props: Props) => {
         <Separator />
         <div className="qui-project-subtitle">Contenido adicional</div>
         <ReactMarkdown
-          source={props.project.extraContent}
+          source={props.project.extraContent.valueOf()}
           renderers={{ image: Image }}
         />
       </div>
