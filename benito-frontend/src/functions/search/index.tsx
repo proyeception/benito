@@ -1,9 +1,8 @@
 import axios, { AxiosRequestConfig, AxiosPromise } from "axios";
 import { benitoHost } from "../../config";
 import { Project } from "../../types";
-import store from "../../store";
 
-interface Params {
+export interface Params {
   name?: String;
   category?: String;
   fromDate?: String;
@@ -13,8 +12,7 @@ interface Params {
   sortMethod?: String;
 }
 
-export function fetchProjects(): AxiosPromise<Array<Project>> {
-  let params = store.getState().search;
+export function fetchProjects(params: Params): AxiosPromise<Array<Project>> {
   let config: AxiosRequestConfig = {
     url: `${benitoHost}/benito/projects${buildQueryParams(params)}`,
   };

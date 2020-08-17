@@ -10,32 +10,30 @@ type Props = {
 };
 
 const ProjectSummary = (props: Props) => (
-  <motion.div
-    className="container-fluid"
+  <motion.div 
+    className="row container-fluid mt-3 ml-0"
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
     exit={{ opacity: 0 }}
   >
-    <div className="row mt-3 ml-0">
-      <div className="col-sm-12 col-md-10">
-        <div className="qui-summary-title qui-font-title">
-          <Link to={{ pathname: `/projects/${props.project.id}` }}>
-            {props.project.title}
-          </Link>
-        </div>
-        <div className="d-sm-block d-md-none">
-          <img className="qui-summary-image-sm" src={props.project.posterUrl} />
-        </div>
-        <div className="qui-summary qui-font-text mt-3">
-          {props.project.description}
-        </div>
-        <div className="qui-authors">
-          {props.project.authors.map((a) => a.fullName).join(", ")}
-        </div>
+    <div className="col-sm-12 col-md-10">
+      <div className="qui-summary-title qui-font-title">
+        <Link to={{ pathname: `/projects/${props.project.id}` }}>
+          {props.project.title}
+        </Link>
       </div>
-      <div className="col-md-2 d-none d-lg-block">
-        <img className="qui-summary-image-md" src={props.project.posterUrl} />
+      <div className="d-sm-block d-md-none">
+        <img className="qui-summary-image-sm" src={props.project.posterUrl} />
       </div>
+      <div className="qui-summary qui-font-text mt-3">
+        {props.project.description}
+      </div>
+      <div className="qui-authors">
+        {props.project.authors.map((a) => a.fullName).join(", ")}
+      </div>
+    </div>
+    <div className="col-md-2 d-none d-lg-block">
+      <img className="qui-summary-image-md" src={props.project.posterUrl} />
     </div>
   </motion.div>
 );

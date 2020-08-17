@@ -1,12 +1,9 @@
 import React from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
-import store from "../../store";
-import { updateProjects } from "../../actions/search";
 import { RootState } from "../../reducers";
 import { connect } from "react-redux";
 import CategorySelector from "../Common/CategorySelector";
-import { fetchProjects } from "../../functions/search";
 import NameInput from "../Common/NameInput";
 import FromDateInput from "../Common/FromDateInput";
 import ToDateInput from "../Common/ToDateInput";
@@ -30,19 +27,6 @@ class HomeSearchBox extends React.Component<Props, State> {
     this.state = {
       loading: false,
     };
-
-    this.search = this.search.bind(this);
-  }
-
-  search() {
-    this.setState({ loading: true }, () =>
-      fetchProjects()
-        .then((res) => res.data)
-        .then((projects) => store.dispatch(updateProjects(projects)))
-        .then(() => this.setState({ loading: false }))
-        .then(() => this.props.setDoRedirect())
-        .catch(console.error)
-    );
   }
 
   render() {

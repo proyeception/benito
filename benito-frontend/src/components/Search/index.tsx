@@ -49,7 +49,7 @@ const Search = (props: Props) => {
   const [loading, setLoading] = useState(props.projects.length == 0);
 
   const search = () => {
-    fetchProjects()
+    fetchProjects(queryParams)
       .then((res) => res.data)
       .then((projects) => store.dispatch(updateProjects(projects)))
       .then(() => setLoading(false))
