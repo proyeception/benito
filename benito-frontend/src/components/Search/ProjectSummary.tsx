@@ -28,7 +28,7 @@ const ProjectSummary = (props: Props) => (
   <div className="row container-fluid mt-3 ml-0">
     <div className="col-sm-12 col-md-10">
       <div className="qui-summary-title qui-font-title">
-        <Link to={{ pathname: `/project/${props.project.id}` }}>
+        <Link to={{ pathname: `/projects/${props.project.id}` }}>
           {props.project.title}
         </Link>
       </div>
