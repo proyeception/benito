@@ -3,6 +3,11 @@ package com.github.proyeception.benito.controller
 import com.github.proyeception.benito.dto.OrderDTO
 import com.github.proyeception.benito.dto.ProjectDTO
 import com.github.proyeception.benito.service.ProjectService
+import org.apache.tika.config.TikaConfig
+import org.apache.tika.metadata.Metadata
+import org.apache.tika.parser.AutoDetectParser
+import org.apache.tika.parser.ParseContext
+import org.apache.tika.sax.BodyContentHandler
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
@@ -35,12 +40,18 @@ class ProjectController(
         return projectService.findProject(id)
     }
 
-
     @RequestMapping("/benito/projects/{projectId}", method = [RequestMethod.POST], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     @ResponseBody
     private fun saveFile(@PathVariable projectId: String,
-                 @RequestParam("file") file: MultipartFile) : ResponseEntity<String> {
-        projectService.saveFile(projectId, file)
+                         @RequestParam("file") file: MultipartFile) : ResponseEntity<String> {
+
+        val parser = AutoDetectParser()
+        val handler = BodyContentHandler()
+        val metadata = Metadata()
+        parser.parse(file.inputStream, handler, metadata)
+        print(handler.toString())
+
         return ResponseEntity.ok("todo oki")
     }
+
 }
