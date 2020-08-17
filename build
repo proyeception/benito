@@ -13,8 +13,8 @@ BACKEND="benito-backend"
 BACKEND_RESOURCES=$BACKEND/src/main/resources
 ARTIFACT="benito-jar-with-dependencies"
 FINAL_ARTIFACT_NAME="benito"
-ENVIRONMENT=$1
-VERSION=$2
+ENVIRONMENT=$0
+VERSION=$1
 
 npm install --prefix $FRONTEND
 npm run "build-$VERSION" --prefix $FRONTEND

@@ -11,8 +11,10 @@ import com.github.proyeception.benito.mock.on
 import io.kotlintest.matchers.shouldBe
 import io.kotlintest.matchers.shouldThrow
 import io.kotlintest.specs.WordSpec
-import kotlinx.coroutines.SupervisorJob
 import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.anyString
+import org.mockito.Mockito.verify
 import java.time.LocalDate
 
 class MedusaClientTest : WordSpec() {
@@ -72,7 +74,7 @@ class MedusaClientTest : WordSpec() {
                 val projectsResponse = listOf<ProjectDTO>(project)
 
                 val expectedEndpoint =
-                        PROJECTS_PATH + QUERY_PARAM_START + STRAPI_SORT_QUERY_PARAM + STRAPI_DATE_FIELD + STRAPI_ASC_IDENTIFIER
+                    PROJECTS_PATH + QUERY_PARAM_START + STRAPI_SORT_QUERY_PARAM + STRAPI_DATE_FIELD + STRAPI_ASC_IDENTIFIER
                 on(medusaConnector.get(eq(expectedEndpoint))).thenReturn(responseMock)
                 on(responseMock.isError()).thenReturn(false)
                 on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
@@ -87,7 +89,7 @@ class MedusaClientTest : WordSpec() {
                 val projectsResponse = listOf<ProjectDTO>(project)
 
                 val expectedEndpoint =
-                        PROJECTS_PATH + QUERY_PARAM_START + STRAPI_SORT_QUERY_PARAM + STRAPI_DATE_FIELD + STRAPI_DESC_IDENTIFIER
+                    PROJECTS_PATH + QUERY_PARAM_START + STRAPI_SORT_QUERY_PARAM + STRAPI_DATE_FIELD + STRAPI_DESC_IDENTIFIER
                 on(medusaConnector.get(eq(expectedEndpoint))).thenReturn(responseMock)
                 on(responseMock.isError()).thenReturn(false)
                 on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
@@ -102,7 +104,7 @@ class MedusaClientTest : WordSpec() {
                 val projectsResponse = listOf<ProjectDTO>(project)
 
                 val expectedEndpoint =
-                        PROJECTS_PATH + QUERY_PARAM_START + STRAPI_SORT_QUERY_PARAM + STRAPI_TITLE_FIELD + STRAPI_ASC_IDENTIFIER
+                    PROJECTS_PATH + QUERY_PARAM_START + STRAPI_SORT_QUERY_PARAM + STRAPI_TITLE_FIELD + STRAPI_ASC_IDENTIFIER
                 on(medusaConnector.get(eq(expectedEndpoint))).thenReturn(responseMock)
                 on(responseMock.isError()).thenReturn(false)
                 on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
@@ -117,7 +119,7 @@ class MedusaClientTest : WordSpec() {
                 val projectsResponse = listOf<ProjectDTO>(project)
 
                 val expectedEndpoint =
-                        PROJECTS_PATH + QUERY_PARAM_START + STRAPI_SORT_QUERY_PARAM + STRAPI_TITLE_FIELD + STRAPI_DESC_IDENTIFIER
+                    PROJECTS_PATH + QUERY_PARAM_START + STRAPI_SORT_QUERY_PARAM + STRAPI_TITLE_FIELD + STRAPI_DESC_IDENTIFIER
                 on(medusaConnector.get(eq(expectedEndpoint))).thenReturn(responseMock)
                 on(responseMock.isError()).thenReturn(false)
                 on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
@@ -134,7 +136,7 @@ class MedusaClientTest : WordSpec() {
                 val fromDate = "2020-06-06"
 
                 val expectedEndpoint =
-                        PROJECTS_PATH + QUERY_PARAM_START + STRAPI_DATE_FIELD + STRAPI_GTE_OPERATOR + fromDate
+                    PROJECTS_PATH + QUERY_PARAM_START + STRAPI_DATE_FIELD + STRAPI_GTE_OPERATOR + fromDate
                 on(medusaConnector.get(eq(expectedEndpoint))).thenReturn(responseMock)
                 on(responseMock.isError()).thenReturn(false)
                 on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
@@ -151,7 +153,7 @@ class MedusaClientTest : WordSpec() {
                 val toDate = "2020-06-06"
 
                 val expectedEndpoint =
-                        PROJECTS_PATH + QUERY_PARAM_START + STRAPI_DATE_FIELD + STRAPI_LTE_OPERATOR + toDate
+                    PROJECTS_PATH + QUERY_PARAM_START + STRAPI_DATE_FIELD + STRAPI_LTE_OPERATOR + toDate
                 on(medusaConnector.get(eq(expectedEndpoint))).thenReturn(responseMock)
                 on(responseMock.isError()).thenReturn(false)
                 on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
@@ -168,7 +170,7 @@ class MedusaClientTest : WordSpec() {
                 val projectName = "name"
 
                 val expectedEndpoint =
-                        PROJECTS_PATH + QUERY_PARAM_START + STRAPI_TITLE_FIELD + STRAPI_CONTAINS_OPERATOR + projectName
+                    PROJECTS_PATH + QUERY_PARAM_START + STRAPI_TITLE_FIELD + STRAPI_CONTAINS_OPERATOR + projectName
                 on(medusaConnector.get(eq(expectedEndpoint))).thenReturn(responseMock)
                 on(responseMock.isError()).thenReturn(false)
                 on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
@@ -185,7 +187,7 @@ class MedusaClientTest : WordSpec() {
                 val projectName = "name"
 
                 val expectedEndpoint =
-                        PROJECTS_PATH + QUERY_PARAM_START + STRAPI_SORT_QUERY_PARAM + STRAPI_DATE_FIELD + STRAPI_ASC_IDENTIFIER + QUERY_PARAM_SEPARATOR + STRAPI_TITLE_FIELD + STRAPI_CONTAINS_OPERATOR + projectName
+                    PROJECTS_PATH + QUERY_PARAM_START + STRAPI_SORT_QUERY_PARAM + STRAPI_DATE_FIELD + STRAPI_ASC_IDENTIFIER + QUERY_PARAM_SEPARATOR + STRAPI_TITLE_FIELD + STRAPI_CONTAINS_OPERATOR + projectName
                 on(medusaConnector.get(eq(expectedEndpoint))).thenReturn(responseMock)
                 on(responseMock.isError()).thenReturn(false)
                 on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
@@ -197,31 +199,77 @@ class MedusaClientTest : WordSpec() {
             }
         }
 
+        "projectCount" should {
+            val responseMock: Response = getMock()
+
+            "make a GET to /projects/count" {
+                on(medusaConnector.get(anyString())).thenReturn(responseMock)
+                on(responseMock.isError()).thenReturn(false)
+                on(responseMock.body).thenReturn("123")
+
+                val expected = 123
+                val actual = medusaClient.projectCount()
+
+                expected shouldBe actual
+                verify(medusaConnector).get(eq("/projects/count"))
+            }
+
+            "throw a failed dependency if medusa responds with a null body" {
+                on(medusaConnector.get(anyString())).thenReturn(responseMock)
+                on(responseMock.isError()).thenReturn(false)
+                on(responseMock.body).thenReturn(null)
+
+                shouldThrow<FailedDependencyException> { medusaClient.projectCount() }
+                verify(medusaConnector).get(eq("/projects/count"))
+            }
+
+            "throw a failed dependency if medusa responds with an error" {
+                on(medusaConnector.get(anyString())).thenReturn(responseMock)
+                on(responseMock.isError()).thenReturn(true)
+
+                shouldThrow<FailedDependencyException> { medusaClient.projectCount() }
+                verify(medusaConnector).get(eq("/projects/count"))
+            }
+        }
+
+        "top10Projects" should {
+            val responseMock: Response = getMock()
+
+            "make a GET to /projects with limit 10" {
+                on(medusaConnector.get(anyString())).thenReturn(responseMock)
+                on(responseMock.isError()).thenReturn(false)
+                on(responseMock.deserializeAs(any(TypeReference::class.java))).thenReturn(null)
+                medusaClient.top10Projects()
+                verify(medusaConnector).get(eq("/projects?_limit=10"))
+            }
+        }
+
         "findProject" should {
             val responseMock: Response = getMock()
             val author = AuthorDTO(
-                    id = "123",
-                    username = "author",
-                    fullName = "UnNombre",
-                    profileUrl = "/authorUrl"
+                id = "123",
+                username = "author",
+                fullName = "UnNombre",
+                profileUrl = "/authorUrl"
             )
 
             val supervisor = SupervisorDTO(
-                    id = "1234",
-                    username = "supervisor",
-                    fullName = "UnNombre",
-                    profileUrl = "/supervisorUrl"
+                id = "1234",
+                username = "supervisor",
+                fullName = "UnNombre",
+                profileUrl = "/supervisorUrl"
             )
 
             val project = MedusaProjectDTO(
-                    id = "1",
-                    title = "project title",
-                    description = "project description",
-                    extraContent = "nice formatted content",
-                    creationDate = LocalDate.of(2020, 2, 6),
-                    poster = PosterDTO("poster"),
-                    authorRefs = listOf(author),
-                    supervisorRefs = listOf(supervisor)
+                id = "1",
+                title = "project title",
+                description = "project description",
+                extraContent = "nice formatted content",
+                creationDate = LocalDate.of(2020, 2, 6),
+                poster = PosterDTO("poster"),
+                authorRefs = listOf(author),
+                supervisorRefs = listOf(supervisor),
+                category = CategoryDTO(name = "Systems", tagName = "systems", imageUrl = "")
             )
 
             "get to /projects/{id} returns specified project" {

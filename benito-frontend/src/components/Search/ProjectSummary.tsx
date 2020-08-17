@@ -1,34 +1,24 @@
 import React from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
+import { Project } from "../../types";
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-
-export type Project = {
-  id: String;
-  title: String;
-  description: String;
-  extraContent: string;
-  posterUrl: string;
-  authors: Array<Person>;
-  creationDate: Date;
-  tags: Array<String>;
-};
-
-export type Person = {
-  username: String;
-  profileUrl: String;
-  fullName: String;
-};
 
 type Props = {
   project: Project;
 };
 
 const ProjectSummary = (props: Props) => (
-  <div className="row container-fluid mt-3 ml-0">
+  <motion.div 
+    className="row container-fluid mt-3 ml-0"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+  >
     <div className="col-sm-12 col-md-10">
       <div className="qui-summary-title qui-font-title">
-        <Link to={{ pathname: `/project/${props.project.id}` }}>
+        <Link to={{ pathname: `/projects/${props.project.id}` }}>
           {props.project.title}
         </Link>
       </div>
@@ -45,7 +35,7 @@ const ProjectSummary = (props: Props) => (
     <div className="col-md-2 d-none d-lg-block">
       <img className="qui-summary-image-md" src={props.project.posterUrl} />
     </div>
-  </div>
+  </motion.div>
 );
 
 export default hot(module)(ProjectSummary);

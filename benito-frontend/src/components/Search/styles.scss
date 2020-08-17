@@ -67,6 +67,18 @@
 }
 
 .qui-search-input-date {
+  @media screen and (max-width: 1879px) {
+    font-size: 13px !important;
+    padding: 10px !important;
+  }
+  @media screen and (max-width: 1365px) {
+    font-size: 9px !important;
+    padding: 8px !important;
+  }
+  @media screen and (min-width: 1880px) {
+    font-size: 1 rem !important;
+    padding-left: 10px !important;
+  }
   border-color: $primary;
   border-radius: 10px;
   max-width: 100%;
@@ -81,6 +93,7 @@
 }
 
 .qui-search-box {
+  background-color: white;
   margin-left: 10px;
   margin-top: 60px;
   border: $primary;
@@ -114,7 +127,4 @@
   border-color: $primary;
   border-radius: 10px;
   border-width: 1px;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  width: 90%;
 }
