@@ -11,13 +11,16 @@ const defaultState: RootState = {
     passwordError: false,
     usernameError: false,
   },
-
   user: {
     session: null,
     username: null,
     data: null,
   },
-
+  home: {
+    featuredProjects: [],
+    latestProjects: [],
+    projectTotal: 0,
+  },
   search: {
     name: "",
     category: "",
@@ -27,6 +30,10 @@ const defaultState: RootState = {
     keyword: "",
     documentation: "",
     sortMethod: SortMethod.DateDesc,
+  },
+  common: {
+    categories: [],
+    isMenuOpen: false,
   },
 };
 

@@ -1,10 +1,10 @@
 import React from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
-import { Project } from "../Search/ProjectSummary";
+import { Project } from "../../types";
 import Title from "./Title";
-import Details from "./Details";
 import Summary from "./Summary";
+import Details from "./Details";
 import Documents from "./Documents";
 import ExtraContent from "./ExtraContent";
 

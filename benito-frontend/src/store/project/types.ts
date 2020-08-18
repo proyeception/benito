@@ -25,25 +25,24 @@ interface UpdateDescriptionAction {
 }
 
 interface UpdatePosterUrlAction {
-    type: typeof UPDATE_POSTERURL;
-    payload: String;
-  }
+  type: typeof UPDATE_POSTERURL;
+  payload: String;
+}
 
+interface UpdateAuthorsAction {
+  type: typeof UPDATE_AUTHORS;
+  payload: Array<Person>;
+}
 
-  interface UpdateAuthorsAction {
-    type: typeof UPDATE_AUTHORS;
-    payload: Array<Person>;
-  }
+interface UpdateCreationDateAction {
+  type: typeof UPDATE_CREATIONDATE;
+  payload: Date;
+}
 
-  interface UpdateCreationDateAction {
-    type: typeof UPDATE_CREATIONDATE;
-    payload: Date;
-  }
-
-  interface UpdateTagsAction {
-    type: typeof UPDATE_TAGS;
-    payload: Array<String>;
-  }
+interface UpdateTagsAction {
+  type: typeof UPDATE_TAGS;
+  payload: Array<String>;
+}
 
   interface UpdateDocumentationAction {
     type: typeof UPDATE_DOCUMENTATION;
@@ -64,7 +63,7 @@ export type ProjectState = {
   id: String;
   title: String;
   description: String;
-  posterUrl: String,
+  posterUrl: String;
   authors: Array<Person>;
   creationDate: Date;
   tags: Array<String>;

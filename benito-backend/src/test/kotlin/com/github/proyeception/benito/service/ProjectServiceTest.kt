@@ -33,8 +33,8 @@ class ProjectServiceTest : WordSpec() {
             )
 
             val documentation = DocumentationDTO(
-                    id = "asd",
-                    fileName = "Acta de proyecto"
+                 id = "asd",
+                 fileName = "Acta de proyecto"
             )
 
             val project = ProjectDTO(
@@ -59,7 +59,12 @@ class ProjectServiceTest : WordSpec() {
                 poster = PosterDTO(url = ""),
                 authorRefs = listOf(author),
                 supervisorRefs = listOf(supervisor),
-                documentation = listOf(documentation)
+                documentation = listOf(documentation),
+                category = CategoryDTO(
+                        name = "Systems",
+                        tagName = "systems",
+                        imageUrl = ""
+                    )
             )
 
             val projects = listOf(newProject)
@@ -74,32 +79,34 @@ class ProjectServiceTest : WordSpec() {
             Mockito.verify(medusaClient).getProjects()
         }
 
-        "should return specific project" {
-            val medusaClient: MedusaClient = getMock()
-            val projectService = ProjectService(
+        "project" should {
+            "should return a specific project" {
+                val medusaClient: MedusaClient = getMock()
+                val projectService = ProjectService(
                     medusaClient = medusaClient
-            )
+                )
 
-            val author = AuthorDTO(
+                val author = AuthorDTO(
                     id = "123",
                     fullName = "Benito Quinquela",
                     username = "author",
                     profileUrl = "/authorUrl"
-            )
+                )
 
-            val supervisor = SupervisorDTO(
+                val supervisor = SupervisorDTO(
                     id = "123",
                     fullName = "Jorge Luis Borges",
                     username = "supervisor",
                     profileUrl = "/supervisorUrl"
-            )
+                )
 
-            val documentation = DocumentationDTO(
+              val documentation = DocumentationDTO(
                     id = "asd",
                     fileName = "Acta de proyecto"
-            )
+              )
 
-            val project = ProjectDTO(
+                val project = ProjectDTO(
+
                     id = "1",
                     title = "project title",
                     description = "project description",
@@ -110,9 +117,10 @@ class ProjectServiceTest : WordSpec() {
                     supervisors = listOf(PersonDTO(username = "supervisor", fullName = "Jorge Luis Borges", profileUrl = "/supervisorUrl")),
                     tags = emptyList(),
                     documentation = listOf(documentation)
-            )
+                    tags = emptyList()
+                )
 
-            val newProject = MedusaProjectDTO(
+                val newProject = MedusaProjectDTO(
                     id = "1",
                     title = "project title",
                     description = "project description",
@@ -122,18 +130,21 @@ class ProjectServiceTest : WordSpec() {
                     authorRefs = listOf(author),
                     supervisorRefs = listOf(supervisor),
                     documentation = listOf(documentation)
-            )
+                    category = CategoryDTO("Systems", "systems", "")
+                )
 
-            val projectResult = newProject
-            val expected = project
+                val projectResult = newProject
+                val expected = project
 
-            on(medusaClient.project("1")).thenReturn(projectResult)
+                on(medusaClient.project("1")).thenReturn(projectResult)
 
-            val actual = projectService.findProject("1")
+                val actual = projectService.findProject("1")
 
-            expected shouldBe actual
+                expected shouldBe actual
 
-            Mockito.verify(medusaClient).project("1")
+                Mockito.verify(medusaClient).project("1")
+            }
         }
+
     }
 }
