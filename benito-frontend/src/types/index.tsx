@@ -7,6 +7,7 @@ export type Project = {
   creationDate: Date;
   tags: Array<String>;
   extraContent: String;
+  documentation: Array<Documentation>;
 };
 
 export type Person = {
@@ -19,4 +20,9 @@ export type Category = {
   name: String;
   imageUrl: String;
   tagName: String;
+};
+
+export type Documentation = {
+  fileName: String;
+  id: String;
 };

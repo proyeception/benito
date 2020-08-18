@@ -7,12 +7,22 @@ type Props = {
   project: Project;
 };
 
-const Documents = (_: Props) => {
-  return (
-    <div className="col-md-6">
-      <div className="qui-project-subtitle">Documentación</div>
-    </div>
-  );
+const Documents = (props: Props) => {
+  console.log(props.project.documentation.length)
+  if (props.project.documentation.length > 0) {
+    return (
+      <div className="col-md-6">
+        <div className="qui-project-subtitle">Documentación</div>
+      </div>
+    );
+  } else {
+    return(
+      <div className="col-md-6">
+        <div className="qui-project-subtitle">Documentación</div>
+        <div className="qui-font-text qui-summary mt-3">El proyecto todavía no cuenta con documentación 😧</div>
+      </div>
+    );
+  }
 };
 
 export default hot(module)(Documents);

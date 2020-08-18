@@ -12,6 +12,7 @@ data class MedusaProjectDTO(
     val poster: PosterDTO,
     val authorRefs: List<AuthorDTO>,
     val supervisorRefs: List<SupervisorDTO>,
+    val documentation: List<DocumentationDTO>,
     val category: CategoryDTO
 )
 
@@ -31,6 +32,11 @@ data class SupervisorDTO(
 
 data class PosterDTO(
     val url: String
+)
+
+data class DocumentationDTO(
+        @JsonProperty("_id") val id: String,
+        val fileName: String
 )
 
 data class CategoryDTO(

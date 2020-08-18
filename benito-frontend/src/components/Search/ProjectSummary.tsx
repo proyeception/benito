@@ -10,7 +10,7 @@ type Props = {
 };
 
 const ProjectSummary = (props: Props) => (
-  <motion.div 
+  <motion.div
     className="row container-fluid mt-3 ml-0"
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
