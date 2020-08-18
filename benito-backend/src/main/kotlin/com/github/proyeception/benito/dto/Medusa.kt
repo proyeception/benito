@@ -12,7 +12,7 @@ data class MedusaProjectDTO(
     val poster: PosterDTO,
     val authorRefs: List<AuthorDTO>,
     val supervisorRefs: List<SupervisorDTO>,
-    val documentation: List<DocumentationDTO>
+    val documentation: List<DocumentationDTO>,
     val category: CategoryDTO
 )
 

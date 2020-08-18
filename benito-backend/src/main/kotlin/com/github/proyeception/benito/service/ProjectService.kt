@@ -45,4 +45,3 @@ open class ProjectService(
         return DownloadableFile("holi.doc", ByteArrayResource(file.readBytes()))
     }
 }
-}
