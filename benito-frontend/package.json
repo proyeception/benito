@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build-prod": "cp environments/prod/config.ts src/config.ts && rimraf build && NODE_ENV=production webpack",
-    "build-test": "cp environments/test/config.ts src/config.ts && rimraf build && NODE_ENV=test webpack",
-    "build-local": "cp environments/local/config.ts src/config.ts && rimraf build && NODE_ENV=local webpack",
+    "build-test": "cp environments/test/config.ts src/config.ts && rimraf build && NODE_ENV=production webpack",
+    "build-local": "cp environments/local/config.ts src/config.ts && rimraf build && NODE_ENV=production webpack",
     "dev": "cp environments/local/config.ts src/config.ts && webpack-dev-server --inline --hot --open",
     "prod": "npm run build && http-server build -p 9290",
     "start": "webpack-dev-server -w --config webpack.config.ts"
