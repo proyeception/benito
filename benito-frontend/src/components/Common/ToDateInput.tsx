@@ -14,6 +14,7 @@ const ToDateInput = (props: Props) => (
     className={props.className}
     action={updateToDate}
     mapper={(search) => search.toDate}
+    placeholder="Hasta"
   />
 );
 

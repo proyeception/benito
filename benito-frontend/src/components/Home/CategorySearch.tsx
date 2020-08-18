@@ -5,7 +5,7 @@ import { Category } from "../../types";
 import Carousel from "react-bootstrap/Carousel";
 import { Link } from "react-router-dom";
 import store from "../../store";
-import { updateCategory } from "../../actions/search";
+import { updateCategory, resetSearchParameters } from "../../actions/search";
 
 type Props = {
   category: Category;
@@ -14,7 +14,10 @@ type Props = {
 const CategorySearch = ({ category }: Props) => (
   <Link
     to={`/search?category=${category.tagName}`}
-    onClick={() => store.dispatch(updateCategory(category.tagName))}
+    onClick={() => {
+      store.dispatch(resetSearchParameters());
+      store.dispatch(updateCategory(category.tagName));
+    }}
   >
     <div>
       <img

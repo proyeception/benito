@@ -51,7 +51,7 @@ const Search = (props: Props) => {
   let index = 0;
 
   const search = () => {
-    fetchProjects()
+    fetchProjects(queryParams)
       .then((res) => res.data)
       .then((ps) => {
         store.dispatch(updateProjects(ps));

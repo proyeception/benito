@@ -1,8 +1,5 @@
 import React from "react";
 import { hot } from "react-hot-loader";
-import store from "../../store";
-import { updateSortMethod } from "../../actions/search";
-import { SortMethod } from "../../store/search/types";
 import { RootState } from "../../reducers";
 import { connect } from "react-redux";
 import CategorySelector from "../Common/CategorySelector";
@@ -12,6 +9,7 @@ import ToDateInput from "../Common/ToDateInput";
 import KeywordInput from "../Common/KeywordInput";
 import DocumentationInput from "../Common/DocumentationInput";
 import SearchButton from "../Common/SearchButton";
+import SortSelector from "../Common/SortSelector";
 
 type Props = {
   searchCallback(): void;
@@ -63,29 +61,7 @@ const SearchBox = (props: Props) => {
       </div>
       <div className="qui-search-filter">
         <div className="qui-font-text">Ordenar proyectos</div>
-        <select
-          className="qui-search-combo form-control"
-          name="sortMethod"
-          id="sort"
-          onChange={(e) =>
-            store.dispatch(
-              updateSortMethod(
-                Object.values(SortMethod).find(
-                  (v) => v.valueOf() === e.target.value
-                )
-              )
-            )
-          }
-        >
-          <optgroup label="Fecha de creación">
-            <option value={SortMethod.DateDesc}>Más recientes</option>
-            <option value={SortMethod.DateAsc}>Más antiguos</option>
-          </optgroup>
-          <optgroup label="Alfabético">
-            <option value={SortMethod.AlphaAsc}>A - Z</option>
-            <option value={SortMethod.AlphaDesc}>Z - A</option>
-          </optgroup>
-        </select>
+        <SortSelector className="qui-search-combo qui-search-input" />
       </div>
       <SearchButton
         className="btn-primary qui-search-btn"

@@ -11,7 +11,7 @@ type Props = {
 
 const ProjectSummary = (props: Props) => (
   <motion.div
-    className="container-fluid"
+    className="row container-fluid mt-3 ml-0"
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
     exit={{ opacity: 0 }}
@@ -36,8 +36,8 @@ const ProjectSummary = (props: Props) => (
           {props.project.authors.map((a) => a.fullName).join(", ")}
         </div>
       </div>
-      <div className="col-md-2 d-none d-lg-block">
-        <img className="qui-summary-image-md" src={props.project.posterUrl} />
+      <div className="d-sm-block d-md-none">
+        <img className="qui-summary-image-sm" src={props.project.posterUrl} />
       </div>
     </div>
   </motion.div>

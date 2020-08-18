@@ -14,6 +14,7 @@ const FromDateInput = (props: Props) => (
     className={props.className}
     action={updateFromDate}
     mapper={(search) => search.fromDate}
+    placeholder="Desde"
   />
 );
 

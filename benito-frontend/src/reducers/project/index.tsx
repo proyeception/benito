@@ -7,7 +7,8 @@ import {
     UPDATE_POSTERURL,
     UPDATE_AUTHORS,
     UPDATE_CREATIONDATE,
-    UPDATE_TAGS
+    UPDATE_TAGS,
+    UPDATE_DOCUEMNTATION
   } from "../../store/project/types";
   
   const defaultProjectState: ProjectState = {
@@ -17,7 +18,8 @@ import {
     posterUrl: "",
     authors: [],
     creationDate: new Date(),
-    tags: []
+    tags: [],
+    documentation: []
   };
   
   function projectReducer(

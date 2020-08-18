@@ -14,6 +14,7 @@ type Props = {
   action: (e: String) => SearchAction;
   mapper: (state: SearchState) => String;
   search: SearchState;
+  placeholder?: String;
 };
 
 const DateInput = (props: Props) => (
@@ -24,6 +25,7 @@ const DateInput = (props: Props) => (
         store.dispatch(props.action(moment(date).format("YYYY-MM-DD")));
       }}
       value={props.mapper(props.search).valueOf()}
+      placeholderText={props.placeholder?.valueOf()}
     />
   </div>
 );
