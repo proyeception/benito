@@ -22,6 +22,7 @@ import { RouteChildrenProps } from "react-router-dom";
 import { motion } from "framer-motion";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "../Common/Loader";
+import NoResultsFound from "./NoResultsFound";
 
 type MatchParams = {
   name?: string;
@@ -109,23 +110,26 @@ const Search = (props: Props) => {
           <div className="qui-search-header p-2 pl-4 qui-font-title uncol-sm-l-1 uncol-sm-r-1">
             Proyectos
           </div>
-          <div className="pl-4 pr-2 uncol-sm-l-3 uncol-sm-r-1">
-            {loading ? (
-              <div className="center">
-                <Loader />
-              </div>
-            ) : (
-              projects.map((p, idx) => (
+          {loading ? (
+            <div className="center">
+              <Loader />
+            </div>
+          ) : projects.length == 0 ? (
+            <NoResultsFound />
+          ) : (
+            <div className="pl-4 pr-2 uncol-sm-l-3 uncol-sm-r-1">
+              {projects.map((p, idx) => (
                 <motion.div
                   initial={{ x: 150, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
                   exit={{ x: -300, opacity: 0 }}
+                  key={idx}
                 >
-                  <ProjectSummary project={p} key={idx} />
+                  <ProjectSummary project={p} />
                 </motion.div>
-              ))
-            )}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </motion.div>

@@ -67,12 +67,14 @@ $card-mobile-size: 21rem;
     width: $card-desktop-size;
     margin-left: 10.5%;
   }
+  border-radius: $card-border-radius !important;
+  border-radius: $card-border-radius !important;
 }
 
 .qui-card-image {
   height: 256px;
-  border-top-left-radius: $card-border-radius;
-  border-top-right-radius: $card-border-radius;
+  border-top-left-radius: $card-border-radius !important;
+  border-top-right-radius: $card-border-radius !important;
 }
 
 .qui-search-invitation-image {

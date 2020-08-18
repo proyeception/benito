@@ -1,9 +1,8 @@
 import React, { CSSProperties } from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
-import { fetchProjects, buildQueryParams } from "../../functions/search";
+import { buildQueryParams } from "../../functions/search";
 import store from "../../store";
-import { updateProjects } from "../../actions/search";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 
 interface Props extends RouteComponentProps {
@@ -19,11 +18,6 @@ const SearchButton = (props: Props) => {
       pathname: "/search",
       search: buildQueryParams(store.getState().search),
     });
-    fetchProjects()
-      .then((res) => res.data)
-      .then((projects) => store.dispatch(updateProjects(projects)))
-      .then(() => (props.onSuccess ? props.onSuccess() : {}))
-      .catch(console.error);
   };
 
   return (
