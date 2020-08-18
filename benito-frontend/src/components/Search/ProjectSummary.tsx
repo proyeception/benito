@@ -5,6 +5,29 @@ import { Project } from "../../types";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
+export type Project = {
+  id: String;
+  title: String;
+  description: String;
+  extraContent: string;
+  posterUrl: string;
+  authors: Array<Person>;
+  creationDate: Date;
+  tags: Array<String>;
+  documentation: Array<Documentation>;
+};
+
+export type Person = {
+  username: String;
+  profileUrl: String;
+  fullName: String;
+};
+
+export type Documentation = {
+  fileName: String;
+  id: String;
+}
+
 type Props = {
   project: Project;
 };
