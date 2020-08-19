@@ -40,7 +40,7 @@ const Title = (props: Props) => {
           className="qui-backdrop qui-project-title"
           style={{ height: height.valueOf() }}
         >
-          {props.project.title}
+          <div className="ml-3">{props.project.title}</div>
         </div>
       </div>
     </div>
