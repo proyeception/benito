@@ -158,3 +158,22 @@
   }
   font-size: lighter;
 }
+
+.qui-search-error-big-text {
+  @media screen and (max-width: 767px) {
+    font-size: 18px;
+  }
+  @media screen and (min-width: 768px) {
+    font-size: 32px;
+  }
+  font-size: bolder;
+}
+
+.qui-search-error-medium-text {
+  @media screen and (max-width: 767px) {
+    font-size: 13px;
+  }
+  @media screen and (min-width: 768px) {
+    font-size: 20px;
+  }
+}

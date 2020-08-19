@@ -24,6 +24,7 @@ import Loader from "../Common/Loader";
 import NoResultsFound from "./NoResultsFound";
 import FadeIn from "../Common/FadeIn";
 import SlideIn from "../Common/SlideIn";
+import SearchError from "./SearchError";
 
 type MatchParams = {
   name?: string;
@@ -50,9 +51,13 @@ const Search = (props: Props) => {
 
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(projects.length == 0);
+  const [isError, setIsError] = useState(false);
+  isError;
+  setIsError;
   let index = 1;
 
   const search = () => {
+    setIsError(false);
     fetchProjects(queryParams)
       .then((res) => res.data)
       .then((ps) => {
@@ -63,7 +68,10 @@ const Search = (props: Props) => {
         }, 50);
       })
       .then(() => setLoading(false))
-      .catch(console.error);
+      .catch((e) => {
+        console.error(e);
+        setIsError(true);
+      });
   };
 
   useEffect(() => {
@@ -106,10 +114,10 @@ const Search = (props: Props) => {
           <div className="qui-search-header p-2 pl-4 qui-font-title uncol-sm-l-1 uncol-sm-r-1">
             Proyectos
           </div>
-          {loading ? (
-            <div className="center">
-              <Loader />
-            </div>
+          {isError ? (
+            <SearchError />
+          ) : loading ? (
+            <Loader />
           ) : store.getState().search.projects.length == 0 ? (
             <NoResultsFound />
           ) : (
