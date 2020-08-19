@@ -8,18 +8,16 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
 
 @Controller
-open class OAuthController{
+open class OAuthController(private val client: GoogleDriveOAuthClient){
 
     @RequestMapping(method= [RequestMethod.GET], value=["/benito/callback"])
     open fun authorizationCallback(@RequestParam("code") code:String, @RequestParam("secret") secret:String): Unit {
-        var client: GoogleDriveOAuthClient = GoogleDriveOAuthClient()
         var token = client.finishNewAuth(code)
     }
 
     @RequestMapping(method= [RequestMethod.GET], value=["/benito/auth"])
     open fun authorization(): ResponseEntity<String> {
-        var client: GoogleDriveOAuthClient = GoogleDriveOAuthClient()
-        var url = client.initNewAuth()
+        val url = client.initNewAuth()
         return ResponseEntity.status(300).body(url)
     }
 

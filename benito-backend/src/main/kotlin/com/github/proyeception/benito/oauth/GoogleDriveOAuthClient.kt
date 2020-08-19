@@ -2,12 +2,10 @@ package com.github.proyeception.benito.oauth
 
 import com.github.scribejava.apis.GoogleApi20
 import com.github.scribejava.core.model.OAuth2AccessToken
+import com.github.scribejava.core.oauth.OAuth20Service
 import java.util.*
 
-class GoogleDriveOAuthClient: OAuthClient {
-
-    constructor() : super(GoogleApi20.instance(), "https://www.googleapis.com/auth/drive", "CLIENT_ID", "CLIENT_SECRET", "RUTA AL OUATH CONTROLLER")
-    constructor(token:String) : super(token, GoogleApi20.instance(), "https://www.googleapis.com/auth/drive","CLIENT_ID", "CLIENT_SECRET", "RUTA AL OUATH CONTROLLER")
+class GoogleDriveOAuthClient(oAuth20Service: OAuth20Service, token: String) : OAuthClient(GoogleApi20.instance(), "https://www.googleapis.com/auth/drive", "CLIENT_ID", "CLIENT_SECRET", "RUTA AL OUATH CONTROLLER", oAuth20Service, token) {
 
     /*
     * Queda pendiente el terminar de crear nuevos usuarios
@@ -20,7 +18,7 @@ class GoogleDriveOAuthClient: OAuthClient {
         val additionalParams: MutableMap<String, String> = HashMap<String, String>()
         additionalParams["access_type"] = "offline"
         additionalParams["prompt"] = "consent"
-        val authorizationUrl = service.createAuthorizationUrlBuilder()
+        val authorizationUrl = oAuth20Service.createAuthorizationUrlBuilder()
                 .state(secretState)
                 .additionalParams(additionalParams)
                 .build()
@@ -28,7 +26,7 @@ class GoogleDriveOAuthClient: OAuthClient {
     }
 
     override fun finishNewAuth(authorization: String): String {
-        var accessToken: OAuth2AccessToken = service.getAccessToken(authorization)
+        var accessToken: OAuth2AccessToken = oAuth20Service.getAccessToken(authorization)
         this.token = accessToken.refreshToken
         return token
     }

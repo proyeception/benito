@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.*
 
 @Controller
 class DocumentationController(
-    private val projectService: ProjectService
+    private val projectService: ProjectService,
+    private val client: GoogleDriveOAuthClient
 ) {
 
     @RequestMapping("/benito/documentation/{id}", method = [RequestMethod.GET])
     @ResponseBody
     @CrossOrigin
     private fun downloadDocument(@PathVariable id: String): ResponseEntity<String> {
-        val client: GoogleDriveOAuthClient = GoogleDriveOAuthClient()
         return ResponseEntity.status(300).body(client.getFile(id))
     }
 }
