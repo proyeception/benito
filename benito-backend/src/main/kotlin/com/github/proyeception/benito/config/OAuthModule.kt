@@ -11,10 +11,12 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 open class OAuthModule {
     @Bean("googleDriveOAuthClient")
-    open fun googleDriveOAuthClient(oAuth20Service: OAuth20Service, @Value("google.token")token: String): GoogleDriveOAuthClient = GoogleDriveOAuthClient(oAuth20Service, token)
+    open fun googleDriveOAuthClient(oAuth20Service: OAuth20Service, @Value("google.token")token: String): GoogleDriveOAuthClient = GoogleDriveOAuthClient(oAuth20Service, "1//0hGvXqiYLwBoBCgYIARAAGBESNwF-L9Iro1MSXRR1mQrIWOD86bqcedYMHGk8WoU1LvGRrLtpmv9gzg11cj-sV9rPscVwM-vpT0M")
 
     @Bean("oAuth20Service")
-    open fun OAuth20Service(@Value("google.secret")secret: String, @Value("google.token")token: String): OAuth20Service =  ServiceBuilder(token)
+    open fun OAuth20Service(@Value("google.secret")secret: String, @Value("google.id")id: String): OAuth20Service =  ServiceBuilder(id)
             .apiSecret(secret)
+            .defaultScope("https://www.googleapis.com/auth/drive")
+            .callback("http://example.com/callback")
             .build(GoogleApi20.instance());
 }
