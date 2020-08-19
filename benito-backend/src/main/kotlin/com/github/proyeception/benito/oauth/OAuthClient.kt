@@ -12,8 +12,8 @@ import sun.net.www.protocol.jar.URLJarFileCallBack
 
 abstract class OAuthClient(service: OAuth20Service, token: String){
 
-    protected var service:OAuth20Service = service;
-    protected var token:String = token;
+    protected var service:OAuth20Service = service
+    protected var token:String = token
 
     constructor(instance: DefaultApi20, scope: String, clientId: String, clientSecret: String, callback:String) {
         this.service = ServiceBuilder(clientId)

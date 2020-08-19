@@ -53,12 +53,6 @@ enum class OrderDTO(val sortMethod: String) {
     ALPHA_DESC("title:DESC"),
 }
 
-
-data class DownloadableFile(
-        val fileName: String,
-        val file: ByteArrayResource
-)
-
 data class CountDTO(
     val total: Int
 

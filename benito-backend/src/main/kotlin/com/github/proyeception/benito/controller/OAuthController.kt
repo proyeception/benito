@@ -3,7 +3,6 @@ package com.github.proyeception.benito.controller
 import com.github.proyeception.benito.oauth.GoogleDriveOAuthClient
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
@@ -24,9 +23,4 @@ open class OAuthController{
         return ResponseEntity.status(300).body(url)
     }
 
-    @RequestMapping(method= [RequestMethod.GET], value=["/benito/file/{fileId}"])
-    open fun getFile(@PathVariable("fileId") id:String): ResponseEntity<String> {
-        var client: GoogleDriveOAuthClient = GoogleDriveOAuthClient()
-        return ResponseEntity.status(300).body(client.getFile(id))
-    }
 }

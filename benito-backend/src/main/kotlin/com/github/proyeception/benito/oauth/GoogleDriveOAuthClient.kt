@@ -6,7 +6,7 @@ import java.util.*
 
 class GoogleDriveOAuthClient: OAuthClient {
 
-    constructor() : super(GoogleApi20.instance(), "https://www.googleapis.com/auth/drive", "CLIENT_ID", "CLIENT_SECRET," "RUTA AL OUATH CONTROLLER")
+    constructor() : super(GoogleApi20.instance(), "https://www.googleapis.com/auth/drive", "CLIENT_ID", "CLIENT_SECRET", "RUTA AL OUATH CONTROLLER")
     constructor(token:String) : super(token, GoogleApi20.instance(), "https://www.googleapis.com/auth/drive","CLIENT_ID", "CLIENT_SECRET", "RUTA AL OUATH CONTROLLER")
 
     /*
