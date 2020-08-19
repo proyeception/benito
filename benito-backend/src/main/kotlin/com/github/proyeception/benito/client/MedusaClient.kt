@@ -56,7 +56,8 @@ open class MedusaClient(
     private fun String?.replaceWhitespaces(): String? =
             this?.let { this.replace(" ", "+") } ?: this
 
-    fun saveFile(projectId: String, file: Any) {
+
+    fun saveFile(projectId: String, name: String, driveId: String, file: Any) {
         //TODO
     }
 

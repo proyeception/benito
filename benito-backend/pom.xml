@@ -20,7 +20,7 @@
         <junit4.version>4.13</junit4.version>
         <junit5.version>5.6.2</junit5.version>
         <jackson.version>2.10.1</jackson.version>
-        <poi.version>3.10-FINAL</poi.version>
+        <poi.version>3.17</poi.version>
 
         <!-- compiler -->
         <java.compiler.version>1.8</java.compiler.version>
@@ -211,6 +211,13 @@
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
             <version>${poi.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.xmlbeans/xmlbeans -->
+        <dependency>
+            <groupId>org.apache.xmlbeans</groupId>
+            <artifactId>xmlbeans</artifactId>
+            <version>2.6.0</version>
         </dependency>
 
 
