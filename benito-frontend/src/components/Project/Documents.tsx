@@ -2,6 +2,7 @@ import React from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
 import { Project } from "../../types";
+import DownloadDocumentation from "./DownloadDocumentation";
 
 type Props = {
   project: Project;
@@ -13,6 +14,10 @@ const Documents = (props: Props) => {
     return (
       <div className="col-md-6">
         <div className="qui-project-subtitle">Documentación</div>
+        {props.project.documentation.map((d, idx) => (
+            <DownloadDocumentation documentation={d} key={idx} />)
+          )
+        }
       </div>
     );
   } else {
