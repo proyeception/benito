@@ -7,7 +7,7 @@ import FeaturedGallery from "./FeaturedGallery";
 import Proyectate from "./Proyectate";
 import { RootState } from "../../reducers";
 import { connect } from "react-redux";
-import { motion } from "framer-motion";
+import FadeIn from "../Common/FadeIn";
 
 type Props = {
   name: String;
@@ -24,18 +24,14 @@ class Home extends React.Component<Props> {
 
   render() {
     return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-      >
+      <FadeIn>
         <HomeSearchBox
           setDoRedirect={() => this.setState({ doRedirect: true })}
         />
         <FeaturedGallery />
         <CategoriesSearchCarousel />
         <Proyectate />
-      </motion.div>
+      </FadeIn>
     );
   }
 }

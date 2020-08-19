@@ -3,6 +3,7 @@ import { hot } from "react-hot-loader";
 import "./styles.scss";
 import { Project } from "../../types";
 import { Link } from "react-router-dom";
+import FadeIn from "../Common/FadeIn";
 
 type Props = {
   project: Project;
@@ -10,7 +11,7 @@ type Props = {
 
 const FeaturedProject = ({ project }: Props) => {
   return (
-    <div className="card qui-featured-card">
+    <FadeIn className="card qui-featured-card">
       <img
         className="card-img-top qui-card-image"
         src={project.posterUrl.valueOf()}
@@ -25,7 +26,7 @@ const FeaturedProject = ({ project }: Props) => {
           <div className="btn btn-primary">Ver más</div>
         </Link>
       </div>
-    </div>
+    </FadeIn>
   );
 };
 

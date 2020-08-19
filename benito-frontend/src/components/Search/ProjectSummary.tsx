@@ -2,7 +2,6 @@ import React from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
 import { Project } from "../../types";
-import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
 type Props = {
@@ -10,7 +9,7 @@ type Props = {
 };
 
 const ProjectSummary = (props: Props) => (
-  <motion.div className="row container-fluid mt-3 ml-0">
+  <div className="row container-fluid mt-3 ml-0">
     <div className="col-sm-12 col-md-10">
       <div className="qui-summary-title qui-font-title">
         <Link to={{ pathname: `/projects/${props.project.id}` }}>
@@ -30,7 +29,7 @@ const ProjectSummary = (props: Props) => (
     <div className="col-md-2 d-none d-lg-block">
       <img className="qui-summary-image-md" src={props.project.posterUrl} />
     </div>
-  </motion.div>
+  </div>
 );
 
 export default hot(module)(ProjectSummary);

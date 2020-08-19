@@ -19,10 +19,11 @@ import {
 import { fetchProjects } from "../../functions/search";
 import qs from "qs";
 import { RouteChildrenProps } from "react-router-dom";
-import { motion } from "framer-motion";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "../Common/Loader";
 import NoResultsFound from "./NoResultsFound";
+import FadeIn from "../Common/FadeIn";
+import SlideIn from "../Common/SlideIn";
 
 type MatchParams = {
   name?: string;
@@ -49,7 +50,7 @@ const Search = (props: Props) => {
 
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(projects.length == 0);
-  let index = 0;
+  let index = 1;
 
   const search = () => {
     fetchProjects(queryParams)
@@ -91,12 +92,7 @@ const Search = (props: Props) => {
   }, []);
 
   return (
-    <motion.div
-      className="container-fluid"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-    >
+    <FadeIn className="container-fluid">
       <div className="row">
         <div className="col-md-2 qui-searchbox-md d-none d-lg-block">
           <SearchBox
@@ -114,25 +110,20 @@ const Search = (props: Props) => {
             <div className="center">
               <Loader />
             </div>
-          ) : projects.length == 0 ? (
+          ) : store.getState().search.projects.length == 0 ? (
             <NoResultsFound />
           ) : (
             <div className="pl-4 pr-2 uncol-sm-l-3 uncol-sm-r-1">
               {projects.map((p, idx) => (
-                <motion.div
-                  initial={{ x: 150, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  exit={{ x: -300, opacity: 0 }}
-                  key={idx}
-                >
+                <SlideIn key={idx}>
                   <ProjectSummary project={p} />
-                </motion.div>
+                </SlideIn>
               ))}
             </div>
           )}
         </div>
       </div>
-    </motion.div>
+    </FadeIn>
   );
 };
 

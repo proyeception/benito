@@ -6,7 +6,7 @@ import ProjectInfo from "./ProjectInfo";
 import "./styles.scss";
 import { RouteComponentProps } from "react-router";
 import { Project } from "../../types";
-import { motion } from "framer-motion";
+import FadeIn from "../Common/FadeIn";
 
 type MatchParams = {
   projectId: string;
@@ -44,18 +44,14 @@ class ViewProject extends Component<Props, State> {
 
   render() {
     return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-      >
+      <FadeIn>
         <div className="d-block d-md-none">
           <ProjectInfo project={this.state.project} />
         </div>
         <div className="d-none d-md-block container-fluid">
           <ProjectInfo project={this.state.project} />
         </div>
-      </motion.div>
+      </FadeIn>
     );
   }
 }

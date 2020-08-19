@@ -8,7 +8,7 @@ import Details from "./Details";
 import Documents from "./Documents";
 import ExtraContent from "./ExtraContent";
 import Loader from "../Common/Loader";
-import { motion } from "framer-motion";
+import FadeIn from "../Common/FadeIn";
 
 type Props = {
   project?: Project;
@@ -29,12 +29,7 @@ const ProjectInfo = (props: Props) => {
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="ml-md-5 mr-md-5 mt-md-5"
-    >
+    <FadeIn className="ml-md-5 mr-md-5 mt-md-5">
       <Title
         project={props.project}
         maxHeight={MAX_DESKTOP_HEIGHT}
@@ -55,7 +50,7 @@ const ProjectInfo = (props: Props) => {
           <ExtraContent project={props.project} />
         </div>
       </div>
-    </motion.div>
+    </FadeIn>
   );
 };
 
