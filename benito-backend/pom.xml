@@ -291,6 +291,21 @@
             <version>1.4.0</version>
         </dependency>
         <!-- Typesafe Config -->
+
+        <!-- Oauth library -->
+        <dependency>
+            <groupId>com.github.scribejava</groupId>
+            <artifactId>scribejava-core</artifactId>
+            <version>7.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.scribejava</groupId>
+            <artifactId>scribejava-apis</artifactId>
+            <version>7.0.0</version>
+        </dependency>
+        <!-- Oauth library -->
+
     </dependencies>
 
     <build>
