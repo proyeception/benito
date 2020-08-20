@@ -150,8 +150,15 @@ $card-mobile-size: 21rem;
 }
 
 .qui-tour-image {
-  max-height: 480px;
-  max-width: 360px;
+  @media screen and (min-width: 768px) {
+    max-height: 480px;
+    max-width: 360px;
+  }
+
+  @media screen and (max-width: 767px) {
+    max-height: 120px;
+    max-width: 160px;
+  }
 }
 
 .qui-tour-search-title {

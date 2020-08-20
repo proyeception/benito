@@ -10,17 +10,14 @@ import { RootState } from "../../reducers";
 import { connect } from "react-redux";
 import { resetSearchParameters } from "../../actions/search";
 
-const shareProjects =
-  "https://res.cloudinary.com/proyectate/image/upload/v1596677419/idea_toazgb.png";
+const shareProjects = "https://i.imgur.com/9TvDrss.png";
 
-const search =
-  "https://res.cloudinary.com/proyectate/image/upload/v1596726920/icon_colored_rnxs2w.png";
+const search = "https://i.imgur.com/TyS2Ut0.png";
 
 type Props = {
   projectCount: Number;
   categoryCount: Number;
 };
-
 const Proyectate = (props: Props) => {
   useEffect(() => {
     axios
@@ -34,7 +31,7 @@ const Proyectate = (props: Props) => {
     <div className="qui-tour mt-5 pb-5 mb-5">
       <div className="container-md pt-5">
         <div className="row">
-          <div className="col-6 center-horizontally flex-column">
+          <div className="col-12 col-md-6 center-horizontally flex-column">
             <div className="font-weight-bold qui-tour-title">
               Compartí tus ideas 🤝
             </div>
@@ -43,16 +40,13 @@ const Proyectate = (props: Props) => {
               comunidad! Lo podés actualizar cuando quieras.
             </div>
           </div>
-          <div className="col-6 center">
-            <img
-              src={shareProjects}
-              className="img-fluid w-100 qui-tour-image"
-            />
+          <div className="col-12 col-md-6 center mt-4 mt-md-0">
+            <img src={shareProjects} className="img-fluid qui-tour-image" />
           </div>
-          <div className="col-6 center pt-5">
-            <img src={search} className="img-fluid w-100 qui-tour-image" />
+          <div className="d-none d-md-block col-md-6 center pt-5">
+            <img src={search} className="qui-tour-image img-fluid" />
           </div>
-          <div className="col-6 pt-5 center-horizontally flex-column">
+          <div className="col-12 col-md-6 pt-5 center-horizontally flex-column">
             <div className="font-weight-bold qui-tour-title">
               Encontrá proyectos 🔭
             </div>
@@ -62,7 +56,10 @@ const Proyectate = (props: Props) => {
               los proyectos mas buscados.
             </div>
           </div>
-          <div className="col-12 pt-5 center-horizontally flex-column">
+          <div className="d-flex d-md-none col-12 center mt-2">
+            <img src={search} className="qui-tour-image img-fluid" />
+          </div>
+          <div className="col-12 pt-3 pt-md-5 center-horizontally flex-column">
             <div className="font-weight-bold qui-tour-title text-center">
               Más de{" "}
               {props.projectCount ? props.projectCount.valueOf() - 2 : ""}{" "}
