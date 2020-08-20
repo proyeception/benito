@@ -20,7 +20,7 @@
         <junit4.version>4.13</junit4.version>
         <junit5.version>5.6.2</junit5.version>
         <jackson.version>2.10.1</jackson.version>
-        <poi.version>3.17</poi.version>
+        <poi.version>3.10-FINAL</poi.version>
 
         <!-- compiler -->
         <java.compiler.version>1.8</java.compiler.version>
@@ -201,26 +201,33 @@
             <artifactId>commons-validator</artifactId>
             <version>1.6</version>
         </dependency>
+        <!-- Apache Commons -->
 
+        <!-- Apache POI -->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
-            <version>${poi.version}</version>
+            <version>4.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
-            <version>${poi.version}</version>
+            <version>4.0.0</version>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.apache.xmlbeans/xmlbeans -->
         <dependency>
-            <groupId>org.apache.xmlbeans</groupId>
-            <artifactId>xmlbeans</artifactId>
-            <version>2.6.0</version>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-scratchpad</artifactId>
+            <version>4.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml-schemas</artifactId>
+            <version>4.0.0</version>
+        </dependency>
+        <!-- Apache POI -->
 
 
+        <!-- Apache TIKA -->
         <!-- https://mvnrepository.com/artifact/org.apache.tika/tika-core -->
         <dependency>
             <groupId>org.apache.tika</groupId>
@@ -234,8 +241,8 @@
             <artifactId>tika-parsers</artifactId>
             <version>1.24.1</version>
         </dependency>
+        <!-- Apache TIKA -->
 
-        <!-- Apache Commons -->
 
         <!-- Lombok -->
         <dependency>

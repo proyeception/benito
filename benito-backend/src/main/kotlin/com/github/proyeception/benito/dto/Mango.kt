@@ -11,7 +11,8 @@ data class ProjectDTO(
     val posterUrl: String,
     val authors: List<PersonDTO>,
     val supervisors: List<PersonDTO>,
-    val tags: List<String>
+    val tags: List<String>,
+    val documentation: List<FileDTO>
 ) {
     constructor(medusaProjectDTO: MedusaProjectDTO) : this(
         id = medusaProjectDTO.id,
@@ -34,7 +35,13 @@ data class ProjectDTO(
                 profileUrl = it.profileUrl
             )
         },
-        tags = emptyList()
+        tags = emptyList(),
+        documentation = medusaProjectDTO.documents.map {
+            FileDTO(
+                name = it.name,
+                driveId = it.driveId
+            )
+        }
     )
 }
 
@@ -42,4 +49,9 @@ data class PersonDTO(
     val username: String,
     val fullName: String,
     val profileUrl: String
+)
+
+data class FileDTO(
+    val name: String,
+    val driveId: String
 )

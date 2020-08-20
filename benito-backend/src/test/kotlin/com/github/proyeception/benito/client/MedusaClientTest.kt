@@ -3,9 +3,7 @@ package com.github.proyeception.benito.client
 import com.fasterxml.jackson.core.type.TypeReference
 import com.github.proyeception.benito.connector.Connector
 import com.github.proyeception.benito.connector.Response
-import com.github.proyeception.benito.dto.OrderDTO
-import com.github.proyeception.benito.dto.PersonDTO
-import com.github.proyeception.benito.dto.ProjectDTO
+import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.FailedDependencyException
 import com.github.proyeception.benito.mock.eq
 import com.github.proyeception.benito.mock.getMock
@@ -35,6 +33,13 @@ class MedusaClientTest : WordSpec() {
                 profileUrl = "/supervisorUrl"
             )
 
+            val documentation = DocumentDTO(
+                id = "123",
+                name = "cool project",
+                driveId = "abc123",
+                content = "very cool project indeed"
+            )
+
             val project = ProjectDTO(
                 id = "1",
                 title = "project title",
@@ -44,7 +49,8 @@ class MedusaClientTest : WordSpec() {
                 posterUrl = "",
                 authors = listOf(author),
                 supervisors = listOf(supervisor),
-                tags = listOf("tag1", "tag2")
+                tags = listOf("tag1", "tag2"),
+                documentation = listOf(FileDTO(name = "cool project", driveId = "abc123"))
             )
 
             "get to /projects returns all projects" {
@@ -212,6 +218,13 @@ class MedusaClientTest : WordSpec() {
                     profileUrl = "/supervisorUrl"
             )
 
+            val documentation = DocumentDTO(
+                id = "123",
+                name = "cool project",
+                driveId = "abc123",
+                content = "very cool project indeed"
+            )
+
             val project = ProjectDTO(
                     id = "1",
                     title = "project title",
@@ -221,7 +234,8 @@ class MedusaClientTest : WordSpec() {
                     posterUrl = "",
                     authors = listOf(author),
                     supervisors = listOf(supervisor),
-                    tags = listOf("tag1", "tag2")
+                    tags = listOf("tag1", "tag2"),
+                    documentation = listOf(FileDTO(name = "cool project", driveId = "abc123"))
             )
 
             "get to /projects/{id} returns specified project" {

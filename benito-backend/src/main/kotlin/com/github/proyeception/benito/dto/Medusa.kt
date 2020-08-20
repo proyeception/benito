@@ -12,7 +12,8 @@ data class MedusaProjectDTO(
     val creationDate: LocalDate,
     val poster: PosterDTO,
     val authorRefs: List<AuthorDTO>,
-    val supervisorRefs: List<SupervisorDTO>
+    val supervisorRefs: List<SupervisorDTO>,
+    val documents: List<DocumentDTO>
 )
 
 data class AuthorDTO(
@@ -27,6 +28,13 @@ data class SupervisorDTO(
     val username: String,
     val profileUrl: String,
     val fullName: String
+)
+
+data class DocumentDTO(
+    @JsonProperty("_id") val id: String,
+    val name: String,
+    val driveId: String,
+    val content: String?
 )
 
 data class PosterDTO(

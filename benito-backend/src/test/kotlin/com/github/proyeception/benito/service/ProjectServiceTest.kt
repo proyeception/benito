@@ -32,6 +32,13 @@ class ProjectServiceTest : WordSpec() {
                 profileUrl = "/supervisorUrl"
             )
 
+            val documentation = DocumentDTO(
+                id = "123",
+                name = "cool project",
+                driveId = "abc123",
+                content = "very cool project indeed"
+            )
+
             val project = ProjectDTO(
                 id = "1",
                 title = "project title",
@@ -41,7 +48,8 @@ class ProjectServiceTest : WordSpec() {
                 posterUrl = "",
                 authors = listOf(PersonDTO(username = "author", fullName = "UnNombre", profileUrl = "/authorUrl")),
                 supervisors = listOf(PersonDTO(username = "supervisor", fullName = "UnNombre", profileUrl = "/supervisorUrl")),
-                tags = emptyList()
+                tags = emptyList(),
+                documentation = listOf(FileDTO(name = "cool project", driveId = "abc123"))
             )
 
             val newProject = MedusaProjectDTO(
@@ -52,7 +60,8 @@ class ProjectServiceTest : WordSpec() {
                 creationDate = LocalDate.of(2020, 2, 6),
                 poster = PosterDTO(url = ""),
                 authorRefs = listOf(author),
-                supervisorRefs = listOf(supervisor)
+                supervisorRefs = listOf(supervisor),
+                documents = listOf(documentation)
             )
 
             val projects = listOf(newProject)
@@ -87,6 +96,13 @@ class ProjectServiceTest : WordSpec() {
                     profileUrl = "/supervisorUrl"
             )
 
+            val documentation = DocumentDTO(
+                id = "123",
+                name = "cool project",
+                driveId = "abc123",
+                content = "very cool project indeed"
+            )
+
             val project = ProjectDTO(
                     id = "1",
                     title = "project title",
@@ -96,7 +112,8 @@ class ProjectServiceTest : WordSpec() {
                     posterUrl = "",
                     authors = listOf(PersonDTO(username = "author", fullName = "UnNombre", profileUrl = "/authorUrl")),
                     supervisors = listOf(PersonDTO(username = "supervisor", fullName = "UnNombre", profileUrl = "/supervisorUrl")),
-                    tags = emptyList()
+                    tags = emptyList(),
+                    documentation = listOf(FileDTO(name = "cool project", driveId = "abc123"))
             )
 
             val newProject = MedusaProjectDTO(
@@ -107,7 +124,8 @@ class ProjectServiceTest : WordSpec() {
                     creationDate = LocalDate.of(2020, 2, 6),
                     poster = PosterDTO(url = ""),
                     authorRefs = listOf(author),
-                    supervisorRefs = listOf(supervisor)
+                    supervisorRefs = listOf(supervisor),
+                    documents = listOf(documentation)
             )
 
             val projectResult = newProject

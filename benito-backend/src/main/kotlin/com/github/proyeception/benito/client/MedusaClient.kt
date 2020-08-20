@@ -6,6 +6,8 @@ import com.github.proyeception.benito.dto.MedusaFilter
 import com.github.proyeception.benito.dto.MedusaProjectDTO
 import com.github.proyeception.benito.dto.OrderDTO
 import com.github.proyeception.benito.exception.FailedDependencyException
+import com.google.gson.JsonObject
+import org.json.simple.JSONObject
 import org.slf4j.LoggerFactory
 
 open class MedusaClient(
@@ -57,8 +59,18 @@ open class MedusaClient(
             this?.let { this.replace(" ", "+") } ?: this
 
 
-    fun saveFile(projectId: String, name: String, driveId: String, file: Any) {
+    fun saveFile(projectId: String, name: String, driveId: String, content: String) {
         //TODO
+
+        val endpoint = "/projects/$projectId/documents"
+
+        val document = JSONObject()
+        document.put("file_name", name)
+        document.put("drive_id", driveId)
+        document.put("content", content)
+        val response = medusaConnector.post(endpoint, document)
+
+        print(response.body)
     }
 
 
