@@ -11,7 +11,7 @@ type Props = {
 const ProjectSummary = (props: Props) => (
   <div className="row container-fluid mt-3 ml-0">
     <div className="col-sm-12 col-md-10">
-      <div className="qui-summary-title qui-font-title">
+      <div className="qui-summary-title font-size-24 font-size-48-md">
         <Link to={{ pathname: `/projects/${props.project.id}` }}>
           {props.project.title}
         </Link>
@@ -26,7 +26,7 @@ const ProjectSummary = (props: Props) => (
         {props.project.authors.map((a) => a.fullName).join(", ")}
       </div>
     </div>
-    <div className="col-md-2 d-none d-lg-block">
+    <div className="col-md-2 d-none d-md-flex align-items-center">
       <img className="qui-summary-image-md" src={props.project.posterUrl} />
     </div>
   </div>

@@ -111,7 +111,7 @@ const Search = (props: Props) => {
           />
         </div>
         <div className="col-md-10 qui-box mt-md-5">
-          <div className="qui-search-header p-2 pl-4 qui-font-title uncol-sm-l-1 uncol-sm-r-1">
+          <div className="qui-search-header p-2 pl-4 font-size-24 font-size-48-md uncol-sm-l-1 uncol-sm-r-1">
             Proyectos
           </div>
           {isError ? (

@@ -1,0 +1,18 @@
+$small-max-breakpoint: 767px;
+$large-min-breakpoint: 768px;
+
+@for $i from 8 through 48 {
+  .font-size-#{$i} {
+    font-size: #{$i}px;
+  }
+
+  .font-size-#{$i}-md {
+    @media screen and (min-width: $large-min-breakpoint) {
+      font-size: #{$i}px;
+    }
+  }
+}
+
+.text-white {
+  color: white;
+}
