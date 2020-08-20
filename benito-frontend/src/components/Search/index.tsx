@@ -7,7 +7,6 @@ import { connect } from "react-redux";
 import { Project } from "../../types";
 import store from "../../store";
 import {
-  updateProjects,
   updateCategory,
   updateName,
   updateDocumentation,
@@ -15,6 +14,7 @@ import {
   updateToDate,
   updateKeyword,
   emptyProjects,
+  updateProjects,
 } from "../../actions/search";
 import { fetchProjects } from "../../functions/search";
 import qs from "qs";
@@ -22,7 +22,6 @@ import { RouteChildrenProps } from "react-router-dom";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "../Common/Loader";
 import NoResultsFound from "./NoResultsFound";
-import FadeIn from "../Common/FadeIn";
 import SlideIn from "../Common/SlideIn";
 import SearchError from "./SearchError";
 
@@ -44,6 +43,21 @@ interface Props extends RouteChildrenProps<MatchParams> {
   sortMethod: String;
 }
 
+function passQueryParamsToState(queryParams: MatchParams) {
+  queryParams.category
+    ? store.dispatch(updateCategory(queryParams.category))
+    : {};
+  queryParams.name ? store.dispatch(updateName(queryParams.name)) : {};
+  queryParams.documentation
+    ? store.dispatch(updateDocumentation(queryParams.documentation))
+    : {};
+  queryParams.fromDate
+    ? store.dispatch(updateFromDate(queryParams.fromDate))
+    : {};
+  queryParams.toDate ? store.dispatch(updateToDate(queryParams.toDate)) : {};
+  queryParams.keyword ? store.dispatch(updateKeyword(queryParams.keyword)) : {};
+}
+
 const Search = (props: Props) => {
   let queryParams: MatchParams = qs.parse(props.location.search, {
     ignoreQueryPrefix: true,
@@ -52,20 +66,20 @@ const Search = (props: Props) => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(projects.length == 0);
   const [isError, setIsError] = useState(false);
-  isError;
-  setIsError;
   let index = 1;
 
-  const search = () => {
-    setIsError(false);
-    fetchProjects(queryParams)
+  const timeout = 50;
+
+  const search = (params?: MatchParams) => {
+    fetchProjects(params ? params : props)
       .then((res) => res.data)
       .then((ps) => {
         store.dispatch(updateProjects(ps));
-        setInterval(() => {
+        const intervalId = setInterval(() => {
           setProjects(ps.slice(0, index));
           index++;
         }, 50);
+        setTimeout(() => clearInterval(intervalId), (ps.length + 1) * timeout);
       })
       .then(() => setLoading(false))
       .catch((e) => {
@@ -75,24 +89,8 @@ const Search = (props: Props) => {
   };
 
   useEffect(() => {
-    queryParams.category
-      ? store.dispatch(updateCategory(queryParams.category))
-      : {};
-    queryParams.name ? store.dispatch(updateName(queryParams.name)) : {};
-    queryParams.documentation
-      ? store.dispatch(updateDocumentation(queryParams.documentation))
-      : {};
-    queryParams.fromDate
-      ? store.dispatch(updateFromDate(queryParams.fromDate))
-      : {};
-    queryParams.toDate ? store.dispatch(updateToDate(queryParams.toDate)) : {};
-    queryParams.keyword
-      ? store.dispatch(updateKeyword(queryParams.keyword))
-      : {};
-
-    if (projects.length == 0) {
-      search();
-    }
+    passQueryParamsToState(queryParams);
+    search(queryParams);
 
     return () => {
       store.dispatch(emptyProjects());
@@ -100,7 +98,7 @@ const Search = (props: Props) => {
   }, []);
 
   return (
-    <FadeIn className="container-fluid">
+    <div className="container-fluid">
       <div className="row">
         <div className="col-md-2 qui-searchbox-md d-none d-lg-block">
           <SearchBox
@@ -118,7 +116,7 @@ const Search = (props: Props) => {
             <SearchError />
           ) : loading ? (
             <Loader />
-          ) : store.getState().search.projects.length == 0 ? (
+          ) : props.projects.length == 0 ? (
             <NoResultsFound />
           ) : (
             <div className="pl-4 pr-2 uncol-sm-l-3 uncol-sm-r-1">
@@ -131,7 +129,7 @@ const Search = (props: Props) => {
           )}
         </div>
       </div>
-    </FadeIn>
+    </div>
   );
 };
 

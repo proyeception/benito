@@ -37,9 +37,7 @@ class ViewProject extends Component<Props, State> {
       .request<Project>(config)
       .then((res) => res.data)
       .then((project) => this.setState({ project: project }))
-      .catch((e) => {
-        console.log(e);
-      });
+      .catch(console.error);
   }
 
   render() {

@@ -26,8 +26,7 @@ public class LoggingFilter implements Filter {
         ".*[.]css",
         ".*[.]eot",
         ".*[.]woff",
-        ".*[.]ttf",
-        "/"
+        ".*[.]ttf"
     );
     private static final Collection<String> EXCLUDED_HEADERS = ImmutableList.of(AUTHORIZATION_HEADER.toLowerCase());
 
