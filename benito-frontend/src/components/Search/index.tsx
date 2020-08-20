@@ -108,14 +108,16 @@ const Search = (props: Props) => {
             }}
           />
         </div>
-        <div className="col-md-10 qui-box mt-md-5">
+        <div className="col-md-10 qui-box mt-md-5 min-h-240 min-h-720-md">
           <div className="qui-search-header p-2 pl-4 font-size-24 font-size-48-md uncol-sm-l-1 uncol-sm-r-1">
             Proyectos
           </div>
           {isError ? (
             <SearchError />
           ) : loading ? (
-            <Loader />
+            <div className="center min-h-240 min-h-720-md">
+              <Loader />
+            </div>
           ) : props.projects.length == 0 ? (
             <NoResultsFound />
           ) : (

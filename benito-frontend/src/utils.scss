@@ -16,3 +16,13 @@ $large-min-breakpoint: 768px;
 .text-white {
   color: white;
 }
+
+.min-h-240 {
+  min-height: 240px;
+}
+
+.min-h-720-md {
+  @media screen and (min-width: $large-min-breakpoint) {
+    min-height: 720px;
+  }
+}
