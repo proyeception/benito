@@ -100,7 +100,7 @@ const Search = (props: Props) => {
   return (
     <div className="container-fluid">
       <div className="row">
-        <div className="col-md-2 qui-searchbox-md d-none d-lg-block">
+        <div className="col-md-2 qui-searchbox-md d-none d-md-block">
           <SearchBox
             searchCallback={() => {
               setLoading(true);
