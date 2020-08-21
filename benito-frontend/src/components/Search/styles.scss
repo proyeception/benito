@@ -1,14 +1,5 @@
 @import "../../styles.scss";
 
-.qui-summary-title {
-  @media screen and (max-width: $small) {
-    font-size: 13px;
-  }
-  @media screen and (min-width: $large) {
-    font-size: 24px;
-  }
-}
-
 .qui-summary-image-container {
   position: relative;
   margin: -50% auto; /* virtualy height needed turn don to zero */
@@ -22,24 +13,7 @@
   max-width: 100%;
 }
 
-.qui-summary {
-  @media screen and (min-width: $large) {
-    font-size: 16px;
-  }
-  @media screen and (max-width: $small) {
-    font-size: 11px;
-  }
-  font-weight: lighter;
-}
-
 .qui-authors {
-  @media screen and (max-width: $small) {
-    font-size: 10px;
-  }
-  @media screen and(min-width: $large) {
-    font-size: 16px;
-  }
-
   text-align: right;
   color: #a3a3a3;
 }
@@ -127,53 +101,4 @@
   border-color: $primary;
   border-radius: 10px;
   border-width: 1px;
-}
-
-.qui-no-projects-title {
-  @media screen and (max-width: 767px) {
-    font-size: 18px;
-  }
-  @media screen and (min-width: 768px) {
-    font-size: 36px;
-  }
-  font-size: bold;
-}
-
-.qui-no-projects-search-tips-title {
-  @media screen and (max-width: 767px) {
-    font-size: 16px;
-  }
-  @media screen and (min-width: 768px) {
-    font-size: 16px;
-  }
-  font-size: bolder;
-}
-
-.qui-no-projects-search-tip {
-  @media screen and (max-width: 767px) {
-    font-size: 13px;
-  }
-  @media screen and (min-width: 768px) {
-    font-size: 16px;
-  }
-  font-size: lighter;
-}
-
-.qui-search-error-big-text {
-  @media screen and (max-width: 767px) {
-    font-size: 18px;
-  }
-  @media screen and (min-width: 768px) {
-    font-size: 32px;
-  }
-  font-size: bolder;
-}
-
-.qui-search-error-medium-text {
-  @media screen and (max-width: 767px) {
-    font-size: 13px;
-  }
-  @media screen and (min-width: 768px) {
-    font-size: 20px;
-  }
 }

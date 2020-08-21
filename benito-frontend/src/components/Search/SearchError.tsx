@@ -4,14 +4,14 @@ import "./styles.scss";
 
 const SearchError = (_: any) => (
   <div>
-    <div className="qui-search-error-big-text mt-5">
+    <div className="font-size-18 font-size-32-md font-weight-bolder mt-5">
       Oops, hubo un error procesando tu búsqueda 🔌
     </div>
-    <div className="qui-search-error-medium-text mt-5">
+    <div className="font-size-13 font-size-20-md mt-5">
       Nuestros ingenieros ya fueron informados y están trabajando duro para
       arreglarlo 👷
     </div>
-    <div className="qui-search-error-medium-text mt-2">
+    <div className="font-size-13 font-size-20-md mt-2">
       Disculpá las molestias y probá de nuevo más tarde
     </div>
   </div>

@@ -43,7 +43,7 @@ const FeaturedGallery = ({ featuredProjects }: Props) => {
 
   return (
     <div className="container-fluid mt-3 pt-3">
-      <div className="font-weight-bold text-center qui-featured-title">
+      <div className="font-weight-bold text-center font-size-24">
         Los más destacados
       </div>
       <div className=" qui-featured-container mt-3">

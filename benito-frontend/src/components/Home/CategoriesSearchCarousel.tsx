@@ -23,7 +23,7 @@ const CategoriesSearchCarousel = ({ categories }: Props) => {
     <FadeIn className="container mt-5 pl-5 pr-5 d-none d-md-block">
       <div className="row">
         <div className="col-12 center">
-          <div className="pt-3 pb-3 font-weight-bold qui-category-search-title">
+          <div className="pt-3 pb-3 font-weight-bold font-size-24">
             No sabés qué buscar? Empezá por alguna de estas categorías!
           </div>
         </div>

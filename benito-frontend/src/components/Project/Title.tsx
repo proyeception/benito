@@ -37,7 +37,7 @@ const Title = (props: Props) => {
         }}
       >
         <div
-          className="qui-backdrop qui-project-title"
+          className="qui-backdrop d-flex font-size-24 font-size-45-md qui-project-title"
           style={{ height: height.valueOf() }}
         >
           <div className="ml-3">{props.project.title}</div>

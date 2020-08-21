@@ -27,22 +27,20 @@ class HomeSearchBox extends React.Component<Props> {
       <div className="qui-home-search-box-container d-none d-md-block">
         <div className="qui-home-search-box container">
           <div className="container-fluid">
-            <div className="qui-home-search-box-title ml-3">
+            <div className="font-size-24 ml-3">
               Buscá proyectos que te interesen
             </div>
-            <div className="qui-home-search-box-subtitle ml-3">
+            <div className="font-size-18 ml-3">
               Elegí entre más de 100 categorías de todo tipo
             </div>
             <div className="row mt-3">
               <div className="col-4">
-                <div className="qui-home-search-box-item mb-2">Nombre</div>
+                <div className="font-size-14 mb-2">Nombre</div>
                 <NameInput />
               </div>
               <div className="col-4">
                 <div className="row">
-                  <div className="col-12 qui-home-search-box-item mb-2">
-                    Fecha
-                  </div>
+                  <div className="col-12 font-size-14 mb-2">Fecha</div>
                   <div className="col-6">
                     <FromDateInput />
                   </div>
@@ -53,15 +51,13 @@ class HomeSearchBox extends React.Component<Props> {
               </div>
               <div className="col-4">
                 <div className="row">
-                  <div className="col-12 qui-home-search-box-item mb-2">
-                    Categoria
-                  </div>
+                  <div className="col-12 font-size-14 mb-2">Categoria</div>
                   <div className="col-6">
                     <CategorySelector />
                   </div>
                   <div className="col-6">
                     <SearchButton
-                      className="qui-home-search-box-button btn btn-block btn-info pb-2 pt-2 center font-weight-bold"
+                      className="qui-home-search-box-button font-size-18 btn btn-block btn-info pb-2 pt-2 center font-weight-bold"
                       style={{ color: "white", borderRadius: "32px" }}
                     />
                   </div>

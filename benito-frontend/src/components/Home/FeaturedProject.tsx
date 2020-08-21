@@ -17,9 +17,9 @@ const FeaturedProject = ({ project }: Props) => {
         src={project.posterUrl.valueOf()}
       />
       <div className="card-body">
-        <h5 className="card-title">{project.title}</h5>
+        <h5 className="card-title font-size-18">{project.title}</h5>
         <div className="sidebar-box">
-          <p className="qui-card-text">{project.description}</p>
+          <p className="qui-card-text font-size-14">{project.description}</p>
           <p className="qui-read-more"></p>
         </div>
         <Link to={`/projects/${project.id}`}>

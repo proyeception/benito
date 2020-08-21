@@ -32,10 +32,10 @@ const Proyectate = (props: Props) => {
       <div className="container-md pt-5">
         <div className="row">
           <div className="col-12 col-md-6 center-horizontally flex-column">
-            <div className="font-weight-bold qui-tour-title">
+            <div className="font-weight-bold font-size-18 font-size-28-md">
               Compartí tus ideas 🤝
             </div>
-            <div className="qui-tour-text">
+            <div className="font-size-12 font-size-18-md">
               Cargá tu proyecto, subí la documentación y compartilo con la
               comunidad! Lo podés actualizar cuando quieras.
             </div>
@@ -47,7 +47,7 @@ const Proyectate = (props: Props) => {
             <img src={search} className="qui-tour-image img-fluid" />
           </div>
           <div className="col-12 col-md-6 pt-5 center-horizontally flex-column">
-            <div className="font-weight-bold qui-tour-title">
+            <div className="font-weight-bold font-size-24 font-size-32-md">
               Encontrá proyectos 🔭
             </div>
             <div className="qui-tour-text">
@@ -74,7 +74,7 @@ const Proyectate = (props: Props) => {
                 style={{ textDecoration: "none" }}
                 onClick={() => store.dispatch(resetSearchParameters())}
               >
-                <div className="btn btn-primary qui-tour-search-button font-weight-bold">
+                <div className="btn btn-primary qui-tour-search-button font-size-18 font-size-24-md font-weight-bold">
                   Ver todos los proyectos
                 </div>
               </Link>

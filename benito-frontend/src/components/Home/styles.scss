@@ -32,27 +32,16 @@ $card-mobile-size: 21rem;
 
 .qui-home-search-box-title {
   font-weight: bold;
-  font-size: 24px;
   padding-bottom: 4px;
 }
 
-.qui-home-search-box-subtitle {
-  font-size: 18px;
-}
-
 .qui-home-search-box-item {
-  font-size: 14px;
   font-weight: lighter;
 }
 
 .qui-home-search-box-button {
   border-radius: 32px;
-  font-size: 18px;
   color: white;
-}
-
-.qui-featured-title {
-  font-size: 24px;
 }
 
 .card {
@@ -90,11 +79,6 @@ $card-mobile-size: 21rem;
 
 .qui-card-text {
   height: 56px;
-  font-size: 14px;
-}
-
-.card-title {
-  font-size: 18px;
 }
 
 .sidebar-box {
@@ -129,26 +113,6 @@ $card-mobile-size: 21rem;
   color: black;
 }
 
-.qui-tour-title {
-  @media screen and (max-width: 767px) {
-    font-size: 18px;
-  }
-
-  @media screen and (min-width: 768px) {
-    font-size: 28px;
-  }
-}
-
-.qui-tour-text {
-  @media screen and (max-width: 767px) {
-    font-size: 12px;
-  }
-
-  @media screen and (min-width: 768px) {
-    font-size: 18px;
-  }
-}
-
 .qui-tour-image {
   @media screen and (min-width: 768px) {
     max-height: 480px;
@@ -161,28 +125,8 @@ $card-mobile-size: 21rem;
   }
 }
 
-.qui-tour-search-title {
-  @media screen and (min-width: 768px) {
-    font-size: 32px;
-  }
-  @media screen and (max-width: 767px) {
-    font-size: 24px;
-  }
-}
-
 .qui-tour-search-button {
   color: white;
   background-color: #7553a1;
   border-radius: 24px;
-
-  @media screen and (min-width: 768px) {
-    font-size: 24px;
-  }
-  @media screen and (max-width: 767px) {
-    font-size: 18px;
-  }
-}
-
-.qui-category-search-title {
-  font-size: 24px;
 }
