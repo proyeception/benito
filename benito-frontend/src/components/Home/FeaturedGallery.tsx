@@ -17,9 +17,13 @@ type Props = {
 };
 
 const responsive = {
-  desktop: {
-    breakpoint: { max: 3000, min: 768 },
+  largeDesktop: {
+    breakpoint: { max: 3000, min: 1600 },
     items: 4,
+  },
+  desktop: {
+    breakpoint: { max: 1599, min: 768 },
+    items: 3,
   },
   mobile: {
     breakpoint: { max: 767, min: 0 },
