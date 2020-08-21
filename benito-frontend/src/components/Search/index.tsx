@@ -109,7 +109,7 @@ const Search = (props: Props) => {
           />
         </div>
         <div className="col-md-10 qui-box mt-md-5 min-h-240 min-h-720-md">
-          <div className="qui-search-header p-2 pl-4 font-size-24 font-size-48-md uncol-sm-l-1 uncol-sm-r-1">
+          <div className="qui-search-header p-2 pl-4 font-size-24 font-size-48-md un-ml-1 un-ml-md-0 un-mr-1 un-mr-0-md">
             Proyectos
           </div>
           {isError ? (
@@ -121,7 +121,7 @@ const Search = (props: Props) => {
           ) : props.projects.length == 0 ? (
             <NoResultsFound />
           ) : (
-            <div className="pl-4 pr-2 uncol-sm-l-3 uncol-sm-r-1">
+            <div className="pl-4 pr-2 un-ml-3 un-ml-md-0 un-mr-1 un-mr-md-0">
               {projects.map((p, idx) => (
                 <SlideIn key={idx}>
                   <ProjectSummary project={p} />
