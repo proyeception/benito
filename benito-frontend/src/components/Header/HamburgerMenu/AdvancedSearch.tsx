@@ -59,7 +59,7 @@ const AdvancedSearch = (_: any) => {
           </div>
           <div className="col-12 center">
             <SearchButton
-              className="text-white qui-hamburger-advanced-search-button mt-4 pl-5 pr-5 font-weight-bold pt-2 pb-2 font-size-18"
+              className="text-white bg-primary mt-4 pl-5 pr-5 font-weight-bold pt-2 pb-2 font-size-18"
               onSuccess={() => setDoRedirect(true)}
             />
           </div>

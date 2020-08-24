@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import { benitoHost } from "../../config";
 import { updateProjectTotal } from "../../actions/home";
@@ -9,6 +8,7 @@ import store from "../../store";
 import { RootState } from "../../reducers";
 import { connect } from "react-redux";
 import { resetSearchParameters } from "../../actions/search";
+import SearchButton from "../Common/SearchButton";
 
 const shareProjects = "https://i.imgur.com/9TvDrss.png";
 
@@ -28,7 +28,7 @@ const Proyectate = (props: Props) => {
   }, []);
 
   return (
-    <div className="qui-tour mt-5 pb-5 mb-5">
+    <div className="qui-tour text-black mt-5 pb-5 mb-5">
       <div className="container-md pt-5">
         <div className="row">
           <div className="col-12 col-md-6 center-horizontally flex-column">
@@ -60,24 +60,21 @@ const Proyectate = (props: Props) => {
             <img src={search} className="qui-tour-image img-fluid" />
           </div>
           <div className="col-12 pt-3 pt-md-5 center-horizontally flex-column">
-            <div className="font-weight-bold qui-tour-title text-center">
+            <div className="font-weight-bold font-size-18 font-size-28-md text-center">
               Más de{" "}
               {props.projectCount ? props.projectCount.valueOf() - 2 : ""}{" "}
               proyectos en {props.categoryCount} categorías!
             </div>
-            <div className="font-weight-bold qui-tour-search-title text-center">
+            <div className="font-weight-bold font-size-24 font-size-32-md text-center">
               Empezá a buscar ya! 👀
             </div>
             <div className="center mt-3">
-              <Link
-                to="search"
-                style={{ textDecoration: "none" }}
+              <SearchButton
+                className="btn btn-primary font-size-18 font-size-24-md font-weight-bold"
+                text="Ver todos los proyectos"
                 onClick={() => store.dispatch(resetSearchParameters())}
-              >
-                <div className="btn btn-primary qui-tour-search-button font-size-18 font-size-24-md font-weight-bold">
-                  Ver todos los proyectos
-                </div>
-              </Link>
+                style={{ borderRadius: "24px" }}
+              />
             </div>
           </div>
         </div>

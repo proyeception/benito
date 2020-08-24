@@ -1,5 +1,6 @@
 $small-max-breakpoint: 767px;
 $large-min-breakpoint: 768px;
+$light-gray: #f1f1f1;
 
 @for $i from 8 through 48 {
   .font-size-#{$i} {
@@ -55,10 +56,6 @@ $large-min-breakpoint: 768px;
   }
 }
 
-.text-white {
-  color: white;
-}
-
 .min-h-240 {
   min-height: 240px;
 }
@@ -71,4 +68,12 @@ $large-min-breakpoint: 768px;
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.bg-light-gray {
+  background-color: $light-gray;
+}
+
+.text-black {
+  color: black;
 }

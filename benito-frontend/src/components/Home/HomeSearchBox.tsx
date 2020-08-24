@@ -24,8 +24,8 @@ class HomeSearchBox extends React.Component<Props> {
 
   render() {
     return (
-      <div className="qui-home-search-box-container d-none d-md-block">
-        <div className="qui-home-search-box container">
+      <div className="qui-home-search-box-container bg-white d-none d-md-block">
+        <div className="qui-home-search-box text-white container">
           <div className="container-fluid">
             <div className="font-size-24 ml-3">
               Buscá proyectos que te interesen

@@ -108,7 +108,7 @@ const Search = (props: Props) => {
             }}
           />
         </div>
-        <div className="col-md-10 qui-box mt-md-5 min-h-240 min-h-720-md">
+        <div className="col-md-10 bg-white mt-md-5 min-h-240 min-h-720-md">
           <div className="qui-search-header p-2 pl-4 font-size-24 font-size-48-md un-ml-1 un-ml-md-0 un-mr-1 un-mr-0-md">
             Proyectos
           </div>

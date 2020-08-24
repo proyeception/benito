@@ -13,6 +13,7 @@ interface Props extends RouteComponentProps {
   text?: string;
   style?: CSSProperties;
   searchState: SearchState;
+  onClick?: () => void;
 }
 
 const SearchButton = (props: Props) => {
@@ -21,7 +22,7 @@ const SearchButton = (props: Props) => {
       pathname: "/search",
       search: buildQueryParams(props.searchState),
     });
-    if (props.onSuccess) props.onSuccess();
+    props.onSuccess?.call({});
   };
 
   return (
@@ -29,7 +30,10 @@ const SearchButton = (props: Props) => {
       type="button"
       className={props.className}
       style={props.style}
-      onClick={search}
+      onClick={() => {
+        props.onClick?.call({});
+        search();
+      }}
     >
       <span>{props.text ? props.text : "Buscar"}</span>
     </button>

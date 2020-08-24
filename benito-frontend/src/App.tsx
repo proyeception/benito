@@ -31,7 +31,7 @@ const App = (_: any) => {
   }, []);
 
   return (
-    <div className="qui-app">
+    <div className="bg-light-gray">
       <HamburgerMenu />
       <Header />
       <AnimatePresence>

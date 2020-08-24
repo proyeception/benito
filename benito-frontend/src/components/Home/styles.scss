@@ -2,6 +2,8 @@ $card-border-radius: 16px;
 $card-desktop-size: 18rem;
 $card-mobile-size: 21rem;
 
+@import "../../styles.scss";
+
 .qui-remarkable-project {
   width: 100%;
   object-fit: cover;
@@ -15,7 +17,6 @@ $card-mobile-size: 21rem;
 }
 
 .qui-home-search-box-container {
-  background-color: white;
   margin-top: 64px;
   padding: 24px;
 }
@@ -27,7 +28,6 @@ $card-mobile-size: 21rem;
   padding-bottom: 24px;
   background-color: #7553a1;
   border-radius: 16px;
-  color: white;
 }
 
 .qui-home-search-box-title {
@@ -41,7 +41,6 @@ $card-mobile-size: 21rem;
 
 .qui-home-search-box-button {
   border-radius: 32px;
-  color: white;
 }
 
 .card {
@@ -110,7 +109,6 @@ $card-mobile-size: 21rem;
 
 .qui-tour {
   background-color: #fbc072;
-  color: black;
 }
 
 .qui-tour-image {
@@ -123,10 +121,4 @@ $card-mobile-size: 21rem;
     max-height: 120px;
     max-width: 160px;
   }
-}
-
-.qui-tour-search-button {
-  color: white;
-  background-color: #7553a1;
-  border-radius: 24px;
 }

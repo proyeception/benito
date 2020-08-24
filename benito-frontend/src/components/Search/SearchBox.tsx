@@ -23,7 +23,7 @@ type Props = {
 
 const SearchBox = (props: Props) => {
   return (
-    <div className="qui-search-box">
+    <div className="qui-search-box bg-white">
       <div className="qui-search-filter">
         <div className="qui-font-text">Nombre</div>
         <NameInput className="qui-search-input" />
