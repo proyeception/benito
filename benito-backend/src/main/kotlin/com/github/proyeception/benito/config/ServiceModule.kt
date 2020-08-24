@@ -1,6 +1,7 @@
 package com.github.proyeception.benito.config
 
 import com.github.proyeception.benito.client.MedusaClient
+import com.github.proyeception.benito.service.CategoriesService
 import com.github.proyeception.benito.service.ProjectService
 import org.springframework.context.annotation.Bean
 
@@ -10,4 +11,9 @@ open class ServiceModule {
     open fun projectService(
         medusaClient: MedusaClient
     ): ProjectService = ProjectService(medusaClient = medusaClient)
+
+    @Bean
+    open fun categoriesService(
+        medusaClient: MedusaClient
+    ): CategoriesService = CategoriesService(medusaClient = medusaClient)
 }

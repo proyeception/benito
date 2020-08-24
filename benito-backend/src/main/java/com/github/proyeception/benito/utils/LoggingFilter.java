@@ -21,7 +21,15 @@ import java.util.stream.Collectors;
 public class LoggingFilter implements Filter {
     public static final String AUTHORIZATION_HEADER = "authorization";
 
-    private static final Collection<String> EXCLUDED_URIS = ImmutableList.of("/hello-world");
+    private static final Collection<String> EXCLUDED_URIS = ImmutableList.of(
+        ".*[.]js",
+        ".*[.]css",
+        ".*[.]eot",
+        ".*[.]woff",
+        ".*[.]ttf",
+        ".*[.]html",
+        "[/]"
+    );
     private static final Collection<String> EXCLUDED_HEADERS = ImmutableList.of(AUTHORIZATION_HEADER.toLowerCase());
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LoggingFilter.class);

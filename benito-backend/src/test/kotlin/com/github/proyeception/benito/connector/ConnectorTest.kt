@@ -1,11 +1,11 @@
 package com.github.proyeception.benito.connector
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.github.proyeception.benito.Spec
 import com.github.proyeception.benito.mock.eq
 import com.github.proyeception.benito.mock.getMock
 import com.github.proyeception.benito.mock.on
 import io.kotlintest.matchers.shouldBe
-import io.kotlintest.specs.WordSpec
 import org.apache.http.HttpEntity
 import org.apache.http.HttpResponse
 import org.apache.http.StatusLine
@@ -16,7 +16,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
 
-open class ConnectorTest : WordSpec() {
+open class ConnectorTest : Spec() {
     init {
         data class TestObject(
             val data: String

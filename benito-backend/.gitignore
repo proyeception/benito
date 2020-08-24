@@ -184,3 +184,5 @@ $RECYCLE.BIN/
 
 # End of https://www.toptal.com/developers/gitignore/api/java,linux,windows,visualstudiocode,maven,intellij+all
 **/*sensitive.conf
+src/main/resources/static/*
+src/main/resources/templates*

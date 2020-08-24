@@ -1,0 +1,124 @@
+$card-border-radius: 16px;
+$card-desktop-size: 18rem;
+$card-mobile-size: 21rem;
+
+@import "../../styles.scss";
+
+.qui-remarkable-project {
+  width: 100%;
+  object-fit: cover;
+
+  @media screen and(max-width: 767px) {
+    max-height: 144px;
+  }
+  @media screen and(min-width: 768px) {
+    max-height: 440px;
+  }
+}
+
+.qui-home-search-box-container {
+  margin-top: 64px;
+  padding: 24px;
+}
+
+.qui-home-search-box {
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-top: 16px;
+  padding-bottom: 24px;
+  background-color: #7553a1;
+  border-radius: 16px;
+}
+
+.qui-home-search-box-title {
+  font-weight: bold;
+  padding-bottom: 4px;
+}
+
+.qui-home-search-box-item {
+  font-weight: lighter;
+}
+
+.qui-home-search-box-button {
+  border-radius: 32px;
+}
+
+.card {
+  border-radius: $card-border-radius;
+}
+
+.qui-featured-card {
+  @media screen and (max-width: 767px) {
+    width: $card-mobile-size;
+  }
+  @media screen and (min-width: 768px) {
+    width: $card-desktop-size;
+    margin-left: 10.5%;
+  }
+  border-radius: $card-border-radius !important;
+  border-radius: $card-border-radius !important;
+}
+
+.qui-card-image {
+  height: 256px;
+  border-top-left-radius: $card-border-radius !important;
+  border-top-right-radius: $card-border-radius !important;
+}
+
+.qui-search-invitation-image {
+  @media screen and(max-width: 767px) {
+    height: 144px;
+  }
+  @media screen and(min-width: 768px) {
+    height: 440px;
+  }
+  filter: blur(8px);
+  -webkit-filter: blur(8px);
+}
+
+.qui-card-text {
+  height: 56px;
+}
+
+.sidebar-box {
+  position: relative;
+  overflow: hidden;
+}
+.sidebar-box .qui-read-more {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  margin: 0;
+  padding: 30px 0;
+  background-image: linear-gradient(to bottom, transparent, white);
+}
+
+.qui-featured-container {
+  @media screen and (min-width: 768px) {
+    margin-left: 10%;
+    margin-right: 10%;
+  }
+}
+
+.qui-proyectate-logo {
+  max-height: 480px;
+  max-width: 480px;
+}
+
+.qui-tour {
+  background-color: #fbc072;
+}
+
+.qui-tour-image {
+  @media screen and (min-width: 768px) {
+    max-height: 480px;
+    max-width: 360px;
+  }
+
+  @media screen and (max-width: 767px) {
+    max-height: 120px;
+    max-width: 160px;
+  }
+}

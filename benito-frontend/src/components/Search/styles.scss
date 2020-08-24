@@ -1,14 +1,4 @@
-$large: 768px;
-$small: 767px;
-
-.qui-summary-title {
-  @media screen and (max-width: $small) {
-    font-size: 13px;
-  }
-  @media screen and (min-width: $large) {
-    font-size: 24px;
-  }
-}
+@import "../../styles.scss";
 
 .qui-summary-image-container {
   position: relative;
@@ -23,31 +13,13 @@ $small: 767px;
   max-width: 100%;
 }
 
-.qui-summary {
-  @media screen and (min-width: 768px) {
-    padding-left: 32px;
-    font-size: 16px;
-  }
-  @media screen and (max-width: $small) {
-    font-size: 11px;
-  }
-  font-weight: lighter;
-}
-
 .qui-authors {
-  @media screen and (max-width: $small) {
-    font-size: 10px;
-  }
-  @media screen and(min-width: $large) {
-    font-size: 16px;
-  }
-
   text-align: right;
   color: #a3a3a3;
 }
 
 .qui-search-header {
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: $large) {
     background: rgba(107, 60, 167, 0.1);
   }
 }
@@ -62,14 +34,26 @@ $small: 767px;
 }
 
 .qui-search-input {
-  border-color: #6b3ca7;
+  border-color: $primary;
   border-radius: 10px;
   max-width: 90%;
   border-width: 1px;
 }
 
 .qui-search-input-date {
-  border-color: #6b3ca7;
+  @media screen and (max-width: 1879px) {
+    font-size: 13px !important;
+    padding: 10px !important;
+  }
+  @media screen and (max-width: 1365px) {
+    font-size: 9px !important;
+    padding: 8px !important;
+  }
+  @media screen and (min-width: 1880px) {
+    font-size: 1 rem !important;
+    padding-left: 10px !important;
+  }
+  border-color: $primary;
   border-radius: 10px;
   max-width: 100%;
   border-width: 1px;
@@ -85,7 +69,7 @@ $small: 767px;
 .qui-search-box {
   margin-left: 10px;
   margin-top: 60px;
-  border: #6b3ca7;
+  border: $primary;
   border-radius: 10px;
   border-style: solid;
   padding-bottom: 10px;
@@ -104,19 +88,12 @@ $small: 767px;
   background-color: gray;
 }
 
-.qui-box {
-  background-color: white;
-}
-
 .qui-date-filter-container {
   max-width: 90%;
 }
 
 .qui-search-combo {
-  border-color: #6b3ca7;
+  border-color: $primary;
   border-radius: 10px;
   border-width: 1px;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  width: 90%;
 }

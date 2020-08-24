@@ -1,24 +1,8 @@
 import React from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
+import { Project } from "../../types";
 import { Link } from "react-router-dom";
-
-export type Project = {
-  id: String;
-  title: String;
-  description: String;
-  extraContent: string,
-  posterUrl: string;
-  authors: Array<Person>;
-  creationDate: Date,
-  tags: Array<String>;
-};
-
-export type Person = {
-  username: String;
-  profileUrl: String;
-  fullName:String;
-};
 
 type Props = {
   project: Project;
@@ -27,21 +11,25 @@ type Props = {
 const ProjectSummary = (props: Props) => (
   <div className="row container-fluid mt-3 ml-0">
     <div className="col-sm-12 col-md-10">
-      <div className="qui-summary-title qui-font-title">
-        <Link to={{pathname:`/project/${props.project.id}`}}
-        > {props.project.title} </Link>
+      <div className="qui-summary-title font-size-13 font-size-24-md">
+        <Link
+          to={{ pathname: `/projects/${props.project.id}` }}
+          style={{ color: "black" }}
+        >
+          {props.project.title}
+        </Link>
       </div>
       <div className="d-sm-block d-md-none">
         <img className="qui-summary-image-sm" src={props.project.posterUrl} />
       </div>
-      <div className="qui-summary qui-font-text mt-3">
+      <div className="font-weight-lighter qui-font-text font-size-11 font-size-16-md mt-3 ml-md-3">
         {props.project.description}
       </div>
-      <div className="qui-authors">
+      <div className="font-size-10 font-size-16-md">
         {props.project.authors.map((a) => a.fullName).join(", ")}
       </div>
     </div>
-    <div className="col-md-2 d-none d-lg-block">
+    <div className="col-md-2 d-none d-md-flex align-items-center">
       <img className="qui-summary-image-md" src={props.project.posterUrl} />
     </div>
   </div>

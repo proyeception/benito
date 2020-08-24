@@ -1,5 +1,6 @@
 package com.github.proyeception.benito.controller
 
+import com.github.proyeception.benito.dto.CountDTO
 import com.github.proyeception.benito.dto.OrderDTO
 import com.github.proyeception.benito.dto.ProjectDTO
 import com.github.proyeception.benito.service.ProjectService
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
+
 
 
 @Controller
@@ -24,17 +26,25 @@ class ProjectController(
         @RequestParam(required = false) from: String?,
         @RequestParam(required = false) to: String?,
         @RequestParam(required = false, name = "name") nameContains: String?,
-        @RequestParam(required = false, name = "tags") tags: String?
+        @RequestParam(required = false, name = "category") category: String?
     ): List<ProjectDTO> {
-        return projectService.findProjects(orderBy, from, to, nameContains, tags)
+        return projectService.findProjects(orderBy, from, to, nameContains, category)
     }
+
+    @RequestMapping("/benito/projects/featured", method = [RequestMethod.GET])
+    @ResponseBody
+    @CrossOrigin
+    private fun top10Projects(): List<ProjectDTO> = projectService.top10Projects()
+
+    @RequestMapping("/benito/project-count", method = [RequestMethod.GET])
+    @ResponseBody
+    @CrossOrigin
+    private fun count(): CountDTO = projectService.count()
 
     @RequestMapping("/benito/projects/{id}", method = [RequestMethod.GET])
     @ResponseBody
     @CrossOrigin
-    private fun findProjects(@PathVariable id: String): ProjectDTO {
-        return projectService.findProject(id)
-    }
+    private fun findProjects(@PathVariable id: String): ProjectDTO = projectService.findProject(id)
 
     @RequestMapping("/benito/projects/{projectId}", method = [RequestMethod.POST], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     @ResponseBody
@@ -46,6 +56,4 @@ class ProjectController(
 
         return ResponseEntity.ok("File received successfully")
     }
-
-
 }
