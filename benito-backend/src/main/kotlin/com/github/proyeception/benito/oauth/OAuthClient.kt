@@ -15,7 +15,7 @@ import com.github.scribejava.core.oauth.OAuth20Service
 
 
 abstract class OAuthClient(
-    protected var oAuth20Service: OAuth20Service,
+    protected val oAuth20Service: OAuth20Service,
     protected var token: String,
     private val objectMapper: ObjectMapper
 ) {

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.proyeception.benito.dto.FileDTO
 import com.github.proyeception.benito.extension.getOrThrow
 import com.github.scribejava.apis.GoogleApi20
-import com.github.scribejava.core.model.OAuth2AccessToken
 import java.util.*
 
 class GoogleDriveOAuthClient(
@@ -42,20 +41,17 @@ class GoogleDriveOAuthClient(
             .build()
     }
 
-    override fun finishNewAuth(authorization: String): String {
-        val accessToken: OAuth2AccessToken = oAuth20Service.getAccessToken(authorization)
-        this.token = accessToken.refreshToken
-        return token
-    }
+    override fun finishNewAuth(authorization: String): String = oAuth20Service
+        .getAccessToken(authorization)
+        .refreshToken
+        .also {
+            this.token = it
+        }
 
-    fun getFile(fileId: String): String {
-        val response = get(
-            "https://www.googleapis.com/drive/v3/files/$fileId?fields=webContentLink,name,mimeType",
-            object : TypeReference<FileDTO>() {}
-        )
-
-        return response
-            .map { it.webContentLink ?: "https://" }
-            .getOrThrow()
-    }
+    fun getFile(fileId: String): String = this.get(
+        url = "https://www.googleapis.com/drive/v3/files/$fileId?fields=webContentLink,name,mimeType",
+        ref = object : TypeReference<FileDTO>() {}
+    )
+        .map { it.webContentLink ?: "https://" }
+        .getOrThrow()
 }

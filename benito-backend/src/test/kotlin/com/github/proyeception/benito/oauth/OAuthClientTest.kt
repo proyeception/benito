@@ -4,6 +4,7 @@ import arrow.core.Either
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.proyeception.benito.Spec
+import com.github.proyeception.benito.exception.HttpException
 import com.github.proyeception.benito.mock.eq
 import com.github.proyeception.benito.mock.getMock
 import com.github.proyeception.benito.mock.on
@@ -13,13 +14,13 @@ import com.github.scribejava.core.model.Response
 import com.github.scribejava.core.model.Verb
 import com.github.scribejava.core.oauth.OAuth20Service
 import com.nhaarman.mockito_kotlin.atLeastOnce
+import io.kotlintest.matchers.should
 import io.kotlintest.matchers.shouldBe
 import io.kotlintest.properties.Gen
 import io.kotlintest.properties.forAll
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers
-import org.mockito.Mockito.any
-import org.mockito.Mockito.verify
+import org.mockito.Mockito.*
 
 class OAuthClientTest : Spec() {
     init {
@@ -80,6 +81,27 @@ class OAuthClientTest : Spec() {
                     verify(mapperMock, atLeastOnce()).readValue(eq("{}"), any(TypeReference::class.java))
                     requestCaptor.value.url shouldBe "/123"
                     requestCaptor.value.verb == it
+                }
+            }
+
+            "return Left with HttpException on error" {
+                forAll(Gen.choose(400, 599), verbGen) { status, verb ->
+                    on(authServiceMock.refreshAccessToken(any())).thenReturn(accessTokenMock)
+                    on(authServiceMock.execute(ArgumentMatchers.any())).thenReturn(responseMock)
+                    on(responseMock.code).thenReturn(status)
+                    on(responseMock.message).thenReturn("ERROR")
+
+                    val actual = oAuthClient.executeRequest(verb, "/123", object : TypeReference<Any?>() {})
+
+                    verify(authServiceMock, atLeastOnce()).refreshAccessToken(eq("123"))
+                    verify(authServiceMock, atLeastOnce()).signRequest(eq(accessTokenMock), requestCaptor.capture())
+                    verify(responseMock, never()).body
+                    verify(mapperMock, never()).readValue(eq("{}"), any(TypeReference::class.java))
+                    requestCaptor.value.url shouldBe "/123"
+                    requestCaptor.value.verb shouldBe verb
+
+                    actual should { it.isLeft() }
+                    actual.mapLeft { it is HttpException }.fold({ it }, { false })
                 }
             }
         }
