@@ -2,6 +2,7 @@ package com.github.proyeception.benito.connector
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.github.proyeception.benito.Spec
 import com.github.proyeception.benito.mock.getMock
 import io.kotlintest.properties.Gen
 import io.kotlintest.properties.forAll
@@ -9,7 +10,7 @@ import io.kotlintest.properties.forNone
 import io.kotlintest.specs.WordSpec
 import org.mockito.Mockito
 
-open class ResponseTest : WordSpec() {
+open class ResponseTest : Spec() {
     init {
         val objectMapperMock: ObjectMapper = getMock()
 

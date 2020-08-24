@@ -64,6 +64,15 @@
         </dependency>
         <!-- Kotlin -->
 
+        <!-- Mockito -->
+        <dependency>
+            <groupId>com.nhaarman</groupId>
+            <artifactId>mockito-kotlin</artifactId>
+            <version>1.6.0</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Mockito -->
+
         <!-- Logging -->
         <dependency>
             <groupId>org.slf4j</groupId>

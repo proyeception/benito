@@ -1,6 +1,7 @@
 package com.github.proyeception.benito.client
 
 import com.fasterxml.jackson.core.type.TypeReference
+import com.github.proyeception.benito.Spec
 import com.github.proyeception.benito.connector.Connector
 import com.github.proyeception.benito.connector.Response
 import com.github.proyeception.benito.dto.*
@@ -17,7 +18,7 @@ import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito.verify
 import java.time.LocalDate
 
-class MedusaClientTest : WordSpec() {
+class MedusaClientTest : Spec() {
     init {
         val medusaConnector: Connector = getMock()
         val medusaClient = MedusaClient(medusaConnector)

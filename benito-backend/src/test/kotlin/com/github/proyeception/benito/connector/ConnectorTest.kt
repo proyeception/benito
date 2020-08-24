@@ -1,6 +1,7 @@
 package com.github.proyeception.benito.connector
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.github.proyeception.benito.Spec
 import com.github.proyeception.benito.mock.eq
 import com.github.proyeception.benito.mock.getMock
 import com.github.proyeception.benito.mock.on
@@ -16,7 +17,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
 
-open class ConnectorTest : WordSpec() {
+open class ConnectorTest : Spec() {
     init {
         data class TestObject(
             val data: String
