@@ -6,7 +6,6 @@ import com.github.proyeception.benito.mock.eq
 import com.github.proyeception.benito.mock.getMock
 import com.github.proyeception.benito.mock.on
 import io.kotlintest.matchers.shouldBe
-import io.kotlintest.specs.WordSpec
 import org.apache.http.HttpEntity
 import org.apache.http.HttpResponse
 import org.apache.http.StatusLine

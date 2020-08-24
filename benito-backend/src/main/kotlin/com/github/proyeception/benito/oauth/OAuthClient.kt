@@ -19,7 +19,6 @@ abstract class OAuthClient(
     protected var token: String,
     private val objectMapper: ObjectMapper
 ) {
-
     constructor(
         instance: DefaultApi20,
         scope: String,
@@ -38,7 +37,7 @@ abstract class OAuthClient(
         objectMapper = objectMapper
     )
 
-    private fun <T> executeRequest(verb: Verb, url: String, ref: TypeReference<T>): Either<Throwable, T> {
+    fun <T> executeRequest(verb: Verb, url: String, ref: TypeReference<T>): Either<Throwable, T> {
         val accessToken = oAuth20Service.refreshAccessToken(this.token)
         val request = OAuthRequest(verb, url)
         oAuth20Service.signRequest(accessToken, request)

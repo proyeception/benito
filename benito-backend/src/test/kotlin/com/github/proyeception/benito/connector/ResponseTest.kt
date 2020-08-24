@@ -3,11 +3,11 @@ package com.github.proyeception.benito.connector
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.proyeception.benito.Spec
+import com.github.proyeception.benito.mock.eq
 import com.github.proyeception.benito.mock.getMock
 import io.kotlintest.properties.Gen
 import io.kotlintest.properties.forAll
 import io.kotlintest.properties.forNone
-import io.kotlintest.specs.WordSpec
 import org.mockito.Mockito
 
 open class ResponseTest : Spec() {
@@ -54,7 +54,7 @@ open class ResponseTest : Spec() {
 
                 val typeReference = object : TypeReference<Any>() {}
                 response.deserializeAs(typeReference)
-                Mockito.verify(objectMapperMock).readValue(s, typeReference)
+                Mockito.verify(objectMapperMock).readValue(eq(s), eq(typeReference))
                 true
             }
         }

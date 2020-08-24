@@ -11,7 +11,6 @@ import com.github.proyeception.benito.mock.getMock
 import com.github.proyeception.benito.mock.on
 import io.kotlintest.matchers.shouldBe
 import io.kotlintest.matchers.shouldThrow
-import io.kotlintest.specs.WordSpec
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyString
