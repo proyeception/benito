@@ -1,10 +1,12 @@
 package com.github.proyeception.benito.config
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.proyeception.benito.oauth.GoogleDriveOAuthClient
 import com.github.scribejava.apis.GoogleApi20
 import com.github.scribejava.core.builder.ServiceBuilder
 import com.github.scribejava.core.oauth.OAuth20Service
 import com.typesafe.config.Config
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -13,14 +15,16 @@ open class OAuthModule {
     @Bean("googleDriveOAuthClient")
     open fun googleDriveOAuthClient(
         oAuth20Service: OAuth20Service,
-        config: Config
+        config: Config,
+        @Autowired objectMapperCamelCase: ObjectMapper
     ): GoogleDriveOAuthClient {
         val googleConfig = config.getConfig("google")
         return GoogleDriveOAuthClient(
             token = googleConfig.getString("token"),
             clientId = googleConfig.getString("id"),
             clientSecret = googleConfig.getString("secret"),
-            callbackRoute = "/benito/callback"
+            callbackRoute = "/benito/callback",
+            objectMapper = objectMapperCamelCase
         )
     }
 
