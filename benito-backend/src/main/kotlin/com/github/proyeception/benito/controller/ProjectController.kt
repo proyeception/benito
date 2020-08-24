@@ -29,9 +29,7 @@ class ProjectController(
     @RequestMapping("/benito/projects/featured", method = [RequestMethod.GET])
     @ResponseBody
     @CrossOrigin
-    private fun top10Projects(): List<ProjectDTO> {
-        return projectService.top10Projects()
-    }
+    private fun top10Projects(): List<ProjectDTO> = projectService.top10Projects()
 
     @RequestMapping("/benito/project-count", method = [RequestMethod.GET])
     @ResponseBody
@@ -41,7 +39,5 @@ class ProjectController(
     @RequestMapping("/benito/projects/{id}", method = [RequestMethod.GET])
     @ResponseBody
     @CrossOrigin
-    private fun findProjects(@PathVariable id: String): ProjectDTO {
-        return projectService.findProject(id)
-    }
+    private fun findProjects(@PathVariable id: String): ProjectDTO = projectService.findProject(id)
 }

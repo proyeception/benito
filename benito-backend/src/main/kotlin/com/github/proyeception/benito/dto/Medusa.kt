@@ -35,8 +35,9 @@ data class PosterDTO(
 )
 
 data class DocumentationDTO(
-        @JsonProperty("_id") val id: String,
-        val fileName: String
+    @JsonProperty("_id") val id: String,
+    val fileName: String,
+    val driveId: String
 )
 
 data class CategoryDTO(

@@ -37,8 +37,9 @@ class MedusaClientTest : WordSpec() {
             )
 
             val documentation = DocumentationDTO(
-                 id = "asd",
-                 fileName = "Acta de proyecto"
+                id = "asd",
+                fileName = "Acta de proyecto",
+                driveId = "123"
             )
 
             val project = ProjectDTO(
@@ -267,8 +268,9 @@ class MedusaClientTest : WordSpec() {
             )
 
             val documentation = DocumentationDTO(
-                    id = "asd",
-                    fileName = "Acta de proyecto"
+                id = "asd",
+                fileName = "Acta de proyecto",
+                driveId = "123"
             )
 
             val project = MedusaProjectDTO(

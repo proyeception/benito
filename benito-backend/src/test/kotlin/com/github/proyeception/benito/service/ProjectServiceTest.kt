@@ -33,8 +33,9 @@ class ProjectServiceTest : WordSpec() {
             )
 
             val documentation = DocumentationDTO(
-                 id = "asd",
-                 fileName = "Acta de proyecto"
+                id = "asd",
+                fileName = "Acta de proyecto",
+                driveId = "123"
             )
 
             val project = ProjectDTO(
@@ -61,10 +62,10 @@ class ProjectServiceTest : WordSpec() {
                 supervisorRefs = listOf(supervisor),
                 documentation = listOf(documentation),
                 category = CategoryDTO(
-                        name = "Systems",
-                        tagName = "systems",
-                        imageUrl = ""
-                    )
+                    name = "Systems",
+                    tagName = "systems",
+                    imageUrl = ""
+                )
             )
 
             val projects = listOf(newProject)
@@ -100,10 +101,11 @@ class ProjectServiceTest : WordSpec() {
                     profileUrl = "/supervisorUrl"
                 )
 
-              val documentation = DocumentationDTO(
+                val documentation = DocumentationDTO(
                     id = "asd",
-                    fileName = "Acta de proyecto"
-              )
+                    fileName = "Acta de proyecto",
+                    driveId = "123"
+                )
 
                 val project = ProjectDTO(
 

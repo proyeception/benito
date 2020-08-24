@@ -48,7 +48,7 @@ abstract class OAuthClient(
             return HttpException.of(response.code, response.message).left()
         }
 
-        return objectMapper.readValue<T>(response.body, ref).right()
+        return objectMapper.readValue(response.body, ref).right()
     }
 
     fun <T> get(url: String, ref: TypeReference<T>): Either<Throwable, T> = executeRequest(Verb.GET, url, ref)

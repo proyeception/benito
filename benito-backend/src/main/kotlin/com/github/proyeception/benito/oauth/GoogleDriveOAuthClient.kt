@@ -50,7 +50,7 @@ class GoogleDriveOAuthClient(
 
     fun getFile(fileId: String): String {
         val response = get(
-            "https://www.googleapis.com/drive/v3/files/$fileId?fields=webContentLink",
+            "https://www.googleapis.com/drive/v3/files/$fileId?fields=webContentLink,name,mimeType",
             object : TypeReference<FileDTO>() {}
         )
 

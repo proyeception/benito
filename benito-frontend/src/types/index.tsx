@@ -25,4 +25,5 @@ export type Category = {
 export type Documentation = {
   fileName: String;
   id: String;
+  driveId: String;
 };
