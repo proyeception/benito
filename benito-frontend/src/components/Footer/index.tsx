@@ -10,13 +10,13 @@ const instagramLogo =
   "https://cdn.icon-icons.com/icons2/1898/PNG/512/instagram_121064.png";
 
 const Footer = (_: any) => (
-  <div className="qui-footer mt-3 pb-3 pt-3 text-muted">
+  <div className="bg-white font-size-11 font-size-14-md mt-3 pb-3 pt-3 text-muted">
     <div className="container-fluid container-md">
       <div className="row justify-content-around">
-        <div className="col-6 col-md-9 center-vertically">
+        <div className="col-6 col-md-8 center-vertically">
           ©Proyectate 2020-2020
         </div>
-        <div className="mt-3 mt-sm-0 col-12 col-md-3">
+        <div className="mt-3 mt-sm-0 col-12 col-md-4">
           <div className="row justify-content-between">
             <Social
               iconUrl={githubLogo}

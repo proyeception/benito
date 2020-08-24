@@ -19,7 +19,7 @@ const Categories = (props: Props) => (
       return (
         <div
           key={idx}
-          className="font-weight-bold text-uppercase qui-hamburger-accordion-card-category mb-3 cursor-pointer"
+          className="font-weight-bold text-uppercase font-size-16 mb-3 cursor-pointer"
           onClick={() => {
             store.dispatch(toggleHamburgerButton(false));
             props.history.push({

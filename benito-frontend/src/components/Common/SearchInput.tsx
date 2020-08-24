@@ -20,8 +20,8 @@ const SearchInput = (props: Props) => (
     placeholder={props.placeholder ? props.placeholder : ""}
     type={props.inputType ? props.inputType : "text"}
     className={`form-control ${props.className ? props.className : ""}`}
-    value={props.mapper(props.search).valueOf()}
     onChange={(e) => store.dispatch(props.action(e.currentTarget.value))}
+    value={props.mapper(props.search).valueOf()}
   />
 );
 

@@ -7,9 +7,11 @@ import Summary from "./Summary";
 import Details from "./Details";
 import Documents from "./Documents";
 import ExtraContent from "./ExtraContent";
+import Loader from "../Common/Loader";
+import FadeIn from "../Common/FadeIn";
 
 type Props = {
-  project: Project;
+  project?: Project;
 };
 
 const MAX_DESKTOP_HEIGHT = 300;
@@ -18,8 +20,16 @@ const MAX_MOBILE_HEIGHT = 150;
 const MIN_MOBILE_HEIGHT = 60;
 
 const ProjectInfo = (props: Props) => {
+  if (!props.project) {
+    return (
+      <div className="center">
+        <Loader />
+      </div>
+    );
+  }
+
   return (
-    <div className="ml-md-5 mr-md-5 mt-md-5">
+    <FadeIn className="ml-md-5 mr-md-5 mt-md-5">
       <Title
         project={props.project}
         maxHeight={MAX_DESKTOP_HEIGHT}
@@ -32,7 +42,7 @@ const ProjectInfo = (props: Props) => {
         minHeight={MIN_MOBILE_HEIGHT}
         display="d-block d-md-none"
       />
-      <div className="container-fluid qui-box">
+      <div className="container-fluid bg-white">
         <div className="row">
           <Summary project={props.project} />
           <Details project={props.project} />
@@ -40,7 +50,7 @@ const ProjectInfo = (props: Props) => {
           <ExtraContent project={props.project} />
         </div>
       </div>
-    </div>
+    </FadeIn>
   );
 };
 

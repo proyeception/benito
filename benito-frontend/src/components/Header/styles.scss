@@ -1,25 +1,11 @@
 @import "../../styles.scss";
 
 .qui-header {
-  background-color: $primary;
   color: white;
 }
 
 .qui-brand-name {
   font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: bold;
-  color: white;
-  display: flex;
-
-  @media screen and (max-width: 767px) {
-    font-size: 24px;
-  }
-
-  @media screen and (min-width: $large) {
-    text-align: center;
-    font-size: 36px;
-    justify-content: center;
-  }
 }
 
 .qui-brand-logo {

@@ -14,6 +14,7 @@ import { updateCategories } from "./actions/common";
 import { AnimatePresence } from "framer-motion";
 import HamburgerMenu from "./components/Header/HamburgerMenu";
 import ViewProject from "./components/Project/index";
+import NotFound from "./components/NotFound";
 
 const App = (_: any) => {
   useEffect(() => {
@@ -30,7 +31,7 @@ const App = (_: any) => {
   }, []);
 
   return (
-    <div className="qui-app">
+    <div className="bg-light-gray">
       <HamburgerMenu />
       <Header />
       <AnimatePresence>
@@ -38,6 +39,7 @@ const App = (_: any) => {
           <Route exact path="/projects/:projectId" component={ViewProject} />
           <Route exact path="/" component={Home} />
           <Route exact path="/search" component={Search} />
+          <Route path="/*" component={NotFound} />
         </Switch>
       </AnimatePresence>
       <Footer />

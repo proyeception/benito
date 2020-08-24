@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { hot } from "react-hot-loader";
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import { benitoHost } from "../../config";
 import ProjectInfo from "./ProjectInfo";
 import "./styles.scss";
 import { RouteComponentProps } from "react-router";
 import { Project } from "../../types";
+import FadeIn from "../Common/FadeIn";
 
 type MatchParams = {
   projectId: string;
@@ -21,38 +22,35 @@ type State = {
 class ViewProject extends Component<Props, State> {
   constructor(props: Props, ctx: any) {
     super(props, ctx);
-    this.state = { projectId: props.match.params.projectId };
+    this.state = {
+      projectId: props.match.params.projectId,
+    };
   }
 
   componentDidMount() {
-    console.log("el estado es");
-    console.log(this.state);
+    let config: AxiosRequestConfig = {
+      method: "GET",
+      url: `${benitoHost}/benito/projects/${this.state.projectId}`,
+    };
 
     axios
-      .get(`${benitoHost}/benito/projects/${this.state.projectId}`)
-      .then((res) => {
-        const project = res.data;
-
-        this.setState({ project });
-      })
+      .request<Project>(config)
+      .then((res) => res.data)
+      .then((project) => this.setState({ project: project }))
       .catch(console.error);
   }
 
   render() {
-    if (this.state.project === undefined) {
-      return <div> cargando </div>;
-    } else {
-      return (
-        <div>
-          <div className="d-block d-md-none">
-            <ProjectInfo project={this.state.project} />
-          </div>
-          <div className="d-none d-md-block container-fluid">
-            <ProjectInfo project={this.state.project} />
-          </div>
+    return (
+      <FadeIn>
+        <div className="d-block d-md-none">
+          <ProjectInfo project={this.state.project} />
         </div>
-      );
-    }
+        <div className="d-none d-md-block container-fluid">
+          <ProjectInfo project={this.state.project} />
+        </div>
+      </FadeIn>
+    );
   }
 }
 

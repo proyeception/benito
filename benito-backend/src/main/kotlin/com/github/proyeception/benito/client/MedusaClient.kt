@@ -46,6 +46,7 @@ open class MedusaClient(
         val response = medusaConnector.get("/categories")
 
         if (response.isError()) {
+            LOGGER.info(response.body)
             throw FailedDependencyException("Error getting categories from Medusa")
         }
 

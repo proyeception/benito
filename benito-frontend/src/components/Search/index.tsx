@@ -7,7 +7,6 @@ import { connect } from "react-redux";
 import { Project } from "../../types";
 import store from "../../store";
 import {
-  updateProjects,
   updateCategory,
   updateName,
   updateDocumentation,
@@ -15,13 +14,16 @@ import {
   updateToDate,
   updateKeyword,
   emptyProjects,
+  updateProjects,
 } from "../../actions/search";
 import { fetchProjects } from "../../functions/search";
 import qs from "qs";
 import { RouteChildrenProps } from "react-router-dom";
-import { motion } from "framer-motion";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-import Loader from "react-loader-spinner";
+import Loader from "../Common/Loader";
+import NoResultsFound from "./NoResultsFound";
+import SlideIn from "../Common/SlideIn";
+import SearchError from "./SearchError";
 
 type MatchParams = {
   name?: string;
@@ -41,40 +43,54 @@ interface Props extends RouteChildrenProps<MatchParams> {
   sortMethod: String;
 }
 
+function passQueryParamsToState(queryParams: MatchParams) {
+  queryParams.category
+    ? store.dispatch(updateCategory(queryParams.category))
+    : {};
+  queryParams.name ? store.dispatch(updateName(queryParams.name)) : {};
+  queryParams.documentation
+    ? store.dispatch(updateDocumentation(queryParams.documentation))
+    : {};
+  queryParams.fromDate
+    ? store.dispatch(updateFromDate(queryParams.fromDate))
+    : {};
+  queryParams.toDate ? store.dispatch(updateToDate(queryParams.toDate)) : {};
+  queryParams.keyword ? store.dispatch(updateKeyword(queryParams.keyword)) : {};
+}
+
 const Search = (props: Props) => {
   let queryParams: MatchParams = qs.parse(props.location.search, {
     ignoreQueryPrefix: true,
   });
 
-  const [loading, setLoading] = useState(props.projects.length == 0);
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(projects.length == 0);
+  const [isError, setIsError] = useState(false);
+  let index = 1;
 
-  const search = () => {
-    fetchProjects(queryParams)
+  const timeout = 50;
+
+  const search = (params?: MatchParams) => {
+    fetchProjects(params ? params : props)
       .then((res) => res.data)
-      .then((projects) => store.dispatch(updateProjects(projects)))
+      .then((ps) => {
+        store.dispatch(updateProjects(ps));
+        const intervalId = setInterval(() => {
+          setProjects(ps.slice(0, index));
+          index++;
+        }, 50);
+        setTimeout(() => clearInterval(intervalId), (ps.length + 1) * timeout);
+      })
       .then(() => setLoading(false))
-      .catch(console.error);
+      .catch((e) => {
+        console.error(e);
+        setIsError(true);
+      });
   };
 
   useEffect(() => {
-    queryParams.category
-      ? store.dispatch(updateCategory(queryParams.category))
-      : {};
-    queryParams.name ? store.dispatch(updateName(queryParams.name)) : {};
-    queryParams.documentation
-      ? store.dispatch(updateDocumentation(queryParams.documentation))
-      : {};
-    queryParams.fromDate
-      ? store.dispatch(updateFromDate(queryParams.fromDate))
-      : {};
-    queryParams.toDate ? store.dispatch(updateToDate(queryParams.toDate)) : {};
-    queryParams.keyword
-      ? store.dispatch(updateKeyword(queryParams.keyword))
-      : {};
-
-    if (props.projects.length == 0) {
-      search();
-    }
+    passQueryParamsToState(queryParams);
+    search(queryParams);
 
     return () => {
       store.dispatch(emptyProjects());
@@ -82,14 +98,9 @@ const Search = (props: Props) => {
   }, []);
 
   return (
-    <motion.div
-      className="container-fluid"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-    >
+    <div className="container-fluid">
       <div className="row">
-        <div className="col-md-2 qui-searchbox-md d-none d-lg-block">
+        <div className="col-md-2 qui-searchbox-md d-none d-md-block">
           <SearchBox
             searchCallback={() => {
               setLoading(true);
@@ -97,24 +108,30 @@ const Search = (props: Props) => {
             }}
           />
         </div>
-        <div className="col-md-10 qui-box mt-md-5">
-          <div className="qui-search-header p-2 pl-4 qui-font-title uncol-sm-l-1 uncol-sm-r-1">
+        <div className="col-md-10 bg-white mt-md-5 min-h-240 min-h-720-md">
+          <div className="qui-search-header p-2 pl-4 font-size-24 font-size-48-md un-ml-1 un-ml-md-0 un-mr-1 un-mr-0-md">
             Proyectos
           </div>
-          <div className="pl-4 pr-2 uncol-sm-l-3 uncol-sm-r-1">
-            {loading ? (
-              <div className="center">
-                <Loader type="TailSpin" color="black" height={80} width={80} />
-              </div>
-            ) : (
-              props.projects.map((p, idx) => (
-                <ProjectSummary project={p} key={idx} />
-              ))
-            )}
-          </div>
+          {isError ? (
+            <SearchError />
+          ) : loading ? (
+            <div className="center min-h-240 min-h-720-md">
+              <Loader />
+            </div>
+          ) : props.projects.length == 0 ? (
+            <NoResultsFound />
+          ) : (
+            <div className="pl-4 pr-2 un-ml-3 un-ml-md-0 un-mr-1 un-mr-md-0">
+              {projects.map((p, idx) => (
+                <SlideIn key={idx}>
+                  <ProjectSummary project={p} />
+                </SlideIn>
+              ))}
+            </div>
+          )}
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

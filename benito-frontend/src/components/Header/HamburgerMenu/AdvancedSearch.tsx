@@ -23,7 +23,7 @@ const AdvancedSearch = (_: any) => {
   }
 
   return (
-    <div className="qui-hamburger-advanced-search-container">
+    <div className="font-size-13">
       <div className="container-fluid pt-3 pb-4">
         <div className="row no-gutters ">
           <div className="col-12 text-uppercase font-weight-bold">Nombre</div>
@@ -59,7 +59,7 @@ const AdvancedSearch = (_: any) => {
           </div>
           <div className="col-12 center">
             <SearchButton
-              className="qui-hamburger-advanced-search-button mt-4 pl-5 pr-5 font-weight-bold pt-2 pb-2"
+              className="text-white bg-primary mt-4 pl-5 pr-5 font-weight-bold pt-2 pb-2 font-size-18"
               onSuccess={() => setDoRedirect(true)}
             />
           </div>

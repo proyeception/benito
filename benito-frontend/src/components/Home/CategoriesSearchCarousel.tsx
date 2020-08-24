@@ -6,6 +6,7 @@ import Carousel from "react-bootstrap/Carousel";
 import CategorySearch from "./CategorySearch";
 import { RootState } from "../../reducers";
 import { connect } from "react-redux";
+import FadeIn from "../Common/FadeIn";
 
 type Props = {
   categories: Array<Category>;
@@ -19,10 +20,10 @@ const CategoriesSearchCarousel = ({ categories }: Props) => {
   };
 
   return (
-    <div className="container mt-5 pl-5 pr-5 d-none d-md-block">
+    <FadeIn className="container mt-5 pl-5 pr-5 d-none d-md-block">
       <div className="row">
         <div className="col-12 center">
-          <div className="pt-3 pb-3 font-weight-bold qui-category-search-title">
+          <div className="pt-3 pb-3 font-weight-bold font-size-24">
             No sabés qué buscar? Empezá por alguna de estas categorías!
           </div>
         </div>
@@ -42,7 +43,7 @@ const CategoriesSearchCarousel = ({ categories }: Props) => {
           </div>
         </div>
       </div>
-    </div>
+    </FadeIn>
   );
 };
 

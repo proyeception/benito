@@ -28,7 +28,7 @@ const HamburgerMenu = (props: Props) => {
         onStateChange={(it) => store.dispatch(toggleHamburgerButton(it.isOpen))}
       >
         <Accordion className="mt-5" defaultActiveKey="0">
-          <Card className="qui-hamburger-accordion-card-header cursor-pointer">
+          <Card className="qui-hamburger-accordion-card-header font-size-18 cursor-pointer">
             <Accordion.Toggle as={Card.Header} eventKey="0">
               Categorías
             </Accordion.Toggle>
@@ -36,7 +36,7 @@ const HamburgerMenu = (props: Props) => {
               <Categories />
             </Accordion.Collapse>
           </Card>
-          <Card className="qui-hamburger-accordion-card-header cursor-pointer">
+          <Card className="qui-hamburger-accordion-card-header font-size-18 cursor-pointer">
             <Accordion.Toggle as={Card.Header} eventKey="1">
               Buscador avanzado
             </Accordion.Toggle>
