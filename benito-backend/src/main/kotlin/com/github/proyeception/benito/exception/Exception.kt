@@ -21,3 +21,5 @@ class FailedDependencyException(message: String) : HttpException(424, message)
 class InternalServerErrorException(message: String, cause: Throwable?) : HttpException(500, message) {
     constructor(message: String) : this(message, null)
 }
+
+class AmbiguousReferenceException(message: String) : RuntimeException(message)

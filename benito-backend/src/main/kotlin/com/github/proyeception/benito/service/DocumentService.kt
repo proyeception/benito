@@ -1,5 +1,6 @@
 package com.github.proyeception.benito.service
 
+import arrow.core.flatMap
 import com.github.proyeception.benito.oauth.GoogleDriveOAuthClient
 import org.slf4j.LoggerFactory
 import org.springframework.web.multipart.MultipartFile
@@ -9,11 +10,10 @@ open class DocumentService(
 ) {
     fun saveFile(file: MultipartFile, projectId: String, name: String): String {
         LOGGER.info("Creating file $name")
-        return googleClient.createFile(
-            name = name,
-            file = file,
-            projectId = projectId
-        )
+
+        return googleClient
+            .findOrCreateFolder(projectId)
+            .flatMap { googleClient.createFile(name, file, it.id) }
             .fold(
                 ifLeft = {
                     LOGGER.error("Error creating file $name", it)

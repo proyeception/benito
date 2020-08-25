@@ -24,11 +24,26 @@ class DocumentServiceTest : Spec() {
         "saveFile" should {
             "return the id of the new file if it succeeds" {
                 val multipartMock: MultipartFile = getMock()
+
+                on(googleMock.findOrCreateFolder(
+                    name = eq("456")
+                )).thenReturn(
+                    FileDTO(
+                        id = "123456",
+                        name = "some-doc",
+                        mimeType = "application/pdf",
+                        webContentLink = null
+                    ).right()
+                )
                 on(googleMock.createFile(
                     name = eq("some-doc"),
                     file = eq(multipartMock),
-                    projectId = eq("456")
-                )).thenReturn(FileCreatedDTO(id = "123").right())
+                    projectId = eq("123456")
+                )).thenReturn(FileCreatedDTO(
+                    id = "123",
+                    name = "some-doc",
+                    mimeType = "application/pdf"
+                ).right())
 
                 val expected = "123"
                 val actual = documentService.saveFile(file = multipartMock, projectId = "456", name = "some-doc")
@@ -38,17 +53,25 @@ class DocumentServiceTest : Spec() {
 
             "throw the exception as is if it failed" {
                 val multipartMock: MultipartFile = getMock()
+                on(googleMock.findOrCreateFolder(
+                    name = eq("456")
+                )).thenReturn(
+                    FileDTO(
+                        id = "123456",
+                        name = "some-doc",
+                        mimeType = "application/pdf",
+                        webContentLink = null
+                    ).right()
+                )
                 on(googleMock.createFile(
                     name = eq("some-doc"),
                     file = eq(multipartMock),
-                    projectId = eq("456")
+                    projectId = eq("123456")
                 )).thenReturn(RuntimeException("error").left())
 
                 shouldThrow<RuntimeException> {
                     documentService.saveFile(file = multipartMock, projectId = "456", name = "some-doc")
                 }
-
-                verify(googleMock).createFile(name = eq("some-doc"), file = eq(multipartMock), projectId = eq("456"))
             }
         }
 
@@ -57,6 +80,7 @@ class DocumentServiceTest : Spec() {
                 forAll { id: String, webContentLink: String ->
                     on(googleMock.getFile(eq(id))).thenReturn(
                         FileDTO(
+                            id = "123",
                             name = "some-doc",
                             mimeType = "application/pdf",
                             webContentLink = webContentLink
@@ -73,6 +97,7 @@ class DocumentServiceTest : Spec() {
                 forAll { id: String ->
                     on(googleMock.getFile(eq(id))).thenReturn(
                         FileDTO(
+                            id = "123",
                             name = "some-doc",
                             mimeType = "application/pdf",
                             webContentLink = null

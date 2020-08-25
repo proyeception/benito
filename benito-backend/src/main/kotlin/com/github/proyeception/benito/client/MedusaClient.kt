@@ -4,8 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.github.proyeception.benito.connector.Connector
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.FailedDependencyException
-import com.google.gson.JsonObject
-import org.json.simple.JSONObject
+import com.github.proyeception.benito.extension.replaceUrlSpaces
 import org.slf4j.LoggerFactory
 
 open class MedusaClient(
@@ -24,7 +23,7 @@ open class MedusaClient(
             .appendOrder(orderBy)
             .appendParam("creation_date", from, MedusaFilter.GREATER_OR_EQUAL)
             .appendParam("creation_date", to, MedusaFilter.LESS_OR_EQUAL)
-            .appendParam("title", nameContains.replaceWhitespaces(), MedusaFilter.CONTAINS)
+            .appendParam("title", nameContains?.replaceUrlSpaces() ?: nameContains, MedusaFilter.CONTAINS)
             .appendParam("category.tag_name", category, MedusaFilter.EQ)
             .appendParam("_limit", limit?.toString())
             .appendParam("_start", offset?.toString())
@@ -98,9 +97,6 @@ open class MedusaClient(
         value?.let { "${this}${param}_${filter.filterName}=$it&" } ?: this
 
     private fun String.appendParam(param: String, value: String?) = value?.let { "$this${param}=$it&" } ?: this
-
-    private fun String?.replaceWhitespaces(): String? =
-        this?.let { this.replace(" ", "+") } ?: this
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(MedusaClient::class.java)
