@@ -26,6 +26,20 @@ open class DocumentService(
             )
     }
 
+    fun fileWebContentLink(id: String): String = googleClient.getFile(id)
+        .fold(
+            ifLeft = {
+                LOGGER.error("Error retrieving file $id")
+                throw it
+            },
+            ifRight = {
+                LOGGER.info("File $id obtained correctly: ${it.webContentLink}")
+                it.webContentLink
+                // For some Kotlin reason, using the ?: here will fail to compile
+            }
+        ) ?: "https://fallback.com"
+    // TODO: decide if we want to do something if no web content link is present, or just fail
+
     companion object {
         private val LOGGER = LoggerFactory.getLogger(DocumentService::class.java)
     }

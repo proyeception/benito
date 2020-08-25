@@ -11,7 +11,7 @@ import com.github.scribejava.apis.GoogleApi20
 import org.springframework.web.multipart.MultipartFile
 import java.util.*
 
-class GoogleDriveOAuthClient(
+open class GoogleDriveOAuthClient(
     token: String,
     clientId: String,
     clientSecret: String,
@@ -52,14 +52,12 @@ class GoogleDriveOAuthClient(
             this.token = it
         }
 
-    fun getFile(fileId: String): String = this.get(
+    open fun getFile(fileId: String): Either<Throwable, FileDTO> = this.get(
         url = "https://www.googleapis.com/drive/v3/files/$fileId?fields=webContentLink,name,mimeType",
         ref = object : TypeReference<FileDTO>() {}
     )
-        .map { it.webContentLink ?: "https://" }
-        .getOrThrow()
 
-    fun createFile(name: String, file: MultipartFile, projectId: String): Either<Throwable, FileCreatedDTO> {
+    open fun createFile(name: String, file: MultipartFile, projectId: String): Either<Throwable, FileCreatedDTO> {
         val metadata = MetadataDTO(name = name)
         return post(
             url = "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart",
