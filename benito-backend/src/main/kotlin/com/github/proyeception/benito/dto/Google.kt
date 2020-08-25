@@ -22,7 +22,8 @@ data class FileCreatedDTO(
 
 data class MetadataDTO(
     val name: String,
-    val mimeType: String? = null
+    val mimeType: String? = null,
+    val parents: List<String>? = null
 )
 
 data class QueryDTO(

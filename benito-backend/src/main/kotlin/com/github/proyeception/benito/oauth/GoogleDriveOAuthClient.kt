@@ -13,6 +13,7 @@ import com.github.proyeception.benito.dto.QueryDTO
 import com.github.proyeception.benito.exception.AmbiguousReferenceException
 import com.github.proyeception.benito.extension.replaceUrlSpaces
 import com.github.scribejava.apis.GoogleApi20
+import org.slf4j.LoggerFactory
 import org.springframework.web.multipart.MultipartFile
 import java.util.*
 
@@ -62,14 +63,16 @@ open class GoogleDriveOAuthClient(
         ref = object : TypeReference<FileDTO>() {}
     )
 
-    open fun createFile(name: String, file: MultipartFile, projectId: String): Either<Throwable, FileCreatedDTO> =
-        createFile(metadata = MetadataDTO(name = name), file = file)
+    open fun createFile(name: String, file: MultipartFile, folderId: String): Either<Throwable, FileCreatedDTO> =
+        createFile(metadata = MetadataDTO(name = name, parents = listOf(folderId)), file = file)
 
-    open fun createFolder(folderName: String): Either<Throwable, FileCreatedDTO> =
-        createFile(
+    open fun createFolder(folderName: String): Either<Throwable, FileCreatedDTO> {
+        LOGGER.info("Creating folder $folderName")
+        return createFile(
             metadata = MetadataDTO(name = folderName, mimeType = "application/vnd.google-apps.folder"),
             file = null
         )
+    }
 
     private fun createFile(metadata: MetadataDTO, file: MultipartFile?): Either<Throwable, FileCreatedDTO> {
         val bodyParts = mutableListOf(
@@ -98,4 +101,8 @@ open class GoogleDriveOAuthClient(
         ref = object : TypeReference<QueryDTO>() {}
     )
         .map { it.files }
+
+    companion object {
+        private val LOGGER = LoggerFactory.getLogger(GoogleDriveOAuthClient::class.java)
+    }
 }

@@ -13,7 +13,6 @@ import io.kotlintest.matchers.shouldBe
 import io.kotlintest.matchers.shouldThrow
 import io.kotlintest.properties.forAll
 import org.mockito.Mockito.anyString
-import org.mockito.Mockito.verify
 import org.springframework.web.multipart.MultipartFile
 
 class DocumentServiceTest : Spec() {
@@ -38,7 +37,7 @@ class DocumentServiceTest : Spec() {
                 on(googleMock.createFile(
                     name = eq("some-doc"),
                     file = eq(multipartMock),
-                    projectId = eq("123456")
+                    folderId = eq("123456")
                 )).thenReturn(FileCreatedDTO(
                     id = "123",
                     name = "some-doc",
@@ -66,7 +65,7 @@ class DocumentServiceTest : Spec() {
                 on(googleMock.createFile(
                     name = eq("some-doc"),
                     file = eq(multipartMock),
-                    projectId = eq("123456")
+                    folderId = eq("123456")
                 )).thenReturn(RuntimeException("error").left())
 
                 shouldThrow<RuntimeException> {
