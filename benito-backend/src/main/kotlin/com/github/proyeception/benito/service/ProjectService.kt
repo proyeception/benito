@@ -4,14 +4,14 @@ import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.dto.CountDTO
 import com.github.proyeception.benito.dto.OrderDTO
 import com.github.proyeception.benito.dto.ProjectDTO
+import com.github.proyeception.benito.parser.DocumentParser
 import org.apache.commons.io.FilenameUtils
-import org.apache.tika.metadata.Metadata
-import org.apache.tika.parser.AutoDetectParser
-import org.apache.tika.sax.BodyContentHandler
 import org.springframework.web.multipart.MultipartFile
 
 open class ProjectService(
-    private val medusaClient: MedusaClient
+    private val medusaClient: MedusaClient,
+    private val documentService: DocumentService,
+    private val documentParser: DocumentParser
 ) {
     open fun findProjects(
         orderBy: OrderDTO?,
@@ -36,20 +36,9 @@ open class ProjectService(
     }
 
     fun saveFile(projectId: String, name: String, file: MultipartFile) {
-        val parser = AutoDetectParser()
-        val handler = BodyContentHandler()
-        val metadata = Metadata()
-        parser.parse(file.inputStream, handler, metadata)
-        val content = handler.toString()
-
-        val extension = FilenameUtils.getExtension(file.originalFilename)
-
-        val driveId = saveFileToGoogleDrive(projectId, name, file)
+        val content = documentParser.parse(file.inputStream)
+        val driveId = documentService.saveFile(projectId = projectId, name = name, file = file)
         medusaClient.saveFile(projectId, name, driveId, content)
     }
 
-    private fun saveFileToGoogleDrive(projectId: String, name: String, file: Any): String {
-        //TODO
-        return "string"
-    }
 }

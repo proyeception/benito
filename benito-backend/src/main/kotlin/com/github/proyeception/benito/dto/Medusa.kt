@@ -40,6 +40,12 @@ data class DocumentationDTO(
     val driveId: String
 )
 
+data class CreateDocumentDTO(
+    val fileName: String,
+    val driveId: String,
+    val content: String
+)
+
 data class CategoryDTO(
     val name: String,
     val tagName: String,

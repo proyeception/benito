@@ -2,10 +2,7 @@ package com.github.proyeception.benito.client
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.github.proyeception.benito.connector.Connector
-import com.github.proyeception.benito.dto.CategoryDTO
-import com.github.proyeception.benito.dto.MedusaFilter
-import com.github.proyeception.benito.dto.MedusaProjectDTO
-import com.github.proyeception.benito.dto.OrderDTO
+import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.FailedDependencyException
 import com.google.gson.JsonObject
 import org.json.simple.JSONObject
@@ -48,7 +45,6 @@ open class MedusaClient(
         val response = medusaConnector.get("/categories")
 
         if (response.isError()) {
-            LOGGER.info(response.body)
             throw FailedDependencyException("Error getting categories from Medusa")
         }
 
@@ -71,13 +67,28 @@ open class MedusaClient(
 
     open fun project(id: String): MedusaProjectDTO {
         val response = medusaConnector.get("/projects/${id}")
-        LOGGER.info(response.body)
 
         if (response.isError()) {
             throw FailedDependencyException("Error getting project from Medusa")
         }
 
         return response.deserializeAs(object : TypeReference<MedusaProjectDTO>() {})
+    }
+
+    open fun saveFile(projectId: String, name: String, driveId: String, content: String) {
+        val endpoint = "/projects/$projectId/documents"
+
+        val document = CreateDocumentDTO(
+            fileName = name,
+            driveId = driveId,
+            content = content
+        )
+
+        val response = medusaConnector.post(endpoint, document)
+
+        if (response.isError()) {
+            throw FailedDependencyException("Error uploading file with drive ID $driveId from Medusa")
+        }
     }
 
     private fun String.appendOrder(orderBy: OrderDTO?): String = orderBy?.sortMethod?.let { "${this}_sort=$it&" }
@@ -90,21 +101,6 @@ open class MedusaClient(
 
     private fun String?.replaceWhitespaces(): String? =
         this?.let { this.replace(" ", "+") } ?: this
-
-    fun saveFile(projectId: String, name: String, driveId: String, content: String) {
-        //TODO
-
-        val endpoint = "/projects/$projectId/documents"
-
-        val document = JSONObject()
-        document.put("file_name", name)
-        document.put("drive_id", driveId)
-        document.put("content", content)
-        val response = medusaConnector.post(endpoint, document)
-
-        print(response.body)
-    }
-
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(MedusaClient::class.java)

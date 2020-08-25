@@ -6,6 +6,7 @@ import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.mock.getMock
 import com.github.proyeception.benito.mock.on
+import com.github.proyeception.benito.parser.DocumentParser
 import io.kotlintest.matchers.shouldBe
 import org.mockito.Mockito
 import java.time.LocalDate
@@ -15,8 +16,12 @@ class ProjectServiceTest : Spec() {
         "projects" should {
             "return list of projects" {
                 val medusaClient: MedusaClient = getMock()
+                val documentParserMock: DocumentParser = getMock()
+                val documentService: DocumentService = getMock()
                 val projectService = ProjectService(
-                    medusaClient = medusaClient
+                    medusaClient = medusaClient,
+                    documentParser = documentParserMock,
+                    documentService = documentService
                 )
 
                 val author = AuthorDTO(
@@ -85,8 +90,12 @@ class ProjectServiceTest : Spec() {
         "project" should {
             "should return a specific project" {
                 val medusaClient: MedusaClient = getMock()
+                val documentParserMock: DocumentParser = getMock()
+                val documentService: DocumentService = getMock()
                 val projectService = ProjectService(
-                    medusaClient = medusaClient
+                    medusaClient = medusaClient,
+                    documentParser = documentParserMock,
+                    documentService = documentService
                 )
 
                 val author = AuthorDTO(

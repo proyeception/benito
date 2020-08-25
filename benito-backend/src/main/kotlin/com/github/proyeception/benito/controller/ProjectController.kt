@@ -4,13 +4,11 @@ import com.github.proyeception.benito.dto.CountDTO
 import com.github.proyeception.benito.dto.OrderDTO
 import com.github.proyeception.benito.dto.ProjectDTO
 import com.github.proyeception.benito.service.ProjectService
-
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
-
 
 
 @Controller
@@ -46,14 +44,17 @@ class ProjectController(
     @CrossOrigin
     private fun findProjects(@PathVariable id: String): ProjectDTO = projectService.findProject(id)
 
-    @RequestMapping("/benito/projects/{projectId}", method = [RequestMethod.POST], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    @RequestMapping(
+        value = ["/benito/projects/{projectId}/documents"],
+        method = [RequestMethod.POST],
+        consumes = [MediaType.MULTIPART_FORM_DATA_VALUE]
+    )
     @ResponseBody
-    private fun saveFile(@PathVariable projectId: String,
-                         @RequestParam name: String,
-                         @RequestParam("file") file: MultipartFile) : ResponseEntity<String> {
-
-        projectService.saveFile(projectId, name, file)
-
-        return ResponseEntity.ok("File received successfully")
-    }
+    @CrossOrigin
+    @ResponseStatus(value = HttpStatus.OK)
+    private fun saveFile(
+        @PathVariable projectId: String,
+        @RequestParam name: String,
+        @RequestParam("file") file: MultipartFile
+    ) = projectService.saveFile(projectId, name, file)
 }
