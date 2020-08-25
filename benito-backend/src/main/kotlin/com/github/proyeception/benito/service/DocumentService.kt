@@ -4,7 +4,7 @@ import com.github.proyeception.benito.oauth.GoogleDriveOAuthClient
 import org.slf4j.LoggerFactory
 import org.springframework.web.multipart.MultipartFile
 
-class DocumentService(
+open class DocumentService(
     private val googleClient: GoogleDriveOAuthClient
 ) {
     fun saveFile(file: MultipartFile, projectId: String, name: String): String {

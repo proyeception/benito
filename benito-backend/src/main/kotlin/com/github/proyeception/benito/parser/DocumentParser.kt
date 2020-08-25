@@ -5,10 +5,10 @@ import org.apache.tika.sax.BodyContentHandler
 import org.apache.tika.metadata.Metadata
 import java.io.InputStream
 
-class DocumentParser(
+open class DocumentParser(
     private val parser: AutoDetectParser
 ) {
-    fun parse(input: InputStream): String {
+    open fun parse(input: InputStream): String {
         val handler = BodyContentHandler()
         val metadata = Metadata()
 

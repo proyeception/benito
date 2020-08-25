@@ -46,10 +46,7 @@ abstract class OAuthClient(
     ): Either<Throwable, T> {
         val accessToken = oAuth20Service.refreshAccessToken(this.token)
         val request = OAuthRequest(verb, url)
-        if (bodyParts.isNotEmpty()) {
-            request.initMultipartPayload()
-//            request.addHeader("Content-Type", "multipart/form-data")
-        }
+        if (bodyParts.isNotEmpty()) request.initMultipartPayload()
         bodyParts.forEach {
             request.addByteArrayBodyPartPayloadInMultipartPayload(it.second, it.first)
         }

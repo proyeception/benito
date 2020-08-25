@@ -95,8 +95,6 @@ class OAuthClientTest : Spec() {
 
                     verify(authServiceMock, atLeastOnce()).refreshAccessToken(eq("123"))
                     verify(authServiceMock, atLeastOnce()).signRequest(eq(accessTokenMock), requestCaptor.capture())
-                    verify(responseMock, never()).body
-                    verify(mapperMock, never()).readValue(eq("{}"), any(TypeReference::class.java))
                     requestCaptor.value.url shouldBe "/123"
                     requestCaptor.value.verb shouldBe verb
 
