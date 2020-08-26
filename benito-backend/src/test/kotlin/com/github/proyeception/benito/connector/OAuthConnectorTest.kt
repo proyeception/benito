@@ -1,11 +1,9 @@
-package com.github.proyeception.benito.oauth
+package com.github.proyeception.benito.connector
 
 import arrow.core.getOrElse
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.proyeception.benito.Spec
-import com.github.proyeception.benito.connector.OAuthConnector
-import com.github.proyeception.benito.connector.Response
 import com.github.proyeception.benito.exception.HttpException
 import com.github.proyeception.benito.mock.eq
 import com.github.proyeception.benito.mock.getMock

@@ -48,30 +48,30 @@ open class OAuthConnector(
         ).right()
     }
 
-    fun get(url: String): Either<Throwable, Response> = executeRequest(
+    open fun get(url: String): Either<Throwable, Response> = executeRequest(
         verb = Verb.GET,
         url = url
     )
 
-    fun post(url: String): Either<Throwable, Response> = post(url)
+    open fun post(url: String): Either<Throwable, Response> = post(url)
 
-    fun post(url: String, vararg bodyParts: Pair<String, ByteArray>): Either<Throwable, Response> = executeRequest(
+    open fun post(url: String, vararg bodyParts: Pair<String, ByteArray>): Either<Throwable, Response> = executeRequest(
             Verb.POST,
             url,
             *bodyParts
         )
 
-    fun delete(url: String): Either<Throwable, Response> = executeRequest(
+    open fun delete(url: String): Either<Throwable, Response> = executeRequest(
         verb = Verb.DELETE,
         url = url
     )
 
-    fun put(url: String): Either<Throwable, Response> = executeRequest(
+    open fun put(url: String): Either<Throwable, Response> = executeRequest(
         verb = Verb.PUT,
         url = url
     )
 
-    fun patch(url: String): Either<Throwable, Response> = executeRequest(
+    open fun patch(url: String): Either<Throwable, Response> = executeRequest(
         verb = Verb.PATCH,
         url = url
     )

@@ -1,4 +1,4 @@
-package com.github.proyeception.benito.client
+package com.github.proyeception.benito.oauth
 
 interface OAuthClient {
     fun initNewAuth(): String
