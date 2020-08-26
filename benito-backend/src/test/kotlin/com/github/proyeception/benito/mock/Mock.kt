@@ -1,5 +1,7 @@
 package com.github.proyeception.benito.mock
 
+import com.github.proyeception.benito.connector.Response
+import io.kotlintest.matchers.shouldBe
 import org.mockito.Mockito
 import org.mockito.stubbing.OngoingStubbing
 
@@ -29,3 +31,9 @@ object Mock {
 fun <A> on(methodCall: A): OngoingStubbing<A> = Mockito.`when`(methodCall)
 inline fun <reified T> getMock() = Mock.get<T>()
 fun <T : Any> eq(value: T): T = Mockito.eq(value) ?: value
+
+infix fun Response.shouldBeEqual(to: Response) {
+    this.status shouldBe to.status
+    this.body shouldBe to.body
+    this.headers shouldBe to.headers
+}

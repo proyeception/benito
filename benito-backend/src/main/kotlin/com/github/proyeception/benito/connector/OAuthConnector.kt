@@ -21,30 +21,11 @@ open class OAuthConnector(
     var token: String,
     protected val objectMapper: ObjectMapper
 ) {
-    constructor(
-        instance: DefaultApi20,
-        scope: String,
-        clientId: String,
-        clientSecret: String,
-        callbackRoute: String,
-        token: String,
-        objectMapper: ObjectMapper
-    ) : this(
-        oAuth20Service = ServiceBuilder(clientId)
-            .apiSecret(clientSecret)
-            .callback(callbackRoute)
-            .defaultScope(scope)
-            .build(instance),
-        token = token,
-        objectMapper = objectMapper
-    )
-
-    fun <T> executeRequest(
+    fun executeRequest(
         verb: Verb,
         url: String,
-        ref: TypeReference<T>,
         vararg bodyParts: Pair<String, ByteArray>
-    ): Either<Throwable, T> {
+    ): Either<Throwable, Response> {
         val accessToken = oAuth20Service.refreshAccessToken(this.token)
         val request = OAuthRequest(verb, url)
         if (bodyParts.isNotEmpty()) request.initMultipartPayload()
@@ -59,41 +40,40 @@ open class OAuthConnector(
             return HttpException.of(response.code, response.message).left()
         }
 
-        return objectMapper.readValue(response.body, ref).right()
+        return Response(
+            objectMapper = objectMapper,
+            body = response.body,
+            status = response.code,
+            headers = response.headers
+        ).right()
     }
 
-    fun <T> get(url: String, ref: TypeReference<T>): Either<Throwable, T> = executeRequest(
+    fun get(url: String): Either<Throwable, Response> = executeRequest(
         verb = Verb.GET,
-        url = url,
-        ref = ref
+        url = url
     )
 
-    fun <T> post(url: String, ref: TypeReference<T>): Either<Throwable, T> = post(url, ref)
+    fun post(url: String): Either<Throwable, Response> = post(url)
 
-    fun <T> post(url: String, ref: TypeReference<T>, vararg bodyParts: Pair<String, ByteArray>): Either<Throwable, T> =
-        executeRequest(
+    fun post(url: String, vararg bodyParts: Pair<String, ByteArray>): Either<Throwable, Response> = executeRequest(
             Verb.POST,
             url,
-            ref,
             *bodyParts
         )
 
-    fun <T> delete(url: String, ref: TypeReference<T>): Either<Throwable, T> = executeRequest(
+    fun delete(url: String): Either<Throwable, Response> = executeRequest(
         verb = Verb.DELETE,
-        url = url,
-        ref = ref
+        url = url
     )
 
-    fun <T> put(url: String, ref: TypeReference<T>): Either<Throwable, T> = executeRequest(
+    fun put(url: String): Either<Throwable, Response> = executeRequest(
         verb = Verb.PUT,
-        url = url,
-        ref = ref
+        url = url
     )
 
-    fun <T> patch(url: String, ref: TypeReference<T>): Either<Throwable, T> = executeRequest(
+    fun patch(url: String): Either<Throwable, Response> = executeRequest(
         verb = Verb.PATCH,
-        url = url,
-        ref = ref
+        url = url
     )
 
     companion object {

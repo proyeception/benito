@@ -1,17 +1,19 @@
 package com.github.proyeception.benito.oauth
 
-import arrow.core.Either
+import arrow.core.getOrElse
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.proyeception.benito.Spec
 import com.github.proyeception.benito.connector.OAuthConnector
+import com.github.proyeception.benito.connector.Response
 import com.github.proyeception.benito.exception.HttpException
 import com.github.proyeception.benito.mock.eq
 import com.github.proyeception.benito.mock.getMock
 import com.github.proyeception.benito.mock.on
+import com.github.proyeception.benito.mock.shouldBeEqual
+import com.github.proyeception.benito.types.ScribeResponse
 import com.github.scribejava.core.model.OAuth2AccessToken
 import com.github.scribejava.core.model.OAuthRequest
-import com.github.scribejava.core.model.Response
 import com.github.scribejava.core.model.Verb
 import com.github.scribejava.core.oauth.OAuth20Service
 import com.nhaarman.mockito_kotlin.atLeastOnce
@@ -21,7 +23,8 @@ import io.kotlintest.properties.Gen
 import io.kotlintest.properties.forAll
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers
-import org.mockito.Mockito.*
+import org.mockito.Mockito.any
+import org.mockito.Mockito.verify
 
 class OAuthConnectorTest : Spec() {
     init {
@@ -35,7 +38,7 @@ class OAuthConnectorTest : Spec() {
         )
 
         val accessTokenMock: OAuth2AccessToken = getMock()
-        val responseMock: Response = getMock()
+        val responseMock: ScribeResponse = getMock()
         val requestCaptor: ArgumentCaptor<OAuthRequest> = ArgumentCaptor.forClass(OAuthRequest::class.java)
 
         "executeRequest" should {
@@ -65,17 +68,23 @@ class OAuthConnectorTest : Spec() {
                     on(authServiceMock.execute(ArgumentMatchers.any())).thenReturn(responseMock)
                     on(responseMock.code).thenReturn(200)
                     on(responseMock.body).thenReturn("{}")
+                    on(responseMock.headers).thenReturn(emptyMap())
                     on(mapperMock.readValue(any(String::class.java), any(TypeReference::class.java))).thenReturn(null)
 
-                    val expected: Either<Throwable, Any?> = Either.right(null)
-                    val actual = oAuthClient.executeRequest(it, "/123", object : TypeReference<Any?>() {})
+                    val expected = Response(
+                        objectMapper = mapperMock,
+                        body = "{}",
+                        status = 200,
+                        headers = emptyMap()
+                    )
+                    val actual = oAuthClient.executeRequest(it, "/123")
+                        .getOrElse { throw NoSuchElementException() }
 
-                    actual shouldBe expected
+                    actual shouldBeEqual expected
 
                     verify(authServiceMock, atLeastOnce()).refreshAccessToken(eq("123"))
                     verify(authServiceMock, atLeastOnce()).signRequest(eq(accessTokenMock), requestCaptor.capture())
                     verify(responseMock, atLeastOnce()).body
-                    verify(mapperMock, atLeastOnce()).readValue(eq("{}"), any(TypeReference::class.java))
                     requestCaptor.value.url shouldBe "/123"
                     requestCaptor.value.verb == it
                 }
@@ -88,7 +97,7 @@ class OAuthConnectorTest : Spec() {
                     on(responseMock.code).thenReturn(status)
                     on(responseMock.message).thenReturn("ERROR")
 
-                    val actual = oAuthClient.executeRequest(verb, "/123", object : TypeReference<Any?>() {})
+                    val actual = oAuthClient.executeRequest(verb, "/123")
 
                     verify(authServiceMock, atLeastOnce()).refreshAccessToken(eq("123"))
                     verify(authServiceMock, atLeastOnce()).signRequest(eq(accessTokenMock), requestCaptor.capture())

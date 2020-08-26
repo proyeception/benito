@@ -5,7 +5,7 @@ import com.github.proyeception.benito.Spec
 import com.github.proyeception.benito.mock.eq
 import com.github.proyeception.benito.mock.getMock
 import com.github.proyeception.benito.mock.on
-import io.kotlintest.matchers.shouldBe
+import com.github.proyeception.benito.mock.shouldBeEqual
 import org.apache.http.HttpEntity
 import org.apache.http.HttpResponse
 import org.apache.http.StatusLine
@@ -240,11 +240,5 @@ open class ConnectorTest : Spec() {
             verify(apacheClientMock).execute(any(HttpDelete::class.java))
             verify(objectMapperMock, never()).writeValueAsString(any())
         }
-    }
-
-    private infix fun Response.shouldBeEqual(to: Response) {
-        this.status shouldBe to.status
-        this.body shouldBe to.body
-        this.headers shouldBe to.headers
     }
 }

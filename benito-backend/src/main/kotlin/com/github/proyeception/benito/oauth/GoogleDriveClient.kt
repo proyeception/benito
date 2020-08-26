@@ -22,7 +22,6 @@ open class GoogleDriveClient(
     private val googleDriveConnector: OAuthConnector,
     private val objectMapper: ObjectMapper
 ) : OAuthClient {
-
     /*
     * Queda pendiente el terminar de crear nuevos usuarios
     * Habría que validar con el secret que un forro con postman no nos mande basura
@@ -49,9 +48,9 @@ open class GoogleDriveClient(
         }
 
     open fun getFile(fileId: String): Either<Throwable, FileDTO> = googleDriveConnector.get(
-        url = "https://www.googleapis.com/drive/v3/files/$fileId?fields=webContentLink,name,mimeType",
-        ref = object : TypeReference<FileDTO>() {}
+        url = "https://www.googleapis.com/drive/v3/files/$fileId?fields=webContentLink,name,mimeType"
     )
+        .map { it.deserializeAs(object : TypeReference<FileDTO>() {}) }
 
     open fun createFile(name: String, file: MultipartFile, folderId: String): Either<Throwable, FileCreatedDTO> =
         createFile(metadata = MetadataDTO(name = name, parents = listOf(folderId)), file = file)
@@ -72,9 +71,9 @@ open class GoogleDriveClient(
 
         return googleDriveConnector.post(
             url = "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart",
-            ref = object : TypeReference<FileCreatedDTO>() {},
             bodyParts = *bodyParts.toTypedArray()
         )
+            .map { it.deserializeAs(object : TypeReference<FileCreatedDTO>() {}) }
     }
 
     open fun findOrCreateFolder(name: String): Either<Throwable, FileDTO> = query("name = '$name'")
@@ -87,9 +86,9 @@ open class GoogleDriveClient(
         }
 
     private fun query(query: String): Either<Throwable, List<FileDTO>> = googleDriveConnector.get(
-        url = "https://www.googleapis.com/drive/v3/files?q=${query.replaceUrlSpaces()}",
-        ref = object : TypeReference<QueryDTO>() {}
+        url = "https://www.googleapis.com/drive/v3/files?q=${query.replaceUrlSpaces()}"
     )
+        .map { it.deserializeAs(object : TypeReference<QueryDTO>() {}) }
         .map { it.files }
 
     companion object {
