@@ -45,10 +45,23 @@ data class ProjectDTO(
     )
 }
 
+enum class UserTypeDTO {
+    STUDENT,
+    TEACHER,
+}
+
 data class PersonDTO(
     val username: String,
     val fullName: String,
-    val profileUrl: String,
+    val profilePicUrl: String?,
     val organizations: List<OrganizationDTO>,
     val projects: List<ProjectRefDTO>
-)
+) {
+    constructor(medusa: MedusaUserDTO) : this(
+        username = medusa.username,
+        fullName = medusa.fullName,
+        profilePicUrl = medusa.profilePicUrl?.url,
+        organizations = medusa.organizations,
+        projects = medusa.projectRefs
+    )
+}

@@ -9,7 +9,7 @@ data class MedusaProjectDTO(
     val description: String,
     val extraContent: String?,
     val creationDate: LocalDate,
-    val poster: PosterDTO,
+    val poster: ImageDTO,
     val authorRefs: List<PersonRefDTO>,
     val supervisorRefs: List<PersonRefDTO>,
     val documentation: List<DocumentationDTO>,
@@ -23,7 +23,7 @@ data class PersonRefDTO(
     val fullName: String
 )
 
-data class PosterDTO(
+data class ImageDTO(
     val url: String
 )
 
@@ -60,4 +60,12 @@ data class OrganizationDTO(
 data class ProjectRefDTO(
     val projectId: String,
     val projectName: String
+)
+
+data class MedusaUserDTO(
+    val username: String,
+    val fullName: String,
+    val profilePicUrl: ImageDTO?,
+    val organizations: List<OrganizationDTO>,
+    val projectRefs: List<ProjectRefDTO>
 )

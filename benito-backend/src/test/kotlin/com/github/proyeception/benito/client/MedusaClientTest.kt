@@ -281,7 +281,7 @@ class MedusaClientTest : Spec() {
                 description = "project description",
                 extraContent = "nice formatted content",
                 creationDate = LocalDate.of(2020, 2, 6),
-                poster = PosterDTO("poster"),
+                poster = ImageDTO("poster"),
                 authorRefs = listOf(author),
                 supervisorRefs = listOf(supervisor),
                 category = CategoryDTO(name = "Systems", tagName = "systems", imageUrl = ""),

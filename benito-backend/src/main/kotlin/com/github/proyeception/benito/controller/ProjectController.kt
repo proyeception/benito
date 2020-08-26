@@ -4,6 +4,7 @@ import com.github.proyeception.benito.dto.CountDTO
 import com.github.proyeception.benito.dto.OrderDTO
 import com.github.proyeception.benito.dto.ProjectDTO
 import com.github.proyeception.benito.service.ProjectService
+import com.github.proyeception.benito.service.UserService
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Controller
@@ -13,7 +14,8 @@ import org.springframework.web.multipart.MultipartFile
 
 @Controller
 class ProjectController(
-    private val projectService: ProjectService
+    private val projectService: ProjectService,
+    private val userService: UserService
 ) {
 
     @RequestMapping("/benito/projects", method = [RequestMethod.GET])
@@ -57,4 +59,14 @@ class ProjectController(
         @RequestParam name: String,
         @RequestParam("file") file: MultipartFile
     ) = projectService.saveFile(projectId, name, file)
+
+    @RequestMapping(value = ["/benito/authors/{id}"], method = [RequestMethod.GET])
+    @ResponseBody
+    @CrossOrigin
+    fun findAuthor(@PathVariable id: String) = userService.findAuthor(id)
+
+    @RequestMapping(value = ["/benito/supervisors/{id}"], method = [RequestMethod.GET])
+    @ResponseBody
+    @CrossOrigin
+    fun findSupervisor(@PathVariable id: String) = userService.findSupervisor(id)
 }
