@@ -2,32 +2,6 @@ package com.github.proyeception.benito.dto
 
 import java.time.LocalDate
 
-data class ProjectRefDTO(
-    val url: String,
-    val name: String
-)
-
-data class SocialRefDTO(
-    val url: String,
-    val name: String
-)
-
-data class UserInfoDTO(
-    val id: String,
-    val name: String,
-    val lastName: String,
-    val profilePicUrl: String,
-    val email: String,
-    val organization: String,
-    val projectRefs: List<ProjectRefDTO>,
-    val socials: List<SocialRefDTO>
-)
-
-data class UserSessionDTO(
-    val sessionToken: String,
-    val userInfo: UserInfoDTO
-)
-
 data class ErrorDTO(
     val status: Int,
     val message: String?,
@@ -52,8 +26,8 @@ data class ProjectDTO(
     val extraContent: String,
     val creationDate: LocalDate,
     val posterUrl: String,
-    val authors: List<PersonDTO>,
-    val supervisors: List<PersonDTO>,
+    val authors: List<PersonRefDTO>,
+    val supervisors: List<PersonRefDTO>,
     val tags: List<String>,
     val documentation: List<DocumentationDTO>
 ) {
@@ -64,20 +38,8 @@ data class ProjectDTO(
         extraContent = medusaProjectDTO.extraContent.orEmpty(),
         creationDate = medusaProjectDTO.creationDate,
         posterUrl = medusaProjectDTO.poster.url,
-        authors = medusaProjectDTO.authorRefs.map {
-            PersonDTO(
-                username = it.username,
-                fullName = it.fullName,
-                profileUrl = it.profileUrl
-            )
-        },
-        supervisors = medusaProjectDTO.supervisorRefs.map {
-            PersonDTO(
-                username = it.username,
-                fullName = it.fullName,
-                profileUrl = it.profileUrl
-            )
-        },
+        authors = medusaProjectDTO.authorRefs,
+        supervisors = medusaProjectDTO.supervisorRefs,
         tags = emptyList(),
         documentation = medusaProjectDTO.documentation
     )
@@ -86,10 +48,7 @@ data class ProjectDTO(
 data class PersonDTO(
     val username: String,
     val fullName: String,
-    val profileUrl: String
-)
-
-data class DocumentDTO(
-    val name: String,
-    val downloadLink: String
+    val profileUrl: String,
+    val organizations: List<OrganizationDTO>,
+    val projects: List<ProjectRefDTO>
 )

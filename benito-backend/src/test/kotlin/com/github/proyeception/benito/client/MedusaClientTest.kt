@@ -24,13 +24,15 @@ class MedusaClientTest : Spec() {
 
         "findProjects" should {
             val responseMock: Response = getMock()
-            val author = PersonDTO(
+            val author = PersonRefDTO(
+                id = "123",
                 username = "author",
                 fullName = "UnNombre",
                 profileUrl = "/authorUrl"
             )
 
-            val supervisor = PersonDTO(
+            val supervisor = PersonRefDTO(
+                id = "123",
                 username = "supervisor",
                 fullName = "UnNombre",
                 profileUrl = "/supervisorUrl"
@@ -253,14 +255,14 @@ class MedusaClientTest : Spec() {
 
         "findProject" should {
             val responseMock: Response = getMock()
-            val author = AuthorDTO(
+            val author = PersonRefDTO(
                 id = "123",
                 username = "author",
                 fullName = "UnNombre",
                 profileUrl = "/authorUrl"
             )
 
-            val supervisor = SupervisorDTO(
+            val supervisor = PersonRefDTO(
                 id = "1234",
                 username = "supervisor",
                 fullName = "UnNombre",

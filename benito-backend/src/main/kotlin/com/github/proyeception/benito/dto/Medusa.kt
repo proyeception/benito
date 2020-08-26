@@ -10,20 +10,13 @@ data class MedusaProjectDTO(
     val extraContent: String?,
     val creationDate: LocalDate,
     val poster: PosterDTO,
-    val authorRefs: List<AuthorDTO>,
-    val supervisorRefs: List<SupervisorDTO>,
+    val authorRefs: List<PersonRefDTO>,
+    val supervisorRefs: List<PersonRefDTO>,
     val documentation: List<DocumentationDTO>,
     val category: CategoryDTO
 )
 
-data class AuthorDTO(
-    @JsonProperty("_id") val id: String,
-    val username: String,
-    val profileUrl: String,
-    val fullName: String
-)
-
-data class SupervisorDTO(
+data class PersonRefDTO(
     @JsonProperty("_id") val id: String,
     val username: String,
     val profileUrl: String,
@@ -58,3 +51,13 @@ enum class MedusaFilter(val filterName: String) {
     CONTAINS("contains"),
     EQ("eq"),
 }
+
+data class OrganizationDTO(
+    val displayName: String,
+    val name: String
+)
+
+data class ProjectRefDTO(
+    val projectId: String,
+    val projectName: String
+)

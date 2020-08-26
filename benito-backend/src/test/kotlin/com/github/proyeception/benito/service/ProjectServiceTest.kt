@@ -24,14 +24,14 @@ class ProjectServiceTest : Spec() {
                     documentService = documentService
                 )
 
-                val author = AuthorDTO(
+                val author = PersonRefDTO(
                     id = "123",
                     fullName = "Benito Quinquela",
                     username = "author",
                     profileUrl = "/authorUrl"
                 )
 
-                val supervisor = SupervisorDTO(
+                val supervisor = PersonRefDTO(
                     id = "123",
                     fullName = "Jorge Luis Borges",
                     username = "supervisor",
@@ -51,8 +51,22 @@ class ProjectServiceTest : Spec() {
                     extraContent = "nicely formatted content",
                     creationDate = LocalDate.of(2020, 2, 6),
                     posterUrl = "",
-                    authors = listOf(PersonDTO(username = "author", fullName = "Benito Quinquela", profileUrl = "/authorUrl")),
-                    supervisors = listOf(PersonDTO(username = "supervisor", fullName = "Jorge Luis Borges", profileUrl = "/supervisorUrl")),
+                    authors = listOf(
+                        PersonRefDTO(
+                            id = "123",
+                            username = "author",
+                            fullName = "Benito Quinquela",
+                            profileUrl = "/authorUrl"
+                        )
+                    ),
+                    supervisors = listOf(
+                        PersonRefDTO(
+                            id = "123",
+                            username = "supervisor",
+                            fullName = "Jorge Luis Borges",
+                            profileUrl = "/supervisorUrl"
+                        )
+                    ),
                     tags = emptyList(),
                     documentation = listOf(documentation)
                 )
@@ -98,14 +112,14 @@ class ProjectServiceTest : Spec() {
                     documentService = documentService
                 )
 
-                val author = AuthorDTO(
+                val author = PersonRefDTO(
                     id = "123",
                     fullName = "Benito Quinquela",
                     username = "author",
                     profileUrl = "/authorUrl"
                 )
 
-                val supervisor = SupervisorDTO(
+                val supervisor = PersonRefDTO(
                     id = "123",
                     fullName = "Jorge Luis Borges",
                     username = "supervisor",
@@ -126,8 +140,22 @@ class ProjectServiceTest : Spec() {
                     extraContent = "nicely formatted content",
                     creationDate = LocalDate.of(2020, 2, 6),
                     posterUrl = "",
-                    authors = listOf(PersonDTO(username = "author", fullName = "Benito Quinquela", profileUrl = "/authorUrl")),
-                    supervisors = listOf(PersonDTO(username = "supervisor", fullName = "Jorge Luis Borges", profileUrl = "/supervisorUrl")),
+                    authors = listOf(
+                        PersonRefDTO(
+                            id = "123",
+                            username = "author",
+                            fullName = "Benito Quinquela",
+                            profileUrl = "/authorUrl"
+                        )
+                    ),
+                    supervisors = listOf(
+                        PersonRefDTO(
+                            id = "123",
+                            username = "supervisor",
+                            fullName = "Jorge Luis Borges",
+                            profileUrl = "/supervisorUrl"
+                        )
+                    ),
                     tags = emptyList(),
                     documentation = listOf(documentation)
                 )
