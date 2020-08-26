@@ -11,11 +11,13 @@ type Props = {
 const Summary = (props: Props) => {
   return (
     <div className="col-md-12 mt-3 mt-md-5 mb-md-4">
-      <div className="qui-project-subtitle font-size-13 font-size-30-md d-flex">
+      <div className="qui-project-subtitle font-size-13 font-size-24-md d-flex">
         Resumen
       </div>
-      <div className="qui-summary qui-font-text mt-3">
-        {props.project.description}
+      <div className="pl-md-3 pr-md-3">
+        <div className="qui-summary font-size-11 font-size-16-md qui-font-text mt-2 mt-md-3 font-weight-light">
+          {props.project.description}
+        </div>
       </div>
       <Separator />
     </div>

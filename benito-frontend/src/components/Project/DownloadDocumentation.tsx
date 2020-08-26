@@ -13,7 +13,7 @@ type Props = {
 const DownloadDocumentation = (props: Props) => {
   const downloadLink = `${benitoHost}/benito/documents/${props.documentation.driveId}`;
   return (
-    <div className="qui-font-text qui-summary mt-3 cursor-pointer">
+    <div className="qui-font-text qui-summary mt-3 cursor-pointer pl-md-3 pr-md-3">
       <a href={downloadLink}>
         <FontAwesomeIcon icon={faDownload} className="qui-icon" />{" "}
         {props.documentation.fileName}

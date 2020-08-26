@@ -42,7 +42,7 @@ const ProjectInfo = (props: Props) => {
         minHeight={MIN_MOBILE_HEIGHT}
         display="d-block d-md-none"
       />
-      <div className="container-fluid bg-white">
+      <div className="container-fluid bg-white pl-md-4">
         <div className="row">
           <Summary project={props.project} />
           <Details project={props.project} />

@@ -9,26 +9,27 @@ type Props = {
 };
 
 const Documents = (props: Props) => {
-  if (props.project.documentation.length > 0) {
-    return (
-      <div className="col-md-6">
-        <div className="qui-project-subtitle">Documentación</div>
+  const documentationProper =
+    props.project.documentation.length == 0 ? (
+      <div className="qui-font-text qui-summary mt-3 font-weight-light pl-md-3 pr-md-3">
+        El proyecto todavía no cuenta con documentación 😧
+      </div>
+    ) : (
+      <div className="font-weight-light pl-md-3 pr-md-3">
         {props.project.documentation.map((d, idx) => (
-            <DownloadDocumentation documentation={d} key={idx} />)
-          )
-        }
+          <DownloadDocumentation documentation={d} key={idx} />
+        ))}
       </div>
     );
-  } else {
-    return (
-      <div className="col-md-6">
-        <div className="qui-project-subtitle">Documentación</div>
-        <div className="qui-font-text qui-summary mt-3">
-          El proyecto todavía no cuenta con documentación 😧
-        </div>
+
+  return (
+    <div className="col-md-6">
+      <div className="qui-project-subtitle font-size-13 font-size-24-md">
+        Documentación
       </div>
-    );
-  }
+      {documentationProper}
+    </div>
+  );
 };
 
 export default hot(module)(Documents);

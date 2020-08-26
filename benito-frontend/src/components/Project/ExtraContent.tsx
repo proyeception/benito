@@ -18,8 +18,11 @@ const ExtraContent = (props: Props) => {
     return (
       <div className="col-md-12 mt-4">
         <Separator />
-        <div className="qui-project-subtitle">Contenido adicional</div>
+        <div className="qui-project-subtitle font-size-13 font-size-24-md">
+          Contenido adicional
+        </div>
         <ReactMarkdown
+          className="font-weight-light pl-md-3 pr-md-3"
           source={props.project.extraContent.valueOf()}
           renderers={{ image: Image }}
         />
