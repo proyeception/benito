@@ -9,4 +9,6 @@ import org.springframework.context.annotation.Configuration
 open class ClientModule {
     @Bean("medusaClient")
     open fun medusaClient(medusaConnector: Connector): MedusaClient = MedusaClient(medusaConnector)
+
+
 }

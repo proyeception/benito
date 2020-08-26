@@ -1,6 +1,10 @@
 package com.github.proyeception.benito.config
 
 import com.github.proyeception.benito.client.MedusaClient
+import com.github.proyeception.benito.oauth.GoogleDriveOAuthClient
+import com.github.proyeception.benito.parser.DocumentParser
+import com.github.proyeception.benito.service.CategoriesService
+import com.github.proyeception.benito.service.DocumentService
 import com.github.proyeception.benito.service.ProjectService
 import org.springframework.context.annotation.Bean
 
@@ -8,6 +12,24 @@ import org.springframework.context.annotation.Bean
 open class ServiceModule {
     @Bean
     open fun projectService(
+        medusaClient: MedusaClient,
+        documentParser: DocumentParser,
+        documentService: DocumentService
+    ): ProjectService = ProjectService(
+        medusaClient = medusaClient,
+        documentParser = documentParser,
+        documentService = documentService
+    )
+
+    @Bean
+    open fun categoriesService(
         medusaClient: MedusaClient
-    ): ProjectService = ProjectService(medusaClient = medusaClient)
+    ): CategoriesService = CategoriesService(medusaClient = medusaClient)
+
+    @Bean
+    open fun documentService(
+        googleClient: GoogleDriveOAuthClient
+    ): DocumentService = DocumentService(
+        googleClient = googleClient
+    )
 }

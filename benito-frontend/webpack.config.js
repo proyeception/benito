@@ -121,7 +121,7 @@ module.exports = {
         use: cssLoaders(),
       },
       {
-        test: /\.(jpe?g|png|gif|svg|ttf|woff2?)$/i,
+        test: /\.(jpe?g|png|gif|svg|ttf|woff|woff2|eot?)$/i,
         use: [
           {
             loader: "file-loader",

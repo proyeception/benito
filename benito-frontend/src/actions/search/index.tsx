@@ -9,8 +9,9 @@ import {
   UPDATE_DOCUMENTATION,
   UPDATE_SORT_METHOD,
   SortMethod,
+  RESET_SEARCH_PARAMETERS,
 } from "../../store/search/types";
-import { Project } from "../../components/Search/ProjectSummary";
+import { Project } from "../../types";
 
 export function updateName(name: String): SearchAction {
   return {
@@ -65,5 +66,18 @@ export function updateSortMethod(sortMethod: SortMethod): SearchAction {
   return {
     type: UPDATE_SORT_METHOD,
     payload: sortMethod,
+  };
+}
+
+export function emptyProjects(): SearchAction {
+  return {
+    type: UPDATE_PROJECTS,
+    payload: [],
+  };
+}
+
+export function resetSearchParameters(): SearchAction {
+  return {
+    type: RESET_SEARCH_PARAMETERS,
   };
 }
