@@ -4,6 +4,7 @@ import arrow.core.Either
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.proyeception.benito.Spec
+import com.github.proyeception.benito.connector.OAuthConnector
 import com.github.proyeception.benito.exception.HttpException
 import com.github.proyeception.benito.mock.eq
 import com.github.proyeception.benito.mock.getMock
@@ -22,20 +23,16 @@ import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.*
 
-class OAuthClientTest : Spec() {
+class OAuthConnectorTest : Spec() {
     init {
         val authServiceMock: OAuth20Service = getMock()
         val mapperMock: ObjectMapper = getMock()
 
-        val oAuthClient = object : OAuthClient(
+        val oAuthClient = OAuthConnector(
             oAuth20Service = authServiceMock,
             objectMapper = mapperMock,
             token = "123"
-        ) {
-            override fun initNewAuth(): String = ""
-
-            override fun finishNewAuth(authorization: String): String = ""
-        }
+        )
 
         val accessTokenMock: OAuth2AccessToken = getMock()
         val responseMock: Response = getMock()

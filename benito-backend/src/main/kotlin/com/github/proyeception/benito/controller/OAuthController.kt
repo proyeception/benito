@@ -1,6 +1,6 @@
 package com.github.proyeception.benito.controller
 
-import com.github.proyeception.benito.oauth.GoogleDriveOAuthClient
+import com.github.proyeception.benito.oauth.GoogleDriveClient
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.RequestMapping
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseStatus
 
 @Controller
 open class OAuthController(
-    private val client: GoogleDriveOAuthClient
+    private val client: GoogleDriveClient
 ) {
 
     @RequestMapping(method = [RequestMethod.GET], value = ["/benito/callback"])

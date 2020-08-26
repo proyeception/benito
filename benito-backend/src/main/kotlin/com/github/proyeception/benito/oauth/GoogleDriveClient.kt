@@ -6,32 +6,22 @@ import arrow.core.left
 import arrow.core.right
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.github.proyeception.benito.client.OAuthClient
+import com.github.proyeception.benito.connector.OAuthConnector
 import com.github.proyeception.benito.dto.FileCreatedDTO
 import com.github.proyeception.benito.dto.FileDTO
 import com.github.proyeception.benito.dto.MetadataDTO
 import com.github.proyeception.benito.dto.QueryDTO
 import com.github.proyeception.benito.exception.AmbiguousReferenceException
 import com.github.proyeception.benito.extension.replaceUrlSpaces
-import com.github.scribejava.apis.GoogleApi20
 import org.slf4j.LoggerFactory
 import org.springframework.web.multipart.MultipartFile
 import java.util.*
 
-open class GoogleDriveOAuthClient(
-    token: String,
-    clientId: String,
-    clientSecret: String,
-    callbackRoute: String,
-    objectMapper: ObjectMapper
-) : OAuthClient(
-    instance = GoogleApi20.instance(),
-    scope = "https://www.googleapis.com/auth/drive",
-    clientId = clientId,
-    clientSecret = clientSecret,
-    callbackRoute = callbackRoute,
-    token = token,
-    objectMapper = objectMapper
-) {
+open class GoogleDriveClient(
+    private val googleDriveConnector: OAuthConnector,
+    private val objectMapper: ObjectMapper
+) : OAuthClient {
 
     /*
     * Queda pendiente el terminar de crear nuevos usuarios
@@ -45,20 +35,20 @@ open class GoogleDriveOAuthClient(
         additionalParams["access_type"] = "offline"
         additionalParams["prompt"] = "consent"
 
-        return oAuth20Service.createAuthorizationUrlBuilder()
+        return googleDriveConnector.oAuth20Service.createAuthorizationUrlBuilder()
             .state(secretState)
             .additionalParams(additionalParams)
             .build()
     }
 
-    override fun finishNewAuth(authorization: String): String = oAuth20Service
+    override fun finishNewAuth(authorization: String): String = googleDriveConnector.oAuth20Service
         .getAccessToken(authorization)
         .refreshToken
         .also {
-            this.token = it
+            googleDriveConnector.token = it
         }
 
-    open fun getFile(fileId: String): Either<Throwable, FileDTO> = this.get(
+    open fun getFile(fileId: String): Either<Throwable, FileDTO> = googleDriveConnector.get(
         url = "https://www.googleapis.com/drive/v3/files/$fileId?fields=webContentLink,name,mimeType",
         ref = object : TypeReference<FileDTO>() {}
     )
@@ -80,7 +70,7 @@ open class GoogleDriveOAuthClient(
         )
         file?.let { bodyParts.add(Pair("multipart/form-data", it.bytes)) }
 
-        return post(
+        return googleDriveConnector.post(
             url = "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart",
             ref = object : TypeReference<FileCreatedDTO>() {},
             bodyParts = *bodyParts.toTypedArray()
@@ -96,13 +86,13 @@ open class GoogleDriveOAuthClient(
             }
         }
 
-    private fun query(query: String): Either<Throwable, List<FileDTO>> = this.get(
+    private fun query(query: String): Either<Throwable, List<FileDTO>> = googleDriveConnector.get(
         url = "https://www.googleapis.com/drive/v3/files?q=${query.replaceUrlSpaces()}",
         ref = object : TypeReference<QueryDTO>() {}
     )
         .map { it.files }
 
     companion object {
-        private val LOGGER = LoggerFactory.getLogger(GoogleDriveOAuthClient::class.java)
+        private val LOGGER = LoggerFactory.getLogger(GoogleDriveClient::class.java)
     }
 }

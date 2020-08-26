@@ -1,4 +1,4 @@
-package com.github.proyeception.benito.oauth
+package com.github.proyeception.benito.connector
 
 import arrow.core.Either
 import arrow.core.left
@@ -12,12 +12,13 @@ import com.github.scribejava.core.builder.api.DefaultApi20
 import com.github.scribejava.core.model.OAuthRequest
 import com.github.scribejava.core.model.Verb
 import com.github.scribejava.core.oauth.OAuth20Service
+import com.typesafe.config.Config
 import org.slf4j.LoggerFactory
 
 
-abstract class OAuthClient(
-    protected val oAuth20Service: OAuth20Service,
-    protected var token: String,
+open class OAuthConnector(
+    val oAuth20Service: OAuth20Service,
+    var token: String,
     protected val objectMapper: ObjectMapper
 ) {
     constructor(
@@ -95,11 +96,21 @@ abstract class OAuthClient(
         ref = ref
     )
 
-    abstract fun initNewAuth(): String
-
-    abstract fun finishNewAuth(authorization: String): String
-
     companion object {
-        private val LOGGER = LoggerFactory.getLogger(OAuthClient::class.java)
+        private val LOGGER = LoggerFactory.getLogger(OAuthConnector::class.java)
+
+        fun create(
+            moduleConfig: Config,
+            objectMapper: ObjectMapper,
+            api: DefaultApi20
+        ): OAuthConnector = OAuthConnector(
+            oAuth20Service = ServiceBuilder(moduleConfig.getString("id"))
+                .apiSecret(moduleConfig.getString("secret"))
+                .callback(moduleConfig.getString("callback"))
+                .defaultScope(moduleConfig.getString("scope"))
+                .build(api),
+            token = moduleConfig.getString("token"),
+            objectMapper = objectMapper
+        )
     }
 }

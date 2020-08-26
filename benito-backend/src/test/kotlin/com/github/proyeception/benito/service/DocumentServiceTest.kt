@@ -8,7 +8,7 @@ import com.github.proyeception.benito.dto.FileDTO
 import com.github.proyeception.benito.mock.eq
 import com.github.proyeception.benito.mock.getMock
 import com.github.proyeception.benito.mock.on
-import com.github.proyeception.benito.oauth.GoogleDriveOAuthClient
+import com.github.proyeception.benito.oauth.GoogleDriveClient
 import io.kotlintest.matchers.shouldBe
 import io.kotlintest.matchers.shouldThrow
 import io.kotlintest.properties.forAll
@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile
 
 class DocumentServiceTest : Spec() {
     init {
-        val googleMock: GoogleDriveOAuthClient = getMock()
+        val googleMock: GoogleDriveClient = getMock()
         val documentService = DocumentService(googleClient = googleMock)
 
         "saveFile" should {
