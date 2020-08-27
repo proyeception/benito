@@ -14,8 +14,7 @@ import org.springframework.web.multipart.MultipartFile
 
 @Controller
 class ProjectController(
-    private val projectService: ProjectService,
-    private val userService: UserService
+    private val projectService: ProjectService
 ) {
 
     @RequestMapping("/benito/projects", method = [RequestMethod.GET])
@@ -60,13 +59,4 @@ class ProjectController(
         @RequestParam("file") file: MultipartFile
     ) = projectService.saveFile(projectId, name, file)
 
-    @RequestMapping(value = ["/benito/authors/{id}"], method = [RequestMethod.GET])
-    @ResponseBody
-    @CrossOrigin
-    fun findAuthor(@PathVariable id: String) = userService.findAuthor(id)
-
-    @RequestMapping(value = ["/benito/supervisors/{id}"], method = [RequestMethod.GET])
-    @ResponseBody
-    @CrossOrigin
-    fun findSupervisor(@PathVariable id: String) = userService.findSupervisor(id)
 }
