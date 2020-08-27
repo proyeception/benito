@@ -85,13 +85,13 @@ open class MedusaClient(
         }
     }
 
-    open fun findUser(userId: String, collection: String): MedusaUserDTO {
+    open fun findUser(userId: String, collection: String): MedusaPersonDTO {
         val endpoint = "/$collection/$userId"
 
         val response = medusaConnector.get(endpoint)
 
         return when (response.status) {
-            200 -> response.deserializeAs(object : TypeReference<MedusaUserDTO>() {})
+            200 -> response.deserializeAs(object : TypeReference<MedusaPersonDTO>() {})
             404 -> {
                 LOGGER.error("User not found: ${response.body}")
                 throw NotFoundException("User $userId not found in $collection")

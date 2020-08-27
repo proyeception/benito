@@ -4,27 +4,45 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDate
 
 data class MedusaProjectDTO(
-    @JsonProperty("_id") val id: String,
+    val id: String,
     val title: String,
     val description: String,
     val extraContent: String?,
     val creationDate: LocalDate,
     val poster: ImageDTO,
-    val authorRefs: List<PersonRefDTO>,
-    val supervisorRefs: List<PersonRefDTO>,
+    val authors: List<PersonRefDTO>,
+    val supervisors: List<PersonRefDTO>,
     val documentation: List<DocumentationDTO>,
-    val category: CategoryDTO
+    val category: CategoryDTO,
+    val organization: OrganizationDTO,
+    val tags: List<MedusaTagDTO>
 )
 
 data class PersonRefDTO(
-    @JsonProperty("_id") val id: String,
+    val id: String,
     val username: String,
-    val profileUrl: String,
     val fullName: String
 )
 
+data class MedusaPersonDTO(
+    val id: String,
+    val username: String,
+    val fullName: String,
+    val organizations: List<OrganizationDTO>,
+    val profilePic: ImageDTO?,
+    val projects: List<ProjectRefDTO>
+)
+
+data class ProjectRefDTO(
+    val id: String,
+    val title: String,
+    val poster: ImageDTO,
+    @JsonProperty("organization") val organizationId: String
+)
+
 data class ImageDTO(
-    val url: String
+    val url: String,
+    val name: String
 )
 
 data class DocumentationDTO(
@@ -57,15 +75,7 @@ data class OrganizationDTO(
     val name: String
 )
 
-data class ProjectRefDTO(
-    val projectId: String,
-    val projectName: String
-)
-
-data class MedusaUserDTO(
-    val username: String,
-    val fullName: String,
-    val profilePicUrl: ImageDTO?,
-    val organizations: List<OrganizationDTO>,
-    val projectRefs: List<ProjectRefDTO>
+data class MedusaTagDTO(
+    val tagName: String,
+    val displayName: String
 )

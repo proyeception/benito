@@ -38,30 +38,25 @@ data class ProjectDTO(
         extraContent = medusaProjectDTO.extraContent.orEmpty(),
         creationDate = medusaProjectDTO.creationDate,
         posterUrl = medusaProjectDTO.poster.url,
-        authors = medusaProjectDTO.authorRefs,
-        supervisors = medusaProjectDTO.supervisorRefs,
+        authors = medusaProjectDTO.authors,
+        supervisors = medusaProjectDTO.supervisors,
         tags = emptyList(),
         documentation = medusaProjectDTO.documentation
     )
 }
 
-enum class UserTypeDTO {
-    STUDENT,
-    TEACHER,
-}
-
 data class PersonDTO(
     val username: String,
     val fullName: String,
-    val profilePicUrl: String?,
     val organizations: List<OrganizationDTO>,
+    val profilePicUrl: String?,
     val projects: List<ProjectRefDTO>
 ) {
-    constructor(medusa: MedusaUserDTO) : this(
+    constructor(medusa: MedusaPersonDTO) : this(
         username = medusa.username,
         fullName = medusa.fullName,
-        profilePicUrl = medusa.profilePicUrl?.url,
         organizations = medusa.organizations,
-        projects = medusa.projectRefs
+        profilePicUrl = medusa.profilePic?.url,
+        projects = medusa.projects
     )
 }
