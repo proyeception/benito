@@ -17,7 +17,7 @@ const ExtraContent = (props: Props) => {
   if (props.project.extraContent != "") {
     return (
       <div className="col-md-12 mt-4">
-        <Separator />
+        <Separator display="d-block d-md-none" />
         <div className="qui-project-subtitle font-size-13 font-size-24-md">
           Contenido adicional
         </div>

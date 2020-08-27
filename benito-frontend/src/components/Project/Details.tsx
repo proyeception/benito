@@ -47,7 +47,7 @@ const Details = (props: Props) => {
           </div>
         </div>
       </div>
-      <Separator />
+      <Separator display="d-block d-md-none" />
     </div>
   );
 };
