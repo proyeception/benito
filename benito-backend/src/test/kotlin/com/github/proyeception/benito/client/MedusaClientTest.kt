@@ -27,15 +27,13 @@ class MedusaClientTest : Spec() {
             val author = PersonRefDTO(
                 id = "123",
                 username = "author",
-                fullName = "UnNombre",
-                profileUrl = "/authorUrl"
+                fullName = "UnNombre"
             )
 
             val supervisor = PersonRefDTO(
                 id = "123",
                 username = "supervisor",
-                fullName = "UnNombre",
-                profileUrl = "/supervisorUrl"
+                fullName = "UnNombre"
             )
 
             val documentation = DocumentationDTO(
@@ -258,15 +256,13 @@ class MedusaClientTest : Spec() {
             val author = PersonRefDTO(
                 id = "123",
                 username = "author",
-                fullName = "UnNombre",
-                profileUrl = "/authorUrl"
+                fullName = "UnNombre"
             )
 
             val supervisor = PersonRefDTO(
                 id = "1234",
                 username = "supervisor",
-                fullName = "UnNombre",
-                profileUrl = "/supervisorUrl"
+                fullName = "UnNombre"
             )
 
             val documentation = DocumentationDTO(
@@ -281,11 +277,16 @@ class MedusaClientTest : Spec() {
                 description = "project description",
                 extraContent = "nice formatted content",
                 creationDate = LocalDate.of(2020, 2, 6),
-                poster = PosterDTO("poster"),
-                authorRefs = listOf(author),
-                supervisorRefs = listOf(supervisor),
+                poster = ImageDTO("poster", "poster"),
+                authors = listOf(author),
+                supervisors = listOf(supervisor),
                 category = CategoryDTO(name = "Systems", tagName = "systems", imageUrl = ""),
-                documentation = listOf(documentation)
+                documentation = listOf(documentation),
+                organization = OrganizationDTO(
+                    displayName = "UTN FRBA",
+                    name = "utnfrba"
+                ),
+                tags = emptyList()
             )
 
             "get to /projects/{id} returns specified project" {

@@ -38,8 +38,8 @@ data class ProjectDTO(
         extraContent = medusaProjectDTO.extraContent.orEmpty(),
         creationDate = medusaProjectDTO.creationDate,
         posterUrl = medusaProjectDTO.poster.url,
-        authors = medusaProjectDTO.authorRefs,
-        supervisors = medusaProjectDTO.supervisorRefs,
+        authors = medusaProjectDTO.authors,
+        supervisors = medusaProjectDTO.supervisors,
         tags = emptyList(),
         documentation = medusaProjectDTO.documentation
     )
@@ -48,7 +48,15 @@ data class ProjectDTO(
 data class PersonDTO(
     val username: String,
     val fullName: String,
-    val profileUrl: String,
     val organizations: List<OrganizationDTO>,
+    val profilePicUrl: String?,
     val projects: List<ProjectRefDTO>
-)
+) {
+    constructor(medusa: MedusaPersonDTO) : this(
+        username = medusa.username,
+        fullName = medusa.fullName,
+        organizations = medusa.organizations,
+        profilePicUrl = medusa.profilePic?.url,
+        projects = medusa.projects
+    )
+}

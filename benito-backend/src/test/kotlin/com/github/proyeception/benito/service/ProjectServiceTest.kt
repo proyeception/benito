@@ -27,15 +27,13 @@ class ProjectServiceTest : Spec() {
                 val author = PersonRefDTO(
                     id = "123",
                     fullName = "Benito Quinquela",
-                    username = "author",
-                    profileUrl = "/authorUrl"
+                    username = "author"
                 )
 
                 val supervisor = PersonRefDTO(
                     id = "123",
                     fullName = "Jorge Luis Borges",
-                    username = "supervisor",
-                    profileUrl = "/supervisorUrl"
+                    username = "supervisor"
                 )
 
                 val documentation = DocumentationDTO(
@@ -55,16 +53,14 @@ class ProjectServiceTest : Spec() {
                         PersonRefDTO(
                             id = "123",
                             username = "author",
-                            fullName = "Benito Quinquela",
-                            profileUrl = "/authorUrl"
+                            fullName = "Benito Quinquela"
                         )
                     ),
                     supervisors = listOf(
                         PersonRefDTO(
                             id = "123",
                             username = "supervisor",
-                            fullName = "Jorge Luis Borges",
-                            profileUrl = "/supervisorUrl"
+                            fullName = "Jorge Luis Borges"
                         )
                     ),
                     tags = emptyList(),
@@ -77,15 +73,20 @@ class ProjectServiceTest : Spec() {
                     description = "project description",
                     extraContent = "nicely formatted content",
                     creationDate = LocalDate.of(2020, 2, 6),
-                    poster = PosterDTO(url = ""),
-                    authorRefs = listOf(author),
-                    supervisorRefs = listOf(supervisor),
+                    poster = ImageDTO(url = "", name = ""),
+                    authors = listOf(author),
+                    supervisors = listOf(supervisor),
                     documentation = listOf(documentation),
                     category = CategoryDTO(
                         name = "Systems",
                         tagName = "systems",
                         imageUrl = ""
-                    )
+                    ),
+                    organization = OrganizationDTO(
+                        displayName = "UTN FRBA",
+                        name = "utnfrba"
+                    ),
+                    tags = emptyList()
                 )
 
                 val projects = listOf(newProject)
@@ -115,15 +116,13 @@ class ProjectServiceTest : Spec() {
                 val author = PersonRefDTO(
                     id = "123",
                     fullName = "Benito Quinquela",
-                    username = "author",
-                    profileUrl = "/authorUrl"
+                    username = "author"
                 )
 
                 val supervisor = PersonRefDTO(
                     id = "123",
                     fullName = "Jorge Luis Borges",
-                    username = "supervisor",
-                    profileUrl = "/supervisorUrl"
+                    username = "supervisor"
                 )
 
                 val documentation = DocumentationDTO(
@@ -144,16 +143,14 @@ class ProjectServiceTest : Spec() {
                         PersonRefDTO(
                             id = "123",
                             username = "author",
-                            fullName = "Benito Quinquela",
-                            profileUrl = "/authorUrl"
+                            fullName = "Benito Quinquela"
                         )
                     ),
                     supervisors = listOf(
                         PersonRefDTO(
                             id = "123",
                             username = "supervisor",
-                            fullName = "Jorge Luis Borges",
-                            profileUrl = "/supervisorUrl"
+                            fullName = "Jorge Luis Borges"
                         )
                     ),
                     tags = emptyList(),
@@ -166,11 +163,16 @@ class ProjectServiceTest : Spec() {
                     description = "project description",
                     extraContent = "nicely formatted content",
                     creationDate = LocalDate.of(2020, 2, 6),
-                    poster = PosterDTO(url = ""),
-                    authorRefs = listOf(author),
-                    supervisorRefs = listOf(supervisor),
+                    poster = ImageDTO(url = "", name = ""),
+                    authors = listOf(author),
+                    supervisors = listOf(supervisor),
                     documentation = listOf(documentation),
-                    category = CategoryDTO("Systems", "systems", "")
+                    category = CategoryDTO("Systems", "systems", ""),
+                    organization = OrganizationDTO(
+                        displayName = "UTN FRBA",
+                        name = "utnfrba"
+                    ),
+                    tags = emptyList()
                 )
 
                 val projectResult = newProject
