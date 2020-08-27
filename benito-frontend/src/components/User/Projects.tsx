@@ -6,7 +6,8 @@ type Props = {};
 
 const Projects = (_: Props) => (
   <div>
-    <div className="font-size-24-md">Proyectos</div>
+    <div className="font-size-36-md">Proyectos</div>
+    <div></div>
   </div>
 );
 
