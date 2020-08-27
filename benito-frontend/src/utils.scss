@@ -78,6 +78,12 @@ $light-gray: #f1f1f1;
   color: black;
 }
 
-.img-circle {
+@mixin img-circle-container {
   border-radius: 50%;
+  overflow: hidden;
+}
+
+.img-circle {
+  height: 100%;
+  width: 100%;
 }

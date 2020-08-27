@@ -25,7 +25,7 @@ const ProjectSummary = (props: Props) => (
       <div className="font-weight-lighter qui-font-text font-size-11 font-size-16-md mt-3 ml-md-3">
         {props.project.description}
       </div>
-      <div className="font-size-10 font-size-16-md">
+      <div className="font-size-10 font-size-16-md text-right text-muted font-weight-light">
         {props.project.authors.map((a) => a.fullName).join(", ")}
       </div>
     </div>

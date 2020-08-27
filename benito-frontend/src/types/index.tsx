@@ -13,7 +13,10 @@ export type Project = {
 export type Person = {
   username: String;
   fullName: String;
-  profileUrl: String;
+  id: String;
+  profilePicUrl?: String;
+  organizations: Array<Organization>;
+  projects: Array<Project>;
 };
 
 export type Category = {
@@ -26,4 +29,9 @@ export type Documentation = {
   fileName: String;
   id: String;
   driveId: String;
+};
+
+export type Organization = {
+  displayName: String;
+  name: String;
 };

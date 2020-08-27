@@ -1,3 +1,11 @@
+@import "../../utils.scss";
+
 .qui-user-profile {
   min-height: 768px;
+}
+
+.qui-user-profile-picture-container {
+  @include img-circle-container;
+  width: 192px;
+  height: 192px;
 }

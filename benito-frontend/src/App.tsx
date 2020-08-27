@@ -15,7 +15,8 @@ import { AnimatePresence } from "framer-motion";
 import HamburgerMenu from "./components/Header/HamburgerMenu";
 import ViewProject from "./components/Project/index";
 import NotFound from "./components/NotFound";
-import User from "./components/User";
+import Student from "./components/User/Student";
+import Teacher from "./components/User/Teacher";
 
 const App = (_: any) => {
   useEffect(() => {
@@ -40,7 +41,8 @@ const App = (_: any) => {
           <Route exact path="/projects/:projectId" component={ViewProject} />
           <Route exact path="/" component={Home} />
           <Route exact path="/search" component={Search} />
-          <Route exact path="/users/:userId" component={User} />
+          <Route exact path="/students/:userId" component={Student} />
+          <Route exact path="/teachers/:userId" component={Teacher} />
           <Route path="/*" component={NotFound} />
         </Switch>
       </AnimatePresence>
