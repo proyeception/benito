@@ -15,6 +15,7 @@ import { AnimatePresence } from "framer-motion";
 import HamburgerMenu from "./components/Header/HamburgerMenu";
 import ViewProject from "./components/Project/index";
 import NotFound from "./components/NotFound";
+import User from "./components/User";
 
 const App = (_: any) => {
   useEffect(() => {
@@ -39,6 +40,7 @@ const App = (_: any) => {
           <Route exact path="/projects/:projectId" component={ViewProject} />
           <Route exact path="/" component={Home} />
           <Route exact path="/search" component={Search} />
+          <Route exact path="/users/:userId" component={User} />
           <Route path="/*" component={NotFound} />
         </Switch>
       </AnimatePresence>
