@@ -1,4 +1,5 @@
 @import "../../utils.scss";
+$project-image-h: 192px;
 
 .qui-user-profile {
   min-height: 768px;
@@ -13,4 +14,20 @@
 .qui-user-profile-icon {
   height: 32px;
   width: 32px;
+}
+
+.qui-user-profile-project-image-container {
+  height: $project-image-h;
+  overflow: hidden;
+  position: relative;
+}
+
+.qui-user-profile-project-image {
+  position: absolute;
+  top: -9999px;
+  bottom: -9999px;
+  left: -9999px;
+  right: -9999px;
+  margin: auto;
+  height: 192px;
 }

@@ -12,7 +12,7 @@ const ProjectsTab = (props: Props) => (
   <div>
     <div className="font-size-36-md">Proyectos</div>
     <div className="container mt-5">
-      <div className="row no-gutters">
+      <div className="row">
         {props.user.projects.map((p, idx) => (
           <Project project={p} key={idx} />
         ))}

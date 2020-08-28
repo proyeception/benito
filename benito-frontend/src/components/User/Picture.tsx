@@ -9,15 +9,17 @@ type Props = {
 
 const Picture = (props: Props) => (
   <div>
-    <div className="qui-user-profile-picture-container">
-      <img
-        src={
-          props.user.profilePicUrl?.valueOf() ||
-          "http://ssl.gstatic.com/accounts/ui/avatar_2x.png"
-        }
-        alt="avatar"
-        className="w-100 img-circle"
-      />
+    <div className="w-100 center-horizontally">
+      <div className="qui-user-profile-picture-container">
+        <img
+          src={
+            props.user.profilePicUrl?.valueOf() ||
+            "http://ssl.gstatic.com/accounts/ui/avatar_2x.png"
+          }
+          alt="avatar"
+          className="w-100 img-circle text-center"
+        />
+      </div>
     </div>
     <div className="font-weight-bold mt-3 font-size-24-md">
       {props.user.fullName}

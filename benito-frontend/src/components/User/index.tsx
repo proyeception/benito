@@ -56,20 +56,20 @@ const User = (props: Props) => {
   return (
     <FadeIn className="bg-white qui-user-profile">
       <div className="bg-white qui-user-profile">
-        <div className="container pt-md-5 un-mb-md-1">
+        <div className="container pl-0 pr-0 pt-md-5 un-mb-md-1">
           <div className="row">
-            <div className="col-12 col-md-3 pr-5">
+            <div className="col-12 col-md-3">
               <Picture user={user} />
-              <Separator display="d-block" marginRight={0} marginLeft={0} />
+              <Separator display="d-block" marginRight={1} marginLeft={1} />
               <Organizations user={user} />
               <Separator
                 display={user.socials.length > 0 ? "d-block" : "d-none"}
-                marginRight={0}
-                marginLeft={0}
+                marginRight={1}
+                marginLeft={1}
               />
               <SocialMedia user={user} />
             </div>
-            <div className="col-12 col-md-9 pl-5">
+            <div className="col-12 col-md-9">
               <ProjectsTab user={user} />
             </div>
           </div>
