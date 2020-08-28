@@ -61,7 +61,8 @@ class UserServiceTest : Spec() {
                                     name = "poster"
                                 )
                             )
-                        )
+                        ),
+                        contact = null
                     )
                 )
                 on(organizationMocK.organizations()).thenReturn(
@@ -109,7 +110,8 @@ class UserServiceTest : Spec() {
                                 iconUrl = "https://icon.com"
                             )
                         )
-                    )
+                    ),
+                    contact = null
                 )
 
                 val actual = userService.findAuthor("123")
@@ -157,7 +159,8 @@ class UserServiceTest : Spec() {
                                     name = "poster"
                                 )
                             )
-                        )
+                        ),
+                        contact = null
                     )
                 )
                 on(organizationMocK.organizations()).thenReturn(emptyList())

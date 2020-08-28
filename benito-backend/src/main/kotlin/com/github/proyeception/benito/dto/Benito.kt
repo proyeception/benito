@@ -51,7 +51,8 @@ data class PersonDTO(
     val organizations: List<OrganizationDTO>,
     val profilePicUrl: String?,
     val projects: List<ProjectRefDTO>,
-    val socials: List<SocialDTO>
+    val socials: List<SocialDTO>,
+    val contact: ContactDTO?
 )
 
 data class OrganizationDTO(

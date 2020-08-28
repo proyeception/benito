@@ -29,8 +29,9 @@ const Profile = (props: Props) => (
     <div className="text-muted font-size-18-md center-horizontally">
       {props.user.username}
     </div>
-    {props.user.contact?.email && (
-      <Contact icon={faMailBulk} text={props.user.contact.email} />
+    {}
+    {props.user.contact?.mail && (
+      <Contact icon={faMailBulk} text={props.user.contact.mail} />
     )}
     {props.user.contact?.phone && (
       <Contact icon={faPhone} text={props.user.contact.phone} />

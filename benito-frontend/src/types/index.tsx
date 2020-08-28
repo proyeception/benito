@@ -47,5 +47,5 @@ export type Social = {
 
 export type Contact = {
   phone?: String;
-  email?: String;
+  mail?: String;
 };

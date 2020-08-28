@@ -32,6 +32,7 @@ class UserService(
                 description = it.description
             )
         },
-        socials = medusa.socials
+        socials = medusa.socials,
+        contact = medusa.contact
     )
 }
