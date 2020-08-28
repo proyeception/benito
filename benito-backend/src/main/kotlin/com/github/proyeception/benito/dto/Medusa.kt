@@ -30,15 +30,16 @@ data class MedusaPersonDTO(
     val fullName: String,
     val organizations: List<MedusaOrganizationDTO>,
     val profilePic: ImageDTO?,
-    val projects: List<ProjectRefDTO>,
+    val projects: List<MedusaProjectRefDTO>,
     val socials: List<SocialDTO>
 )
 
-data class ProjectRefDTO(
+data class MedusaProjectRefDTO(
     val id: String,
     val title: String,
     val poster: ImageDTO,
-    @JsonProperty("organization") val organizationId: String
+    @JsonProperty("organization") val organizationId: String,
+    val description:  String
 )
 
 data class ImageDTO(

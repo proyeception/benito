@@ -8,6 +8,7 @@ export type Project = {
   tags: Array<String>;
   extraContent: String;
   documentation: Array<Documentation>;
+  organization: Organization;
 };
 
 export type Person = {

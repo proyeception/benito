@@ -1,5 +1,6 @@
 package com.github.proyeception.benito.dto
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDate
 
 data class ErrorDTO(
@@ -58,7 +59,7 @@ data class PersonDTO(
         fullName = medusa.fullName,
         organizations = medusa.organizations.map { OrganizationDTO(it) },
         profilePicUrl = medusa.profilePic?.url,
-        projects = medusa.projects,
+        projects = medusa.projects.map { ProjectRefDTO(it) },
         socials = medusa.socials
     )
 }
@@ -72,5 +73,21 @@ data class OrganizationDTO(
         name = medusa.name,
         iconUrl = medusa.icon.url,
         displayName = medusa.displayName
+    )
+}
+
+data class ProjectRefDTO(
+    val id: String,
+    val title: String,
+    val posterUrl: String,
+    val organizationId: String,
+    val description: String
+) {
+    constructor(medusa: MedusaProjectRefDTO) : this(
+        id = medusa.id,
+        title = medusa.title,
+        posterUrl = medusa.poster.url,
+        organizationId = medusa.organizationId,
+        description = medusa.description
     )
 }

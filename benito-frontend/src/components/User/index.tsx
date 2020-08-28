@@ -5,7 +5,7 @@ import Separator from "../Project/Separator";
 import Picture from "./Picture";
 import Organizations from "./Organizations";
 import SocialMedia from "./SocialMedia";
-import Projects from "./Projects";
+import ProjectsTab from "./ProjectsTab";
 import FadeIn from "../Common/FadeIn";
 import { RouteChildrenProps } from "react-router-dom";
 import { Person } from "../../types";
@@ -70,7 +70,7 @@ const User = (props: Props) => {
               <SocialMedia user={user} />
             </div>
             <div className="col-12 col-md-9 pl-5">
-              <Projects user={user} />
+              <ProjectsTab user={user} />
             </div>
           </div>
         </div>
