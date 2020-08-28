@@ -11,6 +11,12 @@ $project-image-h: 192px;
   height: 192px;
 }
 
+.qui-user-profile-project-image-container-sm {
+  @include img-circle-container;
+  width: 48px;
+  height: 48px;
+}
+
 .qui-user-profile-icon {
   height: 32px;
   width: 32px;
@@ -36,4 +42,8 @@ $project-image-h: 192px;
   @media screen and (max-width: 767px) {
     background: white;
   }
+}
+
+.qui-user-profile-project-card {
+  height: 192px;
 }

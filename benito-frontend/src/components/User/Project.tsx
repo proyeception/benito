@@ -10,9 +10,9 @@ type Props = {
 
 const Project = (props: Props) => (
   <div className="col-12 col-md-6 mb-5">
-    <div className="card">
+    <div className="card qui-user-profile-project-card">
       <div className="row no-gutters">
-        <div className="col-4">
+        <div className="d-none d-md-block col-md-4">
           <div className="qui-user-profile-project-image-container text-center border-right">
             <img
               src={props.project.posterUrl}
@@ -21,13 +21,26 @@ const Project = (props: Props) => (
             />
           </div>
         </div>
-        <div className="col-8">
+        <div className="col-12 col-md-8">
           <div className="card-body">
             <Link
               className="normalize-link"
               to={`/projects/${props.project.id}`}
             >
-              <h5 className="card-title">{props.project.title}</h5>
+              <div className="d-flex d-md-block align-items-center pb-3 mb-md-0">
+                <div className="d-block d-md-none">
+                  <div className="qui-user-profile-project-image-container-sm mr-4">
+                    <img
+                      src={props.project.posterUrl?.valueOf()}
+                      alt="avatar"
+                      className="w-100 img-circle text-center"
+                    />
+                  </div>
+                </div>
+                <h5 className="card-title text-truncate">
+                  {props.project.title}
+                </h5>
+              </div>
             </Link>
             <div className="card-text text-truncate">
               {props.project.description}
