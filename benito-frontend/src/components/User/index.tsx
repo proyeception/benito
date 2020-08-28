@@ -62,7 +62,11 @@ const User = (props: Props) => {
               <Picture user={user} />
               <Separator display="d-block" marginRight={0} marginLeft={0} />
               <Organizations user={user} />
-              <Separator display="d-block" marginRight={0} marginLeft={0} />
+              <Separator
+                display={user.socials.length > 0 ? "d-block" : "d-none"}
+                marginRight={0}
+                marginLeft={0}
+              />
               <SocialMedia user={user} />
             </div>
             <div className="col-12 col-md-9 pl-5">
