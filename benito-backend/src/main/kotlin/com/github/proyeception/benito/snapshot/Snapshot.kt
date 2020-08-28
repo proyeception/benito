@@ -8,28 +8,31 @@ import org.springframework.beans.factory.InitializingBean
 import kotlin.coroutines.CoroutineContext
 
 abstract class Snapshot<T>(
-    private val refreshRate: Int,
+    private val refreshRate: Int, // in seconds
     private val endpoint: String,
-    private val connector: Connector
+    private val connector: Connector,
+    private val name: String
 ) : InitializingBean, CoroutineScope {
-    private var elements = emptyList<T>()
+    protected var elements = emptyList<T>()
     private val job: Job = Job()
 
     private fun refresh() {
+        LOGGER.info("Refreshing $name snapshot...")
         val response = connector.get(endpoint)
 
         if (response.isError()) {
-            LOGGER.error("Error refreshing snapshot", response.body)
+            LOGGER.error("Error refreshing $name snapshot", response.body)
         }
 
         elements = response.deserializeAs(object : TypeReference<List<T>>() {})
+        LOGGER.info("Refreshing for $name done. Will refresh again in $refreshRate seconds")
     }
 
     override fun afterPropertiesSet() {
         launch {
             while (true) {
                 refresh()
-                delay(refreshRate.toLong())
+                delay(refreshRate.toLong() * 1000)
             }
         }
     }
