@@ -285,7 +285,8 @@ class MedusaClientTest : Spec() {
                 organization = MedusaOrganizationDTO(
                     displayName = "UTN FRBA",
                     name = "utnfrba",
-                    icon = ImageDTO("icon", "icon")
+                    icon = ImageDTO("icon", "icon"),
+                    id = "123"
                 ),
                 tags = emptyList()
             )

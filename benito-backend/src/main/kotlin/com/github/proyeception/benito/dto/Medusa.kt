@@ -73,6 +73,7 @@ enum class MedusaFilter(val filterName: String) {
 }
 
 data class MedusaOrganizationDTO(
+    val id: String,
     val displayName: String,
     val name: String,
     val icon: ImageDTO

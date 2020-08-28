@@ -88,7 +88,8 @@ class ProjectServiceTest : Spec() {
                         icon = ImageDTO(
                             name = "icon",
                             url = "icon"
-                        )
+                        ),
+                        id = "123"
                     ),
                     tags = emptyList()
                 )
@@ -178,7 +179,8 @@ class ProjectServiceTest : Spec() {
                         icon = ImageDTO(
                             name = "icon",
                             url = "icon"
-                        )
+                        ),
+                        id = "123"
                     ),
                     tags = emptyList()
                 )

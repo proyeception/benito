@@ -16,15 +16,20 @@ abstract class Snapshot<T>(
     protected var elements = emptyList<T>()
     private val job: Job = Job()
 
-    private fun refresh() {
+    init {
+
+    }
+
+    fun refresh() {
         LOGGER.info("Refreshing $name snapshot...")
         val response = connector.get(endpoint)
 
         if (response.isError()) {
             LOGGER.error("Error refreshing $name snapshot", response.body)
+        } else {
+            elements = response.deserializeAs(object : TypeReference<List<T>>() {})
         }
 
-        elements = response.deserializeAs(object : TypeReference<List<T>>() {})
         LOGGER.info("Refreshing for $name done. Will refresh again in $refreshRate seconds")
     }
 
