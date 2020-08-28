@@ -1,5 +1,6 @@
 package com.github.proyeception.benito.snapshot
 
+import com.fasterxml.jackson.core.type.TypeReference
 import com.github.proyeception.benito.connector.Connector
 import com.github.proyeception.benito.dto.MedusaOrganizationDTO
 
@@ -9,7 +10,8 @@ open class OrganizationSnapshot(
     refreshRate = 3600,
     endpoint = "/organizations",
     connector = medusaConnector,
-    name = "organization"
+    name = "organization",
+    ref = object : TypeReference<List<MedusaOrganizationDTO>>() {}
 ) {
     open fun organizations(): List<MedusaOrganizationDTO> = elements
 }

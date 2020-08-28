@@ -30,7 +30,9 @@ const Project = (props: Props) => (
             </Link>
             <div className="card-text">{props.project.description}</div>
             <div className="card-text mt-5 text-right">
-              <small className="text-muted">asd</small>
+              <small className="text-muted">
+                {props.project.organization.displayName}
+              </small>
             </div>
           </div>
         </div>

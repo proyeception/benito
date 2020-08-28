@@ -19,7 +19,8 @@ class SnapshotTest : Spec() {
             refreshRate = 100,
             endpoint = "/snap",
             name = "snap",
-            connector = connectorMock
+            connector = connectorMock,
+            ref = object : TypeReference<List<Any?>>() {}
         ){
             fun elements() = super.elements
         }

@@ -11,7 +11,8 @@ abstract class Snapshot<T>(
     private val refreshRate: Int, // in seconds
     private val endpoint: String,
     private val connector: Connector,
-    private val name: String
+    private val name: String,
+    private val ref: TypeReference<List<T>>
 ) : InitializingBean, CoroutineScope {
     protected var elements = emptyList<T>()
     private val job: Job = Job()
@@ -27,7 +28,7 @@ abstract class Snapshot<T>(
         if (response.isError()) {
             LOGGER.error("Error refreshing $name snapshot", response.body)
         } else {
-            elements = response.deserializeAs(object : TypeReference<List<T>>() {})
+            elements = response.deserializeAs(ref)
         }
 
         LOGGER.info("Refreshing for $name done. Will refresh again in $refreshRate seconds")
