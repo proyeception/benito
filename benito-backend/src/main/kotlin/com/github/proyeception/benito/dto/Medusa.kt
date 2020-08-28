@@ -30,7 +30,8 @@ data class MedusaPersonDTO(
     val fullName: String,
     val organizations: List<OrganizationDTO>,
     val profilePic: ImageDTO?,
-    val projects: List<ProjectRefDTO>
+    val projects: List<ProjectRefDTO>,
+    val socials: List<SocialDTO>
 )
 
 data class ProjectRefDTO(
@@ -72,10 +73,16 @@ enum class MedusaFilter(val filterName: String) {
 
 data class OrganizationDTO(
     val displayName: String,
-    val name: String
+    val name: String,
+    val icon: ImageDTO
 )
 
 data class MedusaTagDTO(
     val tagName: String,
     val displayName: String
+)
+
+data class SocialDTO(
+    val socialName: String,
+    val socialProfileUrl: String
 )

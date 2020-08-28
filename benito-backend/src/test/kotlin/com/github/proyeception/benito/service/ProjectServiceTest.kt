@@ -84,7 +84,11 @@ class ProjectServiceTest : Spec() {
                     ),
                     organization = OrganizationDTO(
                         displayName = "UTN FRBA",
-                        name = "utnfrba"
+                        name = "utnfrba",
+                        icon = ImageDTO(
+                            name = "icon",
+                            url = "icon"
+                        )
                     ),
                     tags = emptyList()
                 )
@@ -170,7 +174,11 @@ class ProjectServiceTest : Spec() {
                     category = CategoryDTO("Systems", "systems", ""),
                     organization = OrganizationDTO(
                         displayName = "UTN FRBA",
-                        name = "utnfrba"
+                        name = "utnfrba",
+                        icon = ImageDTO(
+                            name = "icon",
+                            url = "icon"
+                        )
                     ),
                     tags = emptyList()
                 )
