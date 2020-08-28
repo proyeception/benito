@@ -55,8 +55,20 @@ data class PersonDTO(
     constructor(medusa: MedusaPersonDTO) : this(
         username = medusa.username,
         fullName = medusa.fullName,
-        organizations = medusa.organizations,
+        organizations = medusa.organizations.map { OrganizationDTO(it) },
         profilePicUrl = medusa.profilePic?.url,
         projects = medusa.projects
+    )
+}
+
+data class OrganizationDTO(
+    val iconUrl: String,
+    val name: String,
+    val displayName: String
+) {
+    constructor(medusa: MedusaOrganizationDTO) : this(
+        name = medusa.name,
+        iconUrl = medusa.icon.url,
+        displayName = medusa.displayName
     )
 }

@@ -17,6 +17,7 @@ export type Person = {
   profilePicUrl?: String;
   organizations: Array<Organization>;
   projects: Array<Project>;
+  socials: Array<Social>;
 };
 
 export type Category = {
@@ -34,4 +35,10 @@ export type Documentation = {
 export type Organization = {
   displayName: String;
   name: String;
+  iconUrl: String;
+};
+
+export type Social = {
+  socialName: String;
+  socialProfileUrl: String;
 };

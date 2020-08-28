@@ -11,6 +11,7 @@ import {
   SortMethod,
   UPDATE_SORT_METHOD,
   RESET_SEARCH_PARAMETERS,
+  UPDATE_ORGANIZATION,
 } from "../../store/search/types";
 
 const defaultSearchState: SearchState = {
@@ -22,6 +23,7 @@ const defaultSearchState: SearchState = {
   keyword: "",
   documentation: "",
   sortMethod: SortMethod.DateDesc,
+  organization: "",
 };
 
 function searchReducer(
@@ -73,6 +75,11 @@ function searchReducer(
       return {
         ...defaultSearchState,
         projects: state.projects,
+      };
+    case UPDATE_ORGANIZATION:
+      return {
+        ...state,
+        organization: action.payload,
       };
     default:
       return state;
