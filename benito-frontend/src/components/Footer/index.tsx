@@ -7,7 +7,7 @@ import { socialMedia } from "../../constants";
 const { twitter, facebook, instagram, github } = socialMedia;
 
 const Footer = (_: any) => (
-  <div className="bg-white font-size-11 font-size-14-md mt-3 pb-3 pt-3 text-muted">
+  <div className="bg-white font-size-11 font-size-14-md mt-3 pb-3 pt-3 text-muted border-top">
     <div className="container-fluid container-md">
       <div className="row justify-content-around">
         <div className="col-6 col-md-8 center-vertically">

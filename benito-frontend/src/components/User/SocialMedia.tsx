@@ -33,11 +33,11 @@ const SocialMedia = (props: Props) => {
   return (
     <div>
       <div className="font-weight-bold font-size-18-md">Redes sociales</div>
-      <div>
+      <div className="d-flex">
         {props.user.socials.map((s, idx) => (
           <a
             key={idx}
-            className="qui-user-profile-icon"
+            className="qui-user-profile-icon mr-2"
             href={s.socialProfileUrl.valueOf()}
             target="_blank"
           >

@@ -13,7 +13,7 @@ type Props = {
 const Organizations = (props: Props) => (
   <div>
     <div className="font-weight-bold font-size-18-md">Organizaciones</div>
-    <div>
+    <div className="d-flex">
       {props.user.organizations.map((o, idx) => (
         <Link
           to={`/search?organization=${o.name}`}
@@ -23,7 +23,7 @@ const Organizations = (props: Props) => (
             store.dispatch(updateCategory(o.name));
           }}
         >
-          <div className="qui-user-profile-icon">
+          <div className="qui-user-profile-icon mr-2">
             <img
               src={o.iconUrl.valueOf()}
               alt={o.displayName.valueOf()}

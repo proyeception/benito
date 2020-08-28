@@ -10,8 +10,8 @@ type Props = {
 };
 
 const Contact = (props: Props) => (
-  <div className="font-size-14-md mt-md-3">
-    <FontAwesomeIcon icon={props.icon} />
+  <div className="font-size-14 mt-1 font-weight-lighter">
+    <FontAwesomeIcon icon={props.icon} className="mr-2" />
     {props.text}
   </div>
 );

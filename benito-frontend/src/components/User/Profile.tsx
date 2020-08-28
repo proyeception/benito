@@ -3,7 +3,7 @@ import { hot } from "react-hot-loader";
 import "./styles.scss";
 import { Person } from "../../types";
 import Contact from "./Contact";
-import { faPhone, faMailBulk } from "@fortawesome/free-solid-svg-icons";
+import { faPhone, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 
 type Props = {
   user: Person;
@@ -23,19 +23,20 @@ const Profile = (props: Props) => (
         />
       </div>
     </div>
-    <div className="font-weight-bold mt-3 font-size-24-md center-horizontally">
+    <div className="font-weight-bold mt-3 font-size-24 center-horizontally">
       {props.user.fullName}
     </div>
-    <div className="text-muted font-size-18-md center-horizontally">
+    <div className="text-muted font-size-18 center-horizontally">
       {props.user.username}
     </div>
-    {}
-    {props.user.contact?.mail && (
-      <Contact icon={faMailBulk} text={props.user.contact.mail} />
-    )}
-    {props.user.contact?.phone && (
-      <Contact icon={faPhone} text={props.user.contact.phone} />
-    )}
+    <div className="mt-5">
+      {props.user.contact?.mail && (
+        <Contact icon={faEnvelope} text={props.user.contact.mail} />
+      )}
+      {props.user.contact?.phone && (
+        <Contact icon={faPhone} text={props.user.contact.phone} />
+      )}
+    </div>
   </div>
 );
 
