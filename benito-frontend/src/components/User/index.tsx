@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
 import Separator from "../Project/Separator";
-import Picture from "./Picture";
+import Profile from "./Profile";
 import Organizations from "./Organizations";
 import SocialMedia from "./SocialMedia";
 import ProjectsTab from "./ProjectsTab";
@@ -54,24 +54,28 @@ const User = (props: Props) => {
   }
 
   return (
-    <FadeIn className="bg-white qui-user-profile">
-      <div className="bg-white qui-user-profile">
-        <div className="container pl-0 pr-0 pt-md-5 un-mb-md-1">
-          <div className="row">
-            <div className="col-12 col-md-3">
-              <Picture user={user} />
-              <Separator display="d-block" marginRight={1} marginLeft={1} />
-              <Organizations user={user} />
-              <Separator
-                display={user.socials.length > 0 ? "d-block" : "d-none"}
-                marginRight={1}
-                marginLeft={1}
-              />
-              <SocialMedia user={user} />
-            </div>
-            <div className="col-12 col-md-9">
-              <ProjectsTab user={user} />
-            </div>
+    <FadeIn className="qui-user-profile">
+      <div className="container-fluid un-mb-md-1">
+        <div className="row">
+          <div className="col-12 col-md-3 pl-md-4 pr-md-4 pt-5 pt-md-5 bg-white border-right">
+            <Profile user={user} />
+            <Separator
+              display="d-block"
+              color="light"
+              marginRight={1}
+              marginLeft={1}
+            />
+            <Organizations user={user} />
+            <Separator
+              color="light"
+              display={user.socials.length > 0 ? "d-block" : "d-none"}
+              marginRight={1}
+              marginLeft={1}
+            />
+            <SocialMedia user={user} />
+          </div>
+          <div className="qui-user-profile-projects col-12 col-md-9 pt-md-5">
+            <ProjectsTab user={user} />
           </div>
         </div>
       </div>

@@ -31,3 +31,9 @@ $project-image-h: 192px;
   margin: auto;
   height: 192px;
 }
+
+.qui-user-profile-projects {
+  @media screen and (max-width: 767px) {
+    background: white;
+  }
+}

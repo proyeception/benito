@@ -13,7 +13,7 @@ const Project = (props: Props) => (
     <div className="card">
       <div className="row no-gutters">
         <div className="col-4">
-          <div className="qui-user-profile-project-image-container text-center">
+          <div className="qui-user-profile-project-image-container text-center border-right">
             <img
               src={props.project.posterUrl}
               alt={props.project.title.valueOf()}

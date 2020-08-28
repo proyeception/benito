@@ -19,6 +19,7 @@ export type Person = {
   organizations: Array<Organization>;
   projects: Array<Project>;
   socials: Array<Social>;
+  contact?: Contact;
 };
 
 export type Category = {
@@ -42,4 +43,9 @@ export type Organization = {
 export type Social = {
   socialName: String;
   socialProfileUrl: String;
+};
+
+export type Contact = {
+  phone?: String;
+  email?: String;
 };
