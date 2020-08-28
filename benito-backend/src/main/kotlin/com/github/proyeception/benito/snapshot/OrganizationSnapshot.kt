@@ -1,15 +1,15 @@
 package com.github.proyeception.benito.snapshot
 
 import com.github.proyeception.benito.connector.Connector
-import com.github.proyeception.benito.dto.OrganizationDTO
+import com.github.proyeception.benito.dto.MedusaOrganizationDTO
 
-class OrganizationSnapshot(
+open class OrganizationSnapshot(
     medusaConnector: Connector
-) : Snapshot<OrganizationDTO>(
+) : Snapshot<MedusaOrganizationDTO>(
     refreshRate = 3600,
     endpoint = "/organizations",
     connector = medusaConnector,
     name = "organization"
 ) {
-    fun organizations(): List<OrganizationDTO> = elements
+    open fun organizations(): List<MedusaOrganizationDTO> = elements
 }

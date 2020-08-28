@@ -1,10 +1,7 @@
 package com.github.proyeception.benito.service
 
 import com.github.proyeception.benito.client.MedusaClient
-import com.github.proyeception.benito.dto.MedusaPersonDTO
-import com.github.proyeception.benito.dto.OrganizationDTO
-import com.github.proyeception.benito.dto.PersonDTO
-import com.github.proyeception.benito.dto.ProjectRefDTO
+import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.NotFoundException
 import com.github.proyeception.benito.snapshot.OrganizationSnapshot
 
@@ -16,7 +13,7 @@ class UserService(
 
     fun findSupervisor(userId: String): PersonDTO = mapMedusaToDomain(medusaClient.findUser(userId, "supervisors"))
 
-    private fun mapIdToOrganization(organizationId: String): OrganizationDTO = organizationSnapshot
+    private fun mapIdToOrganization(organizationId: String): MedusaOrganizationDTO = organizationSnapshot
         .organizations()
         .find { it.id == organizationId }
         ?: throw NotFoundException("No such organization with ID $organizationId was found")
@@ -31,7 +28,7 @@ class UserService(
                 id = it.id,
                 title = it.title,
                 posterUrl = it.poster.url,
-                organization = mapIdToOrganization(it.organizationId),
+                organization = OrganizationDTO(mapIdToOrganization(it.organizationId)),
                 description = it.description
             )
         },
