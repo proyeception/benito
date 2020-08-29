@@ -21,6 +21,7 @@ const ProjectsTab = (props: Props) => {
         </div>
         <OneByOne
           containerClassName="row"
+          timeout={150}
           elements={props.user.projects.map((p, idx) => (
             <SlideIn className="col-12 col-md-6 mb-5" key={idx}>
               <Project project={p} />

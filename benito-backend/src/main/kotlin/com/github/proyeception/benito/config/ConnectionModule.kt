@@ -27,7 +27,17 @@ open class ConnectionModule {
         @Qualifier("objectMapperCamelCase") objectMapperCamelCase: ObjectMapper,
         config: Config
     ): OAuthConnector = OAuthConnector.create(
-        moduleConfig = config.getConfig("google"),
+        moduleConfig = config.getConfig("google.drive"),
+        objectMapper = objectMapperCamelCase,
+        api = GoogleApi20.instance()
+    )
+
+    @Bean("googleAccountConnector")
+    open fun googleAccountConnector(
+        @Qualifier("objectMapperCamelCase") objectMapperCamelCase: ObjectMapper,
+        config: Config
+    ): OAuthConnector = OAuthConnector.create(
+        moduleConfig = config.getConfig("google.login"),
         objectMapper = objectMapperCamelCase,
         api = GoogleApi20.instance()
     )

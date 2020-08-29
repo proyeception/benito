@@ -63,7 +63,8 @@ class UserServiceTest : Spec() {
                                 )
                             )
                         ),
-                        contact = null
+                        mail = null,
+                        phone = null
                     )
                 )
                 on(organizationMocK.find(any())).thenReturn(
@@ -159,7 +160,8 @@ class UserServiceTest : Spec() {
                                 )
                             )
                         ),
-                        contact = null
+                        mail = null,
+                        phone = null
                     )
                 )
                 on(organizationMocK.find(any())).thenReturn(null)

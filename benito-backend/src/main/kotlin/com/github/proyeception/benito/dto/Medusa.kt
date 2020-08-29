@@ -32,7 +32,8 @@ data class MedusaPersonDTO(
     val profilePic: ImageDTO?,
     val projects: List<MedusaProjectRefDTO>,
     val socials: List<SocialDTO>,
-    val contact: ContactDTO?
+    val mail: String?,
+    val phone: String?
 )
 
 data class MedusaProjectRefDTO(

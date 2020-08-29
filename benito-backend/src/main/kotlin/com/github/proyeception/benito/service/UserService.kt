@@ -32,6 +32,9 @@ class UserService(
             )
         },
         socials = medusa.socials,
-        contact = medusa.contact
+        contact = ContactDTO(
+            mail = medusa.mail,
+            phone = medusa.mail
+        )
     )
 }
