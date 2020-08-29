@@ -47,37 +47,35 @@ const User = (props: Props) => {
 
   if (!user) {
     return (
-      <div className="qui-user-profile center">
+      <div className="qui-min-height center">
         <Loader />
       </div>
     );
   }
 
   return (
-    <FadeIn className="qui-user-profile">
-      <div className="qui-user-profile">
-        <div className="container-fluid un-mb-md-1">
-          <div className="row">
-            <div className="col-12 col-md-3 pl-md-4 pr-md-4 pt-5 pt-md-5 bg-white border-right qui-user-profile">
-              <Profile user={user} />
-              <Separator
-                display="d-block"
-                color="light"
-                marginRight={1}
-                marginLeft={1}
-              />
-              <Organizations user={user} />
-              <Separator
-                color="light"
-                display={user.socials.length > 0 ? "d-block" : "d-none"}
-                marginRight={1}
-                marginLeft={1}
-              />
-              <SocialMedia user={user} />
-            </div>
-            <div className="qui-user-profile-projects col-12 col-md-9 pt-md-5">
-              <ProjectsTab user={user} />
-            </div>
+    <FadeIn className="qui-min-height">
+      <div className="container-fluid un-mb-md-1">
+        <div className="row">
+          <div className="col-12 col-md-3 pl-md-4 pr-md-4 pt-5 pt-md-5 bg-white border-right qui-min-height">
+            <Profile user={user} />
+            <Separator
+              display="d-block"
+              color="light"
+              marginRight={1}
+              marginLeft={1}
+            />
+            <Organizations user={user} />
+            <Separator
+              color="light"
+              display={user.socials.length > 0 ? "d-block" : "d-none"}
+              marginRight={1}
+              marginLeft={1}
+            />
+            <SocialMedia user={user} />
+          </div>
+          <div className="qui-user-profile-projects col-12 col-md-9 pt-md-5">
+            <ProjectsTab user={user} />
           </div>
         </div>
       </div>

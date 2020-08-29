@@ -12,7 +12,7 @@ type Props = {
 const Separator = (props: Props) => (
   <hr
     className={`${props.display} ${
-      props.color ? `qui-separator-${props.color}` : "qui-separator"
+      props.color ? `qui-separator-${props.color}` : "qui-separator-primary"
     } ${props.marginLeft !== undefined ? `ml-${props.marginLeft}` : "ml-2"} ${
       props.marginRight !== undefined ? `mr-${props.marginRight}` : "mr-2"
     }`}
