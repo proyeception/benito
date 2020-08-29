@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.github.proyeception.benito.connector.Connector
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.FailedDependencyException
+import com.github.proyeception.benito.exception.NotFoundException
 import com.github.proyeception.benito.extension.replaceUrlSpaces
 import org.slf4j.LoggerFactory
 
@@ -32,6 +33,7 @@ open class MedusaClient(
         val response = medusaConnector.get(endpoint)
 
         if (response.isError()) {
+            LOGGER.error("Error getting projects from medusa: ${response.body}")
             throw FailedDependencyException("Error getting projects from Medusa")
         }
 
@@ -44,6 +46,7 @@ open class MedusaClient(
         val response = medusaConnector.get("/categories")
 
         if (response.isError()) {
+            LOGGER.error("Error getting categories from medusa: ${response.body}")
             throw FailedDependencyException("Error getting categories from Medusa")
         }
 
@@ -54,20 +57,11 @@ open class MedusaClient(
 
     open fun categoriesCount() = count("categories")
 
-    private fun count(collection: String): Int {
-        val response = medusaConnector.get("/$collection/count")
-
-        if (response.isError()) {
-            throw FailedDependencyException("Error counting $collection from Medusa")
-        }
-
-        return response.body?.toInt() ?: throw FailedDependencyException("Medusa returned null for count")
-    }
-
     open fun project(id: String): MedusaProjectDTO {
         val response = medusaConnector.get("/projects/${id}")
 
         if (response.isError()) {
+            LOGGER.error("Error getting project from medusa: ${response.body}")
             throw FailedDependencyException("Error getting project from Medusa")
         }
 
@@ -86,8 +80,38 @@ open class MedusaClient(
         val response = medusaConnector.post(endpoint, document)
 
         if (response.isError()) {
+            LOGGER.error("Error saving document in medusa: ${response.body}")
             throw FailedDependencyException("Error uploading file with drive ID $driveId from Medusa")
         }
+    }
+
+    open fun findUser(userId: String, collection: String): MedusaPersonDTO {
+        val endpoint = "/$collection/$userId"
+
+        val response = medusaConnector.get(endpoint)
+
+        return when (response.status) {
+            200 -> response.deserializeAs(object : TypeReference<MedusaPersonDTO>() {})
+            404 -> {
+                LOGGER.error("User not found: ${response.body}")
+                throw NotFoundException("User $userId not found in $collection")
+            }
+            else -> {
+                LOGGER.error("Error getting user $userId from '$collection' in medusa: ${response.body}")
+                throw FailedDependencyException("Error getting user $userId from '$collection' in medusa")
+            }
+        }
+    }
+
+    private fun count(collection: String): Int {
+        val response = medusaConnector.get("/$collection/count")
+
+        if (response.isError()) {
+            LOGGER.error("Error counting $collection in medusa: ${response.body}")
+            throw FailedDependencyException("Error counting $collection from Medusa")
+        }
+
+        return response.body?.toInt() ?: throw FailedDependencyException("Medusa returned null for count")
     }
 
     private fun String.appendOrder(orderBy: OrderDTO?): String = orderBy?.sortMethod?.let { "${this}_sort=$it&" }

@@ -4,6 +4,7 @@ import "./styles.scss";
 import { Project } from "../../types";
 import moment from "moment";
 import Separator from "./Separator";
+import { Link } from "react-router-dom";
 
 type Props = {
   project: Project;
@@ -33,7 +34,13 @@ const Details = (props: Props) => {
         </div>
         <div className="col-12 col-md-6 mt-md-2">
           <div className="qui-summary qui-font-text font-weight-light font-size-11 font-size-16-md text-md-right">
-            {props.project.authors.map((a) => a.fullName).join(", ")}
+            {props.project.authors
+              .map<React.ReactNode>((a, idx) => (
+                <Link key={idx} to={`/students/${a.id}`}>
+                  <span>{a.fullName}</span>
+                </Link>
+              ))
+              .reduce((prev, curr) => [prev, ", ", curr])}
           </div>
         </div>
         <div className="col-12 col-md-6 mt-2">
@@ -47,7 +54,7 @@ const Details = (props: Props) => {
           </div>
         </div>
       </div>
-      <Separator />
+      <Separator display="d-block d-md-none" />
     </div>
   );
 };

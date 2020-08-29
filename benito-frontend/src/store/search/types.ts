@@ -9,6 +9,7 @@ export const UPDATE_DOCUMENTATION = "UPDATE_DOCUMENTATION";
 export const UPDATE_PROJECTS = "UPDATE_PROJECTS";
 export const UPDATE_SORT_METHOD = "UPDATE_SORT_METHOD";
 export const RESET_SEARCH_PARAMETERS = "RESET_SEARCH_PARAMETERS";
+export const UPDATE_ORGANIZATION = "UPDATE_ORGANIZATION";
 
 interface UpdateNameAction {
   type: typeof UPDATE_NAME;
@@ -54,6 +55,11 @@ interface ResetSearchParametersAction {
   type: typeof RESET_SEARCH_PARAMETERS;
 }
 
+interface UpdateOrganization {
+  type: typeof UPDATE_ORGANIZATION;
+  payload: String;
+}
+
 export enum SortMethod {
   DateAsc = "DATE_ASC",
   DateDesc = "DATE_DESC",
@@ -70,7 +76,8 @@ export type SearchAction =
   | UpdateKeywordAction
   | UpdateDocumentationAction
   | UpdateSortMethod
-  | ResetSearchParametersAction;
+  | ResetSearchParametersAction
+  | UpdateOrganization;
 
 export type SearchState = {
   name: String;
@@ -81,4 +88,5 @@ export type SearchState = {
   keyword: String;
   documentation: String;
   sortMethod: SortMethod;
+  organization: String;
 };

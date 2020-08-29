@@ -19,7 +19,7 @@ const Summary = (props: Props) => {
           {props.project.description}
         </div>
       </div>
-      <Separator />
+      <Separator display="d-block d-md-none" />
     </div>
   );
 };

@@ -1,0 +1,45 @@
+@import "../../utils.scss";
+$project-image-h: 192px;
+
+.qui-user-profile-picture-container {
+  @include img-circle-container;
+  width: 192px;
+  height: 192px;
+}
+
+.qui-user-profile-project-image-container-sm {
+  @include img-circle-container;
+  width: 48px;
+  height: 48px;
+}
+
+.qui-user-profile-icon {
+  height: 32px;
+  width: 32px;
+}
+
+.qui-user-profile-project-image-container {
+  height: $project-image-h;
+  overflow: hidden;
+  position: relative;
+}
+
+.qui-user-profile-project-image {
+  position: absolute;
+  top: -9999px;
+  bottom: -9999px;
+  left: -9999px;
+  right: -9999px;
+  margin: auto;
+  height: 192px;
+}
+
+.qui-user-profile-projects {
+  @media screen and (max-width: 767px) {
+    background: white;
+  }
+}
+
+.qui-user-profile-project-card {
+  height: 192px;
+}

@@ -11,7 +11,7 @@ type Props = {
 const Documents = (props: Props) => {
   const documentationProper =
     props.project.documentation.length == 0 ? (
-      <div className="qui-font-text qui-summary mt-3 font-weight-light pl-md-3 pr-md-3">
+      <div className="qui-font-text qui-summary mt-3 font-weight-light pl-md-3 pr-md-3 font-size-11 font-size-16-md">
         El proyecto todavía no cuenta con documentación 😧
       </div>
     ) : (

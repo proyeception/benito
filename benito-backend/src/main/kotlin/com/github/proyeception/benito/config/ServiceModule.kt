@@ -6,6 +6,8 @@ import com.github.proyeception.benito.parser.DocumentParser
 import com.github.proyeception.benito.service.CategoriesService
 import com.github.proyeception.benito.service.DocumentService
 import com.github.proyeception.benito.service.ProjectService
+import com.github.proyeception.benito.service.UserService
+import com.github.proyeception.benito.snapshot.OrganizationSnapshot
 import org.springframework.context.annotation.Bean
 
 
@@ -31,5 +33,14 @@ open class ServiceModule {
         googleClient: GoogleDriveClient
     ): DocumentService = DocumentService(
         googleClient = googleClient
+    )
+
+    @Bean
+    open fun userService(
+        medusaClient: MedusaClient,
+        organizationSnapshot: OrganizationSnapshot
+    ): UserService = UserService(
+        medusaClient = medusaClient,
+        organizationSnapshot = organizationSnapshot
     )
 }

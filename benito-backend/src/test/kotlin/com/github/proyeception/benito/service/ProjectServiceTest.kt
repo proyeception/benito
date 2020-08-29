@@ -82,9 +82,14 @@ class ProjectServiceTest : Spec() {
                         tagName = "systems",
                         imageUrl = ""
                     ),
-                    organization = OrganizationDTO(
+                    organization = MedusaOrganizationDTO(
                         displayName = "UTN FRBA",
-                        name = "utnfrba"
+                        name = "utnfrba",
+                        icon = ImageDTO(
+                            name = "icon",
+                            url = "icon"
+                        ),
+                        id = "123"
                     ),
                     tags = emptyList()
                 )
@@ -168,9 +173,14 @@ class ProjectServiceTest : Spec() {
                     supervisors = listOf(supervisor),
                     documentation = listOf(documentation),
                     category = CategoryDTO("Systems", "systems", ""),
-                    organization = OrganizationDTO(
+                    organization = MedusaOrganizationDTO(
                         displayName = "UTN FRBA",
-                        name = "utnfrba"
+                        name = "utnfrba",
+                        icon = ImageDTO(
+                            name = "icon",
+                            url = "icon"
+                        ),
+                        id = "123"
                     ),
                     tags = emptyList()
                 )

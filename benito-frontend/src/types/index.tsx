@@ -8,12 +8,18 @@ export type Project = {
   tags: Array<String>;
   extraContent: String;
   documentation: Array<Documentation>;
+  organization: Organization;
 };
 
 export type Person = {
   username: String;
   fullName: String;
-  profileUrl: String;
+  id: String;
+  profilePicUrl?: String;
+  organizations: Array<Organization>;
+  projects: Array<Project>;
+  socials: Array<Social>;
+  contact?: Contact;
 };
 
 export type Category = {
@@ -26,4 +32,20 @@ export type Documentation = {
   fileName: String;
   id: String;
   driveId: String;
+};
+
+export type Organization = {
+  displayName: String;
+  name: String;
+  iconUrl: String;
+};
+
+export type Social = {
+  socialName: String;
+  socialProfileUrl: String;
+};
+
+export type Contact = {
+  phone?: String;
+  mail?: String;
 };

@@ -14,7 +14,7 @@ data class MedusaProjectDTO(
     val supervisors: List<PersonRefDTO>,
     val documentation: List<DocumentationDTO>,
     val category: CategoryDTO,
-    val organization: OrganizationDTO,
+    val organization: MedusaOrganizationDTO,
     val tags: List<MedusaTagDTO>
 )
 
@@ -28,16 +28,19 @@ data class MedusaPersonDTO(
     val id: String,
     val username: String,
     val fullName: String,
-    val organizations: List<OrganizationDTO>,
+    val organizations: List<MedusaOrganizationDTO>,
     val profilePic: ImageDTO?,
-    val projects: List<ProjectRefDTO>
+    val projects: List<MedusaProjectRefDTO>,
+    val socials: List<SocialDTO>,
+    val contact: ContactDTO?
 )
 
-data class ProjectRefDTO(
+data class MedusaProjectRefDTO(
     val id: String,
     val title: String,
     val poster: ImageDTO,
-    @JsonProperty("organization") val organizationId: String
+    @JsonProperty("organization") val organizationId: String,
+    val description:  String
 )
 
 data class ImageDTO(
@@ -70,12 +73,24 @@ enum class MedusaFilter(val filterName: String) {
     EQ("eq"),
 }
 
-data class OrganizationDTO(
+data class MedusaOrganizationDTO(
+    val id: String,
     val displayName: String,
-    val name: String
+    val name: String,
+    val icon: ImageDTO
 )
 
 data class MedusaTagDTO(
     val tagName: String,
     val displayName: String
+)
+
+data class SocialDTO(
+    val socialName: String,
+    val socialProfileUrl: String
+)
+
+data class ContactDTO(
+    val phone: String?,
+    val mail: String?
 )

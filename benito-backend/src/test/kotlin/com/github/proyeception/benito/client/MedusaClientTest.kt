@@ -282,9 +282,11 @@ class MedusaClientTest : Spec() {
                 supervisors = listOf(supervisor),
                 category = CategoryDTO(name = "Systems", tagName = "systems", imageUrl = ""),
                 documentation = listOf(documentation),
-                organization = OrganizationDTO(
+                organization = MedusaOrganizationDTO(
                     displayName = "UTN FRBA",
-                    name = "utnfrba"
+                    name = "utnfrba",
+                    icon = ImageDTO("icon", "icon"),
+                    id = "123"
                 ),
                 tags = emptyList()
             )

@@ -30,6 +30,7 @@ const defaultState: RootState = {
     keyword: "",
     documentation: "",
     sortMethod: SortMethod.DateDesc,
+    organization: "",
   },
   common: {
     categories: [],
