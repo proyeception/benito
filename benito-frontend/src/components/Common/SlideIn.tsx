@@ -13,6 +13,7 @@ const SlideIn = (props: Props) => (
     initial={{ x: 150, opacity: 0 }}
     animate={{ x: 0, opacity: 1 }}
     exit={{ x: -300, opacity: 0 }}
+    className={props.className}
   >
     {props.children}
   </motion.div>

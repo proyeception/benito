@@ -4,6 +4,8 @@ import "./styles.scss";
 import { Person } from "../../types";
 import Project from "./Project";
 import Separator from "../Project/Separator";
+import OneByOne from "../Common/OneByOne";
+import SlideIn from "../Common/SlideIn";
 
 type Props = {
   user: Person;
@@ -17,11 +19,14 @@ const ProjectsTab = (props: Props) => {
         <div className="font-size-24 font-size-36-md mt-4 mt-md-0 mb-3 mb-md-5">
           Proyectos
         </div>
-        <div className="row">
-          {props.user.projects.map((p, idx) => (
-            <Project project={p} key={idx} />
+        <OneByOne
+          containerClassName="row"
+          elements={props.user.projects.map((p, idx) => (
+            <SlideIn className="col-12 col-md-6 mb-5" key={idx}>
+              <Project project={p} />
+            </SlideIn>
           ))}
-        </div>
+        />
       </div>
     </div>
   );

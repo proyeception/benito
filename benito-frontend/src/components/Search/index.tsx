@@ -24,6 +24,7 @@ import Loader from "../Common/Loader";
 import NoResultsFound from "./NoResultsFound";
 import SlideIn from "../Common/SlideIn";
 import SearchError from "./SearchError";
+import OneByOne from "../Common/OneByOne";
 
 type MatchParams = {
   name?: string;
@@ -63,23 +64,14 @@ const Search = (props: Props) => {
     ignoreQueryPrefix: true,
   });
 
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(projects.length == 0);
+  const [loading, setLoading] = useState(props.projects.length == 0);
   const [isError, setIsError] = useState(false);
-  let index = 1;
-
-  const timeout = 50;
 
   const search = (params?: MatchParams) => {
     fetchProjects(params ? params : props)
       .then((res) => res.data)
       .then((ps) => {
         store.dispatch(updateProjects(ps));
-        const intervalId = setInterval(() => {
-          setProjects(ps.slice(0, index));
-          index++;
-        }, 50);
-        setTimeout(() => clearInterval(intervalId), (ps.length + 1) * timeout);
       })
       .then(() => setLoading(false))
       .catch((e) => {
@@ -121,13 +113,14 @@ const Search = (props: Props) => {
           ) : props.projects.length == 0 ? (
             <NoResultsFound />
           ) : (
-            <div className="pl-4 pr-2 un-ml-3 un-ml-md-0 un-mr-1 un-mr-md-0">
-              {projects.map((p, idx) => (
+            <OneByOne
+              containerClassName="pl-4 pr-2 un-ml-3 un-ml-md-0 un-mr-1 un-mr-md-0"
+              elements={props.projects.map((p, idx) => (
                 <SlideIn key={idx}>
                   <ProjectSummary project={p} />
                 </SlideIn>
               ))}
-            </div>
+            />
           )}
         </div>
       </div>
