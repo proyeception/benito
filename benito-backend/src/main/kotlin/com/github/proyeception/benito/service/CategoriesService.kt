@@ -2,11 +2,12 @@ package com.github.proyeception.benito.service
 
 import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.dto.CountDTO
+import com.github.proyeception.benito.snapshot.CategorySnapshot
 
 open class CategoriesService(
-    private val medusaClient: MedusaClient
+    private val categorySnapshot: CategorySnapshot
 ) {
-    open fun categories() = medusaClient.categories()
+    open fun categories() = categorySnapshot.findAll()
 
-    open fun count() = CountDTO(medusaClient.categoriesCount())
+    open fun count() = CountDTO(categorySnapshot.count())
 }

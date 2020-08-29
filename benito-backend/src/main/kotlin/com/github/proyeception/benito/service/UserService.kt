@@ -14,7 +14,6 @@ class UserService(
     fun findSupervisor(userId: String): PersonDTO = mapMedusaToDomain(medusaClient.findUser(userId, "supervisors"))
 
     private fun mapIdToOrganization(organizationId: String): MedusaOrganizationDTO = organizationSnapshot
-        .organizations()
         .find { it.id == organizationId }
         ?: throw NotFoundException("No such organization with ID $organizationId was found")
 

@@ -7,6 +7,7 @@ import com.github.proyeception.benito.service.CategoriesService
 import com.github.proyeception.benito.service.DocumentService
 import com.github.proyeception.benito.service.ProjectService
 import com.github.proyeception.benito.service.UserService
+import com.github.proyeception.benito.snapshot.CategorySnapshot
 import com.github.proyeception.benito.snapshot.OrganizationSnapshot
 import org.springframework.context.annotation.Bean
 
@@ -25,8 +26,8 @@ open class ServiceModule {
 
     @Bean
     open fun categoriesService(
-        medusaClient: MedusaClient
-    ): CategoriesService = CategoriesService(medusaClient = medusaClient)
+        categorySnapshot: CategorySnapshot
+    ): CategoriesService = CategoriesService(categorySnapshot = categorySnapshot)
 
     @Bean
     open fun documentService(

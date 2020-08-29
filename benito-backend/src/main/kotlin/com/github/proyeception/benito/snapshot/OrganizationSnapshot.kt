@@ -12,6 +12,4 @@ open class OrganizationSnapshot(
     connector = medusaConnector,
     name = "organization",
     ref = object : TypeReference<List<MedusaOrganizationDTO>>() {}
-) {
-    open fun organizations(): List<MedusaOrganizationDTO> = elements
-}
+)

@@ -8,6 +8,7 @@ import com.github.proyeception.benito.mock.eq
 import com.github.proyeception.benito.mock.getMock
 import com.github.proyeception.benito.mock.on
 import com.github.proyeception.benito.snapshot.OrganizationSnapshot
+import com.nhaarman.mockito_kotlin.any
 import io.kotlintest.matchers.shouldBe
 import io.kotlintest.matchers.shouldThrow
 import org.mockito.ArgumentMatchers.anyString
@@ -65,16 +66,14 @@ class UserServiceTest : Spec() {
                         contact = null
                     )
                 )
-                on(organizationMocK.organizations()).thenReturn(
-                    listOf(
-                        MedusaOrganizationDTO(
-                            displayName = "UTN FRBA",
-                            name = "utnfrba",
-                            id = "123",
-                            icon = ImageDTO(
-                                name = "icon",
-                                url = "https://icon.com"
-                            )
+                on(organizationMocK.find(any())).thenReturn(
+                    MedusaOrganizationDTO(
+                        displayName = "UTN FRBA",
+                        name = "utnfrba",
+                        id = "123",
+                        icon = ImageDTO(
+                            name = "icon",
+                            url = "https://icon.com"
                         )
                     )
                 )
@@ -163,11 +162,11 @@ class UserServiceTest : Spec() {
                         contact = null
                     )
                 )
-                on(organizationMocK.organizations()).thenReturn(emptyList())
+                on(organizationMocK.find(any())).thenReturn(null)
 
                 shouldThrow<NotFoundException> {
 
-                userService.findAuthor("123")
+                    userService.findAuthor("123")
                 }
                 verify(medusaMock).findUser(eq("123"), eq("authors"))
             }

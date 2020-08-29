@@ -17,6 +17,14 @@ abstract class Snapshot<T>(
     protected var elements = emptyList<T>()
     private val job: Job = Job()
 
+    open fun findAll(): List<T> = elements
+
+    open fun findAll(f: (T) -> Boolean): List<T> = elements.filter(f)
+
+    open fun find(f: (T) -> Boolean): T? = elements.find(f)
+
+    open fun count(): Int = elements.size
+
     fun refresh() {
         LOGGER.debug("Refreshing $name snapshot...")
         val response = connector.get(endpoint)
