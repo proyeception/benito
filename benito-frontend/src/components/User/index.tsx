@@ -47,7 +47,7 @@ const User = (props: Props) => {
 
   if (!user) {
     return (
-      <div className="center">
+      <div className="qui-user-profile center">
         <Loader />
       </div>
     );

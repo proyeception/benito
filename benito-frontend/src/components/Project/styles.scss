@@ -1,5 +1,9 @@
 @import "../../styles.scss";
 
+.qui-min-height {
+  min-height: 768px;
+}
+
 .qui-blurred-image {
   object-fit: cover;
   height: 250px;
