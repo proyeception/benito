@@ -9,7 +9,7 @@ import ProjectsTab from "./ProjectsTab";
 import FadeIn from "../Common/FadeIn";
 import { RouteChildrenProps } from "react-router-dom";
 import { Person } from "../../types";
-import axios, { AxiosRequestConfig } from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { benitoHost } from "../../config";
 import Loader from "../Common/Loader";
 
@@ -24,6 +24,8 @@ interface Props extends RouteChildrenProps<MatchParams> {
 const User = (props: Props) => {
   const [user, setUser] = useState<Person>(null);
   const [isError, setIsError] = useState(false);
+  const [notFound, setNotFound] = useState(false);
+  setNotFound;
 
   useEffect(() => {
     let config: AxiosRequestConfig = {
@@ -35,14 +37,32 @@ const User = (props: Props) => {
       .request<Person>(config)
       .then((res) => res.data)
       .then(setUser)
-      .catch((e) => {
+      .catch((e: { response: AxiosResponse }) => {
         setIsError(true);
-        console.error(e);
+        if (e.response.status == 404) {
+          setNotFound(true);
+        }
+        console.error(e.response);
       });
   }, []);
 
   if (isError) {
-    return <div>Pará, loco, no existe ese chabón!!</div>;
+    if (notFound) {
+      return (
+        <div className="container mt-5 mb-5">
+          <div className="alert alert-danger font-size-32-md text-center">
+            No se encontró el usuario que estabas buscando.
+          </div>
+        </div>
+      );
+    }
+    return (
+      <div className="container mt-5 mb-5">
+        <div className="alert alert-danger font-size-32-md text-center">
+          Hubo un error buscando este usuario, intentá de nuevo más tarde.
+        </div>
+      </div>
+    );
   }
 
   if (!user) {
