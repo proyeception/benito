@@ -30,6 +30,10 @@ const SortSelector = (props: Props) => (
       <option value={SortMethod.AlphaAsc}>A - Z</option>
       <option value={SortMethod.AlphaDesc}>Z - A</option>
     </optgroup>
+    <optgroup label="Cantidad de vistas">
+      <option value={SortMethod.ViewsDesc}>Más vistas</option>
+      <option value={SortMethod.ViewsAsc}>Menos vistas</option>
+    </optgroup>
   </select>
 );
 

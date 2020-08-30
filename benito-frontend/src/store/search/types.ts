@@ -65,6 +65,8 @@ export enum SortMethod {
   DateDesc = "DATE_DESC",
   AlphaAsc = "ALPHA_ASC",
   AlphaDesc = "ALPHA_DESC",
+  ViewsAsc = "VIEWS_ASC",
+  ViewsDesc = "VIEWS_DESC"
 }
 
 export type SearchAction =
