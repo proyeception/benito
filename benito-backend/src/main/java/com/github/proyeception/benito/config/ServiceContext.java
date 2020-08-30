@@ -11,6 +11,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
     ConfigModule.class,
     ConnectionModule.class,
     ObjectMapperModule.class,
+    RepositoryModule.class,
     ServiceModule.class,
     SnapshotModule.class
 })

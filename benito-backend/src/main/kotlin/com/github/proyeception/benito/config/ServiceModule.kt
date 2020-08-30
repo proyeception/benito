@@ -1,12 +1,11 @@
 package com.github.proyeception.benito.config
 
 import com.github.proyeception.benito.client.MedusaClient
+import com.github.proyeception.benito.oauth.GoogleAccountClient
 import com.github.proyeception.benito.oauth.GoogleDriveClient
 import com.github.proyeception.benito.parser.DocumentParser
-import com.github.proyeception.benito.service.CategoriesService
-import com.github.proyeception.benito.service.DocumentService
-import com.github.proyeception.benito.service.ProjectService
-import com.github.proyeception.benito.service.UserService
+import com.github.proyeception.benito.repository.UserLoginRepository
+import com.github.proyeception.benito.service.*
 import com.github.proyeception.benito.snapshot.CategorySnapshot
 import com.github.proyeception.benito.snapshot.OrganizationSnapshot
 import org.springframework.context.annotation.Bean
@@ -43,5 +42,12 @@ open class ServiceModule {
     ): UserService = UserService(
         medusaClient = medusaClient,
         organizationSnapshot = organizationSnapshot
+    )
+
+    @Bean
+    open fun authorizationService(
+        googleAccountClient: GoogleAccountClient
+    ): AuthorizationService = AuthorizationService(
+        googleAccountClient = googleAccountClient
     )
 }

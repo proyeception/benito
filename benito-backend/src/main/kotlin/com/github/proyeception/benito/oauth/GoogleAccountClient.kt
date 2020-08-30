@@ -1,6 +1,9 @@
 package com.github.proyeception.benito.oauth
 
+import com.fasterxml.jackson.core.type.TypeReference
 import com.github.proyeception.benito.connector.OAuthConnector
+import com.github.proyeception.benito.dto.GoogleProfileDTO
+import com.github.proyeception.benito.extension.getOrThrow
 import java.util.*
 
 class GoogleAccountClient(
@@ -13,16 +16,19 @@ class GoogleAccountClient(
     * Ese secret guardarlo en algún repo de pendientes con datos necesarios del usuario
     * para poder después persistir el token que nos genera el finish en el usuario que corresponda
     * */
-    override fun initNewAuth(): String {
+    override fun initNewAuth(): Pair<String, String> {
         val secretState = "secret" + Random().nextInt(999999)
         val additionalParams: MutableMap<String, String> = HashMap<String, String>()
         additionalParams["access_type"] = "offline"
         additionalParams["prompt"] = "consent"
 
-        return googleAccountConnector.oAuth20Service.createAuthorizationUrlBuilder()
-            .state(secretState)
-            .additionalParams(additionalParams)
-            .build()
+        return Pair(
+            first = secretState,
+            second = googleAccountConnector.oAuth20Service.createAuthorizationUrlBuilder()
+                .state(secretState)
+                .additionalParams(additionalParams)
+                .build()
+        )
     }
 
     override fun finishNewAuth(authorization: String): String = googleAccountConnector.oAuth20Service
@@ -31,4 +37,10 @@ class GoogleAccountClient(
         .also {
             googleAccountConnector.token = it
         }
+
+    // TODO: find an endpoint that gives more user info, if possible
+    fun userInfo() = googleAccountConnector
+        .get("https://people.googleapis.com/v1/people/me?personFields=metadata,names,emailAddresses,photos")
+        .getOrThrow()
+        .deserializeAs(object : TypeReference<GoogleProfileDTO>() {})
 }

@@ -1,7 +1,7 @@
 package com.github.proyeception.benito.controller
 
 import com.github.proyeception.benito.oauth.GoogleAccountClient
-import com.github.proyeception.benito.oauth.GoogleDriveClient
+import com.github.proyeception.benito.service.AuthorizationService
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
@@ -12,7 +12,8 @@ import javax.servlet.http.HttpServletResponse
 @Controller
 open class OAuthController(
     private val client: GoogleAccountClient,
-    @Qualifier("onAuthorizeRedirect") private val onAuthorizeRedirect: String
+    @Qualifier("onAuthorizeRedirect") private val onAuthorizeRedirect: String,
+    private val authorizationService: AuthorizationService
 ) {
 
     @RequestMapping(method = [RequestMethod.GET], value = ["/benito/callback"])
@@ -21,13 +22,14 @@ open class OAuthController(
         @RequestParam("state") secret: String,
         response: HttpServletResponse
     ): RedirectView {
-        var token = client.finishNewAuth(code)
-        response.addCookie(Cookie("una-re-cookie", "tu-hermana"))
-        return RedirectView("http://localhost:8080")
+        val cookie = authorizationService.finishAuth(code, secret)
+        response.addCookie(Cookie("x-qui-token", cookie))
+        return RedirectView(onAuthorizeRedirect)
     }
 
     @RequestMapping(method = [RequestMethod.GET], value = ["/benito/auth"])
     @ResponseBody
     @CrossOrigin
-    open fun authorization(): String = client.initNewAuth()
+    open fun authorization(
+    ): String = authorizationService.initAuth()
 }
