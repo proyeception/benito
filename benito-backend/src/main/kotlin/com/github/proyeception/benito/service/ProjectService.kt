@@ -5,7 +5,6 @@ import com.github.proyeception.benito.dto.CountDTO
 import com.github.proyeception.benito.dto.OrderDTO
 import com.github.proyeception.benito.dto.ProjectDTO
 import com.github.proyeception.benito.parser.DocumentParser
-import org.apache.commons.io.FilenameUtils
 import org.springframework.web.multipart.MultipartFile
 
 open class ProjectService(
@@ -38,7 +37,7 @@ open class ProjectService(
     fun saveFile(projectId: String, name: String, file: MultipartFile) {
         val content = documentParser.parse(file.inputStream)
         val driveId = documentService.saveFile(projectId = projectId, name = name, file = file)
-        medusaClient.saveFile(projectId, name, driveId, content)
+        medusaClient.saveDocument(projectId, name, driveId, content)
     }
 
 }

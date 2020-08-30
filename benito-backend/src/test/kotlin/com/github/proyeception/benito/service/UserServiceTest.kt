@@ -30,8 +30,8 @@ class UserServiceTest : Spec() {
                         id = "123",
                         username = "benitocapo123",
                         fullName = "Benito Quinquela",
-                        profilePic = ImageDTO(
-                            name = "profile",
+                        profilePic = MedusaFileDTO(
+                            id = "profile",
                             url = "https://profilepic.com"
                         ),
                         socials = listOf(
@@ -45,8 +45,8 @@ class UserServiceTest : Spec() {
                                 displayName = "UTN FRBA",
                                 name = "utnfrba",
                                 id = "123",
-                                icon = ImageDTO(
-                                    name = "icon",
+                                icon = MedusaFileDTO(
+                                    id = "icon",
                                     url = "https://icon.com"
                                 )
                             )
@@ -57,9 +57,9 @@ class UserServiceTest : Spec() {
                                 title = "Some cool title",
                                 description = "Some cool description",
                                 organizationId = "123",
-                                poster = ImageDTO(
+                                poster = MedusaFileDTO(
                                     url = "https://poster.com",
-                                    name = "poster"
+                                    id = "poster"
                                 )
                             )
                         ),
@@ -72,8 +72,8 @@ class UserServiceTest : Spec() {
                         displayName = "UTN FRBA",
                         name = "utnfrba",
                         id = "123",
-                        icon = ImageDTO(
-                            name = "icon",
+                        icon = MedusaFileDTO(
+                            id = "icon",
                             url = "https://icon.com"
                         )
                     )
@@ -127,8 +127,8 @@ class UserServiceTest : Spec() {
                         id = "123",
                         username = "benitocapo123",
                         fullName = "Benito Quinquela",
-                        profilePic = ImageDTO(
-                            name = "profile",
+                        profilePic = MedusaFileDTO(
+                            id = "profile",
                             url = "https://profilepic.com"
                         ),
                         socials = listOf(
@@ -142,8 +142,8 @@ class UserServiceTest : Spec() {
                                 displayName = "UTN FRBA",
                                 name = "utnfrba",
                                 id = "123",
-                                icon = ImageDTO(
-                                    name = "icon",
+                                icon = MedusaFileDTO(
+                                    id = "icon",
                                     url = "https://icon.com"
                                 )
                             )
@@ -154,9 +154,9 @@ class UserServiceTest : Spec() {
                                 title = "Some cool title",
                                 description = "Some cool description",
                                 organizationId = "123",
-                                poster = ImageDTO(
+                                poster = MedusaFileDTO(
                                     url = "https://poster.com",
-                                    name = "poster"
+                                    id = "poster"
                                 )
                             )
                         ),

@@ -46,7 +46,7 @@ data class ProjectDTO(
 }
 
 data class PersonDTO(
-    val username: String,
+    val username: String?,
     val fullName: String,
     val organizations: List<OrganizationDTO>,
     val profilePicUrl: String?,

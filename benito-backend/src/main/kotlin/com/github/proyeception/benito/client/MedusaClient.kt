@@ -6,7 +6,9 @@ import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.FailedDependencyException
 import com.github.proyeception.benito.exception.NotFoundException
 import com.github.proyeception.benito.extension.replaceUrlSpaces
+import org.apache.http.entity.ContentType
 import org.slf4j.LoggerFactory
+import java.io.File
 
 open class MedusaClient(
     private val medusaConnector: Connector
@@ -68,7 +70,7 @@ open class MedusaClient(
         return response.deserializeAs(object : TypeReference<MedusaProjectDTO>() {})
     }
 
-    open fun saveFile(projectId: String, name: String, driveId: String, content: String) {
+    open fun saveDocument(projectId: String, name: String, driveId: String, content: String) {
         val endpoint = "/projects/$projectId/documents"
 
         val document = CreateDocumentDTO(
@@ -101,6 +103,28 @@ open class MedusaClient(
                 throw FailedDependencyException("Error getting user $userId from '$collection' in medusa")
             }
         }
+    }
+
+    open fun createUser(person: CreateMedusaPersonDTO, collection: String) {
+        val endpoint = "/$collection"
+
+        val response = medusaConnector.post(endpoint, person)
+
+        if (response.isError()) {
+            LOGGER.error(response.body)
+            throw FailedDependencyException("Error when creating a new item in $collection")
+        }
+    }
+
+    fun createFile(file: File, contentType: ContentType): MedusaFileDTO {
+        val response = medusaConnector.postFile("/upload", file, "files", contentType)
+
+        if (response.isError()) {
+            LOGGER.error(response.body)
+            throw FailedDependencyException("Failed to create file")
+        }
+
+        return response.deserializeAs(object : TypeReference<List<MedusaFileDTO>>() {}).first()
     }
 
     private fun count(collection: String): Int {

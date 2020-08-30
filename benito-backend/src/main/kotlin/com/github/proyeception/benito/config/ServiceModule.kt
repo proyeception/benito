@@ -46,8 +46,10 @@ open class ServiceModule {
 
     @Bean
     open fun authorizationService(
-        googleAccountClient: GoogleAccountClient
+        googleAccountClient: GoogleAccountClient,
+        userService: UserService
     ): AuthorizationService = AuthorizationService(
-        googleAccountClient = googleAccountClient
+        googleAccountClient = googleAccountClient,
+        userService = userService
     )
 }
