@@ -137,6 +137,36 @@ class MedusaClientTest : Spec() {
                 expected shouldBe actual
             }
 
+            "should get to strapi's ascending views sort by title when using VIEWS_ASC" {
+                val projectsResponse = listOf<ProjectDTO>(project)
+
+                val expectedEndpoint =
+                    PROJECTS_PATH + QUERY_PARAM_START + STRAPI_SORT_QUERY_PARAM + STRAPI_VIEWS_FIELD + STRAPI_ASC_IDENTIFIER
+                on(medusaConnector.get(eq(expectedEndpoint))).thenReturn(responseMock)
+                on(responseMock.isError()).thenReturn(false)
+                on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
+
+                val expected = projectsResponse
+                val actual = medusaClient.getProjects(OrderDTO.VIEWS_ASC)
+
+                expected shouldBe actual
+            }
+
+            "should get to strapi's descending views sort by title when using VIEWS_DESC" {
+                val projectsResponse = listOf<ProjectDTO>(project)
+
+                val expectedEndpoint =
+                    PROJECTS_PATH + QUERY_PARAM_START + STRAPI_SORT_QUERY_PARAM + STRAPI_VIEWS_FIELD + STRAPI_DESC_IDENTIFIER
+                on(medusaConnector.get(eq(expectedEndpoint))).thenReturn(responseMock)
+                on(responseMock.isError()).thenReturn(false)
+                on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
+
+                val expected = projectsResponse
+                val actual = medusaClient.getProjects(OrderDTO.VIEWS_DESC)
+
+                expected shouldBe actual
+            }
+
             "should get to strapi's filter by creationDate with greater than equal when receiving from date" {
                 val projectsResponse = listOf<ProjectDTO>(project)
 
@@ -330,5 +360,6 @@ class MedusaClientTest : Spec() {
 
         const val STRAPI_DATE_FIELD = "creation_date"
         const val STRAPI_TITLE_FIELD = "title"
+        const val STRAPI_VIEWS_FIELD = "vistas"
     }
 }
