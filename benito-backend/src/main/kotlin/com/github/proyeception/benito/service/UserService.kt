@@ -39,10 +39,11 @@ class UserService(
 
     private fun createImage(userId: String, profilePicUrl: String?): MedusaFileDTO? = profilePicUrl?.let {
         val image = fileHelper.downloadImage(it, "/tmp/$userId.jpg")
-        val response = medusaClient.createFile(image, ContentType.IMAGE_JPEG)
-        fileHelper.deleteFile(image)
-
-        return response
+        try {
+            return medusaClient.createFile(image, ContentType.IMAGE_JPEG)
+        } finally {
+            fileHelper.deleteFile(image)
+        }
     }
 
     private fun mapIdToOrganization(organizationId: String): MedusaOrganizationDTO = organizationSnapshot

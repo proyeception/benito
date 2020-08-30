@@ -49,12 +49,12 @@ data class MedusaProjectRefDTO(
     val title: String,
     val poster: MedusaFileDTO,
     @JsonProperty("organization") val organizationId: String,
-    val description:  String
+    val description: String
 )
 
 data class MedusaFileDTO(
     val url: String,
-    val id: String
+    @JsonProperty("_id") val id: String
 )
 
 data class DocumentationDTO(
