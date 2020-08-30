@@ -8,6 +8,7 @@ import com.github.proyeception.benito.repository.UserLoginRepository
 import com.github.proyeception.benito.service.*
 import com.github.proyeception.benito.snapshot.CategorySnapshot
 import com.github.proyeception.benito.snapshot.OrganizationSnapshot
+import com.github.proyeception.benito.utils.FileHelper
 import org.springframework.context.annotation.Bean
 
 
@@ -38,10 +39,12 @@ open class ServiceModule {
     @Bean
     open fun userService(
         medusaClient: MedusaClient,
-        organizationSnapshot: OrganizationSnapshot
+        organizationSnapshot: OrganizationSnapshot,
+        fileHelper: FileHelper
     ): UserService = UserService(
         medusaClient = medusaClient,
-        organizationSnapshot = organizationSnapshot
+        organizationSnapshot = organizationSnapshot,
+        fileHelper = fileHelper
     )
 
     @Bean

@@ -2,6 +2,7 @@ package com.github.proyeception.benito.client
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.github.proyeception.benito.connector.Connector
+import com.github.proyeception.benito.connector.MultipartMetadataBuilder
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.FailedDependencyException
 import com.github.proyeception.benito.exception.NotFoundException
@@ -117,7 +118,12 @@ open class MedusaClient(
     }
 
     fun createFile(file: File, contentType: ContentType): MedusaFileDTO {
-        val response = medusaConnector.postFile("/upload", file, "files", contentType)
+        val multipart = MultipartMetadataBuilder()
+            .setText("name", "files")
+            .setBinary("files", file, contentType)
+            .buildPart()
+            .build()
+        val response = medusaConnector.post("/upload", multipart)
 
         if (response.isError()) {
             LOGGER.error(response.body)

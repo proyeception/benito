@@ -4,18 +4,14 @@ import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.NotFoundException
 import com.github.proyeception.benito.snapshot.OrganizationSnapshot
-import org.apache.commons.io.FileUtils
+import com.github.proyeception.benito.utils.FileHelper
 import org.apache.http.entity.ContentType
-import java.io.BufferedInputStream
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.InputStream
-import java.net.URL
 
 
 class UserService(
     private val medusaClient: MedusaClient,
-    private val organizationSnapshot: OrganizationSnapshot
+    private val organizationSnapshot: OrganizationSnapshot,
+    private val fileHelper: FileHelper
 ) {
     fun findAuthor(userId: String): PersonDTO = mapMedusaToDomain(medusaClient.findUser(userId, "authors"))
 
@@ -42,21 +38,9 @@ class UserService(
     }
 
     private fun createImage(userId: String, profilePicUrl: String?): MedusaFileDTO? = profilePicUrl?.let {
-        val url = URL(profilePicUrl)
-        val `in`: InputStream = BufferedInputStream(url.openStream())
-        val out = ByteArrayOutputStream()
-        val buf = ByteArray(1024)
-        var n = 0
-        while (-1 != `in`.read(buf).also { n = it }) {
-            out.write(buf, 0, n)
-        }
-        out.close()
-        `in`.close()
-        val imageBytes: ByteArray = out.toByteArray()
-        val tmpImageFile = File("/tmp/$userId.jpg")
-        FileUtils.writeByteArrayToFile(tmpImageFile, imageBytes)
-        val response = medusaClient.createFile(file = tmpImageFile, contentType = ContentType.IMAGE_JPEG)
-        FileUtils.deleteQuietly(tmpImageFile)
+        val image = fileHelper.downloadImage(it, "/tmp/$userId.jpg")
+        val response = medusaClient.createFile(image, ContentType.IMAGE_JPEG)
+        fileHelper.deleteFile(image)
 
         return response
     }

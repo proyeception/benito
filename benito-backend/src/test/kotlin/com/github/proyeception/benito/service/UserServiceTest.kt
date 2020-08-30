@@ -8,6 +8,7 @@ import com.github.proyeception.benito.mock.eq
 import com.github.proyeception.benito.mock.getMock
 import com.github.proyeception.benito.mock.on
 import com.github.proyeception.benito.snapshot.OrganizationSnapshot
+import com.github.proyeception.benito.utils.FileHelper
 import com.nhaarman.mockito_kotlin.any
 import io.kotlintest.matchers.shouldBe
 import io.kotlintest.matchers.shouldThrow
@@ -17,10 +18,12 @@ import org.mockito.Mockito.verify
 class UserServiceTest : Spec() {
     init {
         val medusaMock: MedusaClient = getMock()
-        val organizationMocK: OrganizationSnapshot = getMock()
+        val organizationMock: OrganizationSnapshot = getMock()
+        val fileHelperMock: FileHelper = getMock()
         val userService = UserService(
             medusaClient = medusaMock,
-            organizationSnapshot = organizationMocK
+            organizationSnapshot = organizationMock,
+            fileHelper = fileHelperMock
         )
 
         "findAuthor" should {
@@ -67,7 +70,7 @@ class UserServiceTest : Spec() {
                         phone = null
                     )
                 )
-                on(organizationMocK.find(any())).thenReturn(
+                on(organizationMock.find(any())).thenReturn(
                     MedusaOrganizationDTO(
                         displayName = "UTN FRBA",
                         name = "utnfrba",
@@ -111,7 +114,7 @@ class UserServiceTest : Spec() {
                             )
                         )
                     ),
-                    contact = null
+                    contact = ContactDTO(null, null)
                 )
 
                 val actual = userService.findAuthor("123")
@@ -164,7 +167,7 @@ class UserServiceTest : Spec() {
                         phone = null
                     )
                 )
-                on(organizationMocK.find(any())).thenReturn(null)
+                on(organizationMock.find(any())).thenReturn(null)
 
                 shouldThrow<NotFoundException> {
 

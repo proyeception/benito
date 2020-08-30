@@ -2,8 +2,6 @@ package com.github.proyeception.benito.service
 
 import com.github.proyeception.benito.exception.BadRequestException
 import com.github.proyeception.benito.oauth.GoogleAccountClient
-import java.net.URL
-import javax.imageio.ImageIO
 
 class AuthorizationService(
     private val googleAccountClient: GoogleAccountClient,

@@ -30,6 +30,5 @@ open class OAuthController(
     @RequestMapping(method = [RequestMethod.GET], value = ["/benito/auth"])
     @ResponseBody
     @CrossOrigin
-    open fun authorization(
-    ): String = authorizationService.initAuth()
+    open fun authorization(): String = authorizationService.initAuth()
 }
