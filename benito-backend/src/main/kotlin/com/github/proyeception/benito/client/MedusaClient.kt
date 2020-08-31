@@ -117,6 +117,20 @@ open class MedusaClient(
         }
     }
 
+    fun findUsersBy(collection: String, vararg params: Pair<String, String>): List<MedusaPersonDTO> {
+        val formattedParams = params.takeIf { it.isNotEmpty() }
+            ?.joinToString("&") { (field, value) -> "$field=$value" }
+            ?: ""
+        val response = medusaConnector.get("/$collection?$formattedParams")
+
+        if (response.isError()) {
+            LOGGER.error(response.body)
+            throw FailedDependencyException("Failed to fetch users from medusa")
+        }
+
+        return response.deserializeAs(object : TypeReference<List<MedusaPersonDTO>>() {})
+    }
+
     fun createFile(file: File, contentType: ContentType): MedusaFileDTO {
         val multipart = MultipartMetadataBuilder()
             .setText("name", "files")

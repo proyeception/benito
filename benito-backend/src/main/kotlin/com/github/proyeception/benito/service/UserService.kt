@@ -17,11 +17,19 @@ class UserService(
 
     fun findSupervisor(userId: String): PersonDTO = mapMedusaToDomain(medusaClient.findUser(userId, "supervisors"))
 
+    fun findAuthorByGoogleToken(token: String): PersonDTO? = medusaClient.findUsersBy(
+        "authors",
+        Pair("google_token", token)
+    )
+        .firstOrNull()
+        ?.let { mapMedusaToDomain(it) }
+
     fun createAuthor(
         username: String?,
         fullName: String,
         mail: String,
         userId: String,
+        googleToken: String,
         profilePicUrl: String?
     ) {
         val image = createImage(userId, profilePicUrl)
@@ -31,7 +39,8 @@ class UserService(
             username = username,
             mail = mail,
             googleUserId = userId,
-            profilePic = image
+            profilePic = image,
+            googleToken = googleToken
         )
 
         medusaClient.createUser(person, "authors")

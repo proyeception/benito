@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.view.RedirectView
 import javax.servlet.http.Cookie
+import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Controller
@@ -20,7 +21,8 @@ open class OAuthController(
     open fun authorizationCallback(
         @RequestParam("code") code: String,
         @RequestParam("state") secret: String,
-        response: HttpServletResponse
+        response: HttpServletResponse,
+        request: HttpServletRequest
     ): RedirectView {
         val cookie = authorizationService.finishAuth(code, secret)
         response.addCookie(Cookie("x-qui-token", cookie))

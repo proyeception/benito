@@ -10,6 +10,7 @@ import org.springframework.http.MediaType
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
+import javax.servlet.http.HttpServletRequest
 
 
 @Controller
@@ -25,7 +26,8 @@ class ProjectController(
         @RequestParam(required = false) from: String?,
         @RequestParam(required = false) to: String?,
         @RequestParam(required = false, name = "name") nameContains: String?,
-        @RequestParam(required = false, name = "category") category: String?
+        @RequestParam(required = false, name = "category") category: String?,
+        request: HttpServletRequest
     ): List<ProjectDTO> {
         return projectService.findProjects(orderBy, from, to, nameContains, category)
     }
