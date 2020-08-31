@@ -60,7 +60,7 @@ class MedusaClientTest : Spec() {
 
                 on(medusaConnector.get(eq(PROJECTS_PATH))).thenReturn(responseMock)
                 on(responseMock.isError()).thenReturn(false)
-                on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
+                on(responseMock.deserializeAs(any(TypeReference::class.java))).thenReturn(projectsResponse)
 
                 val expected = projectsResponse
                 val actual = medusaClient.getProjects()

@@ -36,6 +36,5 @@ open class GoogleAccountClient(
     // TODO: find an endpoint that gives more user info, if possible
     open fun userInfo(token: String) = googleAccountConnector
         .get("https://people.googleapis.com/v1/people/me?personFields=metadata,names,emailAddresses,photos", token)
-        .getOrThrow()
-        .deserializeAs(object : TypeReference<GoogleProfileDTO>() {})
+        .getOrThrow { it.deserializeAs(object : TypeReference<GoogleProfileDTO>() {}) }
 }
