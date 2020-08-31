@@ -1,7 +1,6 @@
 package com.github.proyeception.benito.extension
 
 import arrow.core.Either
-import arrow.core.getOrHandle
 
 fun <A> Either<Throwable, A>.getOrThrow(): A = getOrThrow { it }
 

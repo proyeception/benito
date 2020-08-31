@@ -1,6 +1,5 @@
 package com.github.proyeception.benito.controller
 
-import com.github.proyeception.benito.oauth.GoogleAccountClient
 import com.github.proyeception.benito.service.AuthorizationService
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Controller
@@ -12,7 +11,6 @@ import javax.servlet.http.HttpServletResponse
 
 @Controller
 open class OAuthController(
-    private val client: GoogleAccountClient,
     @Qualifier("onAuthorizeRedirect") private val onAuthorizeRedirect: String,
     private val authorizationService: AuthorizationService
 ) {
@@ -25,7 +23,7 @@ open class OAuthController(
         request: HttpServletRequest
     ): RedirectView {
         val cookie = authorizationService.finishAuth(code, secret)
-        response.addCookie(Cookie("x-qui-token", cookie))
+        response.addCookie(Cookie("x-qui-token", cookie).also { it.path = "/" })
         return RedirectView(onAuthorizeRedirect)
     }
 
