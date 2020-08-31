@@ -2,7 +2,7 @@ package com.github.proyeception.benito.config
 
 import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.oauth.GoogleDriveClient
-import com.github.proyeception.benito.parser.DocumentParser
+//import com.github.proyeception.benito.parser.DocumentParser
 import com.github.proyeception.benito.service.CategoriesService
 import com.github.proyeception.benito.service.DocumentService
 import com.github.proyeception.benito.service.ProjectService
@@ -16,11 +16,11 @@ open class ServiceModule {
     @Bean
     open fun projectService(
         medusaClient: MedusaClient,
-        documentParser: DocumentParser,
+        //documentParser: DocumentParser,
         documentService: DocumentService
     ): ProjectService = ProjectService(
         medusaClient = medusaClient,
-        documentParser = documentParser,
+       // documentParser = documentParser,
         documentService = documentService
     )
 
