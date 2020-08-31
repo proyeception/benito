@@ -117,7 +117,7 @@ open class MedusaClient(
         }
     }
 
-    fun findUsersBy(collection: String, vararg params: Pair<String, String>): List<MedusaPersonDTO> {
+    open fun findUsersBy(collection: String, vararg params: Pair<String, String>): List<MedusaPersonDTO> {
         val formattedParams = params.takeIf { it.isNotEmpty() }
             ?.joinToString("&") { (field, value) -> "$field=$value" }
             ?: ""
@@ -131,7 +131,7 @@ open class MedusaClient(
         return response.deserializeAs(object : TypeReference<List<MedusaPersonDTO>>() {})
     }
 
-    fun createFile(file: File, filename: String, contentType: ContentType): MedusaFileDTO {
+    open fun createFile(file: File, filename: String, contentType: ContentType): MedusaFileDTO {
         val multipart = MultipartMetadataBuilder()
             .setText("name", "files")
             .setBinary("files", file, contentType, filename)

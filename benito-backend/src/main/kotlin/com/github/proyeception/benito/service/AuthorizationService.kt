@@ -27,7 +27,7 @@ class AuthorizationService(
             userService.createAuthor(
                 fullName = user.names.firstOrNull()?.displayName ?: throw BadRequestException("User must have a name"),
                 profilePicUrl = user.photos.firstOrNull()?.url,
-                userId = userId,
+                googleUserId = userId,
                 username = null,
                 mail = user.emailAddresses.firstOrNull()?.value ?: throw BadRequestException("User must have an email"),
                 googleToken = token

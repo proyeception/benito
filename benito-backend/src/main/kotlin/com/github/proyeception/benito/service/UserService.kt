@@ -2,10 +2,12 @@ package com.github.proyeception.benito.service
 
 import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.dto.*
+import com.github.proyeception.benito.exception.AmbiguousReferenceException
 import com.github.proyeception.benito.exception.NotFoundException
 import com.github.proyeception.benito.snapshot.OrganizationSnapshot
 import com.github.proyeception.benito.utils.FileHelper
 import org.apache.http.entity.ContentType
+import org.slf4j.LoggerFactory
 
 
 class UserService(
@@ -13,32 +15,40 @@ class UserService(
     private val organizationSnapshot: OrganizationSnapshot,
     private val fileHelper: FileHelper
 ) {
-    fun findAuthor(userId: String): PersonDTO = mapMedusaToDomain(medusaClient.findUser(userId, "authors"))
+    fun findAuthor(userId: String): PersonDTO = findUserById(userId, "authors")
 
-    fun findSupervisor(userId: String): PersonDTO = mapMedusaToDomain(medusaClient.findUser(userId, "supervisors"))
+    fun findSupervisor(userId: String): PersonDTO = findUserById(userId, "supervisors")
 
     fun findAuthorByGoogleId(id: String): PersonDTO? = medusaClient.findUsersBy(
         "authors",
         Pair("google_user_id", id)
     )
-        .firstOrNull()
-        ?.let { mapMedusaToDomain(it) }
+        .let {
+            when (it.size) {
+                0 -> null
+                1 -> mapMedusaToDomain(it.first())
+                else -> {
+                    LOGGER.error("Ambiguous google user id $id")
+                    throw AmbiguousReferenceException("Ambiguous google user id")
+                }
+            }
+        }
 
     fun createAuthor(
         username: String?,
         fullName: String,
         mail: String,
-        userId: String,
+        googleUserId: String,
         googleToken: String,
         profilePicUrl: String?
     ) {
-        val image = createImage(userId, profilePicUrl)
+        val image = createImage(googleUserId, profilePicUrl)
 
         val person = CreateMedusaPersonDTO(
             fullName = fullName,
             username = username,
             mail = mail,
-            googleUserId = userId,
+            googleUserId = googleUserId,
             profilePic = image,
             googleToken = googleToken
         )
@@ -46,11 +56,17 @@ class UserService(
         medusaClient.createUser(person, "authors")
     }
 
+    private fun findUserById(userId: String, collection: String) = mapMedusaToDomain(medusaClient.findUser(userId, collection))
+
     private fun createImage(userId: String, profilePicUrl: String?): MedusaFileDTO? = profilePicUrl?.let {
         val image = fileHelper.downloadImage(it, "/tmp/$userId.jpg")
         try {
             // It's necessary to leave this in two separate lines, since finally executes before return
-            val response = medusaClient.createFile(image, userId, ContentType.IMAGE_JPEG)
+            val response = medusaClient.createFile(
+                file = image,
+                filename = userId,
+                contentType = ContentType.IMAGE_JPEG
+            )
             return response
         } finally {
             fileHelper.deleteFile(image)
@@ -81,4 +97,8 @@ class UserService(
             phone = medusa.mail
         )
     )
+
+    companion object {
+        private val LOGGER = LoggerFactory.getLogger(UserService::class.java)
+    }
 }
