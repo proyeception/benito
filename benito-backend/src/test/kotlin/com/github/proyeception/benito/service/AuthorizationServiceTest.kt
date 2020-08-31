@@ -10,9 +10,11 @@ class AuthorizationServiceTest : Spec() {
     init {
         val userServiceMock: UserService = getMock()
         val googleClientMock: GoogleAccountClient = getMock()
+        val sessionServiceMock: SessionService = getMock()
         val authorizationService = AuthorizationService(
             googleAccountClient = googleClientMock,
-            userService = userServiceMock
+            userService = userServiceMock,
+            sessionService = sessionServiceMock
         )
 
         "initAuth" should {

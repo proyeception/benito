@@ -106,7 +106,7 @@ open class MedusaClient(
         }
     }
 
-    open fun createUser(person: CreateMedusaPersonDTO, collection: String) {
+    open fun createUser(person: CreateMedusaPersonDTO, collection: String): MedusaPersonDTO {
         val endpoint = "/$collection"
 
         val response = medusaConnector.post(endpoint, person)
@@ -115,6 +115,8 @@ open class MedusaClient(
             LOGGER.error(response.body)
             throw FailedDependencyException("Error when creating a new item in $collection")
         }
+
+        return response.deserializeAs(object : TypeReference<MedusaPersonDTO>() {})
     }
 
     open fun findUsersBy(collection: String, vararg params: Pair<String, String>): List<MedusaPersonDTO> {

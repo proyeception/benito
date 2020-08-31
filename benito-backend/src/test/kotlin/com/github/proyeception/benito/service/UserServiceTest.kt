@@ -87,6 +87,7 @@ class UserServiceTest : Spec() {
                 )
 
                 val expected = PersonDTO(
+                    id = "123",
                     username = "benitocapo123",
                     fullName = "Benito Quinquela",
                     profilePicUrl = "https://profilepic.com",
@@ -207,6 +208,7 @@ class UserServiceTest : Spec() {
                 ))
 
                 val expected = PersonDTO(
+                    id = "123",
                     username = null,
                     fullName = "Benito Quinquela",
                     organizations = emptyList(),

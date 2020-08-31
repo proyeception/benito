@@ -41,7 +41,7 @@ open class UserService(
         googleUserId: String,
         googleToken: String,
         profilePicUrl: String?
-    ) {
+    ): MedusaPersonDTO {
         val image = createImage(googleUserId, profilePicUrl)
 
         val person = CreateMedusaPersonDTO(
@@ -53,7 +53,7 @@ open class UserService(
             googleToken = googleToken
         )
 
-        medusaClient.createUser(person, "authors")
+        return medusaClient.createUser(person, "authors")
     }
 
     private fun findUserById(userId: String, collection: String) = mapMedusaToDomain(medusaClient.findUser(userId, collection))
@@ -78,6 +78,7 @@ open class UserService(
         ?: throw NotFoundException("No such organization with ID $organizationId was found")
 
     private fun mapMedusaToDomain(medusa: MedusaPersonDTO): PersonDTO = PersonDTO(
+        id = medusa.id,
         username = medusa.username,
         fullName = medusa.fullName,
         organizations = medusa.organizations.map { OrganizationDTO(it) },

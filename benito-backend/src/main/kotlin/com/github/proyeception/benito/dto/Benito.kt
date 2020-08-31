@@ -46,6 +46,7 @@ data class ProjectDTO(
 }
 
 data class PersonDTO(
+    val id: String,
     val username: String?,
     val fullName: String,
     val organizations: List<OrganizationDTO>,
@@ -76,3 +77,13 @@ data class ProjectRefDTO(
     val organization: OrganizationDTO,
     val description: String
 )
+
+data class SessionInfoDTO(
+    val role: RoleDTO,
+    val userId: String
+)
+
+enum class RoleDTO {
+    SUPERVISOR,
+    AUTHOR,
+}
