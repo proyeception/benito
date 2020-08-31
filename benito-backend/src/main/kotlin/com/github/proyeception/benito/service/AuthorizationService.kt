@@ -10,7 +10,7 @@ class AuthorizationService(
 ) {
     // TODO: do something with the secrets @infraboy
     fun initAuth(): String {
-        val (secret, redirectUrl) = googleAccountClient.initNewAuth()
+        val (_, redirectUrl) = googleAccountClient.initNewAuth()
 
         return redirectUrl
     }
@@ -18,7 +18,7 @@ class AuthorizationService(
     fun finishAuth(code: String, secret: String): String {
         val token = googleAccountClient.finishNewAuth(code)
 
-        val user = googleAccountClient.userInfo()
+        val user = googleAccountClient.userInfo(token)
         val userId = user.metadata.sources.firstOrNull()?.id ?: throw BadRequestException("User must have an id")
         val maybePerson = userService.findAuthorByGoogleId(userId)
 

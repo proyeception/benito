@@ -10,16 +10,16 @@ import org.apache.http.entity.ContentType
 import org.slf4j.LoggerFactory
 
 
-class UserService(
+open class UserService(
     private val medusaClient: MedusaClient,
     private val organizationSnapshot: OrganizationSnapshot,
     private val fileHelper: FileHelper
 ) {
-    fun findAuthor(userId: String): PersonDTO = findUserById(userId, "authors")
+    open fun findAuthor(userId: String): PersonDTO = findUserById(userId, "authors")
 
-    fun findSupervisor(userId: String): PersonDTO = findUserById(userId, "supervisors")
+    open fun findSupervisor(userId: String): PersonDTO = findUserById(userId, "supervisors")
 
-    fun findAuthorByGoogleId(id: String): PersonDTO? = medusaClient.findUsersBy(
+    open fun findAuthorByGoogleId(id: String): PersonDTO? = medusaClient.findUsersBy(
         "authors",
         Pair("google_user_id", id)
     )
@@ -34,7 +34,7 @@ class UserService(
             }
         }
 
-    fun createAuthor(
+    open fun createAuthor(
         username: String?,
         fullName: String,
         mail: String,

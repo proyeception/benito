@@ -1,84 +1,39 @@
 package com.github.proyeception.benito.connector
 
 import arrow.core.Either
-import arrow.core.left
-import arrow.core.right
-import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.github.proyeception.benito.exception.HttpException
-import com.github.proyeception.benito.extension.isError
 import com.github.scribejava.core.builder.ServiceBuilder
 import com.github.scribejava.core.builder.api.DefaultApi20
-import com.github.scribejava.core.model.OAuthRequest
-import com.github.scribejava.core.model.Verb
 import com.github.scribejava.core.oauth.OAuth20Service
 import com.typesafe.config.Config
-import org.slf4j.LoggerFactory
 
 
 open class OAuthConnector(
-    val oAuth20Service: OAuth20Service,
-    var token: String,
-    protected val objectMapper: ObjectMapper
+    oAuth20Service: OAuth20Service,
+    objectMapper: ObjectMapper,
+    var token: String
+) : AbstractOAuthConnector(
+    oAuth20Service = oAuth20Service,
+    objectMapper = objectMapper
 ) {
-    fun executeRequest(
-        verb: Verb,
-        url: String,
-        vararg bodyParts: Pair<String, ByteArray>
-    ): Either<Throwable, Response> {
-        val accessToken = oAuth20Service.refreshAccessToken(this.token)
-        val request = OAuthRequest(verb, url)
-        if (bodyParts.isNotEmpty()) request.initMultipartPayload()
-        bodyParts.forEach {
-            request.addByteArrayBodyPartPayloadInMultipartPayload(it.second, it.first)
-        }
-        oAuth20Service.signRequest(accessToken, request)
-        val response = oAuth20Service.execute(request)
 
-        if (response.code.isError()) {
-            LOGGER.error(response.message, response.body)
-            return HttpException.of(response.code, response.message).left()
-        }
+    open fun get(url: String): Either<Throwable, Response> = get(url, token)
 
-        return Response(
-            objectMapper = objectMapper,
-            body = response.body,
-            status = response.code,
-            headers = response.headers
-        ).right()
-    }
+    open fun post(url: String): Either<Throwable, Response> = post(url, token)
 
-    open fun get(url: String): Either<Throwable, Response> = executeRequest(
-        verb = Verb.GET,
-        url = url
+    open fun post(url: String, vararg bodyParts: Pair<String, ByteArray>): Either<Throwable, Response> = post(
+        url,
+        token,
+        *bodyParts
     )
 
-    open fun post(url: String): Either<Throwable, Response> = post(url)
+    open fun delete(url: String): Either<Throwable, Response> = delete(url, token)
 
-    open fun post(url: String, vararg bodyParts: Pair<String, ByteArray>): Either<Throwable, Response> = executeRequest(
-            Verb.POST,
-            url,
-            *bodyParts
-        )
+    open fun put(url: String): Either<Throwable, Response> = put(url, token)
 
-    open fun delete(url: String): Either<Throwable, Response> = executeRequest(
-        verb = Verb.DELETE,
-        url = url
-    )
-
-    open fun put(url: String): Either<Throwable, Response> = executeRequest(
-        verb = Verb.PUT,
-        url = url
-    )
-
-    open fun patch(url: String): Either<Throwable, Response> = executeRequest(
-        verb = Verb.PATCH,
-        url = url
-    )
+    open fun patch(url: String): Either<Throwable, Response> = patch(url, token)
 
     companion object {
-        private val LOGGER = LoggerFactory.getLogger(OAuthConnector::class.java)
-
         fun create(
             moduleConfig: Config,
             objectMapper: ObjectMapper,

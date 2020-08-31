@@ -1,6 +1,7 @@
 package com.github.proyeception.benito.config
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.github.proyeception.benito.connector.DynamicOAuthConnector
 import com.github.proyeception.benito.connector.OAuthConnector
 import com.github.proyeception.benito.oauth.GoogleAccountClient
 import com.github.proyeception.benito.oauth.GoogleDriveClient
@@ -20,7 +21,7 @@ open class OAuthModule {
 
     @Bean("googleAccountOAuthClient")
     open fun googleAccountOAuthClient(
-        googleAccountConnector: OAuthConnector
+        googleAccountConnector: DynamicOAuthConnector
     ): GoogleAccountClient = GoogleAccountClient(
         googleAccountConnector = googleAccountConnector
     )

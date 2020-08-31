@@ -2,6 +2,7 @@ package com.github.proyeception.benito.config
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.proyeception.benito.connector.Connector
+import com.github.proyeception.benito.connector.DynamicOAuthConnector
 import com.github.proyeception.benito.connector.OAuthConnector
 import com.github.scribejava.apis.GoogleApi20
 import com.typesafe.config.Config
@@ -36,7 +37,7 @@ open class ConnectionModule {
     open fun googleAccountConnector(
         @Qualifier("objectMapperCamelCase") objectMapperCamelCase: ObjectMapper,
         config: Config
-    ): OAuthConnector = OAuthConnector.create(
+    ): DynamicOAuthConnector = DynamicOAuthConnector.create(
         moduleConfig = config.getConfig("google.login"),
         objectMapper = objectMapperCamelCase,
         api = GoogleApi20.instance()
