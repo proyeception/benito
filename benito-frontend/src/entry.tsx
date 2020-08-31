@@ -6,8 +6,18 @@ import store from "./store";
 import { Provider } from "react-redux";
 import "./utils.scss";
 import Cookies from "js-cookie";
+import { updateToken } from "./actions/session";
 
-if (Cookies.get("")) {
+const quiTokenCookie = Cookies.get("x-qui-token");
+
+if (quiTokenCookie) {
+  localStorage.setItem("x-qui-token", quiTokenCookie);
+}
+
+const quiTokenStorage = localStorage.getItem("x-qui-token");
+
+if (quiTokenStorage) {
+  store.dispatch(updateToken(quiTokenStorage));
 }
 
 const router = (
