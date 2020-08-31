@@ -131,10 +131,10 @@ open class MedusaClient(
         return response.deserializeAs(object : TypeReference<List<MedusaPersonDTO>>() {})
     }
 
-    fun createFile(file: File, contentType: ContentType): MedusaFileDTO {
+    fun createFile(file: File, filename: String, contentType: ContentType): MedusaFileDTO {
         val multipart = MultipartMetadataBuilder()
             .setText("name", "files")
-            .setBinary("files", file, contentType)
+            .setBinary("files", file, contentType, filename)
             .buildPart()
             .build()
         val response = medusaConnector.post("/upload", multipart)

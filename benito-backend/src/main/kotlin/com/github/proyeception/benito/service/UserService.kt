@@ -17,9 +17,9 @@ class UserService(
 
     fun findSupervisor(userId: String): PersonDTO = mapMedusaToDomain(medusaClient.findUser(userId, "supervisors"))
 
-    fun findAuthorByGoogleToken(token: String): PersonDTO? = medusaClient.findUsersBy(
+    fun findAuthorByGoogleId(id: String): PersonDTO? = medusaClient.findUsersBy(
         "authors",
-        Pair("google_token", token)
+        Pair("google_user_id", id)
     )
         .firstOrNull()
         ?.let { mapMedusaToDomain(it) }
@@ -49,7 +49,9 @@ class UserService(
     private fun createImage(userId: String, profilePicUrl: String?): MedusaFileDTO? = profilePicUrl?.let {
         val image = fileHelper.downloadImage(it, "/tmp/$userId.jpg")
         try {
-            return medusaClient.createFile(image, ContentType.IMAGE_JPEG)
+            // It's necessary to leave this in two separate lines, since finally executes before return
+            val response = medusaClient.createFile(image, userId, ContentType.IMAGE_JPEG)
+            return response
         } finally {
             fileHelper.deleteFile(image)
         }

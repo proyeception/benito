@@ -19,6 +19,7 @@ class MultipartMetadataBuilder {
     private var file: File? = null
     private var binaryName: String = ""
     private var binaryContentType: ContentType = ContentType.DEFAULT_TEXT
+    private var binaryFilename: String = ""
 
     fun setText(name: String, text: String): MultipartMetadataBuilder {
         this.textName = name
@@ -26,10 +27,16 @@ class MultipartMetadataBuilder {
         return this
     }
 
-    fun setBinary(binaryName: String, f: File, c: ContentType): MultipartMetadataBuilder {
+    fun setBinary(
+        binaryName: String,
+        f: File,
+        c: ContentType,
+        filename: String = f.absolutePath
+    ): MultipartMetadataBuilder {
         this.binaryName = binaryName
         this.file = f
         this.binaryContentType = c
+        this.binaryFilename = filename
 
         return this
     }
@@ -53,7 +60,8 @@ class MultipartMetadataBuilder {
             binaryBody = BinaryBodyMetadata(
                 name = binaryName,
                 file = file!!,
-                contentType = binaryContentType
+                contentType = binaryContentType,
+                filename = binaryFilename
             )
         )
 
@@ -71,6 +79,7 @@ class MultipartMetadataBuilder {
         binaryName = ""
         file = null
         binaryContentType = ContentType.DEFAULT_TEXT
+        binaryFilename = ""
     }
 }
 
