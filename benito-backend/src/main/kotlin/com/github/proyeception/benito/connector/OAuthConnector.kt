@@ -11,7 +11,7 @@ import com.typesafe.config.Config
 open class OAuthConnector(
     oAuth20Service: OAuth20Service,
     objectMapper: ObjectMapper,
-    var token: String
+    private val token: String
 ) : AbstractOAuthConnector(
     oAuth20Service = oAuth20Service,
     objectMapper = objectMapper
