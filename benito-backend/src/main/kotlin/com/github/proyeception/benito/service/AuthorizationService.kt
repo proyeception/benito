@@ -25,7 +25,7 @@ class AuthorizationService(
         val googleUserId = user.metadata.sources.firstOrNull()?.id ?: throw BadRequestException("User must have an id")
         val maybePerson = userService.findAuthorByGoogleId(googleUserId)
 
-        val userId = if (maybePerson == null) {
+        val (userId, profilePic) = if (maybePerson == null) {
             LOGGER.info("User does not exist. Creating...")
             val person = userService.createAuthor(
                 fullName = user.names.firstOrNull()?.displayName ?: throw BadRequestException("User must have a name"),
@@ -35,13 +35,17 @@ class AuthorizationService(
                 mail = user.emailAddresses.firstOrNull()?.value ?: throw BadRequestException("User must have an email"),
                 googleToken = token
             )
-            person.id
+            Pair(person.id, person.profilePic?.url)
         } else {
             LOGGER.info("User already exists.")
-            maybePerson.id
+            Pair(maybePerson.id, maybePerson.profilePicUrl)
         }
 
-        sessionService[token] = SessionInfoDTO(RoleDTO.AUTHOR, userId)
+        sessionService[token] = SessionInfoDTO(
+            role = RoleDTO.AUTHOR,
+            userId = userId,
+            profilePicUrl = profilePic
+        )
         // TODO: create a session token based off of the id
         return token
     }

@@ -5,6 +5,7 @@ import {
   UPDATE_USER_ID,
   UPDATE_IS_LOGGED_IN,
   UPDATE_PROFILE_PICTURE,
+  RESET_USER_SESSION,
 } from "../../store/session/types";
 
 const defaultSessionState: SessionState = {
@@ -39,6 +40,9 @@ function sessionReducer(
         ...state,
         profilePicture: action.payload,
       };
+    }
+    case RESET_USER_SESSION: {
+      return defaultSessionState;
     }
     default:
       return state;

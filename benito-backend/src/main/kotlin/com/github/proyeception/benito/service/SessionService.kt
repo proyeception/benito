@@ -10,4 +10,8 @@ class SessionService {
     }
 
     operator fun get(token: String): SessionInfoDTO? = sessions[token]
+
+    fun delete(token: String) {
+        sessions.remove(token)
+    }
 }

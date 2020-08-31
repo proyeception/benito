@@ -4,6 +4,7 @@ import {
   UPDATE_USER_ID,
   UPDATE_PROFILE_PICTURE,
   UPDATE_IS_LOGGED_IN,
+  RESET_USER_SESSION,
 } from "../../store/session/types";
 
 export function updateToken(token: String): SessionAction {
@@ -38,5 +39,11 @@ export function logOut(): SessionAction {
   return {
     type: UPDATE_IS_LOGGED_IN,
     payload: false,
+  };
+}
+
+export function resetUserSession(): SessionAction {
+  return {
+    type: RESET_USER_SESSION,
   };
 }

@@ -2,6 +2,7 @@ export const UPDATE_IS_LOGGED_IN = "UPDATE_IS_LOGGED_IN";
 export const UPDATE_TOKEN = "UPDATE_TOKEN";
 export const UPDATE_USER_ID = "UPDATE_USER_ID";
 export const UPDATE_PROFILE_PICTURE = "UPDATE_PROFILE_PICTURE";
+export const RESET_USER_SESSION = "RESET_USER_SESSION";
 
 interface UpdateIsLoggedInAction {
   type: typeof UPDATE_IS_LOGGED_IN;
@@ -23,11 +24,16 @@ interface UpdateProfilePictureAction {
   payload: String;
 }
 
+interface ResetUserSessionAction {
+  type: typeof RESET_USER_SESSION;
+}
+
 export type SessionAction =
   | UpdateIsLoggedInAction
   | UpdateTokenAction
   | UpdateUserIdAction
-  | UpdateProfilePictureAction;
+  | UpdateProfilePictureAction
+  | ResetUserSessionAction;
 
 export type SessionState = {
   token?: String;

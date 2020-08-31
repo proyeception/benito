@@ -80,7 +80,8 @@ data class ProjectRefDTO(
 
 data class SessionInfoDTO(
     val role: RoleDTO,
-    val userId: String
+    val userId: String,
+    val profilePicUrl: String?
 )
 
 enum class RoleDTO {
