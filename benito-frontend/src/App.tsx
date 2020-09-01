@@ -17,7 +17,6 @@ import ViewProject from "./components/Project/index";
 import NotFound from "./components/NotFound";
 import Student from "./components/User/Student";
 import Teacher from "./components/User/Teacher";
-import Login from "./components/Login";
 
 const App = (_: any) => {
   useEffect(() => {
@@ -35,7 +34,6 @@ const App = (_: any) => {
 
   return (
     <div className="bg-light-gray">
-      <Login />
       <HamburgerMenu />
       <Header />
       <AnimatePresence>

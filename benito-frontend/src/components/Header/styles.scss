@@ -12,3 +12,22 @@
   width: 64px;
   height: 64px;
 }
+
+.qui-user-icon {
+  width: 64px;
+  height: 64px;
+}
+
+.qui-header-container {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.qui-header-user {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
