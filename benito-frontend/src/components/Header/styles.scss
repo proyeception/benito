@@ -1,4 +1,4 @@
-@import "../../styles.scss";
+@import "../../utils.scss";
 
 .qui-header {
   color: white;
@@ -9,6 +9,14 @@
 }
 
 .qui-brand-logo {
+  @media screen and (min-width: 768px) {
+    width: 64px;
+    height: 64px;
+  }
+}
+
+.qui-user-icon-container {
+  @include img-circle-container;
   width: 64px;
   height: 64px;
 }

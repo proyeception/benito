@@ -28,10 +28,12 @@ const User = (props: Props) => {
         }}
         className="qui-header-user center-vertically justify-content-end pr-md-5"
       >
-        <img
-          className="qui-user-icon"
-          src={props.profilePicture?.valueOf() || noProfilePicture}
-        />
+        <div className="qui-user-icon-container">
+          <img
+            className="img-circle"
+            src={props.profilePicture?.valueOf() || noProfilePicture}
+          />
+        </div>
       </div>
     );
   }
@@ -41,7 +43,9 @@ const User = (props: Props) => {
       onClick={() => startLogin()}
       className="qui-header-user center-vertically justify-content-end pr-md-5"
     >
-      <img className="qui-user-icon" src={googleIcon} />
+      <div className="qui-user-icon-container">
+        <img className="img-circle" src={googleIcon} />
+      </div>
     </div>
   );
 };
