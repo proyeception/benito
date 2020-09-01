@@ -1,9 +1,11 @@
 package com.github.proyeception.benito.service
 
 import com.github.proyeception.benito.dto.SessionInfoDTO
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.ConcurrentMap
 
 open class SessionService {
-    private val sessions: MutableMap<String, SessionInfoDTO> = mutableMapOf()
+    private val sessions: ConcurrentMap<String, SessionInfoDTO> = ConcurrentHashMap()
 
     open operator fun set(token: String, info: SessionInfoDTO) {
         sessions[token] = info
