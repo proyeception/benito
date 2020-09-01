@@ -5,9 +5,7 @@ import axios, { AxiosRequestConfig } from "axios";
 import { benitoHost } from "../../config";
 import { RootState } from "../../reducers";
 import { connect } from "react-redux";
-import store from "../../store";
-import { resetUserSession } from "../../actions/session";
-import Cookies from "js-cookie";
+import { clearSession } from "../../functions/session";
 
 type Props = {
   token?: String;
@@ -19,16 +17,7 @@ type Props = {
 const Login = (props: Props) => {
   if (props.isLoggedIn) {
     return (
-      <div
-        onClick={() => {
-          axios.delete(`${benitoHost}/benito/session`, {
-            headers: { "x-qui-token": props.token },
-          });
-          store.dispatch(resetUserSession());
-          Cookies.remove("x-qui-token");
-          localStorage.removeItem("x-qui-token");
-        }}
-      >
+      <div onClick={() => clearSession(props.token)}>
         Bien ahí, papá, estás loggeado
       </div>
     );

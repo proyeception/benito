@@ -1,15 +1,15 @@
 import {
   SessionAction,
-  UPDATE_TOKEN,
+  UPDATE_TOKEN as UPDATE_SESSION_TOKEN,
   UPDATE_USER_ID,
-  UPDATE_PROFILE_PICTURE,
+  UPDATE_PROFILE_PICTURE as UPDATE_USER_PROFILE_PICTURE,
   UPDATE_IS_LOGGED_IN,
-  RESET_USER_SESSION,
+  INVALIDATE_SESSION,
 } from "../../store/session/types";
 
-export function updateToken(token: String): SessionAction {
+export function updateSessionToken(token: String): SessionAction {
   return {
-    type: UPDATE_TOKEN,
+    type: UPDATE_SESSION_TOKEN,
     payload: token,
   };
 }
@@ -21,29 +21,22 @@ export function updateUserId(id: String): SessionAction {
   };
 }
 
-export function updateProfilePicture(url: String): SessionAction {
+export function updateUserProfilePicture(url: String): SessionAction {
   return {
-    type: UPDATE_PROFILE_PICTURE,
+    type: UPDATE_USER_PROFILE_PICTURE,
     payload: url,
   };
 }
 
-export function logIn(): SessionAction {
+export function setLoginTrue(): SessionAction {
   return {
     type: UPDATE_IS_LOGGED_IN,
     payload: true,
   };
 }
 
-export function logOut(): SessionAction {
+export function invalidateSession(): SessionAction {
   return {
-    type: UPDATE_IS_LOGGED_IN,
-    payload: false,
-  };
-}
-
-export function resetUserSession(): SessionAction {
-  return {
-    type: RESET_USER_SESSION,
+    type: INVALIDATE_SESSION,
   };
 }

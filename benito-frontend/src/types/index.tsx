@@ -49,3 +49,11 @@ export type Contact = {
   phone?: String;
   mail?: String;
 };
+
+export type Role = "SUPERVISOR" | "AUTHOR";
+
+export type SessionInfo = {
+  userId: String;
+  role: Role;
+  profilePic: String;
+};
