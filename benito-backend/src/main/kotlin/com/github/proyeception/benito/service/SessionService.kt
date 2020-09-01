@@ -2,16 +2,16 @@ package com.github.proyeception.benito.service
 
 import com.github.proyeception.benito.dto.SessionInfoDTO
 
-class SessionService {
+open class SessionService {
     private val sessions: MutableMap<String, SessionInfoDTO> = mutableMapOf()
 
-    operator fun set(token: String, info: SessionInfoDTO) {
+    open operator fun set(token: String, info: SessionInfoDTO) {
         sessions[token] = info
     }
 
-    operator fun get(token: String): SessionInfoDTO? = sessions[token]
+    open operator fun get(token: String): SessionInfoDTO? = sessions[token]
 
-    fun delete(token: String) {
+    open fun delete(token: String) {
         sessions.remove(token)
     }
 }

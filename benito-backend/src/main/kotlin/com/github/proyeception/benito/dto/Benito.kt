@@ -13,6 +13,8 @@ enum class OrderDTO(val sortMethod: String) {
     DATE_DESC("creation_date:DESC"),
     ALPHA_ASC("title:ASC"),
     ALPHA_DESC("title:DESC"),
+    VIEWS_ASC("vistas:ASC"),
+    VIEWS_DESC("vistas:DESC")
 }
 
 data class CountDTO(
