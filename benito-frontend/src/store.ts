@@ -5,6 +5,7 @@ import { SortMethod } from "./store/search/types";
 const defaultState: RootState = {
   session: {
     isLoggedIn: false,
+    fetching: false,
   },
   home: {
     featuredProjects: [],

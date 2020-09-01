@@ -1,8 +1,9 @@
 import store from "../../store";
 import {
   updateSessionToken,
-  updateUserId,
-  updateUserProfilePicture,
+  updateSessionInfo,
+  startFetching,
+  finishFetching,
   setLoginTrue,
 } from "../../actions/session";
 import Cookies from "js-cookie";
@@ -23,6 +24,7 @@ export function openLocalStoredSession() {
 
   if (quiTokenStorage) {
     store.dispatch(updateSessionToken(quiTokenStorage));
+    store.dispatch(startFetching());
     axios
       .request<SessionInfo>({
         url: `${benitoHost}/benito/session`,
@@ -30,15 +32,15 @@ export function openLocalStoredSession() {
         method: "GET",
       })
       .then((res) => res.data)
-      .then(({ userId, profilePicUrl }) => {
-        store.dispatch(updateUserId(userId));
-        store.dispatch(updateUserProfilePicture(profilePicUrl));
+      .then((s) => {
+        store.dispatch(updateSessionInfo(s));
         store.dispatch(setLoginTrue());
       })
       .catch((e: AxiosError) => {
         console.error(e);
         clearLocalSession();
-      });
+      })
+      .then(() => store.dispatch(finishFetching()));
   }
 }
 

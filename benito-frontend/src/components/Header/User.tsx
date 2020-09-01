@@ -11,6 +11,7 @@ interface Props extends RouteComponentProps {
   userId?: String;
   profilePicture?: String;
   isLoggedIn?: Boolean;
+  fetching: Boolean;
 }
 
 const googleIcon =
@@ -19,6 +20,10 @@ googleIcon;
 const noProfilePicture = "https://simpleicon.com/wp-content/uploads/user1.png";
 
 const User = (props: Props) => {
+  if (props.fetching) {
+    return <div className="qui-header-user"></div>;
+  }
+
   if (props.isLoggedIn) {
     return (
       <div

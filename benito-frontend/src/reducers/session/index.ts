@@ -1,15 +1,16 @@
 import {
   SessionState,
   SessionAction,
-  UPDATE_TOKEN,
-  UPDATE_USER_ID,
   UPDATE_IS_LOGGED_IN,
-  UPDATE_PROFILE_PICTURE,
   INVALIDATE_SESSION,
+  UPDATE_IS_FETCHING,
+  UPDATE_SESSION_INFO,
+  UPDATE_SESSION_TOKEN,
 } from "../../store/session/types";
 
 const defaultSessionState: SessionState = {
   isLoggedIn: false,
+  fetching: false,
 };
 
 function sessionReducer(
@@ -17,28 +18,29 @@ function sessionReducer(
   action: SessionAction
 ): SessionState {
   switch (action.type) {
-    case UPDATE_TOKEN: {
-      return {
-        ...state,
-        token: action.payload,
-      };
-    }
-    case UPDATE_USER_ID: {
-      return {
-        ...state,
-        userId: action.payload,
-      };
-    }
     case UPDATE_IS_LOGGED_IN: {
       return {
         ...state,
         isLoggedIn: action.payload,
       };
     }
-    case UPDATE_PROFILE_PICTURE: {
+    case UPDATE_SESSION_TOKEN: {
       return {
         ...state,
-        profilePicture: action.payload,
+        token: action.payload,
+      };
+    }
+    case UPDATE_IS_FETCHING: {
+      return {
+        ...state,
+        fetching: action.payload,
+      };
+    }
+    case UPDATE_SESSION_INFO: {
+      return {
+        ...state,
+        userId: action.payload.userId,
+        profilePicture: action.payload.profilePicUrl,
       };
     }
     case INVALIDATE_SESSION: {

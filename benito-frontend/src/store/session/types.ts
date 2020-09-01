@@ -1,43 +1,45 @@
-export const UPDATE_IS_LOGGED_IN = "UPDATE_IS_LOGGED_IN";
-export const UPDATE_TOKEN = "UPDATE_TOKEN";
-export const UPDATE_USER_ID = "UPDATE_USER_ID";
-export const UPDATE_PROFILE_PICTURE = "UPDATE_PROFILE_PICTURE";
-export const INVALIDATE_SESSION = "INVALIDATE_SESSION";
+import { SessionInfo } from "../../types";
 
+export const UPDATE_SESSION_TOKEN = "UPDATE_SESSION_TOKEN";
+export const UPDATE_IS_LOGGED_IN = "UPDATE_IS_LOGGED_IN";
+export const INVALIDATE_SESSION = "INVALIDATE_SESSION";
+export const UPDATE_SESSION_INFO = "UPDATE_SESSION_INFO";
+export const UPDATE_IS_FETCHING = "UPDATE_IS_FETCHING";
+
+interface UpdateSessionTokenAction {
+  type: typeof UPDATE_SESSION_TOKEN;
+  payload: String;
+}
 interface UpdateIsLoggedInAction {
   type: typeof UPDATE_IS_LOGGED_IN;
   payload: Boolean;
 }
 
-interface UpdateTokenAction {
-  type: typeof UPDATE_TOKEN;
-  payload: String;
+interface UpdateSessionInfoAction {
+  type: typeof UPDATE_SESSION_INFO;
+  payload: SessionInfo;
 }
 
-interface UpdateUserIdAction {
-  type: typeof UPDATE_USER_ID;
-  payload: String;
+interface UpdateIsFetchingAction {
+  type: typeof UPDATE_IS_FETCHING;
+  payload: Boolean;
 }
 
-interface UpdateProfilePictureAction {
-  type: typeof UPDATE_PROFILE_PICTURE;
-  payload: String;
-}
-
-interface ResetUserSessionAction {
+interface InvalidateSessionAction {
   type: typeof INVALIDATE_SESSION;
 }
 
 export type SessionAction =
+  | UpdateSessionTokenAction
   | UpdateIsLoggedInAction
-  | UpdateTokenAction
-  | UpdateUserIdAction
-  | UpdateProfilePictureAction
-  | ResetUserSessionAction;
+  | InvalidateSessionAction
+  | UpdateSessionInfoAction
+  | UpdateIsFetchingAction;
 
 export type SessionState = {
   token?: String;
   userId?: String;
   profilePicture?: String;
   isLoggedIn: Boolean;
+  fetching: Boolean;
 };

@@ -1,11 +1,12 @@
 import {
   SessionAction,
-  UPDATE_TOKEN as UPDATE_SESSION_TOKEN,
-  UPDATE_USER_ID,
-  UPDATE_PROFILE_PICTURE as UPDATE_USER_PROFILE_PICTURE,
+  UPDATE_SESSION_TOKEN,
   UPDATE_IS_LOGGED_IN,
   INVALIDATE_SESSION,
+  UPDATE_SESSION_INFO,
+  UPDATE_IS_FETCHING,
 } from "../../store/session/types";
+import { SessionInfo } from "../../types";
 
 export function updateSessionToken(token: String): SessionAction {
   return {
@@ -14,17 +15,10 @@ export function updateSessionToken(token: String): SessionAction {
   };
 }
 
-export function updateUserId(id: String): SessionAction {
+export function updateSessionInfo(s: SessionInfo): SessionAction {
   return {
-    type: UPDATE_USER_ID,
-    payload: id,
-  };
-}
-
-export function updateUserProfilePicture(url: String): SessionAction {
-  return {
-    type: UPDATE_USER_PROFILE_PICTURE,
-    payload: url,
+    type: UPDATE_SESSION_INFO,
+    payload: s,
   };
 }
 
@@ -38,5 +32,19 @@ export function setLoginTrue(): SessionAction {
 export function invalidateSession(): SessionAction {
   return {
     type: INVALIDATE_SESSION,
+  };
+}
+
+export function startFetching(): SessionAction {
+  return {
+    type: UPDATE_IS_FETCHING,
+    payload: true,
+  };
+}
+
+export function finishFetching(): SessionAction {
+  return {
+    type: UPDATE_IS_FETCHING,
+    payload: false,
   };
 }
