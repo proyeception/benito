@@ -42,7 +42,7 @@ class AuthenticationServiceTest : Spec() {
                 )
 
                 val expected = "456"
-                val actual = authorizationService.authenticate(
+                val actual = authorizationService.authenticateOrCreateAuthor(
                     login = LoginDTO(
                         googleUserId = "123",
                         token = "456",
@@ -81,7 +81,7 @@ class AuthenticationServiceTest : Spec() {
                 )
 
                 val expected = "456"
-                val actual = authorizationService.authenticate(
+                val actual = authorizationService.authenticateOrCreateAuthor(
                     login = LoginDTO(
                         googleUserId = "123",
                         token = "456",

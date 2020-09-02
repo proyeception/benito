@@ -49,7 +49,7 @@ export function openLocalStoredSession() {
 export function startLogin(login: LoginData, _: History) {
   let config: AxiosRequestConfig = {
     method: "POST",
-    url: `${benitoHost}/benito/login`,
+    url: `${benitoHost}/benito/author/login`,
     data: login,
     withCredentials: true,
   };

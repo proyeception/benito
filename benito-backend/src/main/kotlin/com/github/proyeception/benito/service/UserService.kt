@@ -19,20 +19,14 @@ open class UserService(
 
     open fun findSupervisor(userId: String): PersonDTO = findUserById(userId, "supervisors")
 
-    open fun findAuthorByGoogleId(id: String): PersonDTO? = medusaClient.findUsersBy(
-        "authors",
-        Pair("google_user_id", id)
+    open fun findSupervisorByGoogleId(id: String): PersonDTO? = findUserByGoogleId(id, "supervisors")
+
+    open fun findAuthorByGoogleId(id: String): PersonDTO? = findUserByGoogleId(id, "authors")
+
+    open fun findSupervisorByEmail(mail: String): PersonDTO? = findOneUserBy(
+        "supervisors",
+        Pair("mail", mail)
     )
-        .let {
-            when (it.size) {
-                0 -> null
-                1 -> mapMedusaToDomain(it.first())
-                else -> {
-                    LOGGER.error("Ambiguous google user id $id")
-                    throw AmbiguousReferenceException("Ambiguous google user id")
-                }
-            }
-        }
 
     open fun createAuthor(
         username: String?,
@@ -55,6 +49,27 @@ open class UserService(
 
         return medusaClient.createUser(person, "authors")
     }
+
+    private fun findUserByGoogleId(id: String, coll: String): PersonDTO? = findOneUserBy(
+        coll,
+        Pair("google_user_id", id)
+    )
+
+    private fun findOneUserBy(coll: String, vararg filters: Pair<String, String>): PersonDTO? = medusaClient
+        .findUsersBy(
+            coll,
+            *filters
+        )
+        .let {
+            when (it.size) {
+                0 -> null
+                1 -> mapMedusaToDomain(it.first())
+                else -> {
+                    LOGGER.error("Ambiguous filter $filters")
+                    throw AmbiguousReferenceException("Ambiguous filter")
+                }
+            }
+        }
 
     private fun findUserById(userId: String, collection: String) = mapMedusaToDomain(medusaClient.findUser(userId, collection))
 
