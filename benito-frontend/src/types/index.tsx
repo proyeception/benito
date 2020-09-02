@@ -57,3 +57,11 @@ export type SessionInfo = {
   role: Role;
   profilePicUrl: String;
 };
+
+export type LoginData = {
+  googleUserId: String;
+  fullName: String;
+  mail: String;
+  profilePictureUrl: String;
+  token: String;
+};

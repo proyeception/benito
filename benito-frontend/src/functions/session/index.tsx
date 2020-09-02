@@ -9,12 +9,14 @@ import {
 import Cookies from "js-cookie";
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import { benitoHost } from "../../config";
-import { SessionInfo } from "../../types";
+import { SessionInfo, LoginData } from "../../types";
+import { History } from "history";
 
 const X_QUI_TOKEN = "x-qui-token";
 
 export function openLocalStoredSession() {
   const quiTokenCookie = Cookies.get(X_QUI_TOKEN);
+  console.log(quiTokenCookie);
 
   if (quiTokenCookie) {
     localStorage.setItem(X_QUI_TOKEN, quiTokenCookie);
@@ -44,15 +46,17 @@ export function openLocalStoredSession() {
   }
 }
 
-export function startLogin() {
+export function startLogin(login: LoginData, _: History) {
   let config: AxiosRequestConfig = {
-    method: "GET",
-    url: `${benitoHost}/benito/auth`,
+    method: "POST",
+    url: `${benitoHost}/benito/login`,
+    data: login,
+    withCredentials: true,
   };
   axios
-    .request<String>(config)
-    .then((res) => res.data)
-    .then((url) => (window.location.href = url.valueOf()))
+    .request(config)
+    .then(() => console.log(Cookies.get()))
+    .then(() => history.go(0))
     .catch(console.error);
 }
 

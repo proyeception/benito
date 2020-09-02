@@ -90,3 +90,11 @@ enum class RoleDTO {
     SUPERVISOR,
     AUTHOR,
 }
+
+data class LoginDTO(
+    val googleUserId: String,
+    val fullName: String,
+    val mail: String,
+    val profilePicUrl: String?,
+    val token: String
+)

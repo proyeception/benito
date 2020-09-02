@@ -4,7 +4,6 @@ import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.oauth.GoogleAccountClient
 import com.github.proyeception.benito.oauth.GoogleDriveClient
 import com.github.proyeception.benito.parser.DocumentParser
-import com.github.proyeception.benito.repository.UserLoginRepository
 import com.github.proyeception.benito.service.*
 import com.github.proyeception.benito.snapshot.CategorySnapshot
 import com.github.proyeception.benito.snapshot.OrganizationSnapshot
@@ -52,7 +51,7 @@ open class ServiceModule {
         googleAccountClient: GoogleAccountClient,
         userService: UserService,
         sessionService: SessionService
-    ): AuthorizationService = AuthorizationService(
+    ): AuthenticationService = AuthenticationService(
         googleAccountClient = googleAccountClient,
         userService = userService,
         sessionService = sessionService

@@ -6,6 +6,9 @@ import { connect } from "react-redux";
 import { clearSession, startLogin } from "../../functions/session";
 import { RouteComponentProps, withRouter, Link } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
+import GoogleLogin, { GoogleLoginResponse } from "react-google-login";
+import { googleClientId } from "../../config";
+import { LoginData } from "../../types";
 
 interface Props extends RouteComponentProps {
   token?: String;
@@ -67,14 +70,31 @@ const User = (props: Props) => {
   }
 
   return (
-    <div
-      onClick={() => startLogin()}
-      className="qui-header-user center-vertically justify-content-end pr-md-5"
-    >
-      <div className="qui-user-icon-container">
-        <img className="img-circle" src={googleIcon} />
-      </div>
-    </div>
+    <GoogleLogin
+      clientId={googleClientId}
+      render={(renderProps) => (
+        <div
+          onClick={renderProps.onClick}
+          className="qui-header-user center-vertically justify-content-end pr-md-5 cursor-pointer"
+        >
+          <div className="qui-user-icon-container">
+            <img className="img-circle" src={googleIcon} />
+          </div>
+        </div>
+      )}
+      onSuccess={(res) => {
+        let googleInfo = res as GoogleLoginResponse;
+        let loginData: LoginData = {
+          googleUserId: googleInfo.googleId,
+          fullName: googleInfo.profileObj.name,
+          profilePictureUrl: googleInfo.profileObj.imageUrl,
+          mail: googleInfo.profileObj.email,
+          token: googleInfo.tokenId,
+        };
+        startLogin(loginData, props.history);
+      }}
+      onFailure={console.log}
+    ></GoogleLogin>
   );
 };
 
