@@ -3,14 +3,13 @@ package com.github.proyeception.benito.service
 import com.github.proyeception.benito.dto.LoginDTO
 import com.github.proyeception.benito.dto.RoleDTO
 import com.github.proyeception.benito.dto.SessionInfoDTO
-import com.github.proyeception.benito.oauth.GoogleAccountClient
 import org.slf4j.LoggerFactory
 
-class AuthenticationService(
+open class AuthenticationService(
     private val userService: UserService,
     private val sessionService: SessionService
 ) {
-    fun authenticate(login: LoginDTO): String {
+    open fun authenticate(login: LoginDTO): String {
         val maybePerson = userService.findAuthorByGoogleId(login.googleUserId)
         val token = login.token
 

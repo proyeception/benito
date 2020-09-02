@@ -52,7 +52,6 @@ open class ServiceModule {
         userService: UserService,
         sessionService: SessionService
     ): AuthenticationService = AuthenticationService(
-        googleAccountClient = googleAccountClient,
         userService = userService,
         sessionService = sessionService
     )
