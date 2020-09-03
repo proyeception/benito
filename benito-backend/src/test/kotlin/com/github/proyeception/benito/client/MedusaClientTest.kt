@@ -269,15 +269,15 @@ class MedusaClientTest : Spec() {
             }
         }
 
-        "top10Projects" should {
+        "featuredProjects" should {
             val responseMock: Response = getMock()
 
-            "make a GET to /projects with limit 10" {
+            "make a GET to /projects with limit 10 and order by views" {
                 on(medusaConnector.get(anyString())).thenReturn(responseMock)
                 on(responseMock.isError()).thenReturn(false)
                 on(responseMock.deserializeAs(any(TypeReference::class.java))).thenReturn(null)
-                medusaClient.top10Projects()
-                verify(medusaConnector).get(eq("/projects?_limit=10"))
+                medusaClient.featuredProjects()
+                verify(medusaConnector).get(eq("/projects?_sort=views:DESC&_limit=10"))
             }
         }
 
@@ -360,6 +360,6 @@ class MedusaClientTest : Spec() {
 
         const val STRAPI_DATE_FIELD = "creation_date"
         const val STRAPI_TITLE_FIELD = "title"
-        const val STRAPI_VIEWS_FIELD = "vistas"
+        const val STRAPI_VIEWS_FIELD = "views"
     }
 }

@@ -30,7 +30,7 @@ class ProjectController(
     @RequestMapping("/benito/projects/featured", method = [RequestMethod.GET])
     @ResponseBody
     @CrossOrigin
-    private fun top10Projects(): List<ProjectDTO> = projectService.top10Projects()
+    private fun featuredProjects(): List<ProjectDTO> = projectService.featuredProjects()
 
     @RequestMapping("/benito/project-count", method = [RequestMethod.GET])
     @ResponseBody

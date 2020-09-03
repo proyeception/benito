@@ -5,10 +5,6 @@ import com.github.proyeception.benito.dto.CountDTO
 import com.github.proyeception.benito.dto.OrderDTO
 import com.github.proyeception.benito.dto.ProjectDTO
 import com.github.proyeception.benito.parser.DocumentParser
-import org.apache.commons.io.FilenameUtils
-import org.apache.tika.metadata.Metadata
-import org.apache.tika.parser.AutoDetectParser
-import org.apache.tika.sax.BodyContentHandler
 import org.springframework.web.multipart.MultipartFile
 
 open class ProjectService(
@@ -30,7 +26,7 @@ open class ProjectService(
         category = category
     ).map { ProjectDTO(it) }
 
-    fun top10Projects(): List<ProjectDTO> = medusaClient.top10Projects().map { ProjectDTO(it) }
+    fun featuredProjects(): List<ProjectDTO> = medusaClient.featuredProjects().map { ProjectDTO(it) }
 
     fun count(): CountDTO = CountDTO(medusaClient.projectCount())
 

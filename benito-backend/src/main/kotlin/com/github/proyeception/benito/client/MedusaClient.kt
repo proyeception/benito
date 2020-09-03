@@ -43,7 +43,7 @@ open class MedusaClient(
         return response.deserializeAs(object : TypeReference<List<MedusaProjectDTO>>() {})
     }
 
-    open fun top10Projects(): List<MedusaProjectDTO> = getProjects(limit = 10)
+    open fun featuredProjects(): List<MedusaProjectDTO> = getProjects(limit = 10, orderBy = OrderDTO.VIEWS_DESC)
 
     open fun categories(): List<CategoryDTO> {
         val response = medusaConnector.get("/categories")
