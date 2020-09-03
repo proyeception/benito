@@ -46,10 +46,14 @@ export function openLocalStoredSession() {
   }
 }
 
-export function startLogin(login: LoginData, _: History) {
+export function startLogin(
+  login: LoginData,
+  history: History,
+  loginPath: String
+) {
   let config: AxiosRequestConfig = {
     method: "POST",
-    url: `${benitoHost}/benito/author/login`,
+    url: `${benitoHost}/benito/${loginPath}/login`,
     data: login,
     withCredentials: true,
   };

@@ -3,12 +3,10 @@ import { hot } from "react-hot-loader";
 import "./styles.scss";
 import { RootState } from "../../reducers";
 import { connect } from "react-redux";
-import { clearSession, startLogin } from "../../functions/session";
+import { clearSession } from "../../functions/session";
 import { RouteComponentProps, withRouter, Link } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
-import GoogleLogin, { GoogleLoginResponse } from "react-google-login";
-import { googleClientId } from "../../config";
-import { LoginData } from "../../types";
+import Login from "../Login";
 
 interface Props extends RouteComponentProps {
   token?: String;
@@ -70,8 +68,8 @@ const User = (props: Props) => {
   }
 
   return (
-    <GoogleLogin
-      clientId={googleClientId}
+    <Login
+      loginPath="author"
       render={(renderProps) => (
         <div
           onClick={renderProps.onClick}
@@ -82,19 +80,7 @@ const User = (props: Props) => {
           </div>
         </div>
       )}
-      onSuccess={(res) => {
-        let googleInfo = res as GoogleLoginResponse;
-        let loginData: LoginData = {
-          googleUserId: googleInfo.googleId,
-          fullName: googleInfo.profileObj.name,
-          profilePictureUrl: googleInfo.profileObj.imageUrl,
-          mail: googleInfo.profileObj.email,
-          token: googleInfo.tokenId,
-        };
-        startLogin(loginData, props.history);
-      }}
-      onFailure={console.log}
-    ></GoogleLogin>
+    />
   );
 };
 
