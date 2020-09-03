@@ -98,3 +98,9 @@ data class LoginDTO(
     val profilePicUrl: String?,
     val token: String
 )
+
+data class UpdateProjectDTO(
+    val title: String?,
+    val description: String?,
+    val extraContent: String?
+)

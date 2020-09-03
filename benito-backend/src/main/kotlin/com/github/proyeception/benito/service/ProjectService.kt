@@ -4,6 +4,7 @@ import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.dto.CountDTO
 import com.github.proyeception.benito.dto.OrderDTO
 import com.github.proyeception.benito.dto.ProjectDTO
+import com.github.proyeception.benito.dto.UpdateProjectDTO
 import com.github.proyeception.benito.parser.DocumentParser
 import org.springframework.web.multipart.MultipartFile
 
@@ -30,16 +31,19 @@ open class ProjectService(
 
     fun count(): CountDTO = CountDTO(medusaClient.projectCount())
 
-    fun findProject(id: String): ProjectDTO {
-        return ProjectDTO(medusaClient.project(id))
-    }
+    fun findProject(id: String): ProjectDTO = ProjectDTO(medusaClient.project(id))
+
+    fun updateProject(u: UpdateProjectDTO, projectId: String) = medusaClient.updateProject(u, projectId)
 
     fun saveFile(projectId: String, name: String, file: MultipartFile) {
-        var fileStream = file.inputStream
+        val fileStream = file.inputStream
         val content = documentParser.parse(fileStream)
         val driveId = documentService.saveFile(projectId = projectId, name = name, file = file)
         medusaClient.saveDocument(projectId, name, driveId, content)
     }
 
+    fun hasAuthor(authorId: String, projectId: String): Boolean = findProject(projectId)
+        .authors
+        .any { it.id == authorId }
 
 }
