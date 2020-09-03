@@ -1,13 +1,13 @@
 package com.github.proyeception.benito.config
 
 import com.github.proyeception.benito.client.MedusaClient
-import com.github.proyeception.benito.oauth.GoogleAccountClient
 import com.github.proyeception.benito.oauth.GoogleDriveClient
 import com.github.proyeception.benito.parser.DocumentParser
 import com.github.proyeception.benito.service.*
 import com.github.proyeception.benito.snapshot.CategorySnapshot
 import com.github.proyeception.benito.snapshot.OrganizationSnapshot
 import com.github.proyeception.benito.utils.FileHelper
+import com.github.proyeception.benito.utils.HashHelper
 import org.springframework.context.annotation.Bean
 
 
@@ -48,12 +48,13 @@ open class ServiceModule {
 
     @Bean
     open fun authorizationService(
-        googleAccountClient: GoogleAccountClient,
         userService: UserService,
-        sessionService: SessionService
+        sessionService: SessionService,
+        hashHelper: HashHelper
     ): AuthenticationService = AuthenticationService(
         userService = userService,
-        sessionService = sessionService
+        sessionService = sessionService,
+        hash = hashHelper
     )
 
     @Bean

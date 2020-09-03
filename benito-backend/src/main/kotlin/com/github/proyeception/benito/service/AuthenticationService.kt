@@ -4,26 +4,28 @@ import com.github.proyeception.benito.dto.LoginDTO
 import com.github.proyeception.benito.dto.RoleDTO
 import com.github.proyeception.benito.dto.SessionInfoDTO
 import com.github.proyeception.benito.exception.UnauthorizedException
+import com.github.proyeception.benito.utils.HashHelper
 import org.slf4j.LoggerFactory
 
 open class AuthenticationService(
     private val userService: UserService,
-    private val sessionService: SessionService
+    private val sessionService: SessionService,
+    private val hash: HashHelper
 ) {
     open fun authenticateSupervisor(login: LoginDTO): String = userService.findSupervisorByEmail(login.mail)
         ?.let {
-            sessionService[login.token] = SessionInfoDTO(
+            val token = hash.sha256(login.token)
+            sessionService[token] = SessionInfoDTO(
                 RoleDTO.SUPERVISOR,
                 it.id,
                 it.profilePicUrl
             )
-            login.token
+            token
         }
         ?: throw UnauthorizedException("You're not registered as a supervisor")
 
     open fun authenticateOrCreateAuthor(login: LoginDTO): String {
         val maybePerson = userService.findAuthorByGoogleId(login.googleUserId)
-        val token = login.token
 
         val (userId, profilePic) = if (maybePerson == null) {
             LOGGER.info("User does not exist. Creating...")
@@ -33,13 +35,15 @@ open class AuthenticationService(
                 googleUserId = login.googleUserId,
                 username = null,
                 mail = login.mail,
-                googleToken = token
+                googleToken = login.token
             )
             Pair(person.id, person.profilePic?.url)
         } else {
             LOGGER.info("User already exists.")
             Pair(maybePerson.id, maybePerson.profilePicUrl)
         }
+
+        val token = hash.sha256(login.token)
 
         sessionService[token] = SessionInfoDTO(
             role = RoleDTO.AUTHOR,

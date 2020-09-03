@@ -4,13 +4,11 @@ import com.github.proyeception.benito.dto.CountDTO
 import com.github.proyeception.benito.dto.OrderDTO
 import com.github.proyeception.benito.dto.ProjectDTO
 import com.github.proyeception.benito.service.ProjectService
-import com.github.proyeception.benito.service.UserService
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
-import javax.servlet.http.HttpServletRequest
 
 
 @Controller
@@ -26,11 +24,8 @@ class ProjectController(
         @RequestParam(required = false) from: String?,
         @RequestParam(required = false) to: String?,
         @RequestParam(required = false, name = "name") nameContains: String?,
-        @RequestParam(required = false, name = "category") category: String?,
-        request: HttpServletRequest
-    ): List<ProjectDTO> {
-        return projectService.findProjects(orderBy, from, to, nameContains, category)
-    }
+        @RequestParam(required = false, name = "category") category: String?
+    ): List<ProjectDTO> = projectService.findProjects(orderBy, from, to, nameContains, category)
 
     @RequestMapping("/benito/projects/featured", method = [RequestMethod.GET])
     @ResponseBody
@@ -59,6 +54,6 @@ class ProjectController(
         @PathVariable projectId: String,
         @RequestParam name: String,
         @RequestParam("file") file: MultipartFile
-    ) = projectService.saveFile(projectId, name, file)
+    ): Unit = projectService.saveFile(projectId, name, file)
 
 }
