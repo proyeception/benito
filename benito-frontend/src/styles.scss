@@ -37,5 +37,13 @@ body {
 }
 
 .qui-min-height {
-  min-height: 768px;
+  @media screen and (min-height: 0px) {
+    min-height: 480px;
+  }
+  @media screen and (min-height: 640px) {
+    min-height: 800px;
+  }
+  @media screen and (min-height: 1024px) {
+    min-height: 1200px;
+  }
 }

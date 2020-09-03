@@ -1,4 +1,4 @@
-import { Person, Documentation } from "../../components/Search/ProjectSummary";
+import { Person, Documentation } from "../../types";
 
 export const UPDATE_ID = "UPDATE_ID";
 export const UPDATE_TITLE = "UPDATE_TITLE";
@@ -44,10 +44,10 @@ interface UpdateTagsAction {
   payload: Array<String>;
 }
 
-  interface UpdateDocumentationAction {
-    type: typeof UPDATE_DOCUMENTATION;
-    payload: Array<Documentation>;
-  }
+interface UpdateDocumentationAction {
+  type: typeof UPDATE_DOCUMENTATION;
+  payload: Array<Documentation>;
+}
 
 export type ProjectAction =
   | UpdateIdAction

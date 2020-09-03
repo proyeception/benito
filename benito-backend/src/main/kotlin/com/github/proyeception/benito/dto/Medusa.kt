@@ -9,7 +9,7 @@ data class MedusaProjectDTO(
     val description: String,
     val extraContent: String?,
     val creationDate: LocalDate,
-    val poster: ImageDTO,
+    val poster: MedusaFileDTO,
     val authors: List<PersonRefDTO>,
     val supervisors: List<PersonRefDTO>,
     val documentation: List<DocumentationDTO>,
@@ -24,28 +24,38 @@ data class PersonRefDTO(
     val fullName: String
 )
 
+data class CreateMedusaPersonDTO(
+    val username: String?,
+    val fullName: String,
+    val mail: String,
+    val profilePic: MedusaFileDTO?,
+    val googleUserId: String,
+    val googleToken: String
+)
+
 data class MedusaPersonDTO(
     val id: String,
-    val username: String,
+    val username: String?,
     val fullName: String,
     val organizations: List<MedusaOrganizationDTO>,
-    val profilePic: ImageDTO?,
+    val profilePic: MedusaFileDTO?,
     val projects: List<MedusaProjectRefDTO>,
     val socials: List<SocialDTO>,
-    val contact: ContactDTO?
+    val mail: String?,
+    val phone: String?
 )
 
 data class MedusaProjectRefDTO(
     val id: String,
     val title: String,
-    val poster: ImageDTO,
+    val poster: MedusaFileDTO,
     @JsonProperty("organization") val organizationId: String,
-    val description:  String
+    val description: String
 )
 
-data class ImageDTO(
+data class MedusaFileDTO(
     val url: String,
-    val name: String
+    @JsonProperty("_id") val id: String
 )
 
 data class DocumentationDTO(
@@ -77,7 +87,7 @@ data class MedusaOrganizationDTO(
     val id: String,
     val displayName: String,
     val name: String,
-    val icon: ImageDTO
+    val icon: MedusaFileDTO
 )
 
 data class MedusaTagDTO(

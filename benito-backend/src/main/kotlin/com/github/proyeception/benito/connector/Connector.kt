@@ -3,11 +3,13 @@ package com.github.proyeception.benito.connector
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.typesafe.config.Config
 import org.apache.http.Header
+import org.apache.http.HttpEntity
 import org.apache.http.HttpResponse
 import org.apache.http.client.HttpClient
 import org.apache.http.client.methods.*
 import org.apache.http.entity.ContentType
 import org.apache.http.entity.StringEntity
+import org.apache.http.entity.mime.MultipartEntityBuilder
 import org.apache.http.impl.client.HttpClientBuilder
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -21,19 +23,37 @@ open class Connector(
 
     open fun post(path: String): Response = post(path, null)
 
-    open fun post(path: String, body: Any?): Response = execute(path, HttpMethod.POST, body)
+    open fun post(path: String, body: Any?): Response = execute(
+        path,
+        HttpMethod.POST,
+        body?.let { SimpleJsonRequest(it) }
+    )
+
+    open fun post(path: String, multipartMetadata: MultipartMetadata) = execute(
+        path,
+        HttpMethod.POST,
+        multipartMetadata
+    )
 
     open fun put(path: String): Response = put(path, null)
 
-    open fun put(path: String, body: Any?): Response = execute(path, HttpMethod.PUT, body)
+    open fun put(path: String, body: Any?): Response = execute(
+        path,
+        HttpMethod.PUT,
+        body?.let { SimpleJsonRequest(it) }
+    )
 
     open fun patch(path: String): Response = patch(path, null)
 
-    open fun patch(path: String, body: Any?): Response = execute(path, HttpMethod.PATCH, body)
+    open fun patch(path: String, body: Any?): Response = execute(
+        path,
+        HttpMethod.PATCH,
+        body?.let { SimpleJsonRequest(it) }
+    )
 
     open fun delete(path: String): Response = execute(path, HttpMethod.DELETE, null)
 
-    private fun execute(path: String, httpMethod: HttpMethod, body: Any?): Response {
+    private fun execute(path: String, httpMethod: HttpMethod, body: RequestBody?): Response {
         val endpoint = "$host${if (path.startsWith("/")) path else "/$path"}"
         val request = requestOf(httpMethod, body)(endpoint)
 
@@ -51,7 +71,7 @@ open class Connector(
         )
     }
 
-    private fun requestOf(httpMethod: HttpMethod, body: Any?): (String) -> HttpRequestBase = {
+    private fun requestOf(httpMethod: HttpMethod, body: RequestBody?): (String) -> HttpRequestBase = {
         when (httpMethod) {
             HttpMethod.GET -> HttpGet(it)
             HttpMethod.POST -> HttpPost(it).also { p -> p.setBody(body) }
@@ -65,8 +85,20 @@ open class Connector(
         GET, POST, PUT, PATCH, DELETE
     }
 
-    private fun HttpEntityEnclosingRequestBase.setBody(body: Any?): HttpEntityEnclosingRequestBase = body?.let { b ->
-        val params = StringEntity(objectMapper.writeValueAsString(b), ContentType.APPLICATION_JSON)
+    private fun HttpEntityEnclosingRequestBase.setBody(body: RequestBody?): HttpEntityEnclosingRequestBase = body?.let { b ->
+        val params: HttpEntity = when (b) {
+            is MultipartMetadata -> {
+                val builder = MultipartEntityBuilder.create()
+                b.parts.forEach {
+                    val (textName, textText, textContentType) = it.textBody
+                    val (binaryName, binaryFile, binaryContentType, binaryFileName) = it.binaryBody
+                    builder.addTextBody(textName, textText, textContentType)
+                    builder.addBinaryBody(binaryName, binaryFile, binaryContentType, binaryFileName)
+                }
+                builder.build()
+            }
+            is SimpleJsonRequest -> StringEntity(objectMapper.writeValueAsString(b.body), ContentType.APPLICATION_JSON)
+        }
         this.entity = params
         return this
     } ?: this

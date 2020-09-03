@@ -60,7 +60,7 @@ class MedusaClientTest : Spec() {
 
                 on(medusaConnector.get(eq(PROJECTS_PATH))).thenReturn(responseMock)
                 on(responseMock.isError()).thenReturn(false)
-                on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
+                on(responseMock.deserializeAs(any(TypeReference::class.java))).thenReturn(projectsResponse)
 
                 val expected = projectsResponse
                 val actual = medusaClient.getProjects()
@@ -307,7 +307,7 @@ class MedusaClientTest : Spec() {
                 description = "project description",
                 extraContent = "nice formatted content",
                 creationDate = LocalDate.of(2020, 2, 6),
-                poster = ImageDTO("poster", "poster"),
+                poster = MedusaFileDTO("poster", "poster"),
                 authors = listOf(author),
                 supervisors = listOf(supervisor),
                 category = CategoryDTO(name = "Systems", tagName = "systems", imageUrl = ""),
@@ -315,7 +315,7 @@ class MedusaClientTest : Spec() {
                 organization = MedusaOrganizationDTO(
                     displayName = "UTN FRBA",
                     name = "utnfrba",
-                    icon = ImageDTO("icon", "icon"),
+                    icon = MedusaFileDTO("icon", "icon"),
                     id = "123"
                 ),
                 tags = emptyList()

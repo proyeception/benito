@@ -12,7 +12,7 @@ import { Person } from "../../types";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { benitoHost } from "../../config";
 import Loader from "../Common/Loader";
-import { motion } from "framer-motion";
+import SlideUp from "../Common/SlideUp";
 
 type MatchParams = {
   userId: string;
@@ -21,17 +21,6 @@ type MatchParams = {
 interface Props extends RouteChildrenProps<MatchParams> {
   collection: String;
 }
-
-const variants = {
-  in: {
-    opacity: 1,
-    y: 0,
-  },
-  out: {
-    opacity: 0,
-    y: "-100%",
-  },
-};
 
 const User = (props: Props) => {
   const [user, setUser] = useState<Person>(null);
@@ -79,7 +68,7 @@ const User = (props: Props) => {
 
   if (!user) {
     return (
-      <div className="qui-min-height center">
+      <div className="center">
         <Loader />
       </div>
     );
@@ -90,12 +79,7 @@ const User = (props: Props) => {
       <div className="container-fluid un-mb-md-1">
         <div className="row">
           <div className="col-12 col-md-3 pl-md-4 pr-md-4 pt-5 pt-md-5 bg-white border-right qui-min-height">
-            <motion.div
-              initial="out"
-              animate="in"
-              exit="out"
-              variants={variants}
-            >
+            <SlideUp>
               <Profile user={user} />
               <Separator
                 display="d-block"
@@ -111,7 +95,7 @@ const User = (props: Props) => {
                 marginLeft={1}
               />
               <SocialMedia user={user} />
-            </motion.div>
+            </SlideUp>
           </div>
           <div className="qui-user-profile-projects col-12 col-md-9 pt-md-5">
             <ProjectsTab user={user} />

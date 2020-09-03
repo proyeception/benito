@@ -1,53 +1,34 @@
 import React from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
-import Header from "./Header";
-import LoginButton from "./LoginButton";
-import { updateLoginUsername, updateLoginPassword } from "../../actions/login";
-import { Redirect } from "react-router-dom";
-import { RootState } from "../../reducers";
-import { connect } from "react-redux";
-import Input from "./Input";
+import { googleClientId } from "../../config";
+import GoogleLogin, { GoogleLoginResponse } from "react-google-login";
+import { LoginData } from "../../types";
+import { startLogin } from "../../functions/session";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 
-const redirectHome = () => <Redirect to="/" />;
+interface Props extends RouteComponentProps {
+  render?(props: { onClick: () => void; disabled?: Boolean }): JSX.Element;
+  loginPath: String;
+}
 
-const Login = (props: {
-  isLoggedIn: Boolean;
-  usernameError: Boolean;
-  passwordError: Boolean;
-}) =>
-  props.isLoggedIn ? (
-    redirectHome()
-  ) : (
-    <div className="container-fluid sm-login">
-      <Header />
-      <form
-        className={`needs-validation ${
-          props.usernameError || props.passwordError ? "was-validated" : ""
-        }`}
-        noValidate
-      >
-        <Input
-          inputType="text"
-          placeHolder="Nombre de usuario"
-          onChange={(it) => updateLoginUsername(it.currentTarget.value)}
-          onErrorFeedback="Ingrese un nombre de usuario válido"
-        />
-        <Input
-          inputType="password"
-          placeHolder="Contraseña"
-          onChange={(it) => updateLoginPassword(it.currentTarget.value)}
-          onErrorFeedback="Ingrese una contraseña válida"
-        />
-        <LoginButton />
-      </form>
-    </div>
-  );
+const Login = (props: Props) => (
+  <GoogleLogin
+    clientId={googleClientId}
+    render={props.render}
+    onSuccess={(res) => {
+      let googleInfo = res as GoogleLoginResponse;
+      let loginData: LoginData = {
+        googleUserId: googleInfo.googleId,
+        fullName: googleInfo.profileObj.name,
+        profilePictureUrl: googleInfo.profileObj.imageUrl,
+        mail: googleInfo.profileObj.email,
+        token: googleInfo.tokenId,
+      };
+      startLogin(loginData, props.history, props.loginPath);
+    }}
+    onFailure={console.log}
+  ></GoogleLogin>
+);
 
-const mapStateToProps = (state: RootState) => ({
-  isLoggedIn: state.login.isLoggedIn,
-  usernameError: state.login.usernameError,
-  passwordError: state.login.passwordError,
-});
-
-export default hot(module)(connect(mapStateToProps)(Login));
+export default hot(module)(withRouter(Login));

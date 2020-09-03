@@ -2,22 +2,98 @@ package com.github.proyeception.benito.service
 
 import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.dto.*
+import com.github.proyeception.benito.exception.AmbiguousReferenceException
 import com.github.proyeception.benito.exception.NotFoundException
 import com.github.proyeception.benito.snapshot.OrganizationSnapshot
+import com.github.proyeception.benito.utils.FileHelper
+import org.apache.http.entity.ContentType
+import org.slf4j.LoggerFactory
 
-class UserService(
+
+open class UserService(
     private val medusaClient: MedusaClient,
-    private val organizationSnapshot: OrganizationSnapshot
+    private val organizationSnapshot: OrganizationSnapshot,
+    private val fileHelper: FileHelper
 ) {
-    fun findAuthor(userId: String): PersonDTO = mapMedusaToDomain(medusaClient.findUser(userId, "authors"))
+    open fun findAuthor(userId: String): PersonDTO = findUserById(userId, "authors")
 
-    fun findSupervisor(userId: String): PersonDTO = mapMedusaToDomain(medusaClient.findUser(userId, "supervisors"))
+    open fun findSupervisor(userId: String): PersonDTO = findUserById(userId, "supervisors")
+
+    open fun findSupervisorByGoogleId(id: String): PersonDTO? = findUserByGoogleId(id, "supervisors")
+
+    open fun findAuthorByGoogleId(id: String): PersonDTO? = findUserByGoogleId(id, "authors")
+
+    open fun findSupervisorByEmail(mail: String): PersonDTO? = findOneUserBy(
+        "supervisors",
+        Pair("mail", mail)
+    )
+
+    open fun createAuthor(
+        username: String?,
+        fullName: String,
+        mail: String,
+        googleUserId: String,
+        googleToken: String,
+        profilePicUrl: String?
+    ): MedusaPersonDTO {
+        val image = createImage(googleUserId, profilePicUrl)
+
+        val person = CreateMedusaPersonDTO(
+            fullName = fullName,
+            username = username,
+            mail = mail,
+            googleUserId = googleUserId,
+            profilePic = image,
+            googleToken = googleToken
+        )
+
+        return medusaClient.createUser(person, "authors")
+    }
+
+    private fun findUserByGoogleId(id: String, coll: String): PersonDTO? = findOneUserBy(
+        coll,
+        Pair("google_user_id", id)
+    )
+
+    private fun findOneUserBy(coll: String, vararg filters: Pair<String, String>): PersonDTO? = medusaClient
+        .findUsersBy(
+            coll,
+            *filters
+        )
+        .let {
+            when (it.size) {
+                0 -> null
+                1 -> mapMedusaToDomain(it.first())
+                else -> {
+                    LOGGER.error("Ambiguous filter $filters")
+                    throw AmbiguousReferenceException("Ambiguous filter")
+                }
+            }
+        }
+
+    private fun findUserById(userId: String, collection: String) = mapMedusaToDomain(medusaClient.findUser(userId, collection))
+
+    private fun createImage(userId: String, profilePicUrl: String?): MedusaFileDTO? = profilePicUrl?.let {
+        val image = fileHelper.downloadImage(it, "/tmp/$userId.jpg")
+        try {
+            // It's necessary to leave this in two separate lines, since finally executes before return
+            val response = medusaClient.createFile(
+                file = image,
+                filename = userId,
+                contentType = ContentType.IMAGE_JPEG
+            )
+            return response
+        } finally {
+            fileHelper.deleteFile(image)
+        }
+    }
 
     private fun mapIdToOrganization(organizationId: String): MedusaOrganizationDTO = organizationSnapshot
         .find { it.id == organizationId }
         ?: throw NotFoundException("No such organization with ID $organizationId was found")
 
     private fun mapMedusaToDomain(medusa: MedusaPersonDTO): PersonDTO = PersonDTO(
+        id = medusa.id,
         username = medusa.username,
         fullName = medusa.fullName,
         organizations = medusa.organizations.map { OrganizationDTO(it) },
@@ -32,6 +108,13 @@ class UserService(
             )
         },
         socials = medusa.socials,
-        contact = medusa.contact
+        contact = ContactDTO(
+            mail = medusa.mail,
+            phone = medusa.mail
+        )
     )
+
+    companion object {
+        private val LOGGER = LoggerFactory.getLogger(UserService::class.java)
+    }
 }

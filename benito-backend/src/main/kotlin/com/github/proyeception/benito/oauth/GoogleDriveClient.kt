@@ -20,32 +20,7 @@ import java.util.*
 open class GoogleDriveClient(
     private val googleDriveConnector: OAuthConnector,
     private val objectMapper: ObjectMapper
-) : OAuthClient {
-    /*
-    * Queda pendiente el terminar de crear nuevos usuarios
-    * Habría que validar con el secret que un forro con postman no nos mande basura
-    * Ese secret guardarlo en algún repo de pendientes con datos necesarios del usuario
-    * para poder después persistir el token que nos genera el finish en el usuario que corresponda
-    * */
-    override fun initNewAuth(): String {
-        val secretState = "secret" + Random().nextInt(999999)
-        val additionalParams: MutableMap<String, String> = HashMap<String, String>()
-        additionalParams["access_type"] = "offline"
-        additionalParams["prompt"] = "consent"
-
-        return googleDriveConnector.oAuth20Service.createAuthorizationUrlBuilder()
-            .state(secretState)
-            .additionalParams(additionalParams)
-            .build()
-    }
-
-    override fun finishNewAuth(authorization: String): String = googleDriveConnector.oAuth20Service
-        .getAccessToken(authorization)
-        .refreshToken
-        .also {
-            googleDriveConnector.token = it
-        }
-
+) {
     open fun getFile(fileId: String): Either<Throwable, FileDTO> = googleDriveConnector.get(
         url = "https://www.googleapis.com/drive/v3/files/$fileId?fields=webContentLink,name,mimeType"
     )

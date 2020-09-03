@@ -41,11 +41,8 @@ open class ProjectService(
     fun saveFile(projectId: String, name: String, file: MultipartFile) {
         var fileStream = file.inputStream
         val content = documentParser.parse(fileStream)
-
-        println(content)
-
         val driveId = documentService.saveFile(projectId = projectId, name = name, file = file)
-        medusaClient.saveFile(projectId, name, driveId, content)
+        medusaClient.saveDocument(projectId, name, driveId, content)
     }
 
 

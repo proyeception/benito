@@ -49,3 +49,19 @@ export type Contact = {
   phone?: String;
   mail?: String;
 };
+
+export type Role = "SUPERVISOR" | "AUTHOR";
+
+export type SessionInfo = {
+  userId: String;
+  role: Role;
+  profilePicUrl: String;
+};
+
+export type LoginData = {
+  googleUserId: String;
+  fullName: String;
+  mail: String;
+  profilePictureUrl: String;
+  token: String;
+};

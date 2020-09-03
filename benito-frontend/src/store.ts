@@ -3,18 +3,9 @@ import rootReducer, { RootState } from "./reducers/index";
 import { SortMethod } from "./store/search/types";
 
 const defaultState: RootState = {
-  login: {
-    username: "",
-    password: "",
-    displayLoader: false,
+  session: {
     isLoggedIn: false,
-    passwordError: false,
-    usernameError: false,
-  },
-  user: {
-    session: null,
-    username: null,
-    data: null,
+    fetching: false,
   },
   home: {
     featuredProjects: [],

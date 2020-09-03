@@ -5,6 +5,9 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import store from "./store";
 import { Provider } from "react-redux";
 import "./utils.scss";
+import { openLocalStoredSession } from "./functions/session";
+
+openLocalStoredSession();
 
 const router = (
   <Router>

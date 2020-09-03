@@ -34,13 +34,17 @@ const Details = (props: Props) => {
         </div>
         <div className="col-12 col-md-6 mt-md-2">
           <div className="qui-summary qui-font-text font-weight-light font-size-11 font-size-16-md text-md-right">
-            {props.project.authors
-              .map<React.ReactNode>((a, idx) => (
-                <Link key={idx} to={`/students/${a.id}`}>
-                  <span>{a.fullName}</span>
-                </Link>
-              ))
-              .reduce((prev, curr) => [prev, ", ", curr])}
+            {props.project.authors.length == 0 ? (
+              <div></div>
+            ) : (
+              props.project.authors
+                .map<React.ReactNode>((a, idx) => (
+                  <Link key={idx} to={`/authors/${a.id}`}>
+                    <span>{a.fullName}</span>
+                  </Link>
+                ))
+                .reduce((prev, curr) => [prev, ", ", curr])
+            )}
           </div>
         </div>
         <div className="col-12 col-md-6 mt-2">

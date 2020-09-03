@@ -2,11 +2,14 @@ package com.github.proyeception.benito.client
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.github.proyeception.benito.connector.Connector
+import com.github.proyeception.benito.connector.MultipartMetadataBuilder
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.FailedDependencyException
 import com.github.proyeception.benito.exception.NotFoundException
 import com.github.proyeception.benito.extension.replaceUrlSpaces
+import org.apache.http.entity.ContentType
 import org.slf4j.LoggerFactory
+import java.io.File
 
 open class MedusaClient(
     private val medusaConnector: Connector
@@ -68,7 +71,7 @@ open class MedusaClient(
         return response.deserializeAs(object : TypeReference<MedusaProjectDTO>() {})
     }
 
-    open fun saveFile(projectId: String, name: String, driveId: String, content: String) {
+    open fun saveDocument(projectId: String, name: String, driveId: String, content: String) {
         val endpoint = "/projects/$projectId/documents"
 
         val document = CreateDocumentDTO(
@@ -101,6 +104,49 @@ open class MedusaClient(
                 throw FailedDependencyException("Error getting user $userId from '$collection' in medusa")
             }
         }
+    }
+
+    open fun createUser(person: CreateMedusaPersonDTO, collection: String): MedusaPersonDTO {
+        val endpoint = "/$collection"
+
+        val response = medusaConnector.post(endpoint, person)
+
+        if (response.isError()) {
+            LOGGER.error(response.body)
+            throw FailedDependencyException("Error when creating a new item in $collection")
+        }
+
+        return response.deserializeAs(object : TypeReference<MedusaPersonDTO>() {})
+    }
+
+    open fun findUsersBy(collection: String, vararg params: Pair<String, String>): List<MedusaPersonDTO> {
+        val formattedParams = params.takeIf { it.isNotEmpty() }
+            ?.joinToString("&") { (field, value) -> "$field=$value" }
+            ?: ""
+        val response = medusaConnector.get("/$collection?$formattedParams")
+
+        if (response.isError()) {
+            LOGGER.error(response.body)
+            throw FailedDependencyException("Failed to fetch users from medusa")
+        }
+
+        return response.deserializeAs(object : TypeReference<List<MedusaPersonDTO>>() {})
+    }
+
+    open fun createFile(file: File, filename: String, contentType: ContentType): MedusaFileDTO {
+        val multipart = MultipartMetadataBuilder()
+            .setText("name", "files")
+            .setBinary("files", file, contentType, filename)
+            .buildPart()
+            .build()
+        val response = medusaConnector.post("/upload", multipart)
+
+        if (response.isError()) {
+            LOGGER.error(response.body)
+            throw FailedDependencyException("Failed to create file")
+        }
+
+        return response.deserializeAs(object : TypeReference<List<MedusaFileDTO>>() {}).first()
     }
 
     private fun count(collection: String): Int {

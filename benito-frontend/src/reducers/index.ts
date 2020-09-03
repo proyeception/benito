@@ -1,13 +1,11 @@
-import loginReducer from "./login";
 import { combineReducers } from "redux";
-import userReducer from "./user";
+import sessionReducer from "./session";
 import homeReducer from "./home";
 import searchReducer from "./search";
 import commonReducer from "./common";
 
 const rootReducer = combineReducers({
-  login: loginReducer,
-  user: userReducer,
+  session: sessionReducer,
   search: searchReducer,
   home: homeReducer,
   common: commonReducer,

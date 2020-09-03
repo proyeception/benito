@@ -73,7 +73,7 @@ class ProjectServiceTest : Spec() {
                     description = "project description",
                     extraContent = "nicely formatted content",
                     creationDate = LocalDate.of(2020, 2, 6),
-                    poster = ImageDTO(url = "", name = ""),
+                    poster = MedusaFileDTO(url = "", id = ""),
                     authors = listOf(author),
                     supervisors = listOf(supervisor),
                     documentation = listOf(documentation),
@@ -85,8 +85,8 @@ class ProjectServiceTest : Spec() {
                     organization = MedusaOrganizationDTO(
                         displayName = "UTN FRBA",
                         name = "utnfrba",
-                        icon = ImageDTO(
-                            name = "icon",
+                        icon = MedusaFileDTO(
+                            id = "icon",
                             url = "icon"
                         ),
                         id = "123"
@@ -168,7 +168,7 @@ class ProjectServiceTest : Spec() {
                     description = "project description",
                     extraContent = "nicely formatted content",
                     creationDate = LocalDate.of(2020, 2, 6),
-                    poster = ImageDTO(url = "", name = ""),
+                    poster = MedusaFileDTO(url = "", id = ""),
                     authors = listOf(author),
                     supervisors = listOf(supervisor),
                     documentation = listOf(documentation),
@@ -176,8 +176,8 @@ class ProjectServiceTest : Spec() {
                     organization = MedusaOrganizationDTO(
                         displayName = "UTN FRBA",
                         name = "utnfrba",
-                        icon = ImageDTO(
-                            name = "icon",
+                        icon = MedusaFileDTO(
+                            id = "icon",
                             url = "icon"
                         ),
                         id = "123"

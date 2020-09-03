@@ -48,7 +48,8 @@ data class ProjectDTO(
 }
 
 data class PersonDTO(
-    val username: String,
+    val id: String,
+    val username: String?,
     val fullName: String,
     val organizations: List<OrganizationDTO>,
     val profilePicUrl: String?,
@@ -77,4 +78,23 @@ data class ProjectRefDTO(
     val posterUrl: String,
     val organization: OrganizationDTO,
     val description: String
+)
+
+data class SessionInfoDTO(
+    val role: RoleDTO,
+    val userId: String,
+    val profilePicUrl: String?
+)
+
+enum class RoleDTO {
+    SUPERVISOR,
+    AUTHOR,
+}
+
+data class LoginDTO(
+    val googleUserId: String,
+    val fullName: String,
+    val mail: String,
+    val profilePicUrl: String?,
+    val token: String
 )
