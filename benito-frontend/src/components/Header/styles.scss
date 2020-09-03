@@ -17,8 +17,14 @@
 
 .qui-user-icon-container {
   @include img-circle-container;
-  width: 64px;
-  height: 64px;
+  @media screen and (min-width: 768px) {
+    width: 64px;
+    height: 64px;
+  }
+  @media screen and (max-width: 767px) {
+    width: 48px;
+    height: 48px;
+  }
 }
 
 .qui-user-icon {

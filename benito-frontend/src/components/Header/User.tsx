@@ -27,7 +27,7 @@ const User = (props: Props) => {
 
   if (props.isLoggedIn) {
     return (
-      <div className="qui-header-user center-vertically justify-content-end pr-md-5">
+      <div className="qui-header-user center-vertically justify-content-end pr-2 pr-md-5">
         <div
           data-tip
           data-for="header-user-menu"
@@ -48,7 +48,7 @@ const User = (props: Props) => {
           globalEventOff="click"
         >
           <Link
-            to={`/students/${props.userId}`}
+            to={`/authors/${props.userId}`}
             style={{ textDecoration: "none" }}
           >
             <div className="qui-text font-size-18-md">Mi perfil</div>
@@ -73,7 +73,7 @@ const User = (props: Props) => {
       render={(renderProps) => (
         <div
           onClick={renderProps.onClick}
-          className="qui-header-user center-vertically justify-content-end pr-md-5 cursor-pointer"
+          className="qui-header-user center-vertically justify-content-end pr-2 pr-md-5 cursor-pointer"
         >
           <div className="qui-user-icon-container">
             <img className="img-circle" src={googleIcon} />

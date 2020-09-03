@@ -8,7 +8,7 @@ import { startLogin } from "../../functions/session";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 
 interface Props extends RouteComponentProps {
-  render(props: { onClick: () => void; disabled?: Boolean }): JSX.Element;
+  render?(props: { onClick: () => void; disabled?: Boolean }): JSX.Element;
   loginPath: String;
 }
 

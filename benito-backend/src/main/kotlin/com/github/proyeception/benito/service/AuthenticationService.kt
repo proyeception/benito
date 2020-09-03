@@ -11,7 +11,15 @@ open class AuthenticationService(
     private val sessionService: SessionService
 ) {
     open fun authenticateSupervisor(login: LoginDTO): String = userService.findSupervisorByEmail(login.mail)
-        ?.let { login.token } ?: throw UnauthorizedException("You're not registered as a supervisor")
+        ?.let {
+            sessionService[login.token] = SessionInfoDTO(
+                RoleDTO.SUPERVISOR,
+                it.id,
+                it.profilePicUrl
+            )
+            login.token
+        }
+        ?: throw UnauthorizedException("You're not registered as a supervisor")
 
     open fun authenticateOrCreateAuthor(login: LoginDTO): String {
         val maybePerson = userService.findAuthorByGoogleId(login.googleUserId)

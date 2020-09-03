@@ -12,6 +12,6 @@ interface Props extends RouteChildrenProps<MatchParams> {
   collection: String;
 }
 
-const Student = (props: Props) => <User collection="authors" {...props} />;
+const Author = (props: Props) => <User collection="authors" {...props} />;
 
-export default hot(module)(Student);
+export default hot(module)(Author);

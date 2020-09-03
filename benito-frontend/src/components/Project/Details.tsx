@@ -39,7 +39,7 @@ const Details = (props: Props) => {
             ) : (
               props.project.authors
                 .map<React.ReactNode>((a, idx) => (
-                  <Link key={idx} to={`/students/${a.id}`}>
+                  <Link key={idx} to={`/authors/${a.id}`}>
                     <span>{a.fullName}</span>
                   </Link>
                 ))

@@ -16,7 +16,7 @@ open class LoginController(
     @ResponseStatus(HttpStatus.OK)
     @CrossOrigin(origins = ["http://localhost:8080"], allowCredentials = "true")
     open fun authorLogin(@RequestBody login: LoginDTO, response: HttpServletResponse) {
-        val token = authenticationService.authenticateSupervisor(login)
+        val token = authenticationService.authenticateOrCreateAuthor(login)
         response.addCookie(Cookie(X_QUI_TOKEN, token).also { it.path = "/" })
     }
 
@@ -24,7 +24,7 @@ open class LoginController(
     @ResponseStatus(HttpStatus.OK)
     @CrossOrigin(origins = ["http://localhost:8080"], allowCredentials = "true")
     open fun supervisorLogin(@RequestBody login: LoginDTO, response: HttpServletResponse) {
-        val token = authenticationService.authenticateOrCreateAuthor(login)
+        val token = authenticationService.authenticateSupervisor(login)
         response.addCookie(Cookie(X_QUI_TOKEN, token).also { it.path = "/" })
     }
 
