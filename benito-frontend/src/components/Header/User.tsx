@@ -28,7 +28,7 @@ const CustomToggle = (props: Props) =>
         e.preventDefault();
         onClick(e);
       }}
-      className="qui-user-icon-container"
+      className="qui-user-icon-container cursor-pointer"
     >
       <img
         className="img-circle"
