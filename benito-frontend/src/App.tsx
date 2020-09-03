@@ -17,6 +17,7 @@ import ViewProject from "./components/Project/index";
 import NotFound from "./components/NotFound";
 import Author from "./components/User/Author";
 import Supervisor from "./components/User/Supervisor";
+import SupervisorLogin from "./components/Login/SupervisorLogin";
 
 const App = (_: any) => {
   useEffect(() => {
@@ -33,7 +34,7 @@ const App = (_: any) => {
   }, []);
 
   return (
-    <div className="bg-light-gray">
+    <div className="bg-light-gray h-100">
       <HamburgerMenu />
       <Header />
       <AnimatePresence>
@@ -43,6 +44,7 @@ const App = (_: any) => {
           <Route exact path="/search" component={Search} />
           <Route exact path="/authors/:userId" component={Author} />
           <Route exact path="/supervisors/:userId" component={Supervisor} />
+          <Route exact path="/supervisor/login" component={SupervisorLogin} />
           <Route path="/*" component={NotFound} />
         </Switch>
       </AnimatePresence>

@@ -41,6 +41,7 @@ function sessionReducer(
         ...state,
         userId: action.payload.userId,
         profilePicture: action.payload.profilePicUrl,
+        role: action.payload.role,
       };
     }
     case INVALIDATE_SESSION: {

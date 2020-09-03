@@ -7,6 +7,7 @@ import { clearSession } from "../../functions/session";
 import { RouteComponentProps, withRouter, Link } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 import Login from "../Login";
+import { Role } from "../../types";
 
 interface Props extends RouteComponentProps {
   token?: String;
@@ -14,6 +15,7 @@ interface Props extends RouteComponentProps {
   profilePicture?: String;
   isLoggedIn?: Boolean;
   fetching: Boolean;
+  role: Role;
 }
 
 const googleIcon =
@@ -48,7 +50,7 @@ const User = (props: Props) => {
           globalEventOff="click"
         >
           <Link
-            to={`/authors/${props.userId}`}
+            to={`/${props.role.toLowerCase()}s/${props.userId}`}
             style={{ textDecoration: "none" }}
           >
             <div className="qui-text font-size-18-md">Mi perfil</div>

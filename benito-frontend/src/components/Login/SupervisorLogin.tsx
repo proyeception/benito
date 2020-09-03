@@ -2,13 +2,26 @@ import React from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
 import Login from ".";
+import { RootState } from "../../reducers";
+import { Redirect } from "react-router-dom";
+import { connect } from "react-redux";
 
-type Props = {};
+type Props = {
+  isLoggedIn: Boolean;
+};
 
-const SupervisorLogin = (_: Props) => (
-  <div className="qui-supervisor-login">
-    <Login loginPath="supervisor" />
-  </div>
-);
+const SupervisorLogin = (props: Props) => {
+  if (props.isLoggedIn) {
+    return <Redirect to="/" />;
+  }
 
-export default hot(module)(SupervisorLogin);
+  return (
+    <div className="qui-supervisor-login qui-min-height center">
+      <Login loginPath="supervisor" />
+    </div>
+  );
+};
+
+const mapStateToProps = (rootState: RootState) => rootState.session;
+
+export default hot(module)(connect(mapStateToProps)(SupervisorLogin));

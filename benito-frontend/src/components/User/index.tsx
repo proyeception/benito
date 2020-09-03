@@ -79,7 +79,7 @@ const User = (props: Props) => {
 
   if (!user) {
     return (
-      <div className="qui-min-height center">
+      <div className="center">
         <Loader />
       </div>
     );

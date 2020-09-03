@@ -1,4 +1,4 @@
-import { SessionInfo } from "../../types";
+import { SessionInfo, Role } from "../../types";
 
 export const UPDATE_SESSION_TOKEN = "UPDATE_SESSION_TOKEN";
 export const UPDATE_IS_LOGGED_IN = "UPDATE_IS_LOGGED_IN";
@@ -42,4 +42,5 @@ export type SessionState = {
   profilePicture?: String;
   isLoggedIn: Boolean;
   fetching: Boolean;
+  role?: Role;
 };
