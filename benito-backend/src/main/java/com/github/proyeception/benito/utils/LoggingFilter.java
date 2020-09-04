@@ -67,17 +67,18 @@ public class LoggingFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
         ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        boolean logEnabled = EXCLUDED_URIS.stream().noneMatch(t -> httpServletRequest.getRequestURI().matches(t));
+        String url = httpServletRequest.getRequestURI();
+        boolean logEnabled = EXCLUDED_URIS.stream().noneMatch(url::matches);
         if (logEnabled) {
             CachedContentRequestWrapper httpRequest = new CachedContentRequestWrapper(httpServletRequest);
             ContentCachingResponseWrapper httpResponse = new ContentCachingResponseWrapper(
                 (HttpServletResponse) response
             );
-            this.logRequest(httpRequest);
+            this.logRequest(httpRequest, url);
             try {
                 chain.doFilter(httpRequest, httpResponse);
             } finally {
-                this.logResponse(httpResponse);
+                this.logResponse(httpResponse, url);
                 httpResponse.copyBodyToResponse();
             }
         } else {
@@ -85,8 +86,8 @@ public class LoggingFilter implements Filter {
         }
     }
 
-    private void logRequest(HttpServletRequest request) throws IOException {
-        boolean logBody = EXCLUDED_URIS_REQUEST_BODY.stream().noneMatch(t -> request.getRequestURI().matches(t));
+    private void logRequest(HttpServletRequest request, String url) throws IOException {
+        boolean logBody = EXCLUDED_URIS_REQUEST_BODY.stream().noneMatch(url::matches);
         String queryString = StringUtils.isBlank(request.getQueryString()) ? "" : "?" + request.getQueryString();
         LOGGER.info("[REQUEST] -> {}: {}{}", request.getMethod(), request.getRequestURI(), queryString);
         String headers = this.buildHeaders(EnumerationUtils.toList(request.getHeaderNames()), request::getHeader);
@@ -99,12 +100,17 @@ public class LoggingFilter implements Filter {
 
     }
 
-    private void logResponse(ContentCachingResponseWrapper response) throws IOException {
+    private void logResponse(ContentCachingResponseWrapper response, String url) throws IOException {
+        boolean logBody = EXCLUDED_URIS_RESPONSE_BODY.stream().noneMatch(url::matches);
         int status = response.getStatus();
         LOGGER.info("[RESPONSE] -> Status {}", status);
         String headers = this.buildHeaders(response.getHeaderNames(), response::getHeader);
-        String result = this.toString(response.getContentInputStream());
-        LOGGER.info("[RESPONSE] -> Headers: {} - Result: {}", headers, result);
+        LOGGER.info("[RESPONSE] -> Headers: {}", headers);
+
+        if (logBody) {
+            String body = this.toString(response.getContentInputStream());
+            LOGGER.info("[RESPONSE] -> Body: {}", body);
+        }
     }
 
     private String toString(InputStream inputStream) throws IOException {
@@ -144,7 +150,7 @@ public class LoggingFilter implements Filter {
         }
 
         @Override
-        public BufferedReader getReader() throws IOException {
+        public BufferedReader getReader() {
             return new BufferedReader(new InputStreamReader(this.getInputStream()));
         }
 
