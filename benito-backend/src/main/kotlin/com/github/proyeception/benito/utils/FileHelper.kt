@@ -13,7 +13,7 @@ open class FileHelper {
         input = multipart.inputStream
     )
 
-    open fun downloadImage(url: String, filePath: String): File {
+    open fun downloadFromUrl(url: String, filePath: String): File {
         val input = URL(url).openStream()
         return createFileFromInputStream(filePath = filePath, input = input)
     }

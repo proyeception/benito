@@ -12,9 +12,9 @@ import com.github.proyeception.benito.snapshot.OrganizationSnapshot
 import com.nhaarman.mockito_kotlin.any
 import io.kotlintest.matchers.shouldBe
 import io.kotlintest.matchers.shouldThrow
+import org.apache.http.entity.ContentType
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito.verify
-import java.io.File
 
 class UserServiceTest : Spec() {
     init {
@@ -261,10 +261,11 @@ class UserServiceTest : Spec() {
                     id = "123"
                 )
 
-                on(fileServiceMock.createMedusaImageFromUrl(
+                on(fileServiceMock.createMedusaFileFromUrl(
                     url = eq("https://profilepic.com"),
                     filePath = eq("/tmp/g-123.jpg"),
-                    fileName = eq("g-123.jpg")
+                    fileName = eq("g-123.jpg"),
+                    contentType = eq(ContentType.IMAGE_JPEG)
                 )).thenReturn(profilePicFile)
 
                 userService.createAuthor(
@@ -287,28 +288,6 @@ class UserServiceTest : Spec() {
                     ),
                     "authors"
                 )
-            }
-
-            "delete the image even if there's an error thrown when creating the file in medusa" {
-                val fileMock: File = getMock()
-
-                on(fileServiceMock.createMedusaImageFromUrl(
-                    url = eq("https://profilepic.com"),
-                    filePath = eq("/tmp/g-123.jpg"),
-                    fileName = eq("g-123.jpg")
-                )).thenThrow(RuntimeException("Error"))
-
-                shouldThrow<RuntimeException> {
-                    userService.createAuthor(
-                        username = null,
-                        fullName = "Benito Quinquela",
-                        mail = "benito@quinquela.com.ar",
-                        googleUserId = "g-123",
-                        googleToken = "123",
-                        profilePicUrl = "https://profilepic.com"
-                    )
-                }
-
             }
 
             "not create the file if user has no profile picture" {

@@ -50,7 +50,6 @@ open class AuthenticationService(
             userId = userId,
             profilePicUrl = profilePic
         )
-        // TODO: create a session token based off of the id
         return token
     }
 

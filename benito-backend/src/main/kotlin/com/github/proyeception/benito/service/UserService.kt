@@ -5,6 +5,7 @@ import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.AmbiguousReferenceException
 import com.github.proyeception.benito.exception.NotFoundException
 import com.github.proyeception.benito.snapshot.OrganizationSnapshot
+import org.apache.http.entity.ContentType
 import org.slf4j.LoggerFactory
 
 open class UserService(
@@ -71,10 +72,11 @@ open class UserService(
     private fun findUserById(userId: String, collection: String) = mapMedusaToDomain(medusaClient.findUser(userId, collection))
 
     private fun createImage(userId: String, profilePicUrl: String?): MedusaFileDTO? = profilePicUrl?.let {
-        fileService.createMedusaImageFromUrl(
+        fileService.createMedusaFileFromUrl(
             url = it,
             filePath = "/tmp/$userId.jpg",
-            fileName = "$userId.jpg"
+            fileName = "$userId.jpg",
+            contentType = ContentType.IMAGE_JPEG
         )
     }
 
