@@ -15,13 +15,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.Collection;
-import java.util.function.Function;
+import java.util.List;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
 public class LoggingFilter implements Filter {
-    public static final String AUTHORIZATION_HEADER = "authorization";
+    private static final String AUTHORIZATION_HEADER = "authorization";
+    private static final String COOKIE_HEADER = "cookie";
 
-    private static final Collection<String> EXCLUDED_URIS = ImmutableList.of(
+    private static final List<String> EXCLUDED_URIS = ImmutableList.of(
         ".*[.]js",
         ".*[.]css",
         ".*[.]eot",
@@ -30,23 +32,47 @@ public class LoggingFilter implements Filter {
         ".*[.]html",
         "[/]"
     );
-    private static final Collection<String> EXCLUDED_HEADERS = ImmutableList.of(AUTHORIZATION_HEADER.toLowerCase());
+
+    private static final List<String> EXCLUDED_URIS_REQUEST_BODY = ImmutableList.of(
+        "/benito/authors/.*/picture",
+        "/benito/supervisors/.*/picture",
+        "/benito/projects/.*/poster",
+        "/benito/projects/.*/documents",
+        "/benito/author/login",
+        "/benito/supervisor/login"
+    );
+
+    private static final List<String> EXCLUDED_URIS_RESPONSE_BODY = ImmutableList.of(
+        "/benito/projects/featured",
+        "/benito/projects?.*",
+        "/benito/session",
+        "/benito/author/login",
+        "/benito/supervisor/login"
+    );
+
+    private static final List<String> EXCLUDED_HEADERS = ImmutableList.of(
+        AUTHORIZATION_HEADER,
+        "x-qui-token",
+        COOKIE_HEADER
+    );
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LoggingFilter.class);
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
+        // Nothing to see here, move along
     }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
         ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        boolean logEnabled = EXCLUDED_URIS.stream().noneMatch(t -> httpServletRequest.getRequestURI().startsWith(t));
+        boolean logEnabled = EXCLUDED_URIS.stream().noneMatch(t -> httpServletRequest.getRequestURI().matches(t));
         if (logEnabled) {
             CachedContentRequestWrapper httpRequest = new CachedContentRequestWrapper(httpServletRequest);
-            ContentCachingResponseWrapper httpResponse =
-                new ContentCachingResponseWrapper((HttpServletResponse) response);
+            ContentCachingResponseWrapper httpResponse = new ContentCachingResponseWrapper(
+                (HttpServletResponse) response
+            );
             this.logRequest(httpRequest);
             try {
                 chain.doFilter(httpRequest, httpResponse);
@@ -60,11 +86,17 @@ public class LoggingFilter implements Filter {
     }
 
     private void logRequest(HttpServletRequest request) throws IOException {
+        boolean logBody = EXCLUDED_URIS_REQUEST_BODY.stream().noneMatch(t -> request.getRequestURI().matches(t));
         String queryString = StringUtils.isBlank(request.getQueryString()) ? "" : "?" + request.getQueryString();
         LOGGER.info("[REQUEST] -> {}: {}{}", request.getMethod(), request.getRequestURI(), queryString);
         String headers = this.buildHeaders(EnumerationUtils.toList(request.getHeaderNames()), request::getHeader);
-        String body = this.toString(request.getInputStream());
-        LOGGER.info("[REQUEST] -> Headers: {} - Body: {}", headers, body);
+        LOGGER.info("[REQUEST] -> Headers: {}", headers);
+
+        if (logBody) {
+            String body = this.toString(request.getInputStream());
+            LOGGER.info("[REQUEST] -> Body: {}", body);
+        }
+
     }
 
     private void logResponse(ContentCachingResponseWrapper response) throws IOException {
@@ -80,7 +112,7 @@ public class LoggingFilter implements Filter {
             Charset.defaultCharset())), "\\r\\n|\\r|\\n", " ");
     }
 
-    private String buildHeaders(Collection<String> headerNames, Function<String, String> headerExtractor) {
+    private String buildHeaders(Collection<String> headerNames, UnaryOperator<String> headerExtractor) {
         return headerNames.stream()
             .filter(h -> !EXCLUDED_HEADERS.contains(h.toLowerCase()))
             .map(h -> new StringBuilder("'").append(h).append(":").append(headerExtractor.apply(h)).append("'"))
@@ -107,7 +139,7 @@ public class LoggingFilter implements Filter {
         }
 
         @Override
-        public ServletInputStream getInputStream() throws IOException {
+        public ServletInputStream getInputStream() {
             return new Wrapper(new ByteArrayInputStream(this.getBodyAsBytes()));
         }
 
@@ -116,7 +148,7 @@ public class LoggingFilter implements Filter {
             return new BufferedReader(new InputStreamReader(this.getInputStream()));
         }
 
-        private class Wrapper extends ServletInputStream {
+        private static class Wrapper extends ServletInputStream {
 
             private final ByteArrayInputStream is;
 
@@ -125,7 +157,7 @@ public class LoggingFilter implements Filter {
             }
 
             @Override
-            public int read() throws IOException {
+            public int read() {
                 return this.is.read();
             }
 
@@ -141,7 +173,7 @@ public class LoggingFilter implements Filter {
 
             @Override
             public void setReadListener(ReadListener readListener) {
-
+                // Nothing to see here, move along
             }
         }
 
@@ -149,5 +181,6 @@ public class LoggingFilter implements Filter {
 
     @Override
     public void destroy() {
+        // Nothing to see here, move along
     }
 }
