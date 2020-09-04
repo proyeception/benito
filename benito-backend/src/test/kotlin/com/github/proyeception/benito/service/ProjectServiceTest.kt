@@ -18,10 +18,12 @@ class ProjectServiceTest : Spec() {
                 val medusaClient: MedusaClient = getMock()
                 val documentParserMock: DocumentParser = getMock()
                 val documentService: DocumentService = getMock()
+                val fileServiceMock: FileService = getMock()
                 val projectService = ProjectService(
                     medusaClient = medusaClient,
                     documentParser = documentParserMock,
-                    documentService = documentService
+                    documentService = documentService,
+                    fileService = fileServiceMock
                 )
 
                 val author = PersonRefDTO(
@@ -112,10 +114,12 @@ class ProjectServiceTest : Spec() {
                 val medusaClient: MedusaClient = getMock()
                 val documentParserMock: DocumentParser = getMock()
                 val documentService: DocumentService = getMock()
+                val fileServiceMock: FileService = getMock()
                 val projectService = ProjectService(
                     medusaClient = medusaClient,
                     documentParser = documentParserMock,
-                    documentService = documentService
+                    documentService = documentService,
+                    fileService = fileServiceMock
                 )
 
                 val author = PersonRefDTO(

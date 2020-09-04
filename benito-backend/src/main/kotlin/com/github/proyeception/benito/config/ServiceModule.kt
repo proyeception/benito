@@ -10,17 +10,18 @@ import com.github.proyeception.benito.utils.FileHelper
 import com.github.proyeception.benito.utils.HashHelper
 import org.springframework.context.annotation.Bean
 
-
 open class ServiceModule {
     @Bean
     open fun projectService(
         medusaClient: MedusaClient,
         documentParser: DocumentParser,
-        documentService: DocumentService
+        documentService: DocumentService,
+        fileService: FileService
     ): ProjectService = ProjectService(
         medusaClient = medusaClient,
         documentParser = documentParser,
-        documentService = documentService
+        documentService = documentService,
+        fileService = fileService
     )
 
     @Bean
@@ -39,11 +40,11 @@ open class ServiceModule {
     open fun userService(
         medusaClient: MedusaClient,
         organizationSnapshot: OrganizationSnapshot,
-        fileHelper: FileHelper
+        fileService: FileService
     ): UserService = UserService(
         medusaClient = medusaClient,
         organizationSnapshot = organizationSnapshot,
-        fileHelper = fileHelper
+        fileService = fileService
     )
 
     @Bean
@@ -59,4 +60,13 @@ open class ServiceModule {
 
     @Bean
     open fun sessionService(): SessionService = SessionService()
+
+    @Bean
+    open fun fileService(
+        medusaClient: MedusaClient,
+        fileHelper: FileHelper
+    ) = FileService(
+        fileHelper = fileHelper,
+        medusaClient = medusaClient
+    )
 }

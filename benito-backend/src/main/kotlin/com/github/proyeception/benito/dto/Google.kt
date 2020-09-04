@@ -1,6 +1,6 @@
 package com.github.proyeception.benito.dto
 
-data class FileDTO(
+data class GoogleFileDTO(
     val id: String,
     val name: String,
     val mimeType: String,
@@ -12,7 +12,7 @@ data class FileCreatedDTO(
     val name: String,
     val mimeType: String
 ) {
-    fun toFile(): FileDTO = FileDTO(
+    fun toFile(): GoogleFileDTO = GoogleFileDTO(
         name = name,
         mimeType = mimeType,
         webContentLink = null,
@@ -27,7 +27,7 @@ data class MetadataDTO(
 )
 
 data class QueryDTO(
-    val files: List<FileDTO>
+    val files: List<GoogleFileDTO>
 )
 
 data class GoogleProfileEmailDTO(

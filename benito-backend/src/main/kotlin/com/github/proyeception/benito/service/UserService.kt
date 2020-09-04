@@ -5,15 +5,12 @@ import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.AmbiguousReferenceException
 import com.github.proyeception.benito.exception.NotFoundException
 import com.github.proyeception.benito.snapshot.OrganizationSnapshot
-import com.github.proyeception.benito.utils.FileHelper
-import org.apache.http.entity.ContentType
 import org.slf4j.LoggerFactory
-
 
 open class UserService(
     private val medusaClient: MedusaClient,
     private val organizationSnapshot: OrganizationSnapshot,
-    private val fileHelper: FileHelper
+    private val fileService: FileService
 ) {
     open fun findAuthor(userId: String): PersonDTO = findUserById(userId, "authors")
 
@@ -74,18 +71,7 @@ open class UserService(
     private fun findUserById(userId: String, collection: String) = mapMedusaToDomain(medusaClient.findUser(userId, collection))
 
     private fun createImage(userId: String, profilePicUrl: String?): MedusaFileDTO? = profilePicUrl?.let {
-        val image = fileHelper.downloadImage(it, "/tmp/$userId.jpg")
-        try {
-            // It's necessary to leave this in two separate lines, since finally executes before return
-            val response = medusaClient.createFile(
-                file = image,
-                filename = userId,
-                contentType = ContentType.IMAGE_JPEG
-            )
-            return response
-        } finally {
-            fileHelper.deleteFile(image)
-        }
+        fileService.createMedusaImageFromUrl(it, "/tmp/$userId.jpg")
     }
 
     private fun mapIdToOrganization(organizationId: String): MedusaOrganizationDTO = organizationSnapshot

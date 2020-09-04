@@ -23,11 +23,11 @@ class UserServiceTest : Spec() {
     init {
         val medusaMock: MedusaClient = getMock()
         val organizationMock: OrganizationSnapshot = getMock()
-        val fileHelperMock: FileHelper = getMock()
+        val fileServiceMock: FileService = getMock()
         val userService = UserService(
             medusaClient = medusaMock,
             organizationSnapshot = organizationMock,
-            fileHelper = fileHelperMock
+            fileService = fileServiceMock
         )
 
         "findAuthor" should {
@@ -259,17 +259,14 @@ class UserServiceTest : Spec() {
 
         "createAuthor" should {
             "download the image to file, upload it to Medusa, upload the user, and then delete the image file" {
-                val fileMock: File = getMock()
-                on(fileHelperMock.downloadImage(eq("https://profilepic.com"), eq("/tmp/g-123.jpg"))).thenReturn(fileMock)
                 val profilePicFile = MedusaFileDTO(
                     url = "https://profilepic.com",
                     id = "123"
                 )
 
-                on(medusaMock.createFile(
-                    file = eq(fileMock),
-                    filename = eq("g-123"),
-                    contentType = eq(ContentType.IMAGE_JPEG)
+                on(fileServiceMock.createMedusaImageFromUrl(
+                    url = eq("https://profilepic.com"),
+                    filename = eq("/tmp/g-123.jpg")
                 )).thenReturn(profilePicFile)
 
                 userService.createAuthor(
@@ -281,7 +278,6 @@ class UserServiceTest : Spec() {
                     profilePicUrl = "https://profilepic.com"
                 )
 
-                verify(fileHelperMock).deleteFile(eq(fileMock))
                 verify(medusaMock).createUser(
                     CreateMedusaPersonDTO(
                         username = null,
@@ -297,12 +293,10 @@ class UserServiceTest : Spec() {
 
             "delete the image even if there's an error thrown when creating the file in medusa" {
                 val fileMock: File = getMock()
-                on(fileHelperMock.downloadImage(eq("https://profilepic.com"), eq("/tmp/g-123.jpg"))).thenReturn(fileMock)
 
-                on(medusaMock.createFile(
-                    file = eq(fileMock),
-                    filename = eq("g-123"),
-                    contentType = eq(ContentType.IMAGE_JPEG)
+                on(fileServiceMock.createMedusaImageFromUrl(
+                    url = eq("https://profilepic.com"),
+                    filename = eq("/tmp/g-123.jpg")
                 )).thenThrow(RuntimeException("Error"))
 
                 shouldThrow<RuntimeException> {
@@ -316,12 +310,9 @@ class UserServiceTest : Spec() {
                     )
                 }
 
-                verify(fileHelperMock).deleteFile(eq(fileMock))
             }
 
             "not create the file if user has no profile picture" {
-                val fileMock: File = getMock()
-                on(fileHelperMock.downloadImage(eq("https://profilepic.com"), eq("/tmp/g-123.jpg"))).thenReturn(fileMock)
 
                 userService.createAuthor(
                     username = null,
@@ -330,14 +321,6 @@ class UserServiceTest : Spec() {
                     googleUserId = "g-123",
                     googleToken = "123",
                     profilePicUrl = null
-                )
-
-                verify(fileHelperMock, never()).downloadImage(anyString(), anyString())
-                verify(fileHelperMock, never()).deleteFile(eq(fileMock))
-                verify(medusaMock, never()).createFile(
-                    file = eq(fileMock),
-                    filename = eq("g-123"),
-                    contentType = eq(ContentType.IMAGE_JPEG)
                 )
                 verify(medusaMock).createUser(
                     CreateMedusaPersonDTO(

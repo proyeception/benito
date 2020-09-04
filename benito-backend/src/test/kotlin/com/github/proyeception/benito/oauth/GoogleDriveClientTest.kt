@@ -7,7 +7,7 @@ import com.github.proyeception.benito.Spec
 import com.github.proyeception.benito.connector.OAuthConnector
 import com.github.proyeception.benito.connector.Response
 import com.github.proyeception.benito.dto.FileCreatedDTO
-import com.github.proyeception.benito.dto.FileDTO
+import com.github.proyeception.benito.dto.GoogleFileDTO
 import com.github.proyeception.benito.dto.MetadataDTO
 import com.github.proyeception.benito.mock.eq
 import com.github.proyeception.benito.mock.getMock
@@ -33,7 +33,7 @@ class GoogleDriveClientTest : Spec() {
                 val responseMock: Response = getMock()
                 on(connectorMock.get(anyString())).thenReturn(responseMock.right())
                 on(responseMock.deserializeAs(any(TypeReference::class.java))).thenReturn(
-                    FileDTO(
+                    GoogleFileDTO(
                         id = "123",
                         name = "some name",
                         mimeType = "application/pdf",
@@ -41,7 +41,7 @@ class GoogleDriveClientTest : Spec() {
                     )
                 )
 
-                val expected = FileDTO(
+                val expected = GoogleFileDTO(
                     id = "123",
                     name = "some name",
                     mimeType = "application/pdf",

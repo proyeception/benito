@@ -149,14 +149,24 @@ open class MedusaClient(
         return response.deserializeAs(object : TypeReference<List<MedusaFileDTO>>() {}).first()
     }
 
-    open fun updateProject(p: UpdateProjectDTO, id: String) {
-        val response = medusaConnector.put("/projects/$id", p)
+    open fun updateProjectContent(content: UpdateContentDTO, id: String) {
+        val response = medusaConnector.put("/projects/$id", content)
 
         if (response.isError()) {
             LOGGER.error("Error updating project $id on medusa", response.body)
             throw FailedDependencyException("Error updating project $id")
         }
     }
+
+    open fun updateProjectImage(projectId: String, poster: UpdatePosterDTO) {
+        val response = medusaConnector.put("/projects/$projectId", poster)
+
+        if (response.isError()) {
+            LOGGER.error("Error updating project $projectId on medusa", response.body)
+            throw FailedDependencyException("Error updating project $projectId")
+        }
+    }
+
     private fun count(collection: String): Int {
         val response = medusaConnector.get("/$collection/count")
 

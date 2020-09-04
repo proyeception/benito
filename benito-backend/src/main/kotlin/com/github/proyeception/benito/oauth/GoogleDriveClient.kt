@@ -8,23 +8,22 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.proyeception.benito.connector.OAuthConnector
 import com.github.proyeception.benito.dto.FileCreatedDTO
-import com.github.proyeception.benito.dto.FileDTO
+import com.github.proyeception.benito.dto.GoogleFileDTO
 import com.github.proyeception.benito.dto.MetadataDTO
 import com.github.proyeception.benito.dto.QueryDTO
 import com.github.proyeception.benito.exception.AmbiguousReferenceException
 import com.github.proyeception.benito.extension.replaceUrlSpaces
 import org.slf4j.LoggerFactory
 import org.springframework.web.multipart.MultipartFile
-import java.util.*
 
 open class GoogleDriveClient(
     private val googleDriveConnector: OAuthConnector,
     private val objectMapper: ObjectMapper
 ) {
-    open fun getFile(fileId: String): Either<Throwable, FileDTO> = googleDriveConnector.get(
+    open fun getFile(fileId: String): Either<Throwable, GoogleFileDTO> = googleDriveConnector.get(
         url = "https://www.googleapis.com/drive/v3/files/$fileId?fields=webContentLink,name,mimeType"
     )
-        .map { it.deserializeAs(object : TypeReference<FileDTO>() {}) }
+        .map { it.deserializeAs(object : TypeReference<GoogleFileDTO>() {}) }
 
     open fun createFile(name: String, file: MultipartFile, folderId: String): Either<Throwable, FileCreatedDTO> =
         createFile(metadata = MetadataDTO(name = name, parents = listOf(folderId)), file = file)
@@ -50,7 +49,7 @@ open class GoogleDriveClient(
             .map { it.deserializeAs(object : TypeReference<FileCreatedDTO>() {}) }
     }
 
-    open fun findOrCreateFolder(name: String): Either<Throwable, FileDTO> = query("name = '$name'")
+    open fun findOrCreateFolder(name: String): Either<Throwable, GoogleFileDTO> = query("name = '$name'")
         .flatMap {
             when (it.size) {
                 0 -> createFolder(name).map { f -> f.toFile() }
@@ -59,7 +58,7 @@ open class GoogleDriveClient(
             }
         }
 
-    private fun query(query: String): Either<Throwable, List<FileDTO>> = googleDriveConnector.get(
+    private fun query(query: String): Either<Throwable, List<GoogleFileDTO>> = googleDriveConnector.get(
         url = "https://www.googleapis.com/drive/v3/files?q=${query.replaceUrlSpaces()}"
     )
         .map { it.deserializeAs(object : TypeReference<QueryDTO>() {}) }

@@ -104,3 +104,7 @@ data class ContactDTO(
     val phone: String?,
     val mail: String?
 )
+
+data class UpdatePosterDTO(
+    val poster: MedusaFileDTO
+)

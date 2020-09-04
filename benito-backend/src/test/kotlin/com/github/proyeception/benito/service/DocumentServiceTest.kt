@@ -4,7 +4,7 @@ import arrow.core.left
 import arrow.core.right
 import com.github.proyeception.benito.Spec
 import com.github.proyeception.benito.dto.FileCreatedDTO
-import com.github.proyeception.benito.dto.FileDTO
+import com.github.proyeception.benito.dto.GoogleFileDTO
 import com.github.proyeception.benito.mock.eq
 import com.github.proyeception.benito.mock.getMock
 import com.github.proyeception.benito.mock.on
@@ -27,7 +27,7 @@ class DocumentServiceTest : Spec() {
                 on(googleMock.findOrCreateFolder(
                     name = eq("456")
                 )).thenReturn(
-                    FileDTO(
+                    GoogleFileDTO(
                         id = "123456",
                         name = "some-doc",
                         mimeType = "application/pdf",
@@ -55,7 +55,7 @@ class DocumentServiceTest : Spec() {
                 on(googleMock.findOrCreateFolder(
                     name = eq("456")
                 )).thenReturn(
-                    FileDTO(
+                    GoogleFileDTO(
                         id = "123456",
                         name = "some-doc",
                         mimeType = "application/pdf",
@@ -78,7 +78,7 @@ class DocumentServiceTest : Spec() {
             "return the web content link if it's not null" {
                 forAll { id: String, webContentLink: String ->
                     on(googleMock.getFile(eq(id))).thenReturn(
-                        FileDTO(
+                        GoogleFileDTO(
                             id = "123",
                             name = "some-doc",
                             mimeType = "application/pdf",
@@ -95,7 +95,7 @@ class DocumentServiceTest : Spec() {
             "return the fallback if the web content link is null" {
                 forAll { id: String ->
                     on(googleMock.getFile(eq(id))).thenReturn(
-                        FileDTO(
+                        GoogleFileDTO(
                             id = "123",
                             name = "some-doc",
                             mimeType = "application/pdf",

@@ -99,7 +99,7 @@ data class LoginDTO(
     val token: String
 )
 
-data class UpdateProjectDTO(
+data class UpdateContentDTO(
     val title: String?,
     val description: String?,
     val extraContent: String?
