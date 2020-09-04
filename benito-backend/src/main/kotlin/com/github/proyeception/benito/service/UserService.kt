@@ -61,6 +61,18 @@ open class UserService(
         userType = UserType.SUPERVISOR
     )
 
+    fun updateAuthor(id: String, user: UpdateUserDTO) = updateUser(
+        id = id,
+        user = user,
+        userType = UserType.AUTHOR
+    )
+
+    fun updateSupervisor(id: String, user: UpdateUserDTO) = updateUser(
+        id = id,
+        user = user,
+        userType = UserType.SUPERVISOR
+    )
+
     private fun findOneUserBy(userType: UserType, vararg filters: Pair<String, String>): PersonDTO? = medusaClient
         .findUsersBy(
             userType,
@@ -139,6 +151,12 @@ open class UserService(
         )
         LOGGER.info("Successfully updated $userType $id profile picture")
     }
+
+    private fun updateUser(id: String, user: UpdateUserDTO, userType: UserType) = medusaClient.updateUser(
+        userId = id,
+        user = user,
+        userType = userType
+    )
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(UserService::class.java)

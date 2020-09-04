@@ -1,5 +1,6 @@
 package com.github.proyeception.benito.controller
 
+import com.github.proyeception.benito.dto.UpdateUserDTO
 import com.github.proyeception.benito.service.SessionService
 import com.github.proyeception.benito.service.UserService
 import org.springframework.http.HttpStatus
@@ -49,6 +50,24 @@ class UserController(
         @RequestParam("file") image: MultipartFile,
         @RequestHeader(value = "x-qui-token", required = true) token: String
     ) = doAuthorized(id, token) { userService.updateSupervisorProfilePicture(id, image) }
+
+    @RequestMapping(value = ["/benito/authors/{id}"], method = [RequestMethod.PATCH])
+    @CrossOrigin
+    @ResponseStatus(value = HttpStatus.OK)
+    fun updateAuthor(
+        @PathVariable id: String,
+        @RequestBody user: UpdateUserDTO,
+        @RequestHeader("x-qui-token", required = true) token: String
+    ) = doAuthorized(id, token) { userService.updateAuthor(id, user) }
+
+    @RequestMapping(value = ["/benito/supervisors/{id}"], method = [RequestMethod.PATCH])
+    @CrossOrigin
+    @ResponseStatus(value = HttpStatus.OK)
+    fun updateSupervisor(
+        @PathVariable id: String,
+        @RequestBody user: UpdateUserDTO,
+        @RequestHeader("x-qui-token", required = true) token: String
+    ) = doAuthorized(id, token) { userService.updateSupervisor(id, user) }
 
     private fun doAuthorized(authorId: String, token: String, f: (String) -> Unit) = sessionService[token]
         ?.userId

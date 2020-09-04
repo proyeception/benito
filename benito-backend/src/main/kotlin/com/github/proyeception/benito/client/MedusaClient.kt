@@ -171,8 +171,17 @@ open class MedusaClient(
         val response = medusaConnector.put("/${userType.collection}/$userId", profilePic)
 
         if (response.isError()) {
-            LOGGER.error("Error updating user profile picture $userId on medusa", response.body)
-            throw FailedDependencyException("Error updating author $userId")
+            LOGGER.error("Error updating $userType profile picture $userId on medusa", response.body)
+            throw FailedDependencyException("Error updating $userType $userId profile picture")
+        }
+    }
+
+    open fun updateUser(userId: String, user: UpdateUserDTO, userType: UserType) {
+        val response = medusaConnector.put("/${userType.collection}/${userId}", user)
+
+        if (response.isError()) {
+            LOGGER.error("Error updating $userType $userId on medusa", response.body)
+            throw FailedDependencyException("Error updating $userType $userId")
         }
     }
 
