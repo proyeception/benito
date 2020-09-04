@@ -88,8 +88,8 @@ open class MedusaClient(
         }
     }
 
-    open fun findUser(userId: String, collection: String): MedusaPersonDTO {
-        val endpoint = "/$collection/$userId"
+    open fun findUser(userId: String, userType: UserType): MedusaPersonDTO {
+        val endpoint = "/${userType.collection}/$userId"
 
         val response = medusaConnector.get(endpoint)
 
@@ -97,33 +97,33 @@ open class MedusaClient(
             200 -> response.deserializeAs(object : TypeReference<MedusaPersonDTO>() {})
             404 -> {
                 LOGGER.error("User not found: ${response.body}")
-                throw NotFoundException("User $userId not found in $collection")
+                throw NotFoundException("User $userId not found in ${userType.collection}")
             }
             else -> {
-                LOGGER.error("Error getting user $userId from '$collection' in medusa: ${response.body}")
-                throw FailedDependencyException("Error getting user $userId from '$collection' in medusa")
+                LOGGER.error("Error getting user $userId from '${userType.collection}' in medusa: ${response.body}")
+                throw FailedDependencyException("Error getting user $userId from '${userType.collection}' in medusa")
             }
         }
     }
 
-    open fun createUser(person: CreateMedusaPersonDTO, collection: String): MedusaPersonDTO {
-        val endpoint = "/$collection"
+    open fun createUser(person: CreateMedusaPersonDTO, userType: UserType): MedusaPersonDTO {
+        val endpoint = "/${userType.collection}"
 
         val response = medusaConnector.post(endpoint, person)
 
         if (response.isError()) {
             LOGGER.error(response.body)
-            throw FailedDependencyException("Error when creating a new item in $collection")
+            throw FailedDependencyException("Error when creating a new item in ${userType.collection}")
         }
 
         return response.deserializeAs(object : TypeReference<MedusaPersonDTO>() {})
     }
 
-    open fun findUsersBy(collection: String, vararg params: Pair<String, String>): List<MedusaPersonDTO> {
+    open fun findUsersBy(userType: UserType, vararg params: Pair<String, String>): List<MedusaPersonDTO> {
         val formattedParams = params.takeIf { it.isNotEmpty() }
             ?.joinToString("&") { (field, value) -> "$field=$value" }
             ?: ""
-        val response = medusaConnector.get("/$collection?$formattedParams")
+        val response = medusaConnector.get("/${userType.collection}?$formattedParams")
 
         if (response.isError()) {
             LOGGER.error(response.body)
@@ -164,6 +164,15 @@ open class MedusaClient(
         if (response.isError()) {
             LOGGER.error("Error updating project $projectId on medusa", response.body)
             throw FailedDependencyException("Error updating project $projectId")
+        }
+    }
+
+    open fun updateUserProfilePicture(userId: String, profilePic: UpdateProfilePictureDTO, userType: UserType) {
+        val response = medusaConnector.put("/${userType.collection}/$userId", profilePic)
+
+        if (response.isError()) {
+            LOGGER.error("Error updating user profile picture $userId on medusa", response.body)
+            throw FailedDependencyException("Error updating author $userId")
         }
     }
 

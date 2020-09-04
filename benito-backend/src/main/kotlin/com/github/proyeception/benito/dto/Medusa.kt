@@ -108,3 +108,12 @@ data class ContactDTO(
 data class UpdatePosterDTO(
     val poster: MedusaFileDTO
 )
+
+data class UpdateProfilePictureDTO(
+    val profilePic: MedusaFileDTO
+)
+
+enum class UserType(val collection: String) {
+    AUTHOR("authors"),
+    SUPERVISOR("supervisors"),
+}

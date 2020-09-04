@@ -18,8 +18,7 @@ import org.springframework.web.multipart.MultipartFile
 @Controller
 class ProjectController(
     private val projectService: ProjectService,
-    private val sessionService: SessionService,
-    private val fileService: FileService
+    private val sessionService: SessionService
 ) {
 
     @RequestMapping("/benito/projects", method = [RequestMethod.GET])
@@ -72,7 +71,7 @@ class ProjectController(
 
     @RequestMapping(
         value = ["/benito/projects/{id}/poster"],
-        method = [RequestMethod.POST],
+        method = [RequestMethod.POST], // should be a PUT, but it seems PUT doesn't work with multipart
         consumes = [MediaType.MULTIPART_FORM_DATA_VALUE]
     )
     @CrossOrigin

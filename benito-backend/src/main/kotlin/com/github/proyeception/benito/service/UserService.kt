@@ -7,22 +7,23 @@ import com.github.proyeception.benito.exception.NotFoundException
 import com.github.proyeception.benito.snapshot.OrganizationSnapshot
 import org.apache.http.entity.ContentType
 import org.slf4j.LoggerFactory
+import org.springframework.web.multipart.MultipartFile
 
 open class UserService(
     private val medusaClient: MedusaClient,
     private val organizationSnapshot: OrganizationSnapshot,
     private val fileService: FileService
 ) {
-    open fun findAuthor(userId: String): PersonDTO = findUserById(userId, "authors")
+    open fun findAuthor(userId: String): PersonDTO = findUserById(userId, UserType.AUTHOR)
 
-    open fun findSupervisor(userId: String): PersonDTO = findUserById(userId, "supervisors")
+    open fun findSupervisor(userId: String): PersonDTO = findUserById(userId, UserType.SUPERVISOR)
 
-    open fun findSupervisorByGoogleId(id: String): PersonDTO? = findUserByGoogleId(id, "supervisors")
+    open fun findSupervisorByGoogleId(id: String): PersonDTO? = findUserByGoogleId(id, UserType.SUPERVISOR)
 
-    open fun findAuthorByGoogleId(id: String): PersonDTO? = findUserByGoogleId(id, "authors")
+    open fun findAuthorByGoogleId(id: String): PersonDTO? = findUserByGoogleId(id, UserType.AUTHOR)
 
     open fun findSupervisorByEmail(mail: String): PersonDTO? = findOneUserBy(
-        "supervisors",
+        UserType.SUPERVISOR,
         Pair("mail", mail)
     )
 
@@ -45,17 +46,24 @@ open class UserService(
             googleToken = googleToken
         )
 
-        return medusaClient.createUser(person, "authors")
+        return medusaClient.createUser(person, UserType.AUTHOR)
     }
 
-    private fun findUserByGoogleId(id: String, coll: String): PersonDTO? = findOneUserBy(
-        coll,
-        Pair("google_user_id", id)
+    fun updateAuthorProfilePicture(id: String, image: MultipartFile) = updateUserProfilePicture(
+        id = id,
+        image = image,
+        userType = UserType.AUTHOR
     )
 
-    private fun findOneUserBy(coll: String, vararg filters: Pair<String, String>): PersonDTO? = medusaClient
+    fun updateSupervisorProfilePicture(id: String, image: MultipartFile) = updateUserProfilePicture(
+        id = id,
+        image = image,
+        userType = UserType.SUPERVISOR
+    )
+
+    private fun findOneUserBy(userType: UserType, vararg filters: Pair<String, String>): PersonDTO? = medusaClient
         .findUsersBy(
-            coll,
+            userType,
             *filters
         )
         .let {
@@ -69,7 +77,17 @@ open class UserService(
             }
         }
 
-    private fun findUserById(userId: String, collection: String) = mapMedusaToDomain(medusaClient.findUser(userId, collection))
+    private fun findUserByGoogleId(id: String, userType: UserType): PersonDTO? = findOneUserBy(
+        userType,
+        Pair("google_user_id", id)
+    )
+
+    private fun findUserById(userId: String, userType: UserType) = mapMedusaToDomain(
+        medusaClient.findUser(
+            userId,
+            userType
+        )
+    )
 
     private fun createImage(userId: String, profilePicUrl: String?): MedusaFileDTO? = profilePicUrl?.let {
         fileService.createMedusaFileFromUrl(
@@ -105,6 +123,20 @@ open class UserService(
             phone = medusa.mail
         )
     )
+
+    private fun updateUserProfilePicture(id: String, image: MultipartFile, userType: UserType) {
+        val file = fileService.createMedusaFileFromUpload(
+            multipart = image,
+            contentType = ContentType.getByMimeType(image.contentType),
+            fileName = image.originalFilename ?: "$id.jpg",
+            filePath = "/tmp/$id.jpg"
+        )
+        medusaClient.updateUserProfilePicture(
+            userId = id,
+            userType = userType,
+            profilePic = UpdateProfilePictureDTO(profilePic = file)
+        )
+    }
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(UserService::class.java)

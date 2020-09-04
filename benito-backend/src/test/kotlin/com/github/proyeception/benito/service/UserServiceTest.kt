@@ -29,7 +29,7 @@ class UserServiceTest : Spec() {
 
         "findAuthor" should {
             "fetch user and map it to domain" {
-                on(medusaMock.findUser(anyString(), anyString())).thenReturn(
+                on(medusaMock.findUser(anyString(), any())).thenReturn(
                     MedusaPersonDTO(
                         id = "123",
                         username = "benitocapo123",
@@ -123,11 +123,11 @@ class UserServiceTest : Spec() {
 
                 actual shouldBe expected
 
-                verify(medusaMock).findUser(eq("123"), eq("authors"))
+                verify(medusaMock).findUser(eq("123"), eq(UserType.AUTHOR))
             }
 
             "throw a not found exception if no snapshot organization is found with a matching id" {
-                on(medusaMock.findUser(anyString(), anyString())).thenReturn(
+                on(medusaMock.findUser(anyString(), any())).thenReturn(
                     MedusaPersonDTO(
                         id = "123",
                         username = "benitocapo123",
@@ -175,13 +175,13 @@ class UserServiceTest : Spec() {
 
                     userService.findAuthor("123")
                 }
-                verify(medusaMock).findUser(eq("123"), eq("authors"))
+                verify(medusaMock).findUser(eq("123"), eq(UserType.AUTHOR))
             }
         }
 
         "findAuthorByGoogleId" should {
             "return null if no value matches" {
-                on(medusaMock.findUsersBy(eq("authors"), eq(Pair("google_user_id", "123")))).thenReturn(emptyList())
+                on(medusaMock.findUsersBy(eq(UserType.AUTHOR), eq(Pair("google_user_id", "123")))).thenReturn(emptyList())
 
                 val expected = null
                 val actual = userService.findAuthorByGoogleId("123")
@@ -190,7 +190,7 @@ class UserServiceTest : Spec() {
             }
 
             "map medusa to domain if exactly one value is found" {
-                on(medusaMock.findUsersBy(eq("authors"), eq(Pair("google_user_id", "123")))).thenReturn(listOf(
+                on(medusaMock.findUsersBy(eq(UserType.AUTHOR), eq(Pair("google_user_id", "123")))).thenReturn(listOf(
                     MedusaPersonDTO(
                         id = "123",
                         username = null,
@@ -223,7 +223,7 @@ class UserServiceTest : Spec() {
             }
 
             "throw an AmbiguousReferenceExecption if more than one value is found" {
-                on(medusaMock.findUsersBy(eq("authors"), eq(Pair("google_user_id", "123")))).thenReturn(listOf(
+                on(medusaMock.findUsersBy(eq(UserType.AUTHOR), eq(Pair("google_user_id", "123")))).thenReturn(listOf(
                     MedusaPersonDTO(
                         id = "123",
                         username = null,
@@ -286,7 +286,7 @@ class UserServiceTest : Spec() {
                         googleToken = "123",
                         profilePic = profilePicFile
                     ),
-                    "authors"
+                    UserType.AUTHOR
                 )
             }
 
@@ -309,7 +309,7 @@ class UserServiceTest : Spec() {
                         googleToken = "123",
                         profilePic = null
                     ),
-                    "authors"
+                    UserType.AUTHOR
                 )
             }
         }
