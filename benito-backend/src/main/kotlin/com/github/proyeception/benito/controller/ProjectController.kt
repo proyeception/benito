@@ -80,9 +80,7 @@ class ProjectController(
         @PathVariable id: String,
         @RequestParam("file") image: MultipartFile,
         @RequestHeader(value = "x-qui-token", required = true) token: String
-    ) = doAuthorized(projectId = id, token = token) {
-        projectService.updateProjectImage(id, image)
-    }
+    ) = doAuthorized(projectId = id, token = token) { projectService.updateProjectImage(id, image) }
 
     private fun doAuthorized(projectId: String, token: String, f: (String) -> Unit) = sessionService[token]
         ?.userId

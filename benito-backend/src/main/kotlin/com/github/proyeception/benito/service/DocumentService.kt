@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile
 open class DocumentService(
     private val googleClient: GoogleDriveClient
 ) {
-    fun saveFile(file: MultipartFile, projectId: String, name: String): String {
+    open fun saveFile(file: MultipartFile, projectId: String, name: String): String {
         LOGGER.info("Creating file $name")
 
         return googleClient
@@ -26,7 +26,7 @@ open class DocumentService(
             )
     }
 
-    fun fileWebContentLink(id: String): String = googleClient.getFile(id)
+    open fun fileWebContentLink(id: String): String = googleClient.getFile(id)
         .fold(
             ifLeft = {
                 LOGGER.error("Error retrieving file $id")

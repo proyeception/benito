@@ -8,14 +8,10 @@ import java.io.InputStream
 open class DocumentParser(
     private val parser: AutoDetectParser
 ) {
-    public fun parse(stream: InputStream): String {
+    open fun parse(stream: InputStream): String {
         val handler = BodyContentHandler()
         val metadata = Metadata()
-        try {
-            parser.parse(stream, handler, metadata)
-        } finally {
-            stream.close()
-        }
+        stream.use { parser.parse(it, handler, metadata) }
         return handler.toString()
     }
 }

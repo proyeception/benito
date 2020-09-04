@@ -14,7 +14,7 @@ import java.io.File
 open class MedusaClient(
     private val medusaConnector: Connector
 ) {
-    open fun getProjects(
+    open fun findProjects(
         orderBy: OrderDTO? = null,
         from: String? = null,
         to: String? = null,
@@ -43,7 +43,7 @@ open class MedusaClient(
         return response.deserializeAs(object : TypeReference<List<MedusaProjectDTO>>() {})
     }
 
-    open fun featuredProjects(): List<MedusaProjectDTO> = getProjects(limit = 10, orderBy = OrderDTO.VIEWS_DESC)
+    open fun featuredProjects(): List<MedusaProjectDTO> = findProjects(limit = 10, orderBy = OrderDTO.VIEWS_DESC)
 
     open fun categories(): List<CategoryDTO> = find(
         collection = "categories",

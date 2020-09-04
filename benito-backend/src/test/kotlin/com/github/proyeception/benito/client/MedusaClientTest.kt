@@ -64,7 +64,7 @@ class MedusaClientTest : Spec() {
                 on(responseMock.deserializeAs(any(TypeReference::class.java))).thenReturn(projectsResponse)
 
                 val expected = projectsResponse
-                val actual = medusaClient.getProjects()
+                val actual = medusaClient.findProjects()
 
                 expected shouldBe actual
             }
@@ -74,7 +74,7 @@ class MedusaClientTest : Spec() {
                 on(responseMock.isError()).thenReturn(true)
 
                 shouldThrow<FailedDependencyException> {
-                    medusaClient.getProjects()
+                    medusaClient.findProjects()
                 }
             }
 
@@ -88,7 +88,7 @@ class MedusaClientTest : Spec() {
                 on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
 
                 val expected = projectsResponse
-                val actual = medusaClient.getProjects(OrderDTO.DATE_ASC)
+                val actual = medusaClient.findProjects(OrderDTO.DATE_ASC)
 
                 expected shouldBe actual
             }
@@ -103,7 +103,7 @@ class MedusaClientTest : Spec() {
                 on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
 
                 val expected = projectsResponse
-                val actual = medusaClient.getProjects(OrderDTO.DATE_DESC)
+                val actual = medusaClient.findProjects(OrderDTO.DATE_DESC)
 
                 expected shouldBe actual
             }
@@ -118,7 +118,7 @@ class MedusaClientTest : Spec() {
                 on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
 
                 val expected = projectsResponse
-                val actual = medusaClient.getProjects(OrderDTO.ALPHA_ASC)
+                val actual = medusaClient.findProjects(OrderDTO.ALPHA_ASC)
 
                 expected shouldBe actual
             }
@@ -133,7 +133,7 @@ class MedusaClientTest : Spec() {
                 on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
 
                 val expected = projectsResponse
-                val actual = medusaClient.getProjects(OrderDTO.ALPHA_DESC)
+                val actual = medusaClient.findProjects(OrderDTO.ALPHA_DESC)
 
                 expected shouldBe actual
             }
@@ -148,7 +148,7 @@ class MedusaClientTest : Spec() {
                 on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
 
                 val expected = projectsResponse
-                val actual = medusaClient.getProjects(OrderDTO.VIEWS_ASC)
+                val actual = medusaClient.findProjects(OrderDTO.VIEWS_ASC)
 
                 expected shouldBe actual
             }
@@ -163,7 +163,7 @@ class MedusaClientTest : Spec() {
                 on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
 
                 val expected = projectsResponse
-                val actual = medusaClient.getProjects(OrderDTO.VIEWS_DESC)
+                val actual = medusaClient.findProjects(OrderDTO.VIEWS_DESC)
 
                 expected shouldBe actual
             }
@@ -180,7 +180,7 @@ class MedusaClientTest : Spec() {
                 on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
 
                 val expected = projectsResponse
-                val actual = medusaClient.getProjects(from = fromDate)
+                val actual = medusaClient.findProjects(from = fromDate)
 
                 expected shouldBe actual
             }
@@ -197,7 +197,7 @@ class MedusaClientTest : Spec() {
                 on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
 
                 val expected = projectsResponse
-                val actual = medusaClient.getProjects(to = toDate)
+                val actual = medusaClient.findProjects(to = toDate)
 
                 expected shouldBe actual
             }
@@ -214,7 +214,7 @@ class MedusaClientTest : Spec() {
                 on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
 
                 val expected = projectsResponse
-                val actual = medusaClient.getProjects(nameContains = projectName)
+                val actual = medusaClient.findProjects(nameContains = projectName)
 
                 expected shouldBe actual
             }
@@ -231,7 +231,7 @@ class MedusaClientTest : Spec() {
                 on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
 
                 val expected = projectsResponse
-                val actual = medusaClient.getProjects(orderBy = OrderDTO.DATE_ASC, nameContains = projectName)
+                val actual = medusaClient.findProjects(orderBy = OrderDTO.DATE_ASC, nameContains = projectName)
 
                 expected shouldBe actual
             }

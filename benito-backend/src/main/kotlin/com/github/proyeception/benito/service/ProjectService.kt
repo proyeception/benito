@@ -18,7 +18,7 @@ open class ProjectService(
         to: String?,
         nameContains: String?,
         category: String?
-    ): List<ProjectDTO> = medusaClient.getProjects(
+    ): List<ProjectDTO> = medusaClient.findProjects(
         orderBy = orderBy,
         from = from,
         to = to,
@@ -26,13 +26,19 @@ open class ProjectService(
         category = category
     ).map { ProjectDTO(it) }
 
-    fun featuredProjects(): List<ProjectDTO> = medusaClient.featuredProjects().map { ProjectDTO(it) }
+    fun featuredProjects(): List<ProjectDTO> = medusaClient.findProjects(
+        orderBy = OrderDTO.VIEWS_DESC,
+        limit = 10
+    ).map { ProjectDTO(it) }
 
     fun count(): CountDTO = CountDTO(medusaClient.projectCount())
 
     fun findProject(id: String): ProjectDTO = ProjectDTO(medusaClient.findProject(id))
 
-    fun updateProjectContent(u: UpdateContentDTO, projectId: String) = medusaClient.updateProjectContent(u, projectId)
+    fun updateProjectContent(content: UpdateContentDTO, projectId: String) = medusaClient.updateProjectContent(
+        content = content,
+        id = projectId
+    )
 
     fun saveDocument(projectId: String, name: String, file: MultipartFile) {
         val fileStream = file.inputStream
