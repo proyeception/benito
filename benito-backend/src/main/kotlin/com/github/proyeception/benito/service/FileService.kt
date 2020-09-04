@@ -4,6 +4,7 @@ import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.dto.MedusaFileDTO
 import com.github.proyeception.benito.utils.FileHelper
 import org.apache.http.entity.ContentType
+import org.slf4j.LoggerFactory
 import org.springframework.web.multipart.MultipartFile
 import java.io.File
 
@@ -41,6 +42,7 @@ open class FileService(
 
     private fun createMedusaFileDeleting(file: File, contentType: ContentType, fileName: String): MedusaFileDTO =
         runCatching {
+            LOGGER.info("Create new file $fileName on Medusa")
             medusaClient.createFile(
                 file = file,
                 filename = fileName,
@@ -49,4 +51,8 @@ open class FileService(
         }
             .also { fileHelper.deleteFile(file) }
             .getOrThrow()
+
+    private companion object {
+        private val LOGGER = LoggerFactory.getLogger(FileService::class.java)
+    }
 }

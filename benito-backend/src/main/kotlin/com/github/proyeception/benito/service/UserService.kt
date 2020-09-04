@@ -35,7 +35,7 @@ open class UserService(
         googleToken: String,
         profilePicUrl: String?
     ): MedusaPersonDTO {
-        val image = createImage(googleUserId, profilePicUrl)
+        val image = createImageFromUrl(googleUserId, profilePicUrl)
 
         val person = CreateMedusaPersonDTO(
             fullName = fullName,
@@ -89,7 +89,7 @@ open class UserService(
         )
     )
 
-    private fun createImage(userId: String, profilePicUrl: String?): MedusaFileDTO? = profilePicUrl?.let {
+    private fun createImageFromUrl(userId: String, profilePicUrl: String?): MedusaFileDTO? = profilePicUrl?.let {
         fileService.createMedusaFileFromUrl(
             url = it,
             filePath = "/tmp/$userId.jpg",
@@ -97,6 +97,7 @@ open class UserService(
             contentType = ContentType.IMAGE_JPEG
         )
     }
+        ?.also { LOGGER.info("Created image with id ${it.id} on medusa") }
 
     private fun mapIdToOrganization(organizationId: String): MedusaOrganizationDTO = organizationSnapshot
         .find { it.id == organizationId }
@@ -136,6 +137,7 @@ open class UserService(
             userType = userType,
             profilePic = UpdateProfilePictureDTO(profilePic = file)
         )
+        LOGGER.info("Successfully updated $userType $id profile picture")
     }
 
     companion object {

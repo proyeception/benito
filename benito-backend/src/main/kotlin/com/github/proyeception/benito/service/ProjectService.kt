@@ -54,5 +54,4 @@ open class ProjectService(
     fun hasAuthor(authorId: String, projectId: String): Boolean = findProject(projectId)
         .authors
         .any { it.id == authorId }
-
 }
