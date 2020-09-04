@@ -5,7 +5,6 @@ import com.github.proyeception.benito.dto.OrderDTO
 import com.github.proyeception.benito.dto.ProjectDTO
 import com.github.proyeception.benito.dto.UpdateContentDTO
 import com.github.proyeception.benito.exception.ForbiddenException
-import com.github.proyeception.benito.service.FileService
 import com.github.proyeception.benito.service.ProjectService
 import com.github.proyeception.benito.service.SessionService
 import org.springframework.http.HttpStatus
@@ -81,6 +80,17 @@ class ProjectController(
         @RequestParam("file") image: MultipartFile,
         @RequestHeader(value = "x-qui-token", required = true) token: String
     ) = doAuthorized(projectId = id, token = token) { projectService.updateProjectImage(id, image) }
+
+    @RequestMapping(value = ["/benito/projects/{projectId}/documents/{documentId}"], method = [RequestMethod.DELETE])
+    @CrossOrigin
+    @ResponseStatus(value = HttpStatus.OK)
+    fun deleteDocument(
+        @PathVariable projectId: String,
+        @PathVariable documentId: String,
+        @RequestHeader(value = "x-qui-token", required = true) token: String
+    ) = doAuthorized(projectId = projectId, token = token) {
+        projectService.deleteDocument(projectId, documentId)
+    }
 
     private fun doAuthorized(projectId: String, token: String, f: (String) -> Unit) = sessionService[token]
         ?.userId

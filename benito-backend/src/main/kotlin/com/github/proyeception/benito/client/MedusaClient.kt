@@ -138,6 +138,12 @@ open class MedusaClient(
         ref = object : TypeReference<MedusaPersonDTO>() {}
     )
 
+    open fun deleteDocument(projectId: String, documentId: String) = delete(
+        collection = "projects/$projectId",
+        id = documentId,
+        ref = object : TypeReference<Any>() {}
+    )
+
     private fun <T> find(collection: String, params: List<String>, ref: TypeReference<List<T>>): List<T> {
         val response = medusaConnector.get("/$collection?${params.joinToString("&")}")
 
@@ -184,6 +190,17 @@ open class MedusaClient(
         return response.deserializeAs(ref)
     }
 
+    private fun <T> delete(collection: String, id: String, ref: TypeReference<T>): T {
+        val response = medusaConnector.delete("/$collection/$id")
+
+        if (response.isError()) {
+            LOGGER.error("Error deleting $id from $collection on Medusa", response.body)
+            throw FailedDependencyException("Error deleting $id from $collection")
+        }
+
+        return response.deserializeAs(ref)
+    }
+
     private fun count(collection: String): Int {
         val response = medusaConnector.get("/$collection/count")
 
@@ -200,7 +217,6 @@ open class MedusaClient(
 
     private fun String.appendParam(param: String, value: String?, filter: MedusaFilter): String =
         value?.let { "${this}${param}_${filter.filterName}=$it&" } ?: this
-
     private fun String.appendParam(param: String, value: String?) = value?.let { "$this${param}=$it&" } ?: this
 
     companion object {

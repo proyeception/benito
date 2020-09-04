@@ -60,4 +60,9 @@ open class ProjectService(
     fun hasAuthor(authorId: String, projectId: String): Boolean = findProject(projectId)
         .authors
         .any { it.id == authorId }
+
+    fun deleteDocument(projectId: String, documentId: String) = medusaClient.deleteDocument(
+        projectId = projectId,
+        documentId = documentId
+    )
 }
