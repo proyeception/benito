@@ -45,93 +45,50 @@ open class MedusaClient(
 
     open fun featuredProjects(): List<MedusaProjectDTO> = getProjects(limit = 10, orderBy = OrderDTO.VIEWS_DESC)
 
-    open fun categories(): List<CategoryDTO> {
-        val response = medusaConnector.get("/categories")
+    open fun categories(): List<CategoryDTO> = find(
+        collection = "categories",
+        ref = object : TypeReference<List<CategoryDTO>>() {},
+        params = emptyList()
+    )
 
-        if (response.isError()) {
-            LOGGER.error("Error getting categories from medusa: ${response.body}")
-            throw FailedDependencyException("Error getting categories from Medusa")
-        }
-
-        return response.deserializeAs(object : TypeReference<List<CategoryDTO>>() {})
-    }
-
-    open fun projectCount(): Int = count("projects")
+    open fun projectCount(): Int = count(PROJECTS)
 
     open fun categoriesCount() = count("categories")
 
-    open fun project(id: String): MedusaProjectDTO {
-        val response = medusaConnector.get("/projects/${id}")
+    open fun findProject(projectId: String): MedusaProjectDTO = findOne(
+        collection = PROJECTS,
+        id = projectId,
+        ref = object : TypeReference<MedusaProjectDTO>() {}
+    )
 
-        if (response.isError()) {
-            LOGGER.error("Error getting project from medusa: ${response.body}")
-            throw FailedDependencyException("Error getting project from Medusa")
-        }
-
-        return response.deserializeAs(object : TypeReference<MedusaProjectDTO>() {})
-    }
-
-    open fun saveDocument(projectId: String, name: String, driveId: String, content: String) {
-        val endpoint = "/projects/$projectId/documents"
-
-        val document = CreateDocumentDTO(
+    open fun saveDocument(projectId: String, name: String, driveId: String, content: String) = create(
+        collection = "projects/$projectId/documents",
+        dto = CreateDocumentDTO(
             fileName = name,
             driveId = driveId,
             content = content
-        )
+        ),
+        ref = object : TypeReference<Any>() {}
+    )
 
-        val response = medusaConnector.post(endpoint, document)
+    open fun findUser(userId: String, userType: UserType): MedusaPersonDTO = findOne(
+        collection = userType.collection,
+        id = userId,
+        ref = object : TypeReference<MedusaPersonDTO>() {}
+    )
 
-        if (response.isError()) {
-            LOGGER.error("Error saving document in medusa: ${response.body}")
-            throw FailedDependencyException("Error uploading file with drive ID $driveId from Medusa")
-        }
-    }
+    open fun createUser(person: CreateMedusaPersonDTO, userType: UserType): MedusaPersonDTO = create(
+        collection = userType.collection,
+        dto = person,
+        ref = object : TypeReference<MedusaPersonDTO>() {}
+    )
 
-    open fun findUser(userId: String, userType: UserType): MedusaPersonDTO {
-        val endpoint = "/${userType.collection}/$userId"
-
-        val response = medusaConnector.get(endpoint)
-
-        return when (response.status) {
-            200 -> response.deserializeAs(object : TypeReference<MedusaPersonDTO>() {})
-            404 -> {
-                LOGGER.error("User not found: ${response.body}")
-                throw NotFoundException("User $userId not found in ${userType.collection}")
-            }
-            else -> {
-                LOGGER.error("Error getting user $userId from '${userType.collection}' in medusa: ${response.body}")
-                throw FailedDependencyException("Error getting user $userId from '${userType.collection}' in medusa")
-            }
-        }
-    }
-
-    open fun createUser(person: CreateMedusaPersonDTO, userType: UserType): MedusaPersonDTO {
-        val endpoint = "/${userType.collection}"
-
-        val response = medusaConnector.post(endpoint, person)
-
-        if (response.isError()) {
-            LOGGER.error(response.body)
-            throw FailedDependencyException("Error when creating a new item in ${userType.collection}")
-        }
-
-        return response.deserializeAs(object : TypeReference<MedusaPersonDTO>() {})
-    }
-
-    open fun findUsersBy(userType: UserType, vararg params: Pair<String, String>): List<MedusaPersonDTO> {
-        val formattedParams = params.takeIf { it.isNotEmpty() }
-            ?.joinToString("&") { (field, value) -> "$field=$value" }
-            ?: ""
-        val response = medusaConnector.get("/${userType.collection}?$formattedParams")
-
-        if (response.isError()) {
-            LOGGER.error(response.body)
-            throw FailedDependencyException("Failed to fetch users from medusa")
-        }
-
-        return response.deserializeAs(object : TypeReference<List<MedusaPersonDTO>>() {})
-    }
+    open fun findUsersBy(userType: UserType, vararg params: Pair<String, String>): List<MedusaPersonDTO> = find(
+        collection = userType.collection,
+        params = params.takeIf { it.isNotEmpty() }?.map { (field, value) -> "$field=$value" }
+            ?: emptyList(),
+        ref = object : TypeReference<List<MedusaPersonDTO>>() {}
+    )
 
     open fun createFile(file: File, filename: String, contentType: ContentType): MedusaFileDTO {
         val multipart = MultipartMetadataBuilder()
@@ -149,40 +106,82 @@ open class MedusaClient(
         return response.deserializeAs(object : TypeReference<List<MedusaFileDTO>>() {}).first()
     }
 
-    open fun updateProjectContent(content: UpdateContentDTO, id: String) {
-        val response = medusaConnector.put("/projects/$id", content)
+    open fun updateProjectContent(content: UpdateContentDTO, id: String) = update(
+        collection = PROJECTS,
+        id = id,
+        dto = content,
+        ref = object : TypeReference<MedusaProjectDTO>() {}
+    )
+
+    open fun updateProjectImage(projectId: String, poster: UpdatePosterDTO) = update(
+        collection = PROJECTS,
+        id = projectId,
+        dto = poster,
+        ref = object : TypeReference<MedusaProjectDTO>() {}
+    )
+
+    open fun updateUserProfilePicture(
+        userId: String,
+        profilePic: UpdateProfilePictureDTO,
+        userType: UserType
+    ) = update(
+        collection = userType.collection,
+        id = userId,
+        dto = profilePic,
+        ref = object : TypeReference<MedusaPersonDTO>() {}
+    )
+
+    open fun updateUser(userId: String, user: UpdateUserDTO, userType: UserType) = update(
+        collection = userType.collection,
+        id = userId,
+        dto = user,
+        ref = object : TypeReference<MedusaPersonDTO>() {}
+    )
+
+    private fun <T> find(collection: String, params: List<String>, ref: TypeReference<List<T>>): List<T> {
+        val response = medusaConnector.get("/$collection?${params.joinToString("&")}")
 
         if (response.isError()) {
-            LOGGER.error("Error updating project $id on medusa", response.body)
-            throw FailedDependencyException("Error updating project $id")
+            LOGGER.error("Error fetching $collection on Medusa")
+            throw FailedDependencyException("Error fetching $collection on Medusa")
+        }
+
+        return response.deserializeAs(ref)
+    }
+
+    private fun <T> findOne(collection: String, id: String, ref: TypeReference<T>): T {
+        val response = medusaConnector.get("/$collection/$id")
+
+        when (response.status) {
+            200 -> return response.deserializeAs(ref)
+            404 -> throw NotFoundException("$id not found in $collection")
+            else -> {
+                LOGGER.error("Error getting $id from $collection on Medusa", response.body)
+                throw FailedDependencyException("Error getting $id from $collection on Medusa")
+            }
         }
     }
 
-    open fun updateProjectImage(projectId: String, poster: UpdatePosterDTO) {
-        val response = medusaConnector.put("/projects/$projectId", poster)
+    private fun <T> create(collection: String, dto: Any, ref: TypeReference<T>): T {
+        val response = medusaConnector.post("/$collection", dto)
 
         if (response.isError()) {
-            LOGGER.error("Error updating project $projectId on medusa", response.body)
-            throw FailedDependencyException("Error updating project $projectId")
+            LOGGER.error("Error creating a new item in $collection on Medusa", response.body)
+            throw FailedDependencyException("Error when creating a new item in $collection on Medusa")
         }
+
+        return response.deserializeAs(ref)
     }
 
-    open fun updateUserProfilePicture(userId: String, profilePic: UpdateProfilePictureDTO, userType: UserType) {
-        val response = medusaConnector.put("/${userType.collection}/$userId", profilePic)
+    private fun <T> update(collection: String, id: String, dto: Any, ref: TypeReference<T>): T {
+        val response = medusaConnector.put("/$collection/$id", dto)
 
         if (response.isError()) {
-            LOGGER.error("Error updating $userType profile picture $userId on medusa", response.body)
-            throw FailedDependencyException("Error updating $userType $userId profile picture")
+            LOGGER.error("Error updating $id from $collection on Medusa", response.body)
+            throw FailedDependencyException("Error updating $id from $collection on Medusa")
         }
-    }
 
-    open fun updateUser(userId: String, user: UpdateUserDTO, userType: UserType) {
-        val response = medusaConnector.put("/${userType.collection}/${userId}", user)
-
-        if (response.isError()) {
-            LOGGER.error("Error updating $userType $userId on medusa", response.body)
-            throw FailedDependencyException("Error updating $userType $userId")
-        }
+        return response.deserializeAs(ref)
     }
 
     private fun count(collection: String): Int {
@@ -206,5 +205,6 @@ open class MedusaClient(
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(MedusaClient::class.java)
+        private const val PROJECTS = "projects"
     }
 }

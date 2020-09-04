@@ -192,13 +192,13 @@ class ProjectServiceTest : Spec() {
                 val projectResult = newProject
                 val expected = project
 
-                on(medusaClient.project("1")).thenReturn(projectResult)
+                on(medusaClient.findProject("1")).thenReturn(projectResult)
 
                 val actual = projectService.findProject("1")
 
                 expected shouldBe actual
 
-                Mockito.verify(medusaClient).project("1")
+                Mockito.verify(medusaClient).findProject("1")
             }
         }
 

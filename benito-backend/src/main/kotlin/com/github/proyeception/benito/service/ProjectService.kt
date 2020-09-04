@@ -30,7 +30,7 @@ open class ProjectService(
 
     fun count(): CountDTO = CountDTO(medusaClient.projectCount())
 
-    fun findProject(id: String): ProjectDTO = ProjectDTO(medusaClient.project(id))
+    fun findProject(id: String): ProjectDTO = ProjectDTO(medusaClient.findProject(id))
 
     fun updateProjectContent(u: UpdateContentDTO, projectId: String) = medusaClient.updateProjectContent(u, projectId)
 

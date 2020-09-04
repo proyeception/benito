@@ -6,6 +6,7 @@ import com.github.proyeception.benito.connector.Connector
 import com.github.proyeception.benito.connector.Response
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.FailedDependencyException
+import com.github.proyeception.benito.exception.NotFoundException
 import com.github.proyeception.benito.mock.eq
 import com.github.proyeception.benito.mock.getMock
 import com.github.proyeception.benito.mock.on
@@ -325,21 +326,65 @@ class MedusaClientTest : Spec() {
                 val projectResponse = project
 
                 on(medusaConnector.get(eq("/projects/1"))).thenReturn(responseMock)
-                on(responseMock.isError()).thenReturn(false)
+                on(responseMock.status).thenReturn(200)
                 on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectResponse)
 
                 val expected = projectResponse
-                val actual = medusaClient.project("1")
+                val actual = medusaClient.findProject("1")
 
                 expected shouldBe actual
             }
 
-            "throw if mango returns error" {
+            "throw if medusa returns error" {
                 on(medusaConnector.get(eq("/projects/1"))).thenReturn(responseMock)
                 on(responseMock.isError()).thenReturn(true)
 
                 shouldThrow<FailedDependencyException> {
-                    medusaClient.project("1")
+                    medusaClient.findProject("1")
+                }
+            }
+        }
+
+        "findUser" should {
+            val responseMock: Response = getMock()
+
+            "make a GET to medusa" {
+                on(medusaConnector.get(eq("/authors/1"))).thenReturn(responseMock)
+                on(responseMock.status).thenReturn(200)
+                val person = MedusaPersonDTO(
+                    id = "1",
+                    username = null,
+                    fullName = "Benito Quinquela",
+                    organizations = emptyList(),
+                    profilePic = null,
+                    projects = emptyList(),
+                    socials = emptyList(),
+                    mail = null,
+                    phone = null
+                )
+                on(responseMock.deserializeAs(any(TypeReference::class.java))).thenReturn(person)
+
+                val expected = person
+                val actual = medusaClient.findUser("1", UserType.AUTHOR)
+
+                actual shouldBe expected
+            }
+
+            "throw a NotFoundException if Medusa returns 404" {
+                on(medusaConnector.get(eq("/authors/1"))).thenReturn(responseMock)
+                on(responseMock.status).thenReturn(404)
+
+                shouldThrow<NotFoundException> {
+                    medusaClient.findUser("1", UserType.AUTHOR)
+                }
+            }
+
+            "throw a FailedDependencyException if Medusa returns any other status"{
+                on(medusaConnector.get(eq("/authors/1"))).thenReturn(responseMock)
+                on(responseMock.status).thenReturn(500)
+
+                shouldThrow<FailedDependencyException> {
+                    medusaClient.findUser("1", UserType.AUTHOR)
                 }
             }
         }
