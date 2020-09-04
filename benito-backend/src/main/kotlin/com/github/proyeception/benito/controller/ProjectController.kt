@@ -60,16 +60,18 @@ class ProjectController(
         @RequestParam("file") file: MultipartFile
     ): Unit = projectService.saveFile(projectId, name, file)
 
-    @RequestMapping(value = ["/benito/projects/:id"], method = [RequestMethod.PATCH])
+    @RequestMapping(value = ["/benito/projects/{id}"], method = [RequestMethod.PATCH])
     @CrossOrigin
     @ResponseStatus(value = HttpStatus.OK)
     fun updateProject(
         @PathVariable id: String,
         @RequestBody u: UpdateProjectDTO,
         @RequestHeader(value = "x-qui-token", required = true) token: String
-    ) = sessionService[token]
-        ?.userId
-        ?.takeIf { projectService.hasAuthor(authorId = it, projectId = id) }
-        ?.let { projectService.updateProject(u, id) }
-        ?: throw ForbiddenException("You're not allowed to edit this project")
+    ) {
+        sessionService[token]
+            ?.userId
+            ?.takeIf { projectService.hasAuthor(authorId = it, projectId = id) }
+            ?.let { projectService.updateProject(u, id) }
+            ?: throw ForbiddenException("You're not allowed to edit this project")
+    }
 }

@@ -150,7 +150,7 @@ open class MedusaClient(
     }
 
     open fun updateProject(p: UpdateProjectDTO, id: String) {
-        val response = medusaConnector.put("/projects/id", p)
+        val response = medusaConnector.put("/projects/$id", p)
 
         if (response.isError()) {
             LOGGER.error("Error updating project $id on medusa", response.body)

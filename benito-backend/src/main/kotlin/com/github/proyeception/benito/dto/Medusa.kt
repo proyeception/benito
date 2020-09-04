@@ -20,7 +20,7 @@ data class MedusaProjectDTO(
 
 data class PersonRefDTO(
     val id: String,
-    val username: String,
+    val username: String?,
     val fullName: String
 )
 
