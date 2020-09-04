@@ -10,9 +10,12 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
     ClientModule.class,
     ConfigModule.class,
     ConnectionModule.class,
+    OAuthModule.class,
     ObjectMapperModule.class,
+    ParserModule.class,
     ServiceModule.class,
-    SnapshotModule.class
+    SnapshotModule.class,
+    UtilsModule.class
 })
 @ComponentScan("com.github.proyeception.benito")
 @Configuration

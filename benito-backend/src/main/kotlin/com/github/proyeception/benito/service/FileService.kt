@@ -13,13 +13,20 @@ open class FileService(
 ) {
     open fun createMedusaFileFromUpload(
         multipart: MultipartFile,
+        filePath: String,
+        fileName: String,
         contentType: ContentType
     ): MedusaFileDTO {
-        val file = fileHelper.createFile("/tmp/${multipart.originalFilename}")
+        val file = fileHelper.downloadMultipartFile(
+            multipart = multipart,
+            filePath = filePath
+        )
         try {
-            fileHelper.downloadMultipartFile(multipart, multipart.originalFilename!!)
-            multipart.transferTo(file)
-            val medusaFile = medusaClient.createFile(file, multipart.originalFilename!!, contentType)
+            val medusaFile = medusaClient.createFile(
+                file = file,
+                filename = multipart.originalFilename ?: fileName,
+                contentType = contentType
+            )
             return medusaFile
         } finally {
             Files.delete(file.toPath())
@@ -28,14 +35,15 @@ open class FileService(
 
     open fun createMedusaImageFromUrl(
         url: String,
-        filename: String
+        filePath: String,
+        fileName: String
     ): MedusaFileDTO {
-        val image = fileHelper.downloadImage(url, filename)
+        val image = fileHelper.downloadImage(url, filePath)
         try {
             // It's necessary to leave this in two separate lines, since finally executes before return
             val response = medusaClient.createFile(
                 file = image,
-                filename = filename,
+                filename = fileName,
                 contentType = ContentType.IMAGE_JPEG
             )
             return response

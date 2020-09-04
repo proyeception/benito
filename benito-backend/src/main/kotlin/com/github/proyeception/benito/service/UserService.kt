@@ -71,7 +71,11 @@ open class UserService(
     private fun findUserById(userId: String, collection: String) = mapMedusaToDomain(medusaClient.findUser(userId, collection))
 
     private fun createImage(userId: String, profilePicUrl: String?): MedusaFileDTO? = profilePicUrl?.let {
-        fileService.createMedusaImageFromUrl(it, "/tmp/$userId.jpg")
+        fileService.createMedusaImageFromUrl(
+            url = it,
+            filePath = "/tmp/$userId.jpg",
+            fileName = "$userId.jpg"
+        )
     }
 
     private fun mapIdToOrganization(organizationId: String): MedusaOrganizationDTO = organizationSnapshot

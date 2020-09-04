@@ -72,14 +72,14 @@ class ProjectController(
 
     @RequestMapping(
         value = ["/benito/projects/{id}/poster"],
-        method = [RequestMethod.PUT],
+        method = [RequestMethod.POST],
         consumes = [MediaType.MULTIPART_FORM_DATA_VALUE]
     )
     @CrossOrigin
     @ResponseStatus(value = HttpStatus.OK)
     fun updateProjectPoster(
         @PathVariable id: String,
-        @RequestParam("image") image: MultipartFile,
+        @RequestParam("file") image: MultipartFile,
         @RequestHeader(value = "x-qui-token", required = true) token: String
     ) = doAuthorized(projectId = id, token = token) {
         projectService.updateProjectImage(id, image)

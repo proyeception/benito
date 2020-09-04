@@ -42,7 +42,12 @@ open class ProjectService(
     }
 
     fun updateProjectImage(id: String, multipart: MultipartFile) {
-        val file = fileService.createMedusaFileFromUpload(multipart, ContentType.IMAGE_JPEG)
+        val file = fileService.createMedusaFileFromUpload(
+            multipart = multipart,
+            contentType = ContentType.IMAGE_JPEG,
+            filePath = "/tmp/$id.jpg",
+            fileName = multipart.originalFilename ?: "$id.jpg"
+        )
         medusaClient.updateProjectImage(id, UpdatePosterDTO(file))
     }
 

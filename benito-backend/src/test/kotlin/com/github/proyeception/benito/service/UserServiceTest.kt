@@ -9,12 +9,9 @@ import com.github.proyeception.benito.mock.eq
 import com.github.proyeception.benito.mock.getMock
 import com.github.proyeception.benito.mock.on
 import com.github.proyeception.benito.snapshot.OrganizationSnapshot
-import com.github.proyeception.benito.utils.FileHelper
 import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.never
 import io.kotlintest.matchers.shouldBe
 import io.kotlintest.matchers.shouldThrow
-import org.apache.http.entity.ContentType
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito.verify
 import java.io.File
@@ -266,7 +263,8 @@ class UserServiceTest : Spec() {
 
                 on(fileServiceMock.createMedusaImageFromUrl(
                     url = eq("https://profilepic.com"),
-                    filename = eq("/tmp/g-123.jpg")
+                    filePath = eq("/tmp/g-123.jpg"),
+                    fileName = eq("g-123.jpg")
                 )).thenReturn(profilePicFile)
 
                 userService.createAuthor(
@@ -296,7 +294,8 @@ class UserServiceTest : Spec() {
 
                 on(fileServiceMock.createMedusaImageFromUrl(
                     url = eq("https://profilepic.com"),
-                    filename = eq("/tmp/g-123.jpg")
+                    filePath = eq("/tmp/g-123.jpg"),
+                    fileName = eq("g-123.jpg")
                 )).thenThrow(RuntimeException("Error"))
 
                 shouldThrow<RuntimeException> {
