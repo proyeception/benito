@@ -35,9 +35,20 @@ class UserController(
         @PathVariable id: String,
         @RequestParam("file") image: MultipartFile,
         @RequestHeader(value = "x-qui-token", required = true) token: String
-    ) = doAuthorized(id, token) {
-        userService.updateAuthorProfilePicture(id, image)
-    }
+    ) = doAuthorized(id, token) { userService.updateAuthorProfilePicture(id, image) }
+
+    @RequestMapping(
+        value = ["/benito/supervisors/{id}/picture"],
+        method = [RequestMethod.POST], // should be a PUT, but it seems PUT doesn't work with multipart
+        consumes = [MediaType.MULTIPART_FORM_DATA_VALUE]
+    )
+    @CrossOrigin
+    @ResponseStatus(value = HttpStatus.OK)
+    fun updateSupervisorProfilePicture(
+        @PathVariable id: String,
+        @RequestParam("file") image: MultipartFile,
+        @RequestHeader(value = "x-qui-token", required = true) token: String
+    ) = doAuthorized(id, token) { userService.updateSupervisorProfilePicture(id, image) }
 
     private fun doAuthorized(authorId: String, token: String, f: (String) -> Unit) = sessionService[token]
         ?.userId

@@ -117,3 +117,11 @@ enum class UserType(val collection: String) {
     AUTHOR("authors"),
     SUPERVISOR("supervisors"),
 }
+
+data class UpdateUserDTO(
+    val mail: String?,
+    val phone: String?,
+    val fullName: String?,
+    val username: String?,
+    val socials: List<SocialDTO>?
+)
