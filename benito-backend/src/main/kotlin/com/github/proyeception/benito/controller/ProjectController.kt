@@ -3,6 +3,7 @@ package com.github.proyeception.benito.controller
 import com.github.proyeception.benito.X_QUI_TOKEN
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.ForbiddenException
+import com.github.proyeception.benito.exception.UnauthorizedException
 import com.github.proyeception.benito.service.ProjectService
 import com.github.proyeception.benito.service.SessionService
 import com.github.proyeception.benito.service.UserService
@@ -134,24 +135,41 @@ class ProjectController(
     fun createProject(
         @RequestBody project: CreateProjectDTO,
         @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
-    ) = sessionService[token]
-        ?.takeIf { it.role == RoleDTO.SUPERVISOR }
-        ?.userId
-        ?.takeIf { userService.findSupervisor(it).organizations.any { o -> o.id == project.organizationId } }
-        ?.let { projectService.createProject(it, project) }
-        ?: throw ForbiddenException("You're not allowed to create a project in this organization")
+    ) = doAuthorized(
+        token = token,
+        requiredRole = RoleDTO.SUPERVISOR,
+        authorizeCheck = { userService.findSupervisor(it).organizations.any { o -> o.id == project.organizationId } },
+        f = { projectService.createProject(it, project) },
+        forbiddenMessage = "You're not allowed to create a project in this organization"
+    )
 
-    private fun doSupervisorAuthorized(projectId: String, token: String, f: (String) -> Unit) = sessionService[token]
-        ?.takeIf { it.role == RoleDTO.SUPERVISOR }
-        ?.userId
-        ?.takeIf { projectService.hasSupervisor(supervisorId = it, projectId = projectId) }
-        ?.let(f)
-        ?: throw ForbiddenException("You're not allowed to edit this project")
+    private fun doSupervisorAuthorized(projectId: String, token: String, f: (String) -> Unit) = doAuthorized(
+        token = token,
+        requiredRole = RoleDTO.SUPERVISOR,
+        authorizeCheck = { projectService.hasSupervisor(supervisorId = it, projectId = projectId) },
+        f = f
+    )
 
-    private fun doAuthorAuthorized(projectId: String, token: String, f: (String) -> Unit) = sessionService[token]
-        ?.takeIf { it.role == RoleDTO.AUTHOR }
-        ?.userId
-        ?.takeIf { projectService.hasAuthor(authorId = it, projectId = projectId) }
-        ?.let(f)
-        ?: throw ForbiddenException("You're not allowed to edit this project")
+    private fun doAuthorAuthorized(projectId: String, token: String, f: (String) -> Unit) = doAuthorized(
+        token = token,
+        requiredRole = RoleDTO.AUTHOR,
+        authorizeCheck = { projectService.hasAuthor(authorId = it, projectId = projectId) },
+        f = f
+    )
+
+    private fun doAuthorized(
+        token: String,
+        requiredRole: RoleDTO,
+        f: (String) -> Unit,
+        authorizeCheck: (String) -> Boolean,
+        forbiddenMessage: String = "You're not allowed to edit this project"
+    ) {
+        val session = sessionService[token] ?: throw UnauthorizedException("I don't know who you are")
+
+        session.takeIf { it.role == requiredRole }
+            ?.userId
+            ?.takeIf(authorizeCheck)
+            ?.let(f)
+            ?: throw ForbiddenException(forbiddenMessage)
+    }
 }

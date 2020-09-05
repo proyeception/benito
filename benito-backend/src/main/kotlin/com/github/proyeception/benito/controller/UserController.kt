@@ -2,6 +2,7 @@ package com.github.proyeception.benito.controller
 
 import com.github.proyeception.benito.X_QUI_TOKEN
 import com.github.proyeception.benito.dto.UpdateUserDTO
+import com.github.proyeception.benito.exception.UnauthorizedException
 import com.github.proyeception.benito.service.SessionService
 import com.github.proyeception.benito.service.UserService
 import org.springframework.http.HttpStatus
@@ -70,9 +71,12 @@ class UserController(
         @RequestHeader(X_QUI_TOKEN, required = true) token: String
     ) = doAuthorized(id, token) { userService.updateSupervisor(id, user) }
 
-    private fun doAuthorized(authorId: String, token: String, f: (String) -> Unit) = sessionService[token]
-        ?.userId
-        ?.takeIf { it == authorId }
-        ?.let(f)
-        ?: throw ForbiddenException("You're not allowed to edit this author")
+    private fun doAuthorized(authorId: String, token: String, f: (String) -> Unit) {
+        val session = sessionService[token]
+            ?: throw UnauthorizedException("I don't know who you are")
+
+        session.userId.takeIf { it == authorId }
+            ?.let(f)
+            ?: throw ForbiddenException("You're not allowed to edit this user")
+    }
 }
