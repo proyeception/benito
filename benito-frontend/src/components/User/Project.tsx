@@ -3,6 +3,7 @@ import { hot } from "react-hot-loader";
 import "./styles.scss";
 import { Project } from "../../types";
 import { Link } from "react-router-dom";
+import { noImageAvailableVertical } from "../../constants";
 
 type Props = {
   project: Project;
@@ -14,7 +15,7 @@ const Project = (props: Props) => (
       <div className="d-none d-md-block col-md-4">
         <div className="qui-user-profile-project-image-container text-center border-right">
           <img
-            src={props.project.posterUrl}
+            src={props.project.posterUrl || noImageAvailableVertical}
             alt={props.project.title.valueOf()}
             className="qui-user-profile-project-image"
           />
@@ -27,7 +28,10 @@ const Project = (props: Props) => (
               <div className="d-block d-md-none">
                 <div className="qui-user-profile-project-image-container-sm mr-4">
                   <img
-                    src={props.project.posterUrl?.valueOf()}
+                    src={
+                      props.project.posterUrl?.valueOf() ||
+                      noImageAvailableVertical
+                    }
                     alt="avatar"
                     className="w-100 img-circle text-center"
                   />

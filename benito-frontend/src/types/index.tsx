@@ -2,7 +2,7 @@ export type Project = {
   id: String;
   title: String;
   description: String;
-  posterUrl: string;
+  posterUrl?: string;
   authors: Array<Person>;
   creationDate: Date;
   tags: Array<String>;

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
 import { Project } from "../../types";
+import { noImageAvailableHorizontal } from "../../constants";
 
 type Props = {
   project: Project;
@@ -32,7 +33,9 @@ const Title = (props: Props) => {
       <div
         className="qui-blurred-image"
         style={{
-          backgroundImage: `url(${props.project.posterUrl})`,
+          backgroundImage: `url(${
+            props.project.posterUrl || noImageAvailableHorizontal
+          })`,
           height: height.valueOf(),
         }}
       >

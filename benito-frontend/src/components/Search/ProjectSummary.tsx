@@ -3,6 +3,7 @@ import { hot } from "react-hot-loader";
 import "./styles.scss";
 import { Project } from "../../types";
 import { Link } from "react-router-dom";
+import { noImageAvailableVertical } from "../../constants";
 
 type Props = {
   project: Project;
@@ -20,7 +21,10 @@ const ProjectSummary = (props: Props) => (
         </Link>
       </div>
       <div className="d-sm-block d-md-none">
-        <img className="qui-summary-image-sm" src={props.project.posterUrl} />
+        <img
+          className="qui-summary-image-sm"
+          src={props.project.posterUrl || noImageAvailableVertical}
+        />
       </div>
       <div className="font-weight-lighter qui-font-text font-size-11 font-size-16-md mt-3 ml-md-3">
         {props.project.description}
@@ -30,7 +34,10 @@ const ProjectSummary = (props: Props) => (
       </div>
     </div>
     <div className="col-md-2 d-none d-md-flex align-items-center">
-      <img className="qui-summary-image-md" src={props.project.posterUrl} />
+      <img
+        className="qui-summary-image-md"
+        src={props.project.posterUrl || noImageAvailableVertical}
+      />
     </div>
   </div>
 );

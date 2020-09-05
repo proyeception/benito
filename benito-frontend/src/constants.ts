@@ -30,3 +30,9 @@ export const socialMedia = {
     }
   },
 };
+
+export const noImageAvailableVertical =
+  "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/No_image_available_450_x_600.svg/450px-No_image_available_450_x_600.svg.png";
+
+export const noImageAvailableHorizontal =
+  "https://upload.wikimedia.org/wikipedia/commons/7/75/No_image_available.png";

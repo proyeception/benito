@@ -4,6 +4,7 @@ import "./styles.scss";
 import { Project } from "../../types";
 import { Link } from "react-router-dom";
 import FadeIn from "../Common/FadeIn";
+import { noImageAvailableVertical } from "../../constants";
 
 type Props = {
   project: Project;
@@ -14,7 +15,7 @@ const FeaturedProject = ({ project }: Props) => {
     <FadeIn className="card qui-featured-card">
       <img
         className="card-img-top qui-card-image"
-        src={project.posterUrl.valueOf()}
+        src={project.posterUrl?.valueOf() || noImageAvailableVertical}
       />
       <div className="card-body">
         <h5 className="card-title font-size-18">{project.title}</h5>
