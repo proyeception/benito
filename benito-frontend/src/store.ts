@@ -27,6 +27,9 @@ const defaultState: RootState = {
     categories: [],
     isMenuOpen: false,
   },
+  project: {
+    canEdit: false,
+  },
 };
 
 const store = createStore(
