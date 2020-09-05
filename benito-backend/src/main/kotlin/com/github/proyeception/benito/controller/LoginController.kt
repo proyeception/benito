@@ -1,5 +1,6 @@
 package com.github.proyeception.benito.controller
 
+import com.github.proyeception.benito.X_QUI_TOKEN
 import com.github.proyeception.benito.dto.LoginDTO
 import com.github.proyeception.benito.service.AuthenticationService
 import org.springframework.http.HttpStatus
@@ -26,9 +27,5 @@ open class LoginController(
     open fun supervisorLogin(@RequestBody login: LoginDTO, response: HttpServletResponse) {
         val token = authenticationService.authenticateSupervisor(login)
         response.addCookie(Cookie(X_QUI_TOKEN, token).also { it.path = "/" })
-    }
-
-    private companion object {
-        private const val X_QUI_TOKEN = "x-qui-token"
     }
 }

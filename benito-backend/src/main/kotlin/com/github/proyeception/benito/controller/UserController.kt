@@ -1,5 +1,6 @@
 package com.github.proyeception.benito.controller
 
+import com.github.proyeception.benito.X_QUI_TOKEN
 import com.github.proyeception.benito.dto.UpdateUserDTO
 import com.github.proyeception.benito.service.SessionService
 import com.github.proyeception.benito.service.UserService
@@ -35,7 +36,7 @@ class UserController(
     fun updateAuthorProfilePicture(
         @PathVariable id: String,
         @RequestParam("file") image: MultipartFile,
-        @RequestHeader(value = "x-qui-token", required = true) token: String
+        @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
     ) = doAuthorized(id, token) { userService.updateAuthorProfilePicture(id, image) }
 
     @RequestMapping(
@@ -48,7 +49,7 @@ class UserController(
     fun updateSupervisorProfilePicture(
         @PathVariable id: String,
         @RequestParam("file") image: MultipartFile,
-        @RequestHeader(value = "x-qui-token", required = true) token: String
+        @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
     ) = doAuthorized(id, token) { userService.updateSupervisorProfilePicture(id, image) }
 
     @RequestMapping(value = ["/benito/authors/{id}"], method = [RequestMethod.PATCH])
@@ -57,7 +58,7 @@ class UserController(
     fun updateAuthor(
         @PathVariable id: String,
         @RequestBody user: UpdateUserDTO,
-        @RequestHeader("x-qui-token", required = true) token: String
+        @RequestHeader(X_QUI_TOKEN, required = true) token: String
     ) = doAuthorized(id, token) { userService.updateAuthor(id, user) }
 
     @RequestMapping(value = ["/benito/supervisors/{id}"], method = [RequestMethod.PATCH])
@@ -66,7 +67,7 @@ class UserController(
     fun updateSupervisor(
         @PathVariable id: String,
         @RequestBody user: UpdateUserDTO,
-        @RequestHeader("x-qui-token", required = true) token: String
+        @RequestHeader(X_QUI_TOKEN, required = true) token: String
     ) = doAuthorized(id, token) { userService.updateSupervisor(id, user) }
 
     private fun doAuthorized(authorId: String, token: String, f: (String) -> Unit) = sessionService[token]

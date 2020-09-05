@@ -1,5 +1,6 @@
 package com.github.proyeception.benito.controller
 
+import com.github.proyeception.benito.X_QUI_TOKEN
 import com.github.proyeception.benito.dto.SessionInfoDTO
 import com.github.proyeception.benito.exception.UnauthorizedException
 import com.github.proyeception.benito.service.SessionService
@@ -15,13 +16,13 @@ class SessionController(
     @ResponseBody
     @CrossOrigin
     fun sessionInfo(
-        @RequestHeader("x-qui-token") token: String
+        @RequestHeader(X_QUI_TOKEN) token: String
     ): SessionInfoDTO = sessionService[token] ?: throw UnauthorizedException("Unauthorized user")
 
     @RequestMapping(value = ["/benito/session"], method = [RequestMethod.DELETE])
     @CrossOrigin
     @ResponseStatus(HttpStatus.OK)
     fun deleteSession(
-        @RequestHeader("x-qui-token") token: String
+        @RequestHeader(X_QUI_TOKEN) token: String
     ) = sessionService.delete(token)
 }

@@ -104,3 +104,7 @@ data class UpdateContentDTO(
     val description: String?,
     val extraContent: String?
 )
+
+data class AddUsersDTO(
+    val items: List<String>
+)

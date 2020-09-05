@@ -61,8 +61,24 @@ open class ProjectService(
         .authors
         .any { it.id == authorId }
 
-    fun deleteDocument(projectId: String, documentId: String) = medusaClient.deleteDocument(
+    fun hasSupervisor(supervisorId: String, projectId: String) = findProject(projectId)
+        .supervisors
+        .any { it.id == supervisorId }
+
+    fun deleteDocument(projectId: String, documentId: String) = medusaClient.deleteDocumentFromProject(
         projectId = projectId,
         documentId = documentId
     )
+
+    fun addAuthors(projectId: String, users: AddUsersDTO) = medusaClient.addUsersToProject(projectId, users, UserType.AUTHOR)
+
+    fun addSupervisors(projectId: String, users: AddUsersDTO) = medusaClient.addUsersToProject(projectId, users, UserType.SUPERVISOR)
+
+    fun deleteAuthors(projectId: String, items: String) = medusaClient.deleteUsersFromProject(
+        projectId,
+        items,
+        UserType.AUTHOR
+    )
+
+    fun deleteSupervisors(projectId: String, items: String) = medusaClient.deleteUsersFromProject(projectId, items, UserType.SUPERVISOR)
 }

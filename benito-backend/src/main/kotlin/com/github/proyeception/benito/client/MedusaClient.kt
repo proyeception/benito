@@ -138,11 +138,28 @@ open class MedusaClient(
         ref = object : TypeReference<MedusaPersonDTO>() {}
     )
 
-    open fun deleteDocument(projectId: String, documentId: String) = delete(
+    open fun deleteDocumentFromProject(projectId: String, documentId: String) = delete(
         collection = "projects/$projectId",
         id = documentId,
         ref = object : TypeReference<Any>() {}
     )
+
+    fun addUsersToProject(projectId: String, users: AddUsersDTO, userType: UserType) = create(
+        collection = "${userType.collection}/$projectId/authors",
+        dto = users,
+        ref = object : TypeReference<MedusaProjectDTO>() {}
+    )
+
+    fun deleteUsersFromProject(projectId: String, items: String, userType: UserType): Any {
+        val response = medusaConnector.delete("/projects/${projectId}/${userType.collection}?items=$items")
+
+        if (response.isError()) {
+            LOGGER.error("Error deleting ${userType.collection} from project $projectId on Medusa", response.body)
+            throw FailedDependencyException("Error deleting ${userType.collection} from $projectId on Medusa")
+        }
+
+        return response.deserializeAs(object : TypeReference<MedusaProjectDTO>() {})
+    }
 
     private fun <T> find(collection: String, params: List<String>, ref: TypeReference<List<T>>): List<T> {
         val response = medusaConnector.get("/$collection?${params.joinToString("&")}")
@@ -211,10 +228,8 @@ open class MedusaClient(
 
         return response.body?.toInt() ?: throw FailedDependencyException("Medusa returned null for count")
     }
-
     private fun String.appendOrder(orderBy: OrderDTO?): String = orderBy?.sortMethod?.let { "${this}_sort=$it&" }
         ?: this
-
     private fun String.appendParam(param: String, value: String?, filter: MedusaFilter): String =
         value?.let { "${this}${param}_${filter.filterName}=$it&" } ?: this
     private fun String.appendParam(param: String, value: String?) = value?.let { "$this${param}=$it&" } ?: this

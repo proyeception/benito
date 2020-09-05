@@ -1,9 +1,7 @@
 package com.github.proyeception.benito.controller
 
-import com.github.proyeception.benito.dto.CountDTO
-import com.github.proyeception.benito.dto.OrderDTO
-import com.github.proyeception.benito.dto.ProjectDTO
-import com.github.proyeception.benito.dto.UpdateContentDTO
+import com.github.proyeception.benito.X_QUI_TOKEN
+import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.ForbiddenException
 import com.github.proyeception.benito.service.ProjectService
 import com.github.proyeception.benito.service.SessionService
@@ -65,8 +63,8 @@ class ProjectController(
     fun updateProjectContent(
         @PathVariable id: String,
         @RequestBody content: UpdateContentDTO,
-        @RequestHeader(value = "x-qui-token", required = true) token: String
-    ) = doAuthorized(id, token) { projectService.updateProjectContent(content, id) }
+        @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
+    ) = doAuthorAuthorized(id, token) { projectService.updateProjectContent(content, id) }
 
     @RequestMapping(
         value = ["/benito/projects/{id}/poster"],
@@ -78,8 +76,8 @@ class ProjectController(
     fun updateProjectPoster(
         @PathVariable id: String,
         @RequestParam("file") image: MultipartFile,
-        @RequestHeader(value = "x-qui-token", required = true) token: String
-    ) = doAuthorized(projectId = id, token = token) { projectService.updateProjectImage(id, image) }
+        @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
+    ) = doAuthorAuthorized(projectId = id, token = token) { projectService.updateProjectImage(id, image) }
 
     @RequestMapping(value = ["/benito/projects/{projectId}/documents/{documentId}"], method = [RequestMethod.DELETE])
     @CrossOrigin
@@ -87,12 +85,56 @@ class ProjectController(
     fun deleteDocument(
         @PathVariable projectId: String,
         @PathVariable documentId: String,
-        @RequestHeader(value = "x-qui-token", required = true) token: String
-    ) = doAuthorized(projectId = projectId, token = token) {
+        @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
+    ) = doAuthorAuthorized(projectId = projectId, token = token) {
         projectService.deleteDocument(projectId, documentId)
     }
 
-    private fun doAuthorized(projectId: String, token: String, f: (String) -> Unit) = sessionService[token]
+    @RequestMapping(value = ["/benito/projects/{projectId}/authors"], method = [RequestMethod.POST])
+    @CrossOrigin
+    @ResponseStatus(value = HttpStatus.OK)
+    fun addAuthors(
+        @PathVariable projectId: String,
+        @RequestBody users: AddUsersDTO,
+        @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
+    ) = doSupervisorAuthorized(projectId, token) { projectService.addAuthors(projectId, users) }
+
+    @RequestMapping(value = ["/benito/projects/{projectId}/authors"], method = [RequestMethod.DELETE])
+    @CrossOrigin
+    @ResponseStatus(value = HttpStatus.OK)
+    fun deleteAuthors(
+        @PathVariable projectId: String,
+        @RequestParam(value = "items", required = true) items: String,
+        @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
+    ) = doSupervisorAuthorized(projectId, token) { projectService.deleteAuthors(projectId, items) }
+
+    @RequestMapping(value = ["/benito/projects/{projectId}/supervisors"], method = [RequestMethod.DELETE])
+    @CrossOrigin
+    @ResponseStatus(value = HttpStatus.OK)
+    fun addSupervisors(
+        @PathVariable projectId: String,
+        @RequestBody users: AddUsersDTO,
+        @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
+    ) = doSupervisorAuthorized(projectId, token) { projectService.addSupervisors(projectId, users) }
+
+    @RequestMapping(value = ["/benito/projects/{projectId}/supervisors"], method = [RequestMethod.DELETE])
+    @CrossOrigin
+    @ResponseStatus(value = HttpStatus.OK)
+    fun deleteSupervisors(
+        @PathVariable projectId: String,
+        @RequestParam(value = "items", required = true) items: String,
+        @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
+    ) = doSupervisorAuthorized(projectId, token) { projectService.deleteSupervisors(projectId, items) }
+
+    private fun doSupervisorAuthorized(projectId: String, token: String, f: (String) -> Unit) = sessionService[token]
+        ?.takeIf { it.role == RoleDTO.SUPERVISOR }
+        ?.userId
+        ?.takeIf { projectService.hasSupervisor(supervisorId = it, projectId = projectId) }
+        ?.let(f)
+        ?: throw ForbiddenException("You're not allowed to edit this project")
+
+    private fun doAuthorAuthorized(projectId: String, token: String, f: (String) -> Unit) = sessionService[token]
+        ?.takeIf { it.role == RoleDTO.AUTHOR }
         ?.userId
         ?.takeIf { projectService.hasAuthor(authorId = it, projectId = projectId) }
         ?.let(f)
