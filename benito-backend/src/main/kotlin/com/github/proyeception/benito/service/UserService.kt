@@ -125,7 +125,7 @@ open class UserService(
             ProjectRefDTO(
                 id = it.id,
                 title = it.title,
-                posterUrl = it.poster.url,
+                posterUrl = it.poster?.url,
                 organization = OrganizationDTO(mapIdToOrganization(it.organizationId)),
                 description = it.description
             )

@@ -1,7 +1,9 @@
 package com.github.proyeception.benito.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.text.SimpleDateFormat
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 data class MedusaProjectDTO(
     val id: String,
@@ -9,7 +11,7 @@ data class MedusaProjectDTO(
     val description: String,
     val extraContent: String?,
     val creationDate: LocalDate,
-    val poster: MedusaFileDTO,
+    val poster: MedusaFileDTO?,
     val authors: List<PersonRefDTO>,
     val supervisors: List<PersonRefDTO>,
     val documentation: List<DocumentationDTO>,
@@ -48,7 +50,7 @@ data class MedusaPersonDTO(
 data class MedusaProjectRefDTO(
     val id: String,
     val title: String,
-    val poster: MedusaFileDTO,
+    val poster: MedusaFileDTO?,
     @JsonProperty("organization") val organizationId: String,
     val description: String
 )
@@ -125,3 +127,14 @@ data class UpdateUserDTO(
     val username: String?,
     val socials: List<SocialDTO>?
 )
+
+data class CreateMedusaProjectDTO(
+    val organization: String,
+    val title: String,
+    val description: String = "",
+    val creationDate: String = LocalDate.now().format(dtf),
+    val supervisors: List<String>,
+    val category: String
+)
+
+private val dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd")

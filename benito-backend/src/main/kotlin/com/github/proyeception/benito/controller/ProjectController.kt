@@ -5,6 +5,7 @@ import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.ForbiddenException
 import com.github.proyeception.benito.service.ProjectService
 import com.github.proyeception.benito.service.SessionService
+import com.github.proyeception.benito.service.UserService
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Controller
@@ -15,7 +16,8 @@ import org.springframework.web.multipart.MultipartFile
 @Controller
 class ProjectController(
     private val projectService: ProjectService,
-    private val sessionService: SessionService
+    private val sessionService: SessionService,
+    private val userService: UserService
 ) {
 
     @RequestMapping("/benito/projects", method = [RequestMethod.GET])
@@ -125,6 +127,19 @@ class ProjectController(
         @RequestParam(value = "items", required = true) items: String,
         @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
     ) = doSupervisorAuthorized(projectId, token) { projectService.deleteSupervisors(projectId, items) }
+
+    @RequestMapping(value = ["/benito/projects"], method = [RequestMethod.POST])
+    @CrossOrigin
+    @ResponseStatus(value = HttpStatus.OK)
+    fun createProject(
+        @RequestBody project: CreateProjectDTO,
+        @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
+    ) = sessionService[token]
+        ?.takeIf { it.role == RoleDTO.SUPERVISOR }
+        ?.userId
+        ?.takeIf { userService.findSupervisor(it).organizations.any { o -> o.id == project.organizationId } }
+        ?.let { projectService.createProject(it, project) }
+        ?: throw ForbiddenException("You're not allowed to create a project in this organization")
 
     private fun doSupervisorAuthorized(projectId: String, token: String, f: (String) -> Unit) = sessionService[token]
         ?.takeIf { it.role == RoleDTO.SUPERVISOR }

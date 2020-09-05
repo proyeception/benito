@@ -27,7 +27,7 @@ data class ProjectDTO(
     val description: String,
     val extraContent: String,
     val creationDate: LocalDate,
-    val posterUrl: String,
+    val posterUrl: String?,
     val authors: List<PersonRefDTO>,
     val supervisors: List<PersonRefDTO>,
     val tags: List<String>,
@@ -39,7 +39,7 @@ data class ProjectDTO(
         description = medusaProjectDTO.description,
         extraContent = medusaProjectDTO.extraContent.orEmpty(),
         creationDate = medusaProjectDTO.creationDate,
-        posterUrl = medusaProjectDTO.poster.url,
+        posterUrl = medusaProjectDTO.poster?.url,
         authors = medusaProjectDTO.authors,
         supervisors = medusaProjectDTO.supervisors,
         tags = emptyList(),
@@ -75,7 +75,7 @@ data class OrganizationDTO(
 data class ProjectRefDTO(
     val id: String,
     val title: String,
-    val posterUrl: String,
+    val posterUrl: String?,
     val organization: OrganizationDTO,
     val description: String
 )
@@ -107,4 +107,10 @@ data class UpdateContentDTO(
 
 data class AddUsersDTO(
     val items: List<String>
+)
+
+data class CreateProjectDTO(
+    val title: String,
+    val organizationId: String,
+    val categoryId: String
 )

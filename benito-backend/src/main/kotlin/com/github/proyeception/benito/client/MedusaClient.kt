@@ -145,7 +145,7 @@ open class MedusaClient(
     )
 
     fun addUsersToProject(projectId: String, users: AddUsersDTO, userType: UserType) = create(
-        collection = "projects/$projectId/authors",
+        collection = "projects/$projectId/${userType.collection}",
         dto = users,
         ref = object : TypeReference<MedusaProjectDTO>() {}
     )
@@ -160,6 +160,12 @@ open class MedusaClient(
 
         return response.deserializeAs(object : TypeReference<MedusaProjectDTO>() {})
     }
+
+    fun createProject(project: CreateMedusaProjectDTO) = create(
+        collection = PROJECTS,
+        ref = object : TypeReference<MedusaProjectDTO>() {},
+        dto = project
+    )
 
     private fun <T> find(collection: String, params: List<String>, ref: TypeReference<List<T>>): List<T> {
         val response = medusaConnector.get("/$collection?${params.joinToString("&")}")
@@ -228,10 +234,13 @@ open class MedusaClient(
 
         return response.body?.toInt() ?: throw FailedDependencyException("Medusa returned null for count")
     }
+
     private fun String.appendOrder(orderBy: OrderDTO?): String = orderBy?.sortMethod?.let { "${this}_sort=$it&" }
         ?: this
+
     private fun String.appendParam(param: String, value: String?, filter: MedusaFilter): String =
         value?.let { "${this}${param}_${filter.filterName}=$it&" } ?: this
+
     private fun String.appendParam(param: String, value: String?) = value?.let { "$this${param}=$it&" } ?: this
 
     companion object {

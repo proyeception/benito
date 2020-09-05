@@ -4,6 +4,7 @@ import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.parser.DocumentParser
 import org.apache.http.entity.ContentType
+import org.slf4j.LoggerFactory
 import org.springframework.web.multipart.MultipartFile
 
 open class ProjectService(
@@ -81,4 +82,19 @@ open class ProjectService(
     )
 
     fun deleteSupervisors(projectId: String, items: String) = medusaClient.deleteUsersFromProject(projectId, items, UserType.SUPERVISOR)
+
+    fun createProject(supervisorId: String, project: CreateProjectDTO) {
+        val medusaProject = CreateMedusaProjectDTO(
+            organization = project.organizationId,
+            category = project.categoryId,
+            supervisors = listOf(supervisorId),
+            title = project.title
+        )
+        LOGGER.info("{}", medusaProject)
+        medusaClient.createProject(medusaProject)
+    }
+
+    companion object {
+        private val LOGGER = LoggerFactory.getLogger(ProjectService::class.java)
+    }
 }
