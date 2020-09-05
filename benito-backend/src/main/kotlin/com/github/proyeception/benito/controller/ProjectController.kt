@@ -108,7 +108,7 @@ class ProjectController(
         @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
     ) = doSupervisorAuthorized(projectId, token) { projectService.deleteAuthors(projectId, items) }
 
-    @RequestMapping(value = ["/benito/projects/{projectId}/supervisors"], method = [RequestMethod.DELETE])
+    @RequestMapping(value = ["/benito/projects/{projectId}/supervisors"], method = [RequestMethod.POST])
     @CrossOrigin
     @ResponseStatus(value = HttpStatus.OK)
     fun addSupervisors(

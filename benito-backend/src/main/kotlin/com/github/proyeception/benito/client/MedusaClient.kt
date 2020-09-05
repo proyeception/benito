@@ -145,7 +145,7 @@ open class MedusaClient(
     )
 
     fun addUsersToProject(projectId: String, users: AddUsersDTO, userType: UserType) = create(
-        collection = "${userType.collection}/$projectId/authors",
+        collection = "projects/$projectId/authors",
         dto = users,
         ref = object : TypeReference<MedusaProjectDTO>() {}
     )
