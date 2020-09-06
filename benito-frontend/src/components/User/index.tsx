@@ -68,17 +68,17 @@ const User = (props: Props) => {
 
   if (!user) {
     return (
-      <div className="center">
+      <div className="center qui-min-height">
         <Loader />
       </div>
     );
   }
 
   return (
-    <FadeIn className="qui-min-height">
+    <FadeIn className="pb-3">
       <div className="container-fluid un-mb-md-1">
         <div className="row">
-          <div className="col-12 col-md-3 pl-md-4 pr-md-4 pt-5 pt-md-5 bg-white border-right qui-min-height">
+          <div className="col-12 col-md-3 pl-md-4 pr-md-4 pt-5 pt-md-5 bg-white border-right">
             <SlideUp>
               <Profile user={user} />
               <Separator

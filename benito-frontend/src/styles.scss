@@ -37,15 +37,7 @@ body {
 }
 
 .qui-min-height {
-  @media screen and (min-height: 0px) {
-    min-height: 480px;
-  }
-  @media screen and (min-height: 640px) {
-    min-height: 800px;
-  }
-  @media screen and (min-height: 1024px) {
-    min-height: 1200px;
-  }
+  min-height: 90%;
 }
 
 .transparent-input {
