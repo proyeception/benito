@@ -14,7 +14,9 @@ import { History } from "history";
 
 const X_QUI_TOKEN = "x-qui-token";
 
-export function openLocalStoredSession() {
+export async function openLocalStoredSession(
+  finishLogin: React.Dispatch<React.SetStateAction<boolean>>
+) {
   const quiTokenCookie = Cookies.get(X_QUI_TOKEN);
   console.log(quiTokenCookie);
 
@@ -27,7 +29,7 @@ export function openLocalStoredSession() {
   if (quiTokenStorage) {
     store.dispatch(updateSessionToken(quiTokenStorage));
     store.dispatch(startFetching());
-    axios
+    await axios
       .request<SessionInfo>({
         url: `${benitoHost}/benito/session`,
         headers: { "x-qui-token": quiTokenStorage },
@@ -42,7 +44,8 @@ export function openLocalStoredSession() {
         console.error(e);
         clearLocalSession();
       })
-      .then(() => store.dispatch(finishFetching()));
+      .then(() => store.dispatch(finishFetching()))
+      .then(() => finishLogin(false));
   }
 }
 

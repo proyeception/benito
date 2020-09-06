@@ -10,7 +10,8 @@ import FadeIn from "../Common/FadeIn";
 import { RootState } from "../../reducers";
 import { connect } from "react-redux";
 import store from "../../store";
-import { setProjectAuthor, setProjectVisitor } from "../../actions/project";
+import { updateCurrentProject } from "../../actions/project";
+import { setProjectEditionRole } from "../../functions/project";
 
 type MatchParams = {
   projectId: string;
@@ -45,15 +46,12 @@ class ViewProject extends Component<Props, State> {
       .then((res) => res.data)
       .then((project) => {
         this.setState({ project: project });
-        if (
-          this.props.userId &&
-          this.props.role == "AUTHOR" &&
-          project.authors.some((a) => a.id == this.props.userId)
-        ) {
-          store.dispatch(setProjectAuthor());
-        } else {
-          store.dispatch(setProjectVisitor());
-        }
+        store.dispatch(updateCurrentProject(project));
+        setProjectEditionRole({
+          project: this.state.project,
+          userId: this.props.userId,
+          role: this.props.role,
+        });
       })
       .catch(console.error);
   }

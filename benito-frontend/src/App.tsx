@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
 import Header from "./components/Header/index";
@@ -18,13 +18,18 @@ import NotFound from "./components/NotFound";
 import Author from "./components/User/Author";
 import Supervisor from "./components/User/Supervisor";
 import SupervisorLogin from "./components/Login/SupervisorLogin";
+import ProjectEditor from "./components/Project/Editor";
+import { openLocalStoredSession } from "./functions/session";
 
 const App = (_: any) => {
+  const [isLoggingIn, setIsLoggingIn] = useState(true);
   useEffect(() => {
     let config: AxiosRequestConfig = {
       method: "GET",
       url: `${benitoHost}/benito/categories`,
     };
+
+    openLocalStoredSession(setIsLoggingIn);
 
     axios
       .request<Array<Category>>(config)
@@ -33,6 +38,10 @@ const App = (_: any) => {
       .catch(console.error);
   }, []);
 
+  if (isLoggingIn) {
+    return <div />;
+  }
+
   return (
     <div className="bg-light-gray h-100">
       <HamburgerMenu />
@@ -40,6 +49,11 @@ const App = (_: any) => {
       <AnimatePresence>
         <Switch>
           <Route exact path="/projects/:projectId" component={ViewProject} />
+          <Route
+            exact
+            path="/projects/:projectId/edit"
+            component={ProjectEditor}
+          />
           <Route exact path="/" component={Home} />
           <Route exact path="/search" component={Search} />
           <Route exact path="/authors/:userId" component={Author} />

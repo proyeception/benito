@@ -1,45 +1,50 @@
-import React, { useState } from "react";
+import React from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
-import { RouteComponentProps } from "react-router-dom";
 import { Project } from "../../../types";
-import { fetchProject } from "../../../functions/search";
-import Loader from "../../Common/Loader";
-import { RootState } from "../../../reducers";
-import { connect } from "react-redux";
+import useForm from "../../../hooks/useForm";
 
-type MatchParams = {
-  projectId: string;
+type Props = {
+  project: Project;
 };
-
-interface Props extends RouteComponentProps<MatchParams> {
-  project?: Project;
-}
 
 const AuthorEdit = (props: Props) => {
-  const [loading, setLoading] = useState(false);
-  const [project, setProject] = useState<Project>(null);
+  const [values, setValues] = useForm({
+    title: props.project.title,
+    description: props.project.description,
+    extraContent: props.project.extraContent,
+  });
+  console.log(values);
 
-  if (props.project) {
-    setProject(props.project);
-  } else {
-    setLoading(true);
-
-    fetchProject(props.match.params.projectId)
-      .then((res) => res.data)
-      .then(setProject)
-      .then(() => setLoading(false));
-  }
-
-  if (loading) {
-    return <Loader />;
-  }
-
-  return <div>{project.title}</div>;
+  return (
+    <div className="qui-min-height">
+      <div className="container bg-white">
+        <div className="row">
+          <div className="col-md-9">
+            <input
+              type="text"
+              name="title"
+              value={values.title.valueOf()}
+              onChange={setValues}
+            />
+            <input
+              type="text"
+              name="description"
+              value={values.description.valueOf()}
+              onChange={setValues}
+            />
+            <input
+              type="text"
+              name="extraContent"
+              value={values.extraContent.valueOf()}
+              onChange={setValues}
+            />
+          </div>
+          <div className="col-md-3">asd</div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
-const mapStateToProps = (rootState: RootState) => {
-  return rootState.project.project;
-};
-
-export default hot(module)(connect(mapStateToProps)(AuthorEdit));
+export default hot(module)(AuthorEdit);

@@ -43,7 +43,7 @@ interface UpdateCurrentProjectAction {
 }
 
 export type ProjectState = {
-  editionRole: ProjectEditionRole;
+  editionRole?: ProjectEditionRole;
   project?: Project;
   isEditing: Boolean;
   edition?: ProjectEdition;
