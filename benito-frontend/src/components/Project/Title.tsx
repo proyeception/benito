@@ -1,14 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
-import { Project } from "../../types";
+import { Project, ProjectEditionRole, ProjectEdition } from "../../types";
 import { noImageAvailableHorizontal } from "../../constants";
+import { RootState } from "../../reducers";
+import { connect } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import store from "../../store";
+import { openProjectEdition, editTitle } from "../../actions/project";
 
 type Props = {
   project: Project;
   maxHeight: Number;
   minHeight: Number;
   display: String;
+  editionRole: ProjectEditionRole;
+  isEditingProject: Boolean;
+  edition: ProjectEdition;
 };
 
 const Title = (props: Props) => {
@@ -40,14 +49,50 @@ const Title = (props: Props) => {
         }}
       >
         <div
-          className="qui-backdrop d-flex font-size-24 font-size-45-md qui-project-title"
+          className="qui-backdrop d-flex justify-content-between justify-content-md-start font-size-24 font-size-45-md qui-project-title"
           style={{ height: height.valueOf() }}
         >
-          <div className="ml-3 ml-md-4">{props.project.title}</div>
+          {props.isEditingProject ? (
+            <input
+              className="ml-3 ml-md-4 transparent-input"
+              type="text"
+              value={props.edition.title.valueOf()}
+              onChange={(e) => store.dispatch(editTitle(e.currentTarget.value))}
+            />
+          ) : (
+            <div className="ml-3 ml-md-4">{props.project.title} </div>
+          )}
+          {props.isEditingProject ? (
+            <div />
+          ) : (
+            <div className="mr-3 ml-md-5">
+              {" "}
+              {props.editionRole == "AUTHOR" ||
+              props.editionRole == "SUPERVISOR" ? (
+                <FontAwesomeIcon
+                  className="font-size-24 font-size-36-md cursor-pointer"
+                  onClick={() =>
+                    store.dispatch(openProjectEdition(props.project))
+                  }
+                  icon={faEdit}
+                />
+              ) : (
+                <div />
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>
   );
 };
 
-export default hot(module)(Title);
+const mapStateToProps = (rootState: RootState) => {
+  return {
+    editionRole: rootState.project.editionRole,
+    isEditingProject: rootState.project.isEditing,
+    edition: rootState.project.edition,
+  };
+};
+
+export default hot(module)(connect(mapStateToProps)(Title));

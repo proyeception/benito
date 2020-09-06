@@ -29,6 +29,7 @@ const defaultState: RootState = {
   },
   project: {
     editionRole: "VISITOR",
+    isEditing: false,
   },
 };
 
