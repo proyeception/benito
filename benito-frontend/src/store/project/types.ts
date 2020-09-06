@@ -1,12 +1,14 @@
-export const UPDATE_CAN_EDIT = "UPDATE_CAN_EDIT";
+import { ProjectEditionRole } from "../../types";
 
-interface UpdateCanEditAction {
-  type: typeof UPDATE_CAN_EDIT;
-  payload: Boolean;
+export const UPDATE_PROJECT_EDITION_ROLE = "UPDATE_PROJECT_EDITION_ROLE";
+
+interface UpdateProjectEditionRoleAction {
+  type: typeof UPDATE_PROJECT_EDITION_ROLE;
+  payload: ProjectEditionRole;
 }
 
 export type ProjectState = {
-  canEdit: Boolean;
+  editionRole: ProjectEditionRole;
 };
 
-export type ProjectAction = UpdateCanEditAction;
+export type ProjectAction = UpdateProjectEditionRoleAction;

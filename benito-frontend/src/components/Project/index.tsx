@@ -5,14 +5,21 @@ import { benitoHost } from "../../config";
 import ProjectInfo from "./ProjectInfo";
 import "./styles.scss";
 import { RouteComponentProps } from "react-router";
-import { Project } from "../../types";
+import { Project, Role } from "../../types";
 import FadeIn from "../Common/FadeIn";
+import { RootState } from "../../reducers";
+import { connect } from "react-redux";
+import store from "../../store";
+import { setProjectAuthor, setProjectVisitor } from "../../actions/project";
 
 type MatchParams = {
   projectId: string;
 };
 
-interface Props extends RouteComponentProps<MatchParams> {}
+interface Props extends RouteComponentProps<MatchParams> {
+  userId?: String;
+  role?: Role;
+}
 
 type State = {
   projectId: String;
@@ -36,7 +43,18 @@ class ViewProject extends Component<Props, State> {
     axios
       .request<Project>(config)
       .then((res) => res.data)
-      .then((project) => this.setState({ project: project }))
+      .then((project) => {
+        this.setState({ project: project });
+        if (
+          this.props.userId &&
+          this.props.role == "AUTHOR" &&
+          project.authors.some((a) => a.id == this.props.userId)
+        ) {
+          store.dispatch(setProjectAuthor());
+        } else {
+          store.dispatch(setProjectVisitor());
+        }
+      })
       .catch(console.error);
   }
 
@@ -54,4 +72,11 @@ class ViewProject extends Component<Props, State> {
   }
 }
 
-export default hot(module)(ViewProject);
+const mapStateToProps = (rootState: RootState) => {
+  return {
+    userId: rootState.session?.userId,
+    role: rootState.session?.role,
+  };
+};
+
+export default hot(module)(connect(mapStateToProps)(ViewProject));

@@ -1,8 +1,25 @@
-import { ProjectAction, UPDATE_CAN_EDIT } from "../../store/project/types";
+import {
+  ProjectAction,
+  UPDATE_PROJECT_EDITION_ROLE,
+} from "../../store/project/types";
 
-export function updateCanEdit(b: Boolean): ProjectAction {
+export function setProjectAuthor(): ProjectAction {
   return {
-    type: UPDATE_CAN_EDIT,
-    payload: b,
+    type: UPDATE_PROJECT_EDITION_ROLE,
+    payload: "AUTHOR",
+  };
+}
+
+export function setProjectSupervisor(): ProjectAction {
+  return {
+    type: UPDATE_PROJECT_EDITION_ROLE,
+    payload: "SUPERVISOR",
+  };
+}
+
+export function setProjectVisitor(): ProjectAction {
+  return {
+    type: UPDATE_PROJECT_EDITION_ROLE,
+    payload: "VISITOR",
   };
 }

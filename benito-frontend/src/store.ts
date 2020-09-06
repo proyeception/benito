@@ -28,7 +28,7 @@ const defaultState: RootState = {
     isMenuOpen: false,
   },
   project: {
-    canEdit: false,
+    editionRole: "VISITOR",
   },
 };
 

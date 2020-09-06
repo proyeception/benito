@@ -1,23 +1,23 @@
 import {
   ProjectState,
   ProjectAction,
-  UPDATE_CAN_EDIT,
+  UPDATE_PROJECT_EDITION_ROLE,
 } from "../../store/project/types";
 
 const defaultProjectState: ProjectState = {
-  canEdit: false,
+  editionRole: "VISITOR",
 };
 
 function projectReducer(state = defaultProjectState, action: ProjectAction) {
   switch (action.type) {
-    case UPDATE_CAN_EDIT: {
+    case UPDATE_PROJECT_EDITION_ROLE: {
       return {
         ...defaultProjectState,
-        canEdit: action.payload,
+        editionRole: action.payload,
       };
     }
     default: {
-      return defaultProjectState;
+      return state;
     }
   }
 }

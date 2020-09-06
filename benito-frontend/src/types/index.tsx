@@ -52,6 +52,8 @@ export type Contact = {
 
 export type Role = "SUPERVISOR" | "AUTHOR";
 
+export type ProjectEditionRole = "AUTHOR" | "SUPERVISOR" | "VISITOR";
+
 export type SessionInfo = {
   userId: String;
   role: Role;
