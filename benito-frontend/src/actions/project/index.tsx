@@ -6,6 +6,7 @@ import {
   EDIT_TITLE,
   EDIT_DESCRIPTION,
   EDIT_EXTRA_CONTENT,
+  UPDATE_CURRENT_PROJECT,
 } from "../../store/project/types";
 import { Project } from "../../types";
 
@@ -61,5 +62,12 @@ export function editExtraContent(s: String): ProjectAction {
   return {
     type: EDIT_EXTRA_CONTENT,
     payload: s,
+  };
+}
+
+export function updateCurrentProject(p: Project): ProjectAction {
+  return {
+    type: UPDATE_CURRENT_PROJECT,
+    payload: p,
   };
 }

@@ -9,8 +9,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import store from "../../store";
 import { openProjectEdition, editTitle } from "../../actions/project";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 
-type Props = {
+interface Props extends RouteComponentProps {
   project: Project;
   maxHeight: Number;
   minHeight: Number;
@@ -18,7 +19,7 @@ type Props = {
   editionRole: ProjectEditionRole;
   isEditingProject: Boolean;
   edition: ProjectEdition;
-};
+}
 
 const Title = (props: Props) => {
   const [height, setHeight] = useState(props.maxHeight);
@@ -95,4 +96,4 @@ const mapStateToProps = (rootState: RootState) => {
   };
 };
 
-export default hot(module)(connect(mapStateToProps)(Title));
+export default hot(module)(withRouter(connect(mapStateToProps)(Title)));

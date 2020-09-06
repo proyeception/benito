@@ -7,6 +7,7 @@ import {
   EDIT_TITLE,
   EDIT_DESCRIPTION,
   EDIT_EXTRA_CONTENT,
+  UPDATE_CURRENT_PROJECT,
 } from "../../store/project/types";
 
 const defaultProjectState: ProjectState = {
@@ -65,6 +66,12 @@ function projectReducer(state = defaultProjectState, action: ProjectAction) {
           ...state.edition,
           extraContent: action.payload,
         },
+      };
+    }
+    case UPDATE_CURRENT_PROJECT: {
+      return {
+        ...state,
+        project: action.payload,
       };
     }
     default: {

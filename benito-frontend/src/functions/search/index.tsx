@@ -12,6 +12,14 @@ export interface Params {
   sortMethod?: String;
 }
 
+export function fetchProject(id: String): AxiosPromise<Project> {
+  let config: AxiosRequestConfig = {
+    url: `${benitoHost}/benito/projects/${id}`,
+  };
+
+  return axios.request<Project>(config);
+}
+
 export function fetchProjects(params: Params): AxiosPromise<Array<Project>> {
   let config: AxiosRequestConfig = {
     url: `${benitoHost}/benito/projects${buildQueryParams(params)}`,
