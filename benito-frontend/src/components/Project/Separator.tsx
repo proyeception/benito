@@ -6,7 +6,7 @@ type Props = {
   display: String;
   marginLeft?: Number;
   marginRight?: Number;
-  color?: "primary" | "light" | undefined;
+  color?: "primary" | "light" | "gray" | undefined;
 };
 
 const Separator = (props: Props) => (

@@ -2,12 +2,12 @@ import { useState } from "react";
 
 function useForm<T>(
   initialState: T
-): [T, (e: React.ChangeEvent<HTMLInputElement>) => void] {
+): [T, (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void] {
   const [values, setValues] = useState(initialState);
 
   return [
     values,
-    (e: React.ChangeEvent<HTMLInputElement>) => {
+    (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
       console.log(e);
       setValues({
         ...values,

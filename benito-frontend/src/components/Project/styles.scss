@@ -33,6 +33,10 @@
   border-color: $light;
 }
 
+.qui-separator-gray {
+  border-color: gray;
+}
+
 .qui-vertical-separator {
   @media screen and (min-width: $large) {
     border-right: 2px solid #6b3ca7;
