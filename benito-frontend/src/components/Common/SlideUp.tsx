@@ -4,6 +4,7 @@ import "./styles.scss";
 import { motion } from "framer-motion";
 
 type Props = {
+  className?: string;
   children: ReactNode;
 };
 
@@ -14,12 +15,18 @@ const variants = {
   },
   out: {
     opacity: 0,
-    y: "-100%",
+    y: "100%",
   },
 };
 
 const SlideUp = (props: Props) => (
-  <motion.div initial="out" animate="in" exit="out" variants={variants}>
+  <motion.div
+    initial="out"
+    animate="in"
+    exit="out"
+    className={props.className}
+    variants={variants}
+  >
     {props.children}
   </motion.div>
 );
