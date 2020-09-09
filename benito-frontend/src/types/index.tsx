@@ -35,6 +35,7 @@ export type Documentation = {
 };
 
 export type Organization = {
+  id: String;
   displayName: String;
   name: String;
   iconUrl: String;

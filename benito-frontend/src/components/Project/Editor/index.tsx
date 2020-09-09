@@ -5,6 +5,7 @@ import { ProjectEditionRole, Project, Role } from "../../../types";
 import { RootState } from "../../../reducers";
 import { connect } from "react-redux";
 import AuthorEdit from "./Author";
+import SupervisorEdit from "./Supervisor";
 import Loader from "../../Common/Loader";
 import { RouteComponentProps } from "react-router-dom";
 import { fetchProject } from "../../../functions/search";
@@ -57,7 +58,7 @@ const ProjectEditor = (props: Props) => {
   if (props.project && props.editionRole == "AUTHOR") {
     return <AuthorEdit project={props.project} />;
   } else if (props.project && props.editionRole == "SUPERVISOR") {
-    return <div>Bien ahí máquina</div>;
+    return <SupervisorEdit project={props.project} />;
   }
 
   return <div>Rajá de acá capo</div>;
