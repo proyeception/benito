@@ -8,6 +8,7 @@ import { benitoHost } from "../../../../config";
 import { faMinusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDropzone } from "react-dropzone";
+import Loader from "../../../Common/Loader";
 
 type Props = {
   project: Project;
@@ -48,10 +49,12 @@ const Documents = (props: Props) => {
       ))}
       <div className="font-size-14 font-size-18-md pt-3 pt-md-5 mb-3">
         <div className="mb-3">Cargar documentos</div>
-        {isUploading ? (
-          <div>Pará un poco flaco </div>
-        ) : (
-          <section className="container dropzone-container">
+        <section className="container dropzone-container">
+          {isUploading ? (
+            <div className="center">
+              <Loader />
+            </div>
+          ) : (
             <div {...getRootProps({ className: "dropzone font-size-18-md" })}>
               <input {...getInputProps()} />
               {isDragActive ? (
@@ -60,8 +63,8 @@ const Documents = (props: Props) => {
                 <p>Drag 'n' drop some files here, or click to select files</p>
               )}
             </div>
-          </section>
-        )}
+          )}
+        </section>
       </div>
     </div>
   );
