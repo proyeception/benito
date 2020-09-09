@@ -202,6 +202,8 @@ class ProjectServiceTest : Spec() {
         "saveDocument" should {
             "pass the original file to the DocumentService, parse its content and upload it to Medusa" {
                 val multipartMock: MultipartFile = getMock()
+                on(multipartMock.originalFilename).thenReturn("file.pdf")
+
                 val inputMock: InputStream = getMock()
                 on(multipartMock.inputStream).thenReturn(inputMock)
                 on(documentParserMock.parse(eq(inputMock))).thenReturn("asd")

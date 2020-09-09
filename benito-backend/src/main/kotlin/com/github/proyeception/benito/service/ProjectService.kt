@@ -52,7 +52,7 @@ open class ProjectService(
         val fileStream = file.inputStream
         val content = documentParser.parse(fileStream)
         val driveId = documentService.saveFile(projectId = projectId, file = file)
-        medusaClient.saveDocument(projectId, file.originalFilename!!, driveId, content)
+        medusaClient.saveDocument(projectId, file.originalFilename ?: file.name, driveId, content)
     }
 
     fun updateProjectImage(id: String, multipart: MultipartFile) {

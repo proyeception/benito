@@ -13,7 +13,7 @@ open class DocumentService(
 
         return googleClient
             .findOrCreateFolder(projectId)
-            .flatMap { googleClient.createFile(file.originalFilename!!, file, it.id) }
+            .flatMap { googleClient.createFile(file.originalFilename ?: file.name, file, it.id) }
             .fold(
                 ifLeft = {
                     LOGGER.error("Error creating file ${file.originalFilename}", it)

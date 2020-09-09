@@ -27,7 +27,6 @@ abstract class Snapshot<T>(
 
     fun refresh() {
         LOGGER.debug("Refreshing $name snapshot...")
-        val response = connector.get(endpoint)
 
         doRefresh()?.let { elements = it }
 

@@ -39,11 +39,11 @@ open class ServiceModule {
     @Bean
     open fun userService(
         medusaClient: MedusaClient,
-        organizationSnapshot: OrganizationSnapshot,
+        organizationService: OrganizationService,
         fileService: FileService
     ): UserService = UserService(
         medusaClient = medusaClient,
-        organizationSnapshot = organizationSnapshot,
+        organizationService = organizationService,
         fileService = fileService
     )
 

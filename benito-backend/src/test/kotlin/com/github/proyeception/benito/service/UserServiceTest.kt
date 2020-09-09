@@ -19,11 +19,11 @@ import org.mockito.Mockito.verify
 class UserServiceTest : Spec() {
     init {
         val medusaMock: MedusaClient = getMock()
-        val organizationMock: OrganizationSnapshot = getMock()
+        val organizationMock: OrganizationService = getMock()
         val fileServiceMock: FileService = getMock()
         val userService = UserService(
             medusaClient = medusaMock,
-            organizationSnapshot = organizationMock,
+            organizationService = organizationMock,
             fileService = fileServiceMock
         )
 
@@ -73,15 +73,12 @@ class UserServiceTest : Spec() {
                         phone = null
                     )
                 )
-                on(organizationMock.find(any())).thenReturn(
-                    MedusaOrganizationDTO(
+                on(organizationMock.find(eq("123"), eq(true))).thenReturn(
+                    OrganizationDTO(
                         displayName = "UTN FRBA",
                         name = "utnfrba",
                         id = "123",
-                        icon = MedusaFileDTO(
-                            id = "icon",
-                            url = "https://icon.com"
-                        ),
+                        iconUrl = "https://icon.com",
                         authors = emptyList(),
                         supervisors = emptyList()
                     )
@@ -131,60 +128,6 @@ class UserServiceTest : Spec() {
 
                 actual shouldBe expected
 
-                verify(medusaMock).findUser(eq("123"), eq(UserType.AUTHOR))
-            }
-
-            "throw a not found exception if no snapshot organization is found with a matching id" {
-                on(medusaMock.findUser(anyString(), any())).thenReturn(
-                    MedusaPersonDTO(
-                        id = "123",
-                        username = "benitocapo123",
-                        fullName = "Benito Quinquela",
-                        profilePic = MedusaFileDTO(
-                            id = "profile",
-                            url = "https://profilepic.com"
-                        ),
-                        socials = listOf(
-                            SocialDTO(
-                                socialName = "Twitter",
-                                socialProfileUrl = "https://twitter.com/benito"
-                            )
-                        ),
-                        organizations = listOf(
-                            MedusaOrganizationDTO(
-                                displayName = "UTN FRBA",
-                                name = "utnfrba",
-                                id = "123",
-                                icon = MedusaFileDTO(
-                                    id = "icon",
-                                    url = "https://icon.com"
-                                ),
-                                authors = emptyList(),
-                                supervisors = emptyList()
-                            )
-                        ),
-                        projects = listOf(
-                            MedusaProjectRefDTO(
-                                id = "123",
-                                title = "Some cool title",
-                                description = "Some cool description",
-                                organizationId = "123",
-                                poster = MedusaFileDTO(
-                                    url = "https://poster.com",
-                                    id = "poster"
-                                )
-                            )
-                        ),
-                        mail = null,
-                        phone = null
-                    )
-                )
-                on(organizationMock.find(any())).thenReturn(null)
-
-                shouldThrow<NotFoundException> {
-
-                    userService.findAuthor("123")
-                }
                 verify(medusaMock).findUser(eq("123"), eq(UserType.AUTHOR))
             }
         }

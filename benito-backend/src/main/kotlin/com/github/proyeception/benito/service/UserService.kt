@@ -3,15 +3,13 @@ package com.github.proyeception.benito.service
 import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.AmbiguousReferenceException
-import com.github.proyeception.benito.exception.NotFoundException
-import com.github.proyeception.benito.snapshot.OrganizationSnapshot
 import org.apache.http.entity.ContentType
 import org.slf4j.LoggerFactory
 import org.springframework.web.multipart.MultipartFile
 
 open class UserService(
     private val medusaClient: MedusaClient,
-    private val organizationSnapshot: OrganizationSnapshot,
+    private val organizationService: OrganizationService,
     private val fileService: FileService
 ) {
     open fun findAuthor(userId: String): PersonDTO = findUserById(userId, UserType.AUTHOR)
@@ -111,9 +109,8 @@ open class UserService(
     }
         ?.also { LOGGER.info("Created image with id ${it.id} on medusa") }
 
-    private fun mapIdToOrganization(organizationId: String): MedusaOrganizationDTO = organizationSnapshot
-        .find { it.id == organizationId }
-        ?: throw NotFoundException("No such organization with ID $organizationId was found")
+    private fun mapIdToOrganization(organizationId: String): OrganizationDTO = organizationService
+        .find(organizationId)
 
     private fun mapMedusaToDomain(medusa: MedusaPersonDTO): PersonDTO = PersonDTO(
         id = medusa.id,
@@ -126,7 +123,7 @@ open class UserService(
                 id = it.id,
                 title = it.title,
                 posterUrl = it.poster?.url,
-                organization = OrganizationDTO(mapIdToOrganization(it.organizationId)),
+                organization = mapIdToOrganization(it.organizationId),
                 description = it.description
             )
         },

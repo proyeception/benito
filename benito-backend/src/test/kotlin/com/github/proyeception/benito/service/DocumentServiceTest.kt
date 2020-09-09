@@ -23,6 +23,7 @@ class DocumentServiceTest : Spec() {
         "saveFile" should {
             "return the id of the new file if it succeeds" {
                 val multipartMock: MultipartFile = getMock()
+                on(multipartMock.originalFilename).thenReturn("some-doc")
 
                 on(googleMock.findOrCreateFolder(
                     name = eq("456")
@@ -52,6 +53,8 @@ class DocumentServiceTest : Spec() {
 
             "throw the exception as is if it failed" {
                 val multipartMock: MultipartFile = getMock()
+                on(multipartMock.originalFilename).thenReturn("some-doc")
+
                 on(googleMock.findOrCreateFolder(
                     name = eq("456")
                 )).thenReturn(
