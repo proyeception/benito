@@ -3,6 +3,10 @@ package com.github.proyeception.benito.service
 import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.parser.DocumentParser
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.apache.http.entity.ContentType
 import org.slf4j.LoggerFactory
 import org.springframework.web.multipart.MultipartFile
@@ -41,13 +45,14 @@ open class ProjectService(
         id = projectId
     )
 
-    fun saveDocument(projectId: String, files: List<MultipartFile>) {
-        val fileStreams = files.map { it.inputStream }
-        val contents = fileStreams.map { documentParser.parse(it) }
-        val driveIds = files.map { documentService.saveFile(projectId = projectId, file = it) }
-        driveIds.zip(contents).forEach { (driveId, content) ->
-            medusaClient.saveDocument(projectId, driveId, driveId, content)
-        }
+    fun saveDocuments(projectId: String, files: List<MultipartFile>) =
+        runBlocking { files.forEach { f -> launch(Dispatchers.Default) { saveDocument(projectId, f) } } }
+
+    private fun saveDocument(projectId: String, file: MultipartFile) {
+        val fileStream = file.inputStream
+        val content = documentParser.parse(fileStream)
+        val driveId = documentService.saveFile(projectId = projectId, file = file)
+        medusaClient.saveDocument(projectId, file.originalFilename!!, driveId, content)
     }
 
     fun updateProjectImage(id: String, multipart: MultipartFile) {

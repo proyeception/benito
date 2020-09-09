@@ -206,7 +206,7 @@ class ProjectServiceTest : Spec() {
                     projectId = eq("123")
                 )).thenReturn("456")
 
-                projectService.saveDocument("123", listOf(multipartMock))
+                projectService.saveDocuments("123", listOf(multipartMock))
 
                 verify(medusaClient).saveDocument(
                     projectId = eq("123"),
