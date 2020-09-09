@@ -39,7 +39,7 @@ const App = (_: any) => {
   }, []);
 
   if (isLoggingIn) {
-    return <div />;
+    return <div id="login" />;
   }
 
   return (

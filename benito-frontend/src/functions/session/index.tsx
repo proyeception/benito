@@ -44,9 +44,10 @@ export async function openLocalStoredSession(
         console.error(e);
         clearLocalSession();
       })
-      .then(() => store.dispatch(finishFetching()))
-      .then(() => finishLogin(false));
+      .then(() => store.dispatch(finishFetching()));
   }
+
+  finishLogin(false);
 }
 
 export function startLogin(

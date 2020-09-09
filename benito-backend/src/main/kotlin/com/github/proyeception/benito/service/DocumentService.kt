@@ -8,19 +8,19 @@ import org.springframework.web.multipart.MultipartFile
 open class DocumentService(
     private val googleClient: GoogleDriveClient
 ) {
-    open fun saveFile(file: MultipartFile, projectId: String, name: String): String {
-        LOGGER.info("Creating file $name")
+    open fun saveFile(file: MultipartFile, projectId: String): String {
+        LOGGER.info("Creating file ${file.originalFilename}")
 
         return googleClient
             .findOrCreateFolder(projectId)
-            .flatMap { googleClient.createFile(name, file, it.id) }
+            .flatMap { googleClient.createFile(file.originalFilename!!, file, it.id) }
             .fold(
                 ifLeft = {
-                    LOGGER.error("Error creating file $name", it)
+                    LOGGER.error("Error creating file ${file.originalFilename}", it)
                     throw it
                 },
                 ifRight = {
-                    LOGGER.info("File $name created successfully with id ${it.id}")
+                    LOGGER.info("File ${file.originalFilename} created successfully with id ${it.id}")
                     it.id
                 }
             )

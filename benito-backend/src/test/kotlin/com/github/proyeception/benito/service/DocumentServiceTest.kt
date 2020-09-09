@@ -45,7 +45,7 @@ class DocumentServiceTest : Spec() {
                 ).right())
 
                 val expected = "123"
-                val actual = documentService.saveFile(file = multipartMock, projectId = "456", name = "some-doc")
+                val actual = documentService.saveFile(file = multipartMock, projectId = "456")
 
                 actual shouldBe expected
             }
@@ -69,7 +69,7 @@ class DocumentServiceTest : Spec() {
                 )).thenReturn(RuntimeException("error").left())
 
                 shouldThrow<RuntimeException> {
-                    documentService.saveFile(file = multipartMock, projectId = "456", name = "some-doc")
+                    documentService.saveFile(file = multipartMock, projectId = "456")
                 }
             }
         }

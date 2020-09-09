@@ -56,9 +56,8 @@ class ProjectController(
     @ResponseStatus(value = HttpStatus.OK)
     private fun saveFile(
         @PathVariable projectId: String,
-        @RequestParam name: String,
-        @RequestParam("file") file: MultipartFile
-    ): Unit = projectService.saveDocument(projectId, name, file)
+        @RequestParam("file") files: Array<MultipartFile>
+    ): Unit = projectService.saveDocument(projectId, files.toList())
 
     @RequestMapping(value = ["/benito/projects/{id}/content"], method = [RequestMethod.PATCH])
     @CrossOrigin

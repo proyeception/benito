@@ -203,11 +203,10 @@ class ProjectServiceTest : Spec() {
                 on(documentParserMock.parse(eq(inputMock))).thenReturn("asd")
                 on(documentService.saveFile(
                     file = eq(multipartMock),
-                    projectId = eq("123"),
-                    name = eq("file.pdf")
+                    projectId = eq("123")
                 )).thenReturn("456")
 
-                projectService.saveDocument("123", "file.pdf", multipartMock)
+                projectService.saveDocument("123", listOf(multipartMock))
 
                 verify(medusaClient).saveDocument(
                     projectId = eq("123"),
