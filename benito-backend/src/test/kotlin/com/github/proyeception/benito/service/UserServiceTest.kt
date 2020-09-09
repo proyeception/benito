@@ -52,7 +52,9 @@ class UserServiceTest : Spec() {
                                 icon = MedusaFileDTO(
                                     id = "icon",
                                     url = "https://icon.com"
-                                )
+                                ),
+                                authors = emptyList(),
+                                supervisors = emptyList()
                             )
                         ),
                         projects = listOf(
@@ -79,7 +81,9 @@ class UserServiceTest : Spec() {
                         icon = MedusaFileDTO(
                             id = "icon",
                             url = "https://icon.com"
-                        )
+                        ),
+                        authors = emptyList(),
+                        supervisors = emptyList()
                     )
                 )
 
@@ -99,7 +103,9 @@ class UserServiceTest : Spec() {
                             displayName = "UTN FRBA",
                             name = "utnfrba",
                             id = "123",
-                            iconUrl = "https://icon.com"
+                            iconUrl = "https://icon.com",
+                            authors = emptyList(),
+                            supervisors = emptyList()
                         )
                     ),
                     projects = listOf(
@@ -112,7 +118,9 @@ class UserServiceTest : Spec() {
                                 displayName = "UTN FRBA",
                                 name = "utnfrba",
                                 id = "123",
-                                iconUrl = "https://icon.com"
+                                iconUrl = "https://icon.com",
+                                authors = emptyList(),
+                                supervisors = emptyList()
                             )
                         )
                     ),
@@ -150,7 +158,9 @@ class UserServiceTest : Spec() {
                                 icon = MedusaFileDTO(
                                     id = "icon",
                                     url = "https://icon.com"
-                                )
+                                ),
+                                authors = emptyList(),
+                                supervisors = emptyList()
                             )
                         ),
                         projects = listOf(

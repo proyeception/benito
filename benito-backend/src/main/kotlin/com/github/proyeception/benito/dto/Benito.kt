@@ -62,13 +62,17 @@ data class OrganizationDTO(
     val id: String,
     val iconUrl: String,
     val name: String,
-    val displayName: String
+    val displayName: String,
+    val supervisors: List<PersonRefDTO>,
+    val authors: List<PersonRefDTO>
 ) {
     constructor(medusa: MedusaOrganizationDTO) : this(
         name = medusa.name,
         iconUrl = medusa.icon.url,
         displayName = medusa.displayName,
-        id = medusa.id
+        id = medusa.id,
+        supervisors = medusa.supervisors,
+        authors = medusa.authors
     )
 }
 

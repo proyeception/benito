@@ -167,6 +167,18 @@ open class MedusaClient(
         dto = project
     )
 
+    fun findOrganizations() = find(
+        collection = "organizations",
+        params = emptyList(),
+        ref = object : TypeReference<List<MedusaOrganizationDTO>>() {}
+    )
+
+    fun findOrganization(id: String): MedusaOrganizationDTO = findOne(
+        collection = "organizations",
+        id = id,
+        ref = object : TypeReference<MedusaOrganizationDTO>() {}
+    )
+
     private fun <T> find(collection: String, params: List<String>, ref: TypeReference<List<T>>): List<T> {
         val response = medusaConnector.get("/$collection?${params.joinToString("&")}")
 
@@ -240,7 +252,6 @@ open class MedusaClient(
 
     private fun String.appendParam(param: String, value: String?, filter: MedusaFilter): String =
         value?.let { "${this}${param}_${filter.filterName}=$it&" } ?: this
-
     private fun String.appendParam(param: String, value: String?) = value?.let { "$this${param}=$it&" } ?: this
 
     companion object {

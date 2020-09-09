@@ -69,4 +69,13 @@ open class ServiceModule {
         fileHelper = fileHelper,
         medusaClient = medusaClient
     )
+
+    @Bean
+    open fun organizationService(
+        medusaClient: MedusaClient,
+        organizationSnapshot: OrganizationSnapshot
+    ): OrganizationService = OrganizationService(
+        medusaClient = medusaClient,
+        organizationSnapshot = organizationSnapshot
+    )
 }

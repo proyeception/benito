@@ -96,7 +96,9 @@ class ProjectServiceTest : Spec() {
                             id = "icon",
                             url = "icon"
                         ),
-                        id = "123"
+                        id = "123",
+                        authors = emptyList(),
+                        supervisors = emptyList()
                     ),
                     tags = emptyList()
                 )
@@ -177,7 +179,9 @@ class ProjectServiceTest : Spec() {
                             id = "icon",
                             url = "icon"
                         ),
-                        id = "123"
+                        id = "123",
+                        authors = emptyList(),
+                        supervisors = emptyList()
                     ),
                     tags = emptyList()
                 )

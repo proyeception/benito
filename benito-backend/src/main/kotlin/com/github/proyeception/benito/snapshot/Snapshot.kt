@@ -29,13 +29,20 @@ abstract class Snapshot<T>(
         LOGGER.debug("Refreshing $name snapshot...")
         val response = connector.get(endpoint)
 
-        if (response.isError()) {
-            LOGGER.warn("Error refreshing $name snapshot", response.body)
-        } else {
-            elements = response.deserializeAs(ref)
-        }
+        doRefresh()?.let { elements = it }
 
         LOGGER.debug("Refreshing for $name done. Will refresh again in $refreshRate seconds")
+    }
+
+    protected open fun doRefresh(): List<T>? {
+        val response = connector.get(endpoint)
+
+        return if (response.isError()) {
+            LOGGER.warn("Error refreshing $name snapshot", response.body)
+            null
+        } else {
+            response.deserializeAs(ref)
+        }
     }
 
     override fun afterPropertiesSet() {

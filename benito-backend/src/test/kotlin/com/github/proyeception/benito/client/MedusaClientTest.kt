@@ -317,7 +317,9 @@ class MedusaClientTest : Spec() {
                     displayName = "UTN FRBA",
                     name = "utnfrba",
                     icon = MedusaFileDTO("icon", "icon"),
-                    id = "123"
+                    id = "123",
+                    authors = emptyList(),
+                    supervisors = emptyList()
                 ),
                 tags = emptyList()
             )

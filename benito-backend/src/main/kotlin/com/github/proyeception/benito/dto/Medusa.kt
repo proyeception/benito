@@ -89,7 +89,9 @@ data class MedusaOrganizationDTO(
     val id: String,
     val displayName: String,
     val name: String,
-    val icon: MedusaFileDTO
+    val icon: MedusaFileDTO,
+    val supervisors: List<PersonRefDTO>,
+    val authors: List<PersonRefDTO>
 )
 
 data class MedusaTagDTO(
