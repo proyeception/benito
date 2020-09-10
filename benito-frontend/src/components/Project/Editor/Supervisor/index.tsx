@@ -7,7 +7,7 @@ import { AxiosRequestConfig } from "axios";
 import { benitoHost } from "../../../../config";
 import axios from "axios";
 import Loader from "../../../Common/Loader";
-import Authors from "./Authors";
+import Users from "./Users";
 
 type Props = {
   project: Project;
@@ -49,7 +49,7 @@ const SupervisorEdit = (props: Props) => {
     <SlideUp className="pt-5 pb-5">
       <div className="container bg-white p-3 p-md-5">
         <div className="row">
-          <div className="col-12 col-md-6">
+          <div className="col-6 mt-3">
             <div className="font-size-18 font-size-24-md font-weight-bolder">
               Título
             </div>
@@ -57,7 +57,7 @@ const SupervisorEdit = (props: Props) => {
               {props.project.title}
             </div>
           </div>
-          <div className="col-12 col-md-6">
+          <div className="col-6 mt-3">
             <div className="font-size-18 font-size-24-md font-weight-bolder">
               Alias
             </div>
@@ -65,15 +65,24 @@ const SupervisorEdit = (props: Props) => {
               TODO
             </div>
           </div>
-          <div className="col-12 mt-md-3">
+          <div className="col-12 mt-3">
             <div className="font-size-18 font-size-24-md font-weight-bolder">
               Autores
             </div>
-            <Authors
-              organizationAuthors={organizationAuthors}
-              organizationSupervisors={organizationSupervisors}
-              projectAuthors={props.project.authors}
-              projectSupervisors={[]}
+            <Users
+              organizationUsers={organizationAuthors}
+              projectUsers={props.project.authors}
+              collection="autores"
+            />
+          </div>
+          <div className="col-12 mt-md-3">
+            <div className="font-size-18 font-size-24-md font-weight-bolder">
+              Supervisores
+            </div>
+            <Users
+              organizationUsers={organizationSupervisors}
+              projectUsers={props.project.supervisors}
+              collection="supervisores"
             />
           </div>
         </div>

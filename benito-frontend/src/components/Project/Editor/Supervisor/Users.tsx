@@ -8,10 +8,9 @@ import Autosuggest from "react-autosuggest";
 import useSuggestion from "../../../../hooks/useSuggestion";
 
 type Props = {
-  organizationAuthors: Array<Person>;
-  organizationSupervisors: Array<Person>;
-  projectAuthors: Array<Person>;
-  projectSupervisors: Array<Person>;
+  organizationUsers: Array<Person>;
+  projectUsers: Array<Person>;
+  collection: String;
 };
 
 const Authors = (props: Props) => {
@@ -20,7 +19,7 @@ const Authors = (props: Props) => {
     onSuggestionsFetchRequested,
     onSuggestionsClearRequested,
   ] = useSuggestion(
-    props.organizationAuthors,
+    props.organizationUsers,
     (a, value) =>
       a.fullName.toLowerCase().slice(0, value.length) == value.toLowerCase()
   );
@@ -28,17 +27,22 @@ const Authors = (props: Props) => {
 
   return (
     <div>
-      <div className="font-size-12 font-size-16-md font-weight-lighter">
-        {props.projectAuthors.map((a, idx) => (
-          <div key={idx}>
-            <FontAwesomeIcon icon={faMinusCircle} color="red" /> {a.fullName}
+      <div className="font-size-14 font-size-16-md font-weight-lighter mt-1">
+        {props.projectUsers.map((a, idx) => (
+          <div key={idx} className="mt-1 mb-1">
+            <FontAwesomeIcon
+              icon={faMinusCircle}
+              color="red"
+              className="mr-2"
+            />{" "}
+            {a.fullName}
           </div>
         ))}
       </div>
-      <div className="font-size-16 font-size-18-md mt-md-3 font-weight-600">
-        Agregar autores
+      <div className="font-size-16 font-size-18-md mt-3">
+        Agregar {props.collection}
       </div>
-      <div style={{ height: "52px" }}>
+      <div style={{ height: "52px" }} className="mt-2 mb-3">
         <Autosuggest
           suggestions={suggestions}
           onSuggestionsFetchRequested={onSuggestionsFetchRequested}
