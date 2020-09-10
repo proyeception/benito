@@ -31,7 +31,8 @@ data class ProjectDTO(
     val authors: List<PersonRefDTO>,
     val supervisors: List<PersonRefDTO>,
     val tags: List<String>,
-    val documentation: List<DocumentationDTO>
+    val documentation: List<DocumentationDTO>,
+    val organization: OrganizationRefDTO
 ) {
     constructor(medusaProjectDTO: MedusaProjectDTO) : this(
         id = medusaProjectDTO.id,
@@ -43,7 +44,8 @@ data class ProjectDTO(
         authors = medusaProjectDTO.authors,
         supervisors = medusaProjectDTO.supervisors,
         tags = emptyList(),
-        documentation = medusaProjectDTO.documentation
+        documentation = medusaProjectDTO.documentation,
+        organization = OrganizationRefDTO(medusaProjectDTO.organization)
     )
 }
 
@@ -57,6 +59,16 @@ data class PersonDTO(
     val socials: List<SocialDTO>,
     val contact: ContactDTO?
 )
+
+data class OrganizationRefDTO(
+    val id: String,
+    val displayName: String
+) {
+    constructor(medusa: MedusaOrganizationDTO) : this(
+        id = medusa.id,
+        displayName = medusa.displayName
+    )
+}
 
 data class OrganizationDTO(
     val id: String,

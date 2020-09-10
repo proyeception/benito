@@ -71,7 +71,11 @@ class ProjectServiceTest : Spec() {
                         )
                     ),
                     tags = emptyList(),
-                    documentation = listOf(documentation)
+                    documentation = listOf(documentation),
+                    organization = OrganizationRefDTO(
+                        id = "123",
+                        displayName = "Proyectate"
+                    )
                 )
 
                 val newProject = MedusaProjectDTO(
@@ -158,7 +162,11 @@ class ProjectServiceTest : Spec() {
                         )
                     ),
                     tags = emptyList(),
-                    documentation = listOf(documentation)
+                    documentation = listOf(documentation),
+                    organization = OrganizationRefDTO(
+                        id = "123",
+                        displayName = "Proyectate"
+                    )
                 )
 
                 val newProject = MedusaProjectDTO(

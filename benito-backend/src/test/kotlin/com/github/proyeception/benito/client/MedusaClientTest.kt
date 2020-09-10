@@ -53,7 +53,11 @@ class MedusaClientTest : Spec() {
                 authors = listOf(author),
                 supervisors = listOf(supervisor),
                 tags = listOf("tag1", "tag2"),
-                documentation = listOf(documentation)
+                documentation = listOf(documentation),
+                organization = OrganizationRefDTO(
+                    id = "123",
+                    displayName = "Proyectate"
+                )
             )
 
             "get to /projects returns all projects" {

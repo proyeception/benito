@@ -39,6 +39,8 @@ export type Organization = {
   displayName: String;
   name: String;
   iconUrl: String;
+  authors: Array<Person>;
+  supervisors: Array<Person>;
 };
 
 export type Social = {
