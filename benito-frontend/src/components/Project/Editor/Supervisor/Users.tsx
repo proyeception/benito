@@ -26,8 +26,8 @@ const Authors = (props: Props) => {
   const [inputValue, setInputValue] = useState("");
 
   return (
-    <div>
-      <div className="font-size-14 font-size-16-md font-weight-lighter mt-1">
+    <div className="mt-1 mt-md-3">
+      <div className="font-size-14 font-size-16-md font-weight-lighter">
         {props.projectUsers.map((a, idx) => (
           <div key={idx} className="mt-1 mb-1">
             <FontAwesomeIcon
