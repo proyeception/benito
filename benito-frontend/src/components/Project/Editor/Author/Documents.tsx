@@ -34,7 +34,6 @@ const Documents = (props: Props) => {
 
     axios
       .request(signRequest(config))
-      .then(console.log)
       .then(() =>
         setDocuments(documents.concat(files.map((f: File) => f.name)))
       )

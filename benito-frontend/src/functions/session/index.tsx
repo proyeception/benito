@@ -18,7 +18,6 @@ export async function openLocalStoredSession(
   finishLogin: React.Dispatch<React.SetStateAction<boolean>>
 ) {
   const quiTokenCookie = Cookies.get(X_QUI_TOKEN);
-  console.log(quiTokenCookie);
 
   if (quiTokenCookie) {
     localStorage.setItem(X_QUI_TOKEN, quiTokenCookie);
@@ -63,7 +62,6 @@ export function startLogin(
   };
   axios
     .request(config)
-    .then(() => console.log(Cookies.get()))
     .then(() => history.go(0))
     .catch(console.error);
 }

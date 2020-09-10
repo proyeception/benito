@@ -24,9 +24,7 @@ const SaveChanges = (props: Props) => (
         props.description,
         props.extraContent,
         props.id
-      )
-        .then(console.log)
-        .catch(console.error);
+      ).catch(console.error);
     }}
   >
     {props.children}
