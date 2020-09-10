@@ -48,12 +48,13 @@ const Authors = (props: Props) => {
           onSuggestionsFetchRequested={onSuggestionsFetchRequested}
           onSuggestionsClearRequested={onSuggestionsClearRequested}
           renderSuggestion={(e) => (
-            <span
-              className="suggestionContent h-100"
-              style={{ backgroundImage: `url(${e.profilePicUrl})` }}
-            >
-              {e.fullName}
-            </span>
+            <div className="d-flex align-items-center">
+              <img
+                src={e.profilePicUrl?.valueOf()}
+                className="suggestion-image"
+              />
+              <span className="pl-3">{e.fullName}</span>
+            </div>
           )}
           inputProps={{
             placeholder: `Ingresa para buscar los ${props.collection} de esta organización`,

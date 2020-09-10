@@ -86,10 +86,9 @@
   color: #777;
 }
 
-.suggestionContent {
-  display: flex;
-  align-items: center;
-  background-repeat: no-repeat;
-  background-size: 32px 32px;
-  padding-left: 36px;
+.suggestion-image {
+  border-radius: 32px;
+  overflow: hidden;
+  height: 32px;
+  width: 32px;
 }
