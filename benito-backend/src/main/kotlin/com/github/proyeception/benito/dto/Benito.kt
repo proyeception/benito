@@ -34,18 +34,18 @@ data class ProjectDTO(
     val documentation: List<DocumentationDTO>,
     val organization: OrganizationRefDTO
 ) {
-    constructor(medusaProjectDTO: MedusaProjectDTO) : this(
-        id = medusaProjectDTO.id,
-        title = medusaProjectDTO.title,
-        description = medusaProjectDTO.description,
-        extraContent = medusaProjectDTO.extraContent.orEmpty(),
-        creationDate = medusaProjectDTO.creationDate,
-        posterUrl = medusaProjectDTO.poster?.url,
-        authors = medusaProjectDTO.authors,
-        supervisors = medusaProjectDTO.supervisors,
+    constructor(medusa: MedusaProjectDTO) : this(
+        id = medusa.id,
+        title = medusa.title,
+        description = medusa.description,
+        extraContent = medusa.extraContent.orEmpty(),
+        creationDate = medusa.creationDate,
+        posterUrl = medusa.poster?.url,
+        authors = medusa.authors.map { PersonRefDTO(it) },
+        supervisors = medusa.supervisors.map { PersonRefDTO(it) },
         tags = emptyList(),
-        documentation = medusaProjectDTO.documentation,
-        organization = OrganizationRefDTO(medusaProjectDTO.organization)
+        documentation = medusa.documentation,
+        organization = OrganizationRefDTO(medusa.organization)
     )
 }
 
@@ -83,8 +83,8 @@ data class OrganizationDTO(
         iconUrl = medusa.icon.url,
         displayName = medusa.displayName,
         id = medusa.id,
-        supervisors = medusa.supervisors,
-        authors = medusa.authors
+        supervisors = medusa.supervisors.map { PersonRefDTO(it) },
+        authors = medusa.authors.map { PersonRefDTO(it) }
     )
 }
 
@@ -130,3 +130,17 @@ data class CreateProjectDTO(
     val organizationId: String,
     val categoryId: String
 )
+
+data class PersonRefDTO(
+    val id: String,
+    val fullName: String,
+    val username: String?,
+    val profilePicUrl: String? = null
+) {
+    constructor(medusa: MedusaPersonRefDTO) : this(
+        id = medusa.id,
+        fullName = medusa.fullName,
+        username = medusa.username,
+        profilePicUrl = medusa.profilePic?.url
+    )
+}

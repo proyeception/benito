@@ -47,10 +47,16 @@ const Authors = (props: Props) => {
           suggestions={suggestions}
           onSuggestionsFetchRequested={onSuggestionsFetchRequested}
           onSuggestionsClearRequested={onSuggestionsClearRequested}
-          renderSuggestion={(e) => <div>{e.fullName}</div>}
+          renderSuggestion={(e) => (
+            <span
+              className="suggestionContent h-100"
+              style={{ backgroundImage: `url(${e.profilePicUrl})` }}
+            >
+              {e.fullName}
+            </span>
+          )}
           inputProps={{
-            placeholder:
-              "Ingresa al menos 3 letras para buscar los usuarios de esta organización",
+            placeholder: `Ingresa para buscar los ${props.collection} de esta organización`,
             value: inputValue,
             onChange: (_, { newValue }) => setInputValue(newValue),
           }}

@@ -31,13 +31,13 @@ class ProjectServiceTest : Spec() {
         "projects" should {
             "return list of projects" {
 
-                val author = PersonRefDTO(
+                val author = MedusaPersonRefDTO(
                     id = "123",
                     fullName = "Benito Quinquela",
                     username = "author"
                 )
 
-                val supervisor = PersonRefDTO(
+                val supervisor = MedusaPersonRefDTO(
                     id = "123",
                     fullName = "Jorge Luis Borges",
                     username = "supervisor"
@@ -74,7 +74,7 @@ class ProjectServiceTest : Spec() {
                     documentation = listOf(documentation),
                     organization = OrganizationRefDTO(
                         id = "123",
-                        displayName = "Proyectate"
+                        displayName = "UTN FRBA"
                     )
                 )
 
@@ -122,13 +122,13 @@ class ProjectServiceTest : Spec() {
 
         "project" should {
             "should return a specific project" {
-                val author = PersonRefDTO(
+                val author = MedusaPersonRefDTO(
                     id = "123",
                     fullName = "Benito Quinquela",
                     username = "author"
                 )
 
-                val supervisor = PersonRefDTO(
+                val supervisor = MedusaPersonRefDTO(
                     id = "123",
                     fullName = "Jorge Luis Borges",
                     username = "supervisor"
@@ -165,7 +165,7 @@ class ProjectServiceTest : Spec() {
                     documentation = listOf(documentation),
                     organization = OrganizationRefDTO(
                         id = "123",
-                        displayName = "Proyectate"
+                        displayName = "UTN FRBA"
                     )
                 )
 

@@ -288,13 +288,13 @@ class MedusaClientTest : Spec() {
 
         "findProject" should {
             val responseMock: Response = getMock()
-            val author = PersonRefDTO(
+            val author = MedusaPersonRefDTO(
                 id = "123",
                 username = "author",
                 fullName = "UnNombre"
             )
 
-            val supervisor = PersonRefDTO(
+            val supervisor = MedusaPersonRefDTO(
                 id = "1234",
                 username = "supervisor",
                 fullName = "UnNombre"
