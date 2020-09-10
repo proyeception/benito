@@ -1,6 +1,10 @@
 import { Project, Role } from "../../types";
 import store from "../../store";
-import { setProjectAuthor, setProjectVisitor } from "../../actions/project";
+import {
+  setProjectAuthor,
+  setProjectVisitor,
+  setProjectSupervisor,
+} from "../../actions/project";
 import { benitoHost } from "../../config";
 import axios, { AxiosRequestConfig } from "axios";
 import { signRequest } from "../http";
@@ -20,6 +24,12 @@ export function setProjectEditionRole({
     project.authors.some((a) => a.id == userId)
   ) {
     store.dispatch(setProjectAuthor());
+  } else if (
+    userId &&
+    role == "SUPERVISOR" &&
+    project.supervisors.some((s) => s.id == userId)
+  ) {
+    store.dispatch(setProjectSupervisor());
   } else {
     store.dispatch(setProjectVisitor());
   }

@@ -4,6 +4,7 @@ export type Project = {
   description: String;
   posterUrl?: string;
   authors: Array<Person>;
+  supervisors: Array<Person>;
   creationDate: Date;
   tags: Array<String>;
   extraContent: String;
