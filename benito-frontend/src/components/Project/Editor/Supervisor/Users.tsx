@@ -6,14 +6,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinusCircle } from "@fortawesome/free-solid-svg-icons";
 import Autosuggest from "react-autosuggest";
 import useSuggestion from "../../../../hooks/useSuggestion";
+import { addUsersToProject } from "../../../../functions/project";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 
-type Props = {
+interface Props extends RouteComponentProps {
   organizationUsers: Array<Person>;
   projectUsers: Array<Person>;
-  collection: String;
-};
+  collection: "autores" | "supervisores";
+  projectId: String;
+  userType: "authors" | "supervisors";
+}
 
-const Authors = (props: Props) => {
+const Users = (props: Props) => {
   const [
     suggestions,
     onSuggestionsFetchRequested,
@@ -24,6 +28,7 @@ const Authors = (props: Props) => {
       a.fullName.toLowerCase().slice(0, value.length) == value.toLowerCase()
   );
   const [inputValue, setInputValue] = useState("");
+  const [usersToAdd, setUsersToAdd] = useState<Array<Person>>([]);
 
   return (
     <div className="mt-1 mt-md-3">
@@ -42,15 +47,20 @@ const Authors = (props: Props) => {
       <div className="font-size-16 font-size-18-md mt-3">
         Agregar {props.collection}
       </div>
-      <div style={{ height: "52px" }} className="mt-2 mb-3">
+      <div className="mt-2 mb-3 qui-project-supervisor-editor-autosuggest">
         <Autosuggest
           suggestions={suggestions.filter(
-            (ou) => !props.projectUsers.some((pu) => pu.id == ou.id)
+            (ou) =>
+              !props.projectUsers.some((pu) => pu.id == ou.id) ||
+              usersToAdd.some((uta) => uta.id == ou.id)
           )}
           onSuggestionsFetchRequested={onSuggestionsFetchRequested}
           onSuggestionsClearRequested={onSuggestionsClearRequested}
           renderSuggestion={(e) => (
-            <div className="d-flex align-items-center">
+            <div
+              className="d-flex align-items-center"
+              onClick={() => setUsersToAdd(usersToAdd.concat(e))}
+            >
               <img
                 src={e.profilePicUrl?.valueOf()}
                 className="suggestion-image"
@@ -63,29 +73,34 @@ const Authors = (props: Props) => {
             value: inputValue,
             onChange: (_, { newValue }) => setInputValue(newValue),
           }}
-          renderInputComponent={(inputProps) => {
-            return (
-              <div className="input-group">
-                <input
-                  {...(inputProps as any)}
-                  className={`${inputProps.className} form-control`}
-                />
-                <div className="input-group-append">
-                  <button
-                    className="btn btn-primary btn-block text-light"
-                    type="button"
-                  >
-                    Agregar
-                  </button>
-                </div>
-              </div>
-            );
-          }}
           getSuggestionValue={(s) => s.fullName.valueOf()}
         />
+      </div>
+      <div className={usersToAdd.length == 0 ? "d-none" : "d-block"}>
+        {usersToAdd.map((a, idx) => (
+          <div key={idx} className="mt-1 mb-1">
+            <FontAwesomeIcon
+              icon={faMinusCircle}
+              color="red"
+              className="mr-2"
+            />{" "}
+            {a.fullName}
+          </div>
+        ))}
+        <button
+          className="btn btn-primary font-weight-bold  mt-3"
+          onClick={() =>
+            addUsersToProject(usersToAdd, props.projectId, props.userType)
+              .then(console.log)
+              .then(() => props.history.go(0))
+              .catch(console.error)
+          }
+        >
+          Agregar
+        </button>
       </div>
     </div>
   );
 };
 
-export default hot(module)(Authors);
+export default hot(module)(withRouter(Users));

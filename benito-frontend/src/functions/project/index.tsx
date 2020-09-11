@@ -1,4 +1,4 @@
-import { Project, Role } from "../../types";
+import { Project, Role, Person } from "../../types";
 import store from "../../store";
 import {
   setProjectAuthor,
@@ -49,6 +49,22 @@ export function updateContent(
       extraContent: extraContent,
     },
     method: "PATCH",
+  };
+
+  return axios.request(signRequest(config));
+}
+
+export function addUsersToProject(
+  authors: Array<Person>,
+  projectId: String,
+  userType: "authors" | "supervisors"
+) {
+  let config: AxiosRequestConfig = {
+    url: `${benitoHost}/benito/projects/${projectId}/${userType}`,
+    data: {
+      items: authors.map((a) => a.id),
+    },
+    method: "POST",
   };
 
   return axios.request(signRequest(config));

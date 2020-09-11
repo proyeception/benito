@@ -73,6 +73,8 @@ const SupervisorEdit = (props: Props) => {
               organizationUsers={organizationAuthors}
               projectUsers={props.project.authors}
               collection="autores"
+              projectId={props.project.id}
+              userType="authors"
             />
           </div>
           <div className="col-12 mt-md-3">
@@ -83,6 +85,8 @@ const SupervisorEdit = (props: Props) => {
               organizationUsers={organizationSupervisors}
               projectUsers={props.project.supervisors}
               collection="supervisores"
+              projectId={props.project.id}
+              userType="supervisors"
             />
           </div>
         </div>
