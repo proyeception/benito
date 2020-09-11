@@ -61,6 +61,24 @@ const Authors = (props: Props) => {
             value: inputValue,
             onChange: (_, { newValue }) => setInputValue(newValue),
           }}
+          renderInputComponent={(inputProps) => {
+            return (
+              <div className="input-group">
+                <input
+                  {...(inputProps as any)}
+                  className={`${inputProps.className} form-control`}
+                />
+                <div className="input-group-append">
+                  <button
+                    className="btn btn-primary btn-block text-light"
+                    type="button"
+                  >
+                    Agregar
+                  </button>
+                </div>
+              </div>
+            );
+          }}
           getSuggestionValue={(s) => s.fullName.valueOf()}
         />
       </div>
