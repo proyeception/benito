@@ -3,9 +3,6 @@ import {
   UPDATE_PROJECT_EDITION_ROLE,
   OPEN_PROJECT_EDITION,
   CLOSE_PROJECT_EDITION,
-  EDIT_TITLE,
-  EDIT_DESCRIPTION,
-  EDIT_EXTRA_CONTENT,
   UPDATE_CURRENT_PROJECT,
 } from "../../store/project/types";
 import { Project } from "../../types";
@@ -41,27 +38,6 @@ export function openProjectEdition(p: Project): ProjectAction {
 export function closeProjectEdition(): ProjectAction {
   return {
     type: CLOSE_PROJECT_EDITION,
-  };
-}
-
-export function editTitle(s: String): ProjectAction {
-  return {
-    type: EDIT_TITLE,
-    payload: s,
-  };
-}
-
-export function editDescription(s: String): ProjectAction {
-  return {
-    type: EDIT_DESCRIPTION,
-    payload: s,
-  };
-}
-
-export function editExtraContent(s: String): ProjectAction {
-  return {
-    type: EDIT_EXTRA_CONTENT,
-    payload: s,
   };
 }
 

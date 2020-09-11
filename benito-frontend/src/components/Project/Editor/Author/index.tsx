@@ -8,12 +8,12 @@ import ReactMarkdown from "react-markdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import Separator from "../../Separator";
 import SlideUp from "../../../Common/SlideUp";
 import SaveChanges from "./SaveChanges";
 import DiscardChanges from "./DiscardChanges";
 import Documents from "./Documents";
 import Image from "./Image";
+import Separator from "../../../Common/Separator";
 
 interface Props {
   project: Project;

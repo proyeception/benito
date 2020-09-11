@@ -101,6 +101,8 @@ open class ProjectService(
         medusaClient.createProject(medusaProject)
     }
 
+    fun setAuthors(projectId: String, users: SetUsersDTO) = medusaClient.modifyProjectUsers(projectId, users)
+
     companion object {
         private val LOGGER = LoggerFactory.getLogger(ProjectService::class.java)
     }

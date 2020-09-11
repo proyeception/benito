@@ -3,7 +3,7 @@ import { hot } from "react-hot-loader";
 import "./styles.scss";
 import { Project } from "../../types";
 import moment from "moment";
-import Separator from "./Separator";
+import Separator from "../Common/Separator";
 import { Link } from "react-router-dom";
 
 type Props = {

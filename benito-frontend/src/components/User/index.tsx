@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
-import Separator from "../Project/Separator";
+import Separator from "../Common/Separator";
 import Profile from "./Profile";
 import Organizations from "./Organizations";
 import SocialMedia from "./SocialMedia";

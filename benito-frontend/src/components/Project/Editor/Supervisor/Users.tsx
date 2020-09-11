@@ -6,8 +6,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinusCircle } from "@fortawesome/free-solid-svg-icons";
 import Autosuggest from "react-autosuggest";
 import useSuggestion from "../../../../hooks/useSuggestion";
-import { addUsersToProject } from "../../../../functions/project";
 import { RouteComponentProps, withRouter } from "react-router-dom";
+import { Action, ActionType } from ".";
 
 interface Props extends RouteComponentProps {
   organizationUsers: Array<Person>;
@@ -15,6 +15,11 @@ interface Props extends RouteComponentProps {
   collection: "autores" | "supervisores";
   projectId: String;
   userType: "authors" | "supervisors";
+  addDispatch: ActionType;
+  deleteDispatch: ActionType;
+  dispatch: React.Dispatch<Action>;
+  usersToAdd: Array<Person>;
+  usersToDelete: Array<Person>;
 }
 
 const Users = (props: Props) => {
@@ -28,19 +33,21 @@ const Users = (props: Props) => {
       a.fullName.toLowerCase().slice(0, value.length) == value.toLowerCase()
   );
   const [inputValue, setInputValue] = useState("");
-  const [usersToAdd, setUsersToAdd] = useState<Array<Person>>([]);
 
   return (
     <div className="mt-1 mt-md-3">
       <div className="font-size-14 font-size-16-md font-weight-lighter">
-        {props.projectUsers.map((a, idx) => (
-          <div key={idx} className="mt-1 mb-1">
+        {props.projectUsers.map((u, idx) => (
+          <div key={idx} className="mt-1 mb-1 underline-hover cursor-pointer">
             <FontAwesomeIcon
               icon={faMinusCircle}
               color="red"
               className="mr-2"
+              onClick={() =>
+                props.dispatch({ type: props.deleteDispatch, payload: u })
+              }
             />{" "}
-            {a.fullName}
+            {u.fullName}
           </div>
         ))}
       </div>
@@ -52,14 +59,18 @@ const Users = (props: Props) => {
           suggestions={suggestions.filter(
             (ou) =>
               !props.projectUsers.some((pu) => pu.id == ou.id) ||
-              usersToAdd.some((uta) => uta.id == ou.id)
+              props.usersToAdd.some((uta) => uta.id == ou.id) ||
+              props.usersToDelete.some((utd) => utd.id == ou.id)
           )}
+          focusInputOnSuggestionClick={true}
           onSuggestionsFetchRequested={onSuggestionsFetchRequested}
           onSuggestionsClearRequested={onSuggestionsClearRequested}
           renderSuggestion={(e) => (
             <div
               className="d-flex align-items-center"
-              onClick={() => setUsersToAdd(usersToAdd.concat(e))}
+              onClick={() =>
+                props.dispatch({ type: props.addDispatch, payload: e })
+              }
             >
               <img
                 src={e.profilePicUrl?.valueOf()}
@@ -75,29 +86,6 @@ const Users = (props: Props) => {
           }}
           getSuggestionValue={(s) => s.fullName.valueOf()}
         />
-      </div>
-      <div className={usersToAdd.length == 0 ? "d-none" : "d-block"}>
-        {usersToAdd.map((a, idx) => (
-          <div key={idx} className="mt-1 mb-1">
-            <FontAwesomeIcon
-              icon={faMinusCircle}
-              color="red"
-              className="mr-2"
-            />{" "}
-            {a.fullName}
-          </div>
-        ))}
-        <button
-          className="btn btn-primary font-weight-bold  mt-3"
-          onClick={() =>
-            addUsersToProject(usersToAdd, props.projectId, props.userType)
-              .then(console.log)
-              .then(() => props.history.go(0))
-              .catch(console.error)
-          }
-        >
-          Agregar
-        </button>
       </div>
     </div>
   );

@@ -125,6 +125,11 @@ data class AddUsersDTO(
     val items: List<String>
 )
 
+data class SetUsersDTO(
+    val authors: List<String>,
+    val supervisors: List<String>
+)
+
 data class CreateProjectDTO(
     val title: String,
     val organizationId: String,
