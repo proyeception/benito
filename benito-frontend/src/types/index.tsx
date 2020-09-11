@@ -71,9 +71,3 @@ export type LoginData = {
   profilePictureUrl: String;
   token: String;
 };
-
-export type ProjectEdition = {
-  title?: String;
-  description?: String;
-  extraContent?: String;
-};

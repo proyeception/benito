@@ -34,8 +34,6 @@ export type Action = {
 };
 
 function reducer(state: State, action: Action): State {
-  console.log(state);
-  console.log(action);
   switch (action.type) {
     case "ADD_AUTHOR": {
       return {

@@ -30,6 +30,10 @@ const defaultState: RootState = {
   project: {
     editionRole: "VISITOR",
     isEditing: false,
+    authorsToAdd: [],
+    authorsToDelete: [],
+    supervisorsToAdd: [],
+    supervisorsToDelete: [],
   },
 };
 
