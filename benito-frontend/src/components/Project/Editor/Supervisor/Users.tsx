@@ -7,7 +7,8 @@ import { faMinusCircle } from "@fortawesome/free-solid-svg-icons";
 import Autosuggest from "react-autosuggest";
 import useSuggestion from "../../../../hooks/useSuggestion";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { Action, ActionType } from ".";
+import { ProjectAction } from "../../../../store/project/types";
+import store from "../../../../store";
 
 interface Props extends RouteComponentProps {
   organizationUsers: Array<Person>;
@@ -15,9 +16,8 @@ interface Props extends RouteComponentProps {
   collection: "autores" | "supervisores";
   projectId: String;
   userType: "authors" | "supervisors";
-  addDispatch: ActionType;
-  deleteDispatch: ActionType;
-  dispatch: React.Dispatch<Action>;
+  addDispatch: (u: Person) => ProjectAction;
+  deleteDispatch: (u: Person) => ProjectAction;
   usersToAdd: Array<Person>;
   usersToDelete: Array<Person>;
 }
@@ -38,14 +38,15 @@ const Users = (props: Props) => {
     <div className="mt-1 mt-md-3">
       <div className="font-size-14 font-size-16-md font-weight-lighter">
         {props.projectUsers.map((u, idx) => (
-          <div key={idx} className="mt-1 mb-1 underline-hover cursor-pointer">
+          <div
+            key={idx}
+            className="mt-1 mb-1 underline-hover cursor-pointer"
+            onClick={() => store.dispatch(props.deleteDispatch(u))}
+          >
             <FontAwesomeIcon
               icon={faMinusCircle}
               color="red"
               className="mr-2"
-              onClick={() =>
-                props.dispatch({ type: props.deleteDispatch, payload: u })
-              }
             />{" "}
             {u.fullName}
           </div>
@@ -65,18 +66,16 @@ const Users = (props: Props) => {
           focusInputOnSuggestionClick={true}
           onSuggestionsFetchRequested={onSuggestionsFetchRequested}
           onSuggestionsClearRequested={onSuggestionsClearRequested}
-          renderSuggestion={(e) => (
+          renderSuggestion={(u) => (
             <div
               className="d-flex align-items-center"
-              onClick={() =>
-                props.dispatch({ type: props.addDispatch, payload: e })
-              }
+              onClick={() => store.dispatch(props.addDispatch(u))}
             >
               <img
-                src={e.profilePicUrl?.valueOf()}
+                src={u.profilePicUrl?.valueOf()}
                 className="suggestion-image"
               />
-              <span className="pl-3">{e.fullName}</span>
+              <span className="pl-3">{u.fullName}</span>
             </div>
           )}
           inputProps={{

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect } from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
 import { Project, Person, Organization } from "../../../../types";
@@ -10,60 +10,26 @@ import Loader from "../../../Common/Loader";
 import Users from "./Users";
 import Separator from "../../../Common/Separator";
 import UserChanges from "./UserChanges";
+import {
+  addAuthorToAdd,
+  addAuthorToDelete,
+  addSupervisorToAdd,
+  addSupervisorToDelete,
+  removeAuthorToAdd,
+  removeAuthorToDelete,
+  removeSupervisorToAdd,
+  removeSupervisorToDelete,
+} from "../../../../actions/project";
+import { RootState } from "../../../../reducers";
+import { connect } from "react-redux";
 
 type Props = {
   project: Project;
-};
-
-type State = {
-  supervisorsToAdd: Array<Person>;
-  supervisorsToDelete: Array<Person>;
   authorsToAdd: Array<Person>;
   authorsToDelete: Array<Person>;
+  supervisorsToAdd: Array<Person>;
+  supervisorsToDelete: Array<Person>;
 };
-
-export type ActionType =
-  | "ADD_AUTHOR"
-  | "DELETE_AUTHOR"
-  | "ADD_SUPERVISOR"
-  | "DELETE_SUPERVISOR";
-
-export type Action = {
-  type: ActionType;
-  payload: Person;
-};
-
-function reducer(state: State, action: Action): State {
-  switch (action.type) {
-    case "ADD_AUTHOR": {
-      return {
-        ...state,
-        authorsToAdd: state.authorsToAdd.concat(action.payload),
-      };
-    }
-    case "DELETE_AUTHOR": {
-      return {
-        ...state,
-        authorsToDelete: state.authorsToDelete.concat(action.payload),
-      };
-    }
-    case "ADD_SUPERVISOR": {
-      return {
-        ...state,
-        supervisorsToAdd: state.supervisorsToAdd.concat(action.payload),
-      };
-    }
-    case "DELETE_SUPERVISOR": {
-      return {
-        ...state,
-        supervisorsToDelete: state.supervisorsToDelete.concat(action.payload),
-      };
-    }
-    default: {
-      return state;
-    }
-  }
-}
 
 const SupervisorEdit = (props: Props) => {
   const [
@@ -74,15 +40,6 @@ const SupervisorEdit = (props: Props) => {
     authors: Array<Person>;
   }>({ supervisors: [], authors: [] });
   const [isLoading, setIsLoading] = useState(true);
-  const [
-    { authorsToAdd, authorsToDelete, supervisorsToAdd, supervisorsToDelete },
-    dispatch,
-  ] = useReducer(reducer, {
-    supervisorsToAdd: [],
-    supervisorsToDelete: [],
-    authorsToAdd: [],
-    authorsToDelete: [],
-  });
 
   useEffect(() => {
     let config: AxiosRequestConfig = {
@@ -136,11 +93,10 @@ const SupervisorEdit = (props: Props) => {
               collection="autores"
               projectId={props.project.id}
               userType="authors"
-              dispatch={dispatch}
-              usersToAdd={authorsToAdd}
-              usersToDelete={authorsToDelete}
-              addDispatch="ADD_AUTHOR"
-              deleteDispatch="DELETE_AUTHOR"
+              usersToAdd={props.authorsToAdd}
+              usersToDelete={props.authorsToDelete}
+              addDispatch={addAuthorToAdd}
+              deleteDispatch={addAuthorToDelete}
             />
           </div>
           <div className="col-12 mt-md-3">
@@ -153,11 +109,10 @@ const SupervisorEdit = (props: Props) => {
               collection="supervisores"
               projectId={props.project.id}
               userType="supervisors"
-              dispatch={dispatch}
-              usersToAdd={supervisorsToAdd}
-              usersToDelete={supervisorsToDelete}
-              addDispatch="ADD_SUPERVISOR"
-              deleteDispatch="DELETE_SUPERVISOR"
+              usersToAdd={props.supervisorsToAdd}
+              usersToDelete={props.supervisorsToDelete}
+              addDispatch={addSupervisorToAdd}
+              deleteDispatch={addSupervisorToDelete}
             />
           </div>
           <div className="col-12 mt-md-3">
@@ -171,15 +126,19 @@ const SupervisorEdit = (props: Props) => {
           <div className="col-12 col-md-6 mt-md-3">
             <UserChanges
               name="autores"
-              toAdd={authorsToAdd}
-              toDelete={authorsToDelete}
+              toAdd={props.authorsToAdd}
+              toDelete={props.authorsToDelete}
+              removeAddedDispatch={removeAuthorToAdd}
+              removeDeletedDispatch={removeAuthorToDelete}
             />
           </div>
           <div className="col-12 col-md-6 mt-md-3">
             <UserChanges
               name="supervisores"
-              toAdd={supervisorsToAdd}
-              toDelete={supervisorsToDelete}
+              toAdd={props.supervisorsToAdd}
+              toDelete={props.supervisorsToDelete}
+              removeAddedDispatch={removeSupervisorToAdd}
+              removeDeletedDispatch={removeSupervisorToDelete}
             />
           </div>
           <div className="col-12">
@@ -206,4 +165,13 @@ const SupervisorEdit = (props: Props) => {
   );
 };
 
-export default hot(module)(SupervisorEdit);
+const mapStateToProps = (rootState: RootState) => {
+  return {
+    authorsToAdd: rootState.project.authorsToAdd,
+    authorsToDelete: rootState.project.authorsToDelete,
+    supervisorsToAdd: rootState.project.supervisorsToAdd,
+    supervisorsToDelete: rootState.project.supervisorsToDelete,
+  };
+};
+
+export default hot(module)(connect(mapStateToProps)(SupervisorEdit));
