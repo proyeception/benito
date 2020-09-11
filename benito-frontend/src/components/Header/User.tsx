@@ -20,7 +20,7 @@ interface Props extends RouteComponentProps {
   role: Role;
 }
 
-const CustomToggle = (props: Props) =>
+const UserToggle = (props: Props) =>
   React.forwardRef(({ onClick }: any, ref: any) => (
     <div
       ref={ref}
@@ -37,6 +37,19 @@ const CustomToggle = (props: Props) =>
     </div>
   ));
 
+const LoginToggle = React.forwardRef(({ onClick }: any, ref: any) => (
+  <div
+    ref={ref}
+    onClick={(e) => {
+      e.preventDefault();
+      onClick(e);
+    }}
+    className="qui-user-icon-container cursor-pointer"
+  >
+    <img className="img-circle" src={googleIcon} />
+  </div>
+));
+
 const googleIcon =
   "https://resources.finalsite.net/images/f_auto,q_auto,t_image_size_1/v1533665793/ogdensdorg/p6ckkwxkxi8zd03ja8h0/GoogleButton.png";
 
@@ -51,7 +64,7 @@ const User = (props: Props) => {
     return (
       <div className="qui-header-user center-vertically justify-content-end pr-2 pr-md-5">
         <Dropdown>
-          <Dropdown.Toggle as={CustomToggle(props)} />
+          <Dropdown.Toggle as={UserToggle(props)} />
           <Dropdown.Menu>
             <Dropdown.Item>
               <Link
@@ -70,6 +83,7 @@ const User = (props: Props) => {
                 className="qui-text font-size-18-md cursor-pointer"
                 onClick={() => {
                   clearSession(props.token);
+                  props.history.push("/");
                   props.history.go(0);
                 }}
               >
@@ -83,19 +97,35 @@ const User = (props: Props) => {
   }
 
   return (
-    <Login
-      loginPath="author"
-      render={(renderProps) => (
-        <div
-          onClick={renderProps.onClick}
-          className="qui-header-user center-vertically justify-content-end pr-2 pr-md-5 cursor-pointer"
-        >
-          <div className="qui-user-icon-container">
-            <img className="img-circle" src={googleIcon} />
-          </div>
-        </div>
-      )}
-    />
+    <div className="qui-header-user center-vertically justify-content-end pr-2 pr-md-5 cursor-pointer">
+      <Dropdown>
+        <Dropdown.Toggle as={LoginToggle} />
+        <Dropdown.Menu>
+          <Dropdown.Item>
+            <Login
+              loginPath="author"
+              render={(renderProps) => (
+                <div
+                  onClick={renderProps.onClick}
+                  className="qui-text font-size-18-md cursor-pointer"
+                >
+                  Soy autor
+                </div>
+              )}
+            />
+          </Dropdown.Item>
+          <Dropdown.Divider />
+          <Dropdown.Item>
+            <div
+              onClick={() => props.history.push("/supervisor/login")}
+              className="qui-text font-size-18-md cursor-pointer"
+            >
+              Soy supervisor
+            </div>
+          </Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+    </div>
   );
 };
 
