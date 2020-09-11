@@ -25,7 +25,7 @@ const SupervisorEdit = (props: Props) => {
 
   useEffect(() => {
     let config: AxiosRequestConfig = {
-      url: `${benitoHost}/benito/organizations/${props.project.organization.id}`,
+      url: `${benitoHost}/benito/organizations/${props.project.organization.id}?cached=false`,
       method: "GET",
     };
 

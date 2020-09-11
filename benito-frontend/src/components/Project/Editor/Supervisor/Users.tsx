@@ -44,7 +44,9 @@ const Authors = (props: Props) => {
       </div>
       <div style={{ height: "52px" }} className="mt-2 mb-3">
         <Autosuggest
-          suggestions={suggestions}
+          suggestions={suggestions.filter(
+            (ou) => !props.projectUsers.some((pu) => pu.id == ou.id)
+          )}
           onSuggestionsFetchRequested={onSuggestionsFetchRequested}
           onSuggestionsClearRequested={onSuggestionsClearRequested}
           renderSuggestion={(e) => (
