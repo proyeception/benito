@@ -16,14 +16,16 @@ type Props = {
 const ProfileTab = (props: Props) => {
   const [{ fullName, username }, setValues] = useForm({
     fullName: props.user.fullName,
-    username: props.user.username,
+    username: props.user.username || "",
   });
+  const [validated, setValidated] = useState(false);
 
   const inputCol = (
     name: string,
     fieldName: string,
     value: string,
-    required: Boolean
+    required: Boolean,
+    feedback?: string
   ) => (
     <Col xs={12} md={6} key={name}>
       <Form.Label className="font-weight-bolder font-size-18 font-size-22-md">
@@ -37,11 +39,24 @@ const ProfileTab = (props: Props) => {
         value={value}
         onChange={setValues}
       />
+      <Form.Control.Feedback type="invalid">{feedback}</Form.Control.Feedback>
     </Col>
   );
 
-  const [validated, setValidated] = useState(false);
-  setValidated;
+  const validate = () => {
+    console.log(fullName);
+    console.log(username);
+
+    if (fullName.length == 0 || username.length == 0) {
+      setValidated(true);
+      return false;
+    }
+
+    return true;
+  };
+
+  const [isLoading, setIsLoading] = useState(false);
+
   return (
     <div className="container pt-4">
       <Form noValidate validated={validated}>
@@ -51,22 +66,37 @@ const ProfileTab = (props: Props) => {
             "username",
             "Nombre de usuario",
             username?.valueOf(),
-            false
+            true,
+            "Por favor, ingresá un nombre de usuario válido"
           )}
           <Col xs={12}></Col>
         </Form.Row>
         <Button
           className="mt-5"
           variant="success"
-          onClick={() =>
-            updateUser(mapRoleToCollection(props.role), props.user.id, {
-              fullName,
-              username,
-            })
-          }
+          onClick={() => {
+            if (validate()) {
+              setIsLoading(true);
+              updateUser(mapRoleToCollection(props.role), props.user.id, {
+                fullName,
+                username,
+              })
+                .then(console.log)
+                .then(() => setIsLoading(false))
+                .catch(console.error);
+            } else {
+              console.log("Pará loco, no entendés nada!!");
+            }
+          }}
           type="button"
         >
-          Guardar cambios
+          <span hidden={isLoading}>Guardar cambios</span>
+          <span
+            className="spinner-border spinner-border-sm"
+            role="status"
+            aria-hidden="true"
+            hidden={!isLoading}
+          ></span>
         </Button>
       </Form>
     </div>
