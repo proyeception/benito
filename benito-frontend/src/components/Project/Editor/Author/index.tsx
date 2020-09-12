@@ -24,8 +24,6 @@ function Render(props: any) {
   return <img {...props} style={{ maxWidth: "100%", height: "320px" }} />;
 }
 
-
-
 const AuthorEdit = (props: Props) => {
   const [{ title, description, extraContent, posterUrl }, setValues] = useForm({
     title: props.project.title,
@@ -65,7 +63,9 @@ const AuthorEdit = (props: Props) => {
             />
           </div>
         </div>
+        
         <Documents project={props.project} />
+
         <div className="font-size-18 font-size-24-md mt-2 mt-md-4">
           <div className="font-weight-bolder mb-2 mb-md-2">Contenido extra</div>
           <Tabs defaultActiveKey="edit">

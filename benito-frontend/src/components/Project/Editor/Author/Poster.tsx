@@ -17,7 +17,7 @@ const Poster = (props: Props) => {
 
   const onDrop = useCallback((file) => {
     const form = new FormData();
-    form.append("poster", file);
+    form.set("file", file[0]);
 
     let config: AxiosRequestConfig = {
       url: `${benitoHost}/benito/projects/${props.project.id}/poster`,
