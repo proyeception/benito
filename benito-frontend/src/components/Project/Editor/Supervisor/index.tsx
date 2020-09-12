@@ -22,14 +22,16 @@ import {
 } from "../../../../actions/project";
 import { RootState } from "../../../../reducers";
 import { connect } from "react-redux";
+import { setProjectUsers } from "../../../../functions/project";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 
-type Props = {
+interface Props extends RouteComponentProps {
   project: Project;
   authorsToAdd: Array<Person>;
   authorsToDelete: Array<Person>;
   supervisorsToAdd: Array<Person>;
   supervisorsToDelete: Array<Person>;
-};
+}
 
 const SupervisorEdit = (props: Props) => {
   const [
@@ -147,6 +149,28 @@ const SupervisorEdit = (props: Props) => {
                 <button
                   type="button"
                   className="btn btn-success font-weight-bold"
+                  onClick={() =>
+                    setProjectUsers(
+                      props.project.authors
+                        .filter(
+                          (a) =>
+                            !props.authorsToDelete.some((atd) => atd.id == a.id)
+                        )
+                        .concat(props.authorsToAdd),
+                      props.project.supervisors
+                        .filter(
+                          (s) =>
+                            !props.supervisorsToDelete.some(
+                              (std) => std.id == s.id
+                            )
+                        )
+                        .concat(props.supervisorsToAdd),
+                      props.project.id
+                    )
+                      .then(console.log)
+                      .then(() => props.history.go(0))
+                      .catch(console.error)
+                  }
                 >
                   Guardar cambios
                 </button>
@@ -174,4 +198,6 @@ const mapStateToProps = (rootState: RootState) => {
   };
 };
 
-export default hot(module)(connect(mapStateToProps)(SupervisorEdit));
+export default hot(module)(
+  withRouter(connect(mapStateToProps)(SupervisorEdit))
+);

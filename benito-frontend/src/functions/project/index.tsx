@@ -69,3 +69,20 @@ export function addUsersToProject(
 
   return axios.request(signRequest(config));
 }
+
+export function setProjectUsers(
+  authors: Array<Person>,
+  supervisors: Array<Person>,
+  projectId: String
+) {
+  let config: AxiosRequestConfig = {
+    url: `${benitoHost}/benito/projects/${projectId}/users`,
+    data: {
+      authors: authors.map((a) => a.id),
+      supervisors: supervisors.map((s) => s.id),
+    },
+    method: "PUT",
+  };
+
+  return axios.request(signRequest(config));
+}

@@ -5,6 +5,7 @@ import { Person } from "../../../../types";
 import { faPlusCircle, faMinusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ProjectAction } from "../../../../store/project/types";
+import store from "../../../../store";
 
 type Props = {
   name: String;
@@ -25,7 +26,11 @@ const UserChanges = (props: Props) => (
       <div className="col-6 mt-3">
         <div className="font-size-14 font-size-18-md font-weight-lighter justify-content-center">
           {props.toAdd.map((u, idx) => (
-            <div onClick={() => props.removeAddedDispatch(u)} key={idx}>
+            <div
+              onClick={() => store.dispatch(props.removeAddedDispatch(u))}
+              key={idx}
+              className="underline-hover cursor-pointer"
+            >
               <FontAwesomeIcon icon={faPlusCircle} color="green" /> {u.fullName}
             </div>
           ))}
@@ -34,7 +39,11 @@ const UserChanges = (props: Props) => (
       <div className="col-6 mt-3">
         <div className="font-size-14 font-size-18-md font-weight-lighter">
           {props.toDelete.map((u, idx) => (
-            <div onClick={() => props.removeDeletedDispatch(u)} key={idx}>
+            <div
+              onClick={() => store.dispatch(props.removeDeletedDispatch(u))}
+              key={idx}
+              className="underline-hover cursor-pointer"
+            >
               <FontAwesomeIcon icon={faMinusCircle} color="red" /> {u.fullName}
             </div>
           ))}
