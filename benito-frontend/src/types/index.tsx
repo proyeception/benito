@@ -71,3 +71,11 @@ export type LoginData = {
   profilePictureUrl: String;
   token: String;
 };
+
+export type UpdateUser = {
+  username?: String;
+  fullName?: String;
+  mail?: String;
+  phone?: String;
+  socials?: Array<Social>;
+};

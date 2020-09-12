@@ -14,7 +14,7 @@ import ProfileTab from "./ProfileTab";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBuilding, faCog, faUser } from "@fortawesome/free-solid-svg-icons";
 import OrganizationsTab from "./OrganizationsTab";
-import SettingsTab from "./SettingsTab";
+import ConfigTab from "./ConfigTab";
 
 type MatchParams = {
   tab: string;
@@ -96,7 +96,7 @@ const Settings = (props: Props) => {
                     </div>
                   }
                 >
-                  <SettingsTab user={user} />
+                  <ConfigTab user={user} />
                 </Tab>
               </Tabs>
             </div>

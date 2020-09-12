@@ -3,7 +3,7 @@ import { hot } from "react-hot-loader";
 import "./styles.scss";
 import Header from "./components/Header/index";
 import Footer from "./components/Footer";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import Search from "./components/Search";
 import Home from "./components/Home";
 import axios, { AxiosRequestConfig } from "axios";
@@ -59,8 +59,7 @@ const App = (_: any) => {
           <Route exact path="/search" component={Search} />
           <Route exact path="/authors/:userId" component={Author} />
           <Route exact path="/supervisors/:userId" component={Supervisor} />
-          <Route exact path="/settings/:tab" component={Settings} />
-          <Redirect exact path="/settings" to="/settings/profile" />
+          <Route exact path="/settings/:tab" render={() => <Settings />} />
           <Route exact path="/supervisor/login" component={SupervisorLogin} />
           <Route path="/*" component={NotFound} />
         </Switch>

@@ -7,6 +7,6 @@ type Props = {
   user: Person;
 };
 
-const SettingsTab = (_: Props) => <div>Coming soon</div>;
+const ConfigTab = (_: Props) => <div>Coming soon</div>;
 
-export default hot(module)(SettingsTab);
+export default hot(module)(ConfigTab);

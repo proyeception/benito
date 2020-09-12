@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { benitoHost } from "../../config";
-import { Person, Role } from "../../types";
+import { Person, UpdateUser, Role } from "../../types";
+import { signRequest } from "../http";
 
 export async function fetchUser(collection: String, userId: String) {
   let config: AxiosRequestConfig = {
@@ -20,4 +21,18 @@ export function mapRoleToCollection(role: Role): "authors" | "supervisors" {
       return "authors";
     }
   }
+}
+
+export async function updateUser(
+  collection: String,
+  userId: String,
+  user: UpdateUser
+) {
+  let config: AxiosRequestConfig = {
+    method: "PATCH",
+    url: `${benitoHost}/benito/${collection}/${userId}`,
+    data: user,
+  };
+
+  return axios.request(signRequest(config));
 }
