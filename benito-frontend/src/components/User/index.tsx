@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
 import Separator from "../Common/Separator";
@@ -8,47 +8,26 @@ import SocialMedia from "./SocialMedia";
 import ProjectsTab from "./ProjectsTab";
 import FadeIn from "../Common/FadeIn";
 import { RouteChildrenProps } from "react-router-dom";
-import { Person } from "../../types";
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import { benitoHost } from "../../config";
 import Loader from "../Common/Loader";
 import SlideUp from "../Common/SlideUp";
+import withUser from "../../hooks/withUser";
 
 type MatchParams = {
   userId: string;
 };
 
 interface Props extends RouteChildrenProps<MatchParams> {
-  collection: String;
+  collection: "authors" | "supervisors";
 }
 
 const User = (props: Props) => {
-  const [user, setUser] = useState<Person>(null);
-  const [isError, setIsError] = useState(false);
-  const [notFound, setNotFound] = useState(false);
-  setNotFound;
-
-  useEffect(() => {
-    let config: AxiosRequestConfig = {
-      method: "GET",
-      url: `${benitoHost}/benito/${props.collection}/${props.match.params.userId}`,
-    };
-
-    axios
-      .request<Person>(config)
-      .then((res) => res.data)
-      .then(setUser)
-      .catch((e: { response: AxiosResponse }) => {
-        setIsError(true);
-        if (e.response.status == 404) {
-          setNotFound(true);
-        }
-        console.error(e.response);
-      });
-  }, []);
+  const [user, fetching, isError, isNotFound] = withUser(
+    props.match.params.userId,
+    props.collection
+  );
 
   if (isError) {
-    if (notFound) {
+    if (isNotFound) {
       return (
         <div className="container mt-5 mb-5">
           <div className="alert alert-danger font-size-32-md text-center">
@@ -66,7 +45,7 @@ const User = (props: Props) => {
     );
   }
 
-  if (!user) {
+  if (fetching) {
     return (
       <div className="center qui-min-height">
         <Loader />
@@ -79,7 +58,7 @@ const User = (props: Props) => {
       <div className="container-fluid un-mb-md-1">
         <div className="row">
           <div className="col-12 col-md-3 pl-md-4 pr-md-4 pt-5 pt-md-5 bg-white border-right">
-            <SlideUp>
+            <SlideUp className="container">
               <Profile user={user} />
               <Separator
                 display="d-block"
