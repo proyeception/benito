@@ -121,6 +121,7 @@ const AuthorEdit = (props: Props) => {
                 title={title}
                 description={description}
                 extraContent={extraContent}
+                posterUrl={posterUrl}
                 id={props.project.id}
                 className="d-none d-md-block cursor-pointer"
               >

@@ -6,6 +6,7 @@ import {
   CLOSE_PROJECT_EDITION,
   EDIT_TITLE,
   EDIT_DESCRIPTION,
+  EDIT_POSTERURL,
   EDIT_EXTRA_CONTENT,
   UPDATE_CURRENT_PROJECT,
 } from "../../store/project/types";
@@ -31,6 +32,7 @@ function projectReducer(state = defaultProjectState, action: ProjectAction) {
           description: action.payload.description,
           title: action.payload.title,
           extraContent: action.payload.extraContent,
+          posterUrl: action.payload.posterUrl,
         },
       };
     }
@@ -56,6 +58,15 @@ function projectReducer(state = defaultProjectState, action: ProjectAction) {
         edition: {
           ...state.edition,
           description: action.payload,
+        },
+      };
+    }
+    case EDIT_POSTERURL: {
+      return {
+        ...state,
+        edition: {
+          ...state.edition,
+          posterUrl: action.payload,
         },
       };
     }
