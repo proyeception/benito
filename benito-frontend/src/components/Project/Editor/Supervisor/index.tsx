@@ -15,6 +15,7 @@ import {
   addAuthorToDelete,
   addSupervisorToAdd,
   addSupervisorToDelete,
+  closeProjectEdition,
   removeAuthorToAdd,
   removeAuthorToDelete,
   removeSupervisorToAdd,
@@ -24,6 +25,7 @@ import { RootState } from "../../../../reducers";
 import { connect } from "react-redux";
 import { setProjectUsers } from "../../../../functions/project";
 import { withRouter, RouteComponentProps } from "react-router-dom";
+import store from "../../../../store";
 
 interface Props extends RouteComponentProps {
   project: Project;
@@ -42,6 +44,7 @@ const SupervisorEdit = (props: Props) => {
     authors: Array<Person>;
   }>({ supervisors: [], authors: [] });
   const [isLoading, setIsLoading] = useState(true);
+  const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
     let config: AxiosRequestConfig = {
@@ -149,7 +152,9 @@ const SupervisorEdit = (props: Props) => {
                 <button
                   type="button"
                   className="btn btn-success font-weight-bold"
-                  onClick={() =>
+                  disabled={isUploading}
+                  onClick={() => {
+                    setIsUploading(true);
                     setProjectUsers(
                       props.project.authors
                         .filter(
@@ -168,15 +173,30 @@ const SupervisorEdit = (props: Props) => {
                       props.project.id
                     )
                       .then(console.log)
-                      .then(() => props.history.go(0))
-                      .catch(console.error)
-                  }
+                      .then(() => store.dispatch(closeProjectEdition()))
+                      .then(() =>
+                        props.history.push(`/projects/${props.project.id}`)
+                      )
+                      .catch(console.error);
+                  }}
                 >
-                  Guardar cambios
+                  {isUploading ? (
+                    <div className="spinner-border text-light" role="status">
+                      <span className="sr-only">Loading ...</span>
+                    </div>
+                  ) : (
+                    <div>
+                      <span>Guardar cambios</span>
+                    </div>
+                  )}
                 </button>
                 <button
                   type="button"
                   className="btn btn-danger font-weight-bold"
+                  onClick={() => {
+                    store.dispatch(closeProjectEdition());
+                    props.history.push(`/projects/${props.project.id}`);
+                  }}
                 >
                   Descartar
                 </button>
