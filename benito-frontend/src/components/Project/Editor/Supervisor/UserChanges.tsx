@@ -24,8 +24,8 @@ const UserChanges = (props: Props) => (
       </div>
       <div className="col-6 mt-3">
         <div className="font-size-14 font-size-18-md font-weight-lighter justify-content-center">
-          {props.toAdd.map((u) => (
-            <div onClick={() => props.removeAddedDispatch(u)}>
+          {props.toAdd.map((u, idx) => (
+            <div onClick={() => props.removeAddedDispatch(u)} key={idx}>
               <FontAwesomeIcon icon={faPlusCircle} color="green" /> {u.fullName}
             </div>
           ))}
@@ -33,8 +33,8 @@ const UserChanges = (props: Props) => (
       </div>
       <div className="col-6 mt-3">
         <div className="font-size-14 font-size-18-md font-weight-lighter">
-          {props.toDelete.map((u) => (
-            <div onClick={() => props.removeDeletedDispatch(u)}>
+          {props.toDelete.map((u, idx) => (
+            <div onClick={() => props.removeDeletedDispatch(u)} key={idx}>
               <FontAwesomeIcon icon={faMinusCircle} color="red" /> {u.fullName}
             </div>
           ))}
