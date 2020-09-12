@@ -4,6 +4,7 @@ import com.github.proyeception.benito.dto.LoginDTO
 import com.github.proyeception.benito.dto.RoleDTO
 import com.github.proyeception.benito.dto.SessionInfoDTO
 import com.github.proyeception.benito.exception.UnauthorizedException
+import com.github.proyeception.benito.extension.fromCamelToKebab
 import com.github.proyeception.benito.utils.HashHelper
 import org.slf4j.LoggerFactory
 
@@ -33,7 +34,7 @@ open class AuthenticationService(
                 fullName = login.fullName,
                 profilePicUrl = login.profilePicUrl,
                 googleUserId = login.googleUserId,
-                username = null,
+                username = login.fullName.fromCamelToKebab(),
                 mail = login.mail,
                 googleToken = login.token
             )
