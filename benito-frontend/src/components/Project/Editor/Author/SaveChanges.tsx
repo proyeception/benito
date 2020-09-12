@@ -10,6 +10,7 @@ type Props = {
   title?: String;
   description?: String;
   extraContent?: String;
+  posterUrl?: String;
   id: String;
 };
 
@@ -23,6 +24,7 @@ const SaveChanges = (props: Props) => (
         props.title,
         props.description,
         props.extraContent,
+        props.posterUrl,
         props.id
       )
         .then(console.log)

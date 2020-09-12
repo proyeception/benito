@@ -73,4 +73,5 @@ export type ProjectEdition = {
   title?: String;
   description?: String;
   extraContent?: String;
+  posterUrl?: String,
 };

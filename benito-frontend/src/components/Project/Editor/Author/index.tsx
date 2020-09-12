@@ -14,6 +14,7 @@ import SaveChanges from "./SaveChanges";
 import DiscardChanges from "./DiscardChanges";
 import Documents from "./Documents";
 import Image from "./Image";
+import ImageUploader from 'react-images-upload';
 
 interface Props {
   project: Project;
@@ -24,10 +25,11 @@ function Render(props: any) {
 }
 
 const AuthorEdit = (props: Props) => {
-  const [{ title, description, extraContent }, setValues] = useForm({
+  const [{ title, description, extraContent, posterUrl }, setValues] = useForm({
     title: props.project.title,
     description: props.project.description,
     extraContent: props.project.extraContent,
+    posterUrl: props.project.posterUrl
   });
 
   return (
@@ -46,6 +48,24 @@ const AuthorEdit = (props: Props) => {
             />
           </div>
         </div>
+
+        <div className="font-size-18 font-size-24-md">
+          <div className="font-weight-bolder mb-2 mb-md-2">Portada</div>
+          <div className="font-weight-lighter">
+            <ImageUploader
+              withIcon={true}
+              title='posterUrl'
+              buttonText='Choose images'
+              onChange={setValues}
+              imgExtension={['.jpg', '.gif', '.png', '.gif']}
+              maxFileSize={5242880}
+            />
+            
+          </div>
+        </div>
+
+
+
         <div className="font-size-18 font-size-24-md mt-2 mt-md-4">
           <div className="font-weight-bolder mb-2 mb-md-2">Descripción</div>
           <div className="font-weight-lighter">
