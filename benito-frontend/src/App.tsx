@@ -59,7 +59,7 @@ const App = (_: any) => {
           <Route exact path="/search" component={Search} />
           <Route exact path="/authors/:userId" component={Author} />
           <Route exact path="/supervisors/:userId" component={Supervisor} />
-          <Route exact path="/settings/*" component={Settings} />
+          <Route exact path="/settings/:tab" component={Settings} />
           <Redirect exact path="/settings" to="/settings/profile" />
           <Route exact path="/supervisor/login" component={SupervisorLogin} />
           <Route path="/*" component={NotFound} />
