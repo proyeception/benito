@@ -3,12 +3,15 @@ import {
   UPDATE_PROJECT_EDITION_ROLE,
   OPEN_PROJECT_EDITION,
   CLOSE_PROJECT_EDITION,
-  EDIT_TITLE,
-  EDIT_DESCRIPTION,
-  EDIT_EXTRA_CONTENT,
   UPDATE_CURRENT_PROJECT,
+  UPDATE_AUTHORS_TO_ADD,
+  UPDATE_AUTHORS_TO_DELETE,
+  UPDATE_SUPERVISORS_TO_ADD,
+  UPDATE_SUPERVISORS_TO_DELETE,
 } from "../../store/project/types";
-import { Project } from "../../types";
+import { Project, Person } from "../../types";
+import store from "../../store";
+import _ from "lodash";
 
 export function setProjectAuthor(): ProjectAction {
   return {
@@ -44,30 +47,75 @@ export function closeProjectEdition(): ProjectAction {
   };
 }
 
-export function editTitle(s: String): ProjectAction {
-  return {
-    type: EDIT_TITLE,
-    payload: s,
-  };
-}
-
-export function editDescription(s: String): ProjectAction {
-  return {
-    type: EDIT_DESCRIPTION,
-    payload: s,
-  };
-}
-
-export function editExtraContent(s: String): ProjectAction {
-  return {
-    type: EDIT_EXTRA_CONTENT,
-    payload: s,
-  };
-}
-
 export function updateCurrentProject(p: Project): ProjectAction {
   return {
     type: UPDATE_CURRENT_PROJECT,
     payload: p,
+  };
+}
+
+export function addAuthorToAdd(a: Person): ProjectAction {
+  return {
+    type: UPDATE_AUTHORS_TO_ADD,
+    payload: _.uniq(store.getState().project.authorsToAdd.concat(a)),
+  };
+}
+
+export function addAuthorToDelete(a: Person): ProjectAction {
+  return {
+    type: UPDATE_AUTHORS_TO_DELETE,
+    payload: _.uniq(store.getState().project.authorsToDelete.concat(a)),
+  };
+}
+
+export function removeAuthorToAdd(a: Person): ProjectAction {
+  return {
+    type: UPDATE_AUTHORS_TO_ADD,
+    payload: _.uniq(
+      store.getState().project.authorsToAdd.filter((ata) => ata.id != a.id)
+    ),
+  };
+}
+
+export function removeAuthorToDelete(a: Person): ProjectAction {
+  return {
+    type: UPDATE_AUTHORS_TO_DELETE,
+    payload: _.uniq(
+      store.getState().project.authorsToDelete.filter((atd) => atd.id != a.id)
+    ),
+  };
+}
+
+export function addSupervisorToAdd(s: Person): ProjectAction {
+  return {
+    type: UPDATE_SUPERVISORS_TO_ADD,
+    payload: _.uniq(store.getState().project.supervisorsToAdd.concat(s)),
+  };
+}
+
+export function addSupervisorToDelete(s: Person): ProjectAction {
+  return {
+    type: UPDATE_SUPERVISORS_TO_DELETE,
+    payload: _.uniq(store.getState().project.supervisorsToDelete.concat(s)),
+  };
+}
+
+export function removeSupervisorToAdd(s: Person): ProjectAction {
+  return {
+    type: UPDATE_SUPERVISORS_TO_ADD,
+    payload: _.uniq(
+      store.getState().project.supervisorsToAdd.filter((sta) => sta.id != s.id)
+    ),
+  };
+}
+
+export function removeSupervisorToDelete(s: Person): ProjectAction {
+  return {
+    type: UPDATE_SUPERVISORS_TO_DELETE,
+    payload: _.uniq(
+      store
+        .getState()
+        .project.supervisorsToDelete.filter((std) => std.id != s.id)
+    ),
   };
 }

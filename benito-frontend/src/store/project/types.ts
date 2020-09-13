@@ -1,4 +1,4 @@
-import { ProjectEditionRole, ProjectEdition, Project } from "../../types";
+import { ProjectEditionRole, Project, Person } from "../../types";
 
 export const UPDATE_PROJECT_EDITION_ROLE = "UPDATE_PROJECT_EDITION_ROLE";
 export const OPEN_PROJECT_EDITION = "OPEN_PROJECT_EDITION";
@@ -8,6 +8,10 @@ export const EDIT_DESCRIPTION = "EDIT_DESCRIPTION";
 export const EDIT_POSTERURL = "EDIT_POSTERURL";
 export const EDIT_EXTRA_CONTENT = "EDIT_EXTRA_CONTENT";
 export const UPDATE_CURRENT_PROJECT = "UPDATE_CURRENT_PROJECT";
+export const UPDATE_AUTHORS_TO_ADD = "UPDATE_AUTHORS_TO_ADD";
+export const UPDATE_SUPERVISORS_TO_ADD = "UPDATE_SUPERVISORS_TO_ADD";
+export const UPDATE_AUTHORS_TO_DELETE = "UPDATE_AUTHORS_TO_DELETE";
+export const UPDATE_SUPERVISORS_TO_DELETE = "UPDATE_SUPERVISORS_TO_DELETE";
 
 interface UpdateProjectEditionRoleAction {
   type: typeof UPDATE_PROJECT_EDITION_ROLE;
@@ -48,11 +52,34 @@ interface UpdateCurrentProjectAction {
   payload: Project;
 }
 
+interface UpdateAuthorsToAddAction {
+  type: typeof UPDATE_AUTHORS_TO_ADD;
+  payload: Array<Person>;
+}
+
+interface UpdateAuthorsToDeleteAction {
+  type: typeof UPDATE_AUTHORS_TO_DELETE;
+  payload: Array<Person>;
+}
+
+interface UpdateSupervisorsToAddAction {
+  type: typeof UPDATE_SUPERVISORS_TO_ADD;
+  payload: Array<Person>;
+}
+
+interface UpdateSupervisorsToDeleteAction {
+  type: typeof UPDATE_SUPERVISORS_TO_DELETE;
+  payload: Array<Person>;
+}
+
 export type ProjectState = {
   editionRole?: ProjectEditionRole;
   project?: Project;
   isEditing: Boolean;
-  edition?: ProjectEdition;
+  authorsToAdd: Array<Person>;
+  authorsToDelete: Array<Person>;
+  supervisorsToAdd: Array<Person>;
+  supervisorsToDelete: Array<Person>;
 };
 
 export type ProjectAction =
@@ -63,4 +90,8 @@ export type ProjectAction =
   | EditDescriptionAction
   | EditPosterUrlAction
   | EditExtraContentAction
-  | UpdateCurrentProjectAction;
+  | UpdateCurrentProjectAction
+  | UpdateAuthorsToAddAction
+  | UpdateAuthorsToDeleteAction
+  | UpdateSupervisorsToAddAction
+  | UpdateSupervisorsToDeleteAction;

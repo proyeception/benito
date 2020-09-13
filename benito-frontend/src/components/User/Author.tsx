@@ -8,9 +8,7 @@ type MatchParams = {
   userId: string;
 };
 
-interface Props extends RouteChildrenProps<MatchParams> {
-  collection: String;
-}
+interface Props extends RouteChildrenProps<MatchParams> {}
 
 const Author = (props: Props) => <User collection="authors" {...props} />;
 

@@ -9,11 +9,19 @@ import {
   EDIT_POSTERURL,
   EDIT_EXTRA_CONTENT,
   UPDATE_CURRENT_PROJECT,
+  UPDATE_AUTHORS_TO_ADD,
+  UPDATE_AUTHORS_TO_DELETE,
+  UPDATE_SUPERVISORS_TO_ADD,
+  UPDATE_SUPERVISORS_TO_DELETE,
 } from "../../store/project/types";
 
 const defaultProjectState: ProjectState = {
   editionRole: "VISITOR",
   isEditing: false,
+  authorsToAdd: [],
+  authorsToDelete: [],
+  supervisorsToAdd: [],
+  supervisorsToDelete: [],
 };
 
 function projectReducer(state = defaultProjectState, action: ProjectAction) {
@@ -38,27 +46,27 @@ function projectReducer(state = defaultProjectState, action: ProjectAction) {
     }
     case CLOSE_PROJECT_EDITION: {
       return {
-        ...state,
-        isEditing: false,
-        edition: undefined,
+        ...defaultProjectState,
+        project: state.project,
+        editionRole: state.editionRole,
       };
     }
-    case EDIT_TITLE: {
+    case UPDATE_CURRENT_PROJECT: {
       return {
         ...state,
-        edition: {
-          ...state.edition,
-          title: action.payload,
-        },
+        project: action.payload,
       };
     }
-    case EDIT_DESCRIPTION: {
+    case UPDATE_AUTHORS_TO_ADD: {
       return {
         ...state,
-        edition: {
-          ...state.edition,
-          description: action.payload,
-        },
+        authorsToAdd: action.payload,
+      };
+    }
+    case UPDATE_AUTHORS_TO_DELETE: {
+      return {
+        ...state,
+        authorsToDelete: action.payload,
       };
     }
     case EDIT_POSTERURL: {
@@ -79,10 +87,16 @@ function projectReducer(state = defaultProjectState, action: ProjectAction) {
         },
       };
     }
-    case UPDATE_CURRENT_PROJECT: {
+    case UPDATE_SUPERVISORS_TO_ADD: {
       return {
         ...state,
-        project: action.payload,
+        supervisorsToAdd: action.payload,
+      };
+    }
+    case UPDATE_SUPERVISORS_TO_DELETE: {
+      return {
+        ...state,
+        supervisorsToDelete: action.payload,
       };
     }
     default: {

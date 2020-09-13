@@ -4,7 +4,6 @@ import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.parser.DocumentParser
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.apache.http.entity.ContentType
@@ -45,8 +44,9 @@ open class ProjectService(
         id = projectId
     )
 
-    fun saveDocuments(projectId: String, files: List<MultipartFile>) =
-        runBlocking { files.forEach { f -> launch(Dispatchers.Default) { saveDocument(projectId, f) } } }
+    fun saveDocuments(projectId: String, files: List<MultipartFile>) = runBlocking {
+        files.forEach { f -> launch(Dispatchers.Default) { saveDocument(projectId, f) } }
+    }
 
     private fun saveDocument(projectId: String, file: MultipartFile) {
         val fileStream = file.inputStream
@@ -100,6 +100,8 @@ open class ProjectService(
         LOGGER.info("{}", medusaProject)
         medusaClient.createProject(medusaProject)
     }
+
+    fun setAuthors(projectId: String, users: SetUsersDTO) = medusaClient.modifyProjectUsers(projectId, users)
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(ProjectService::class.java)

@@ -27,7 +27,7 @@ class AuthenticationServiceTest : Spec() {
                 on(hashMock.sha256(eq("456"))).thenReturn("hash456")
                 on(userServiceMock.findAuthorByGoogleId(eq("123"))).thenReturn(null)
                 on(userServiceMock.createAuthor(
-                    null,
+                    "benito-quinquela",
                     "Benito Quinquela",
                     "benito@quinquela.com",
                     "123",
@@ -36,7 +36,7 @@ class AuthenticationServiceTest : Spec() {
                 )).thenReturn(
                     MedusaPersonDTO(
                         id = "789",
-                        username = null,
+                        username = "benito-quinquela",
                         fullName = "Benito Quinquela",
                         organizations = emptyList(),
                         profilePic = null,

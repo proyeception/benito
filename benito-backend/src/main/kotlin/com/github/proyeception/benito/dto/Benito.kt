@@ -31,19 +31,21 @@ data class ProjectDTO(
     val authors: List<PersonRefDTO>,
     val supervisors: List<PersonRefDTO>,
     val tags: List<String>,
-    val documentation: List<DocumentationDTO>
+    val documentation: List<DocumentationDTO>,
+    val organization: OrganizationRefDTO
 ) {
-    constructor(medusaProjectDTO: MedusaProjectDTO) : this(
-        id = medusaProjectDTO.id,
-        title = medusaProjectDTO.title,
-        description = medusaProjectDTO.description,
-        extraContent = medusaProjectDTO.extraContent.orEmpty(),
-        creationDate = medusaProjectDTO.creationDate,
-        posterUrl = medusaProjectDTO.poster?.url,
-        authors = medusaProjectDTO.authors,
-        supervisors = medusaProjectDTO.supervisors,
+    constructor(medusa: MedusaProjectDTO) : this(
+        id = medusa.id,
+        title = medusa.title,
+        description = medusa.description,
+        extraContent = medusa.extraContent.orEmpty(),
+        creationDate = medusa.creationDate,
+        posterUrl = medusa.poster?.url,
+        authors = medusa.authors.map { PersonRefDTO(it) },
+        supervisors = medusa.supervisors.map { PersonRefDTO(it) },
         tags = emptyList(),
-        documentation = medusaProjectDTO.documentation
+        documentation = medusa.documentation,
+        organization = OrganizationRefDTO(medusa.organization)
     )
 }
 
@@ -58,6 +60,16 @@ data class PersonDTO(
     val contact: ContactDTO?
 )
 
+data class OrganizationRefDTO(
+    val id: String,
+    val displayName: String
+) {
+    constructor(medusa: MedusaOrganizationDTO) : this(
+        id = medusa.id,
+        displayName = medusa.displayName
+    )
+}
+
 data class OrganizationDTO(
     val id: String,
     val iconUrl: String,
@@ -71,8 +83,8 @@ data class OrganizationDTO(
         iconUrl = medusa.icon.url,
         displayName = medusa.displayName,
         id = medusa.id,
-        supervisors = medusa.supervisors,
-        authors = medusa.authors
+        supervisors = medusa.supervisors.map { PersonRefDTO(it) },
+        authors = medusa.authors.map { PersonRefDTO(it) }
     )
 }
 
@@ -113,8 +125,27 @@ data class AddUsersDTO(
     val items: List<String>
 )
 
+data class SetUsersDTO(
+    val authors: List<String>,
+    val supervisors: List<String>
+)
+
 data class CreateProjectDTO(
     val title: String,
     val organizationId: String,
     val categoryId: String
 )
+
+data class PersonRefDTO(
+    val id: String,
+    val fullName: String,
+    val username: String?,
+    val profilePicUrl: String? = null
+) {
+    constructor(medusa: MedusaPersonRefDTO) : this(
+        id = medusa.id,
+        fullName = medusa.fullName,
+        username = medusa.username,
+        profilePicUrl = medusa.profilePic?.url
+    )
+}

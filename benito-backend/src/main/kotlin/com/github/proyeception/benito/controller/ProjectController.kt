@@ -101,6 +101,15 @@ class ProjectController(
         @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
     ) = doSupervisorAuthorized(projectId, token) { projectService.addAuthors(projectId, users) }
 
+    @RequestMapping(value = ["/benito/projects/{projectId}/users"], method = [RequestMethod.PUT])
+    @CrossOrigin
+    @ResponseStatus(value = HttpStatus.OK)
+    fun setUsers(
+        @PathVariable projectId: String,
+        @RequestBody users: SetUsersDTO,
+        @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
+    ) = doSupervisorAuthorized(projectId, token) { projectService.setAuthors(projectId, users) }
+
     @RequestMapping(value = ["/benito/projects/{projectId}/authors"], method = [RequestMethod.DELETE])
     @CrossOrigin
     @ResponseStatus(value = HttpStatus.OK)
