@@ -4,6 +4,10 @@ import {
   UPDATE_PROJECT_EDITION_ROLE,
   OPEN_PROJECT_EDITION,
   CLOSE_PROJECT_EDITION,
+  EDIT_TITLE,
+  EDIT_DESCRIPTION,
+  EDIT_POSTERURL,
+  EDIT_EXTRA_CONTENT,
   UPDATE_CURRENT_PROJECT,
   UPDATE_AUTHORS_TO_ADD,
   UPDATE_AUTHORS_TO_DELETE,
@@ -32,6 +36,12 @@ function projectReducer(state = defaultProjectState, action: ProjectAction) {
       return {
         ...state,
         isEditing: true,
+        edition: {
+          description: action.payload.description,
+          title: action.payload.title,
+          extraContent: action.payload.extraContent,
+          posterUrl: action.payload.posterUrl,
+        },
       };
     }
     case CLOSE_PROJECT_EDITION: {
@@ -57,6 +67,24 @@ function projectReducer(state = defaultProjectState, action: ProjectAction) {
       return {
         ...state,
         authorsToDelete: action.payload,
+      };
+    }
+    case EDIT_POSTERURL: {
+      return {
+        ...state,
+        edition: {
+          ...state.edition,
+          posterUrl: action.payload,
+        },
+      };
+    }
+    case EDIT_EXTRA_CONTENT: {
+      return {
+        ...state,
+        edition: {
+          ...state.edition,
+          extraContent: action.payload,
+        },
       };
     }
     case UPDATE_SUPERVISORS_TO_ADD: {
