@@ -1,3 +1,5 @@
+import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { Button, Col, Form } from "react-bootstrap";
 import { hot } from "react-hot-loader";
@@ -56,6 +58,7 @@ const ProfileTab = (props: Props) => {
   };
 
   const [isLoading, setIsLoading] = useState(false);
+  const [socials, setSocials] = useState(props.user.socials);
 
   return (
     <div className="container pt-4">
@@ -69,7 +72,42 @@ const ProfileTab = (props: Props) => {
             true,
             "Por favor, ingresá un nombre de usuario válido"
           )}
-          <Col xs={12}></Col>
+          <Col
+            xs={12}
+            className="font-weight-bolder font-size-18 font-size-22-md mt-3"
+          >
+            Sociales
+          </Col>
+          {socials.map((s, idx) => (
+            <Col xs={12} key={idx}>
+              <Form.Control
+                type="text"
+                className="form-control mt-2"
+                value={s.socialProfileUrl.valueOf()}
+                onChange={(e) =>
+                  setSocials(
+                    socials.map((s2, idx2) =>
+                      idx2 == idx
+                        ? { ...s2, socialProfileUrl: e.currentTarget.value }
+                        : s2
+                    )
+                  )
+                }
+              />
+            </Col>
+          ))}
+          <Col xs={12} className="mt-3">
+            <div
+              className="cursor-pointer"
+              onClick={() =>
+                setSocials(
+                  socials.concat({ socialName: "", socialProfileUrl: "" })
+                )
+              }
+            >
+              <FontAwesomeIcon icon={faPlusCircle} /> Agregar social
+            </div>
+          </Col>
         </Form.Row>
         <Button
           className="mt-5"
@@ -78,8 +116,9 @@ const ProfileTab = (props: Props) => {
             if (validate()) {
               setIsLoading(true);
               updateUser(mapRoleToCollection(props.role), props.user.id, {
-                fullName,
-                username,
+                fullName: fullName,
+                username: username,
+                socials: socials.filter((s) => s.socialProfileUrl != ""),
               })
                 .then(console.log)
                 .then(() => setIsLoading(false))

@@ -47,7 +47,7 @@ const User = (props: Props) => {
 
   if (fetching) {
     return (
-      <div className="center qui-min-height">
+      <div className="center h-100">
         <Loader />
       </div>
     );
