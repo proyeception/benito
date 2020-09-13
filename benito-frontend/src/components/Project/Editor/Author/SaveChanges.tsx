@@ -12,6 +12,7 @@ type Props = {
   extraContent?: String;
   posterUrl?: String;
   id: String;
+  poster?: File;
 };
 
 const SaveChanges = (props: Props) => (
