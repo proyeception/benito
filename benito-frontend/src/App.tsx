@@ -44,7 +44,7 @@ const App = (_: any) => {
   }
 
   return (
-    <div className="bg-light-gray h-100">
+    <div className="h-100">
       <HamburgerMenu />
       <Header />
       <AnimatePresence>

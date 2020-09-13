@@ -24,7 +24,7 @@ class Home extends React.Component<Props> {
 
   render() {
     return (
-      <FadeIn>
+      <FadeIn className="pt-5">
         <HomeSearchBox
           setDoRedirect={() => this.setState({ doRedirect: true })}
         />

@@ -24,44 +24,36 @@ class HomeSearchBox extends React.Component<Props> {
 
   render() {
     return (
-      <div className="qui-home-search-box-container bg-white d-none d-md-block">
+      <div className="bg-white d-none d-md-block pt-4 pb-4">
         <div className="qui-home-search-box text-white container">
           <div className="container-fluid">
-            <div className="font-size-24 ml-3">
-              Buscá proyectos que te interesen
-            </div>
-            <div className="font-size-18 ml-3">
-              Elegí entre más de 100 categorías de todo tipo
-            </div>
-            <div className="row mt-3">
+            <div className="row">
+              <div className="col-12 font-size-24">
+                Buscá proyectos que te interesen
+              </div>
+              <div className="col-12 font-size-18">
+                Elegí entre más de 100 categorías de todo tipo
+              </div>
+              <div className="col-4 mt-3 font-size-14 mb-2">Nombre</div>
+              <div className="col-4 mt-3 font-size-14 mb-2">Fecha</div>
+              <div className="col-4 mt-3 font-size-14 mb-2">Categoría</div>
               <div className="col-4">
-                <div className="font-size-14 mb-2">Nombre</div>
                 <NameInput />
               </div>
-              <div className="col-4">
-                <div className="row">
-                  <div className="col-12 font-size-14 mb-2">Fecha</div>
-                  <div className="col-6">
-                    <FromDateInput />
-                  </div>
-                  <div className="col-6">
-                    <ToDateInput />
-                  </div>
-                </div>
+              <div className="col-2">
+                <FromDateInput />
               </div>
-              <div className="col-4">
-                <div className="row">
-                  <div className="col-12 font-size-14 mb-2">Categoria</div>
-                  <div className="col-6">
-                    <CategorySelector />
-                  </div>
-                  <div className="col-6">
-                    <SearchButton
-                      className="qui-home-search-box-button font-size-18 btn btn-block btn-info pb-2 pt-2 center font-weight-bold"
-                      style={{ color: "white", borderRadius: "32px" }}
-                    />
-                  </div>
-                </div>
+              <div className="col-2">
+                <ToDateInput />
+              </div>
+              <div className="col-2">
+                <CategorySelector />
+              </div>
+              <div className="col-2">
+                <SearchButton
+                  className="qui-home-search-box-button font-size-18 btn btn-block btn-info pb-2 pt-2 center font-weight-bold"
+                  style={{ color: "white", borderRadius: "32px" }}
+                />
               </div>
             </div>
           </div>
