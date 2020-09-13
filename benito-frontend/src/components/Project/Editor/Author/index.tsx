@@ -34,6 +34,8 @@ const AuthorEdit = (props: Props) => {
 
   const [poster, setPoster] = useState<File>(null);
   poster;
+  const [documents, setDocuments] = useState<Array<File>>(null);
+  documents;
 
   return (
     <SlideUp className="pt-5 pb-5">
@@ -67,7 +69,7 @@ const AuthorEdit = (props: Props) => {
           </div>
         </div>
 
-        <Documents project={props.project} />
+        <Documents project={props.project} setDocuments={setDocuments} />
 
         <div className="font-size-18 font-size-24-md mt-2 mt-md-4">
           <div className="font-weight-bolder mb-2 mb-md-2">Contenido extra</div>
@@ -115,6 +117,7 @@ const AuthorEdit = (props: Props) => {
                 id={props.project.id}
                 className="d-none d-md-block cursor-pointer"
                 poster={poster}
+                documents={documents}
               >
                 <FontAwesomeIcon icon={faSave} color="green" /> Guardar cambios
               </SaveChanges>

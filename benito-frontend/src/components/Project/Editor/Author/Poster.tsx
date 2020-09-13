@@ -10,25 +10,9 @@ type Props = {
 };
 
 const Poster = (props: Props) => {
-  // const [isUploading, setIsUploading] = useState(false);
 
   const onDrop = useCallback((file) => {
     props.setPoster(file[0]);
-    // const form = new FormData();
-    // form.set("file", file[0]);
-
-    // let config: AxiosRequestConfig = {
-    //   url: `${benitoHost}/benito/projects/${props.project.id}/poster`,
-    //   method: "POST",
-    //   data: form,
-    // };
-
-    // setIsUploading(true);
-
-    // axios
-    //   .request(signRequest(config))
-    //   .then(console.log)
-    //   .then(() => setIsUploading(false));
   }, []);
 
   return (
