@@ -33,9 +33,7 @@ const AuthorEdit = (props: Props) => {
   });
 
   const [poster, setPoster] = useState<File>(null);
-  poster;
   const [documents, setDocuments] = useState<Array<File>>(null);
-  documents;
 
   return (
     <SlideUp className="pt-5 pb-5">

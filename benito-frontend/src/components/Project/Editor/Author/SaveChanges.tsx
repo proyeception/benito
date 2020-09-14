@@ -35,37 +35,33 @@ const SaveChanges = (props: Props) => (
         .then(console.log)
         .catch(console.error);
 
-        //poster
-        if(props.poster){
-          const posterForm = new FormData();
-          posterForm.set("file", props.poster);
+      //poster
+      if (props.poster) {
+        const posterForm = new FormData();
+        posterForm.set("file", props.poster);
 
-          let posterConfig: AxiosRequestConfig = {
+        let posterConfig: AxiosRequestConfig = {
           url: `${benitoHost}/benito/projects/${props.id}/poster`,
           method: "POST",
           data: posterForm,
-          };
+        };
 
-          axios
-          .request(signRequest(posterConfig))
-          .then(console.log);
-        }
+        axios.request(signRequest(posterConfig)).then(console.log);
+      }
 
-        //documents
-        if(props.documents){
-          const form = new FormData();
-          props.documents.forEach((f: File) => form.append("file", f, f.name));
+      //documents
+      if (props.documents) {
+        const form = new FormData();
+        props.documents.forEach((f: File) => form.append("file", f, f.name));
 
-          let documentsConfig: AxiosRequestConfig = {
+        let documentsConfig: AxiosRequestConfig = {
           url: `${benitoHost}/benito/projects/${props.id}/documents`,
           method: "POST",
           data: form,
-          };
+        };
 
-          axios
-          .request(signRequest(documentsConfig))
-          .then(console.log);
-        }
+        axios.request(signRequest(documentsConfig)).then(console.log);
+      }
     }}
   >
     {props.children}

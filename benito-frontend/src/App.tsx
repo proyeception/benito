@@ -29,7 +29,7 @@ type Props = {
   loading: Boolean;
 };
 
-const App = (_: Props) => {
+const App = (props: Props) => {
   const [isLoggingIn, setIsLoggingIn] = useState(true);
   useEffect(() => {
     let config: AxiosRequestConfig = {
@@ -52,7 +52,7 @@ const App = (_: Props) => {
 
   return (
     <div className="h-100">
-      <LoadingOverlay active={_.loading} spinner>
+      <LoadingOverlay active={props.loading} spinner>
         <HamburgerMenu />
         <Header />
         <AnimatePresence>

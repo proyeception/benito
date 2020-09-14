@@ -8,7 +8,6 @@ import {
 import { benitoHost } from "../../config";
 import axios, { AxiosRequestConfig } from "axios";
 import { signRequest } from "../http";
-import { post } from "jquery";
 
 export function setProjectEditionRole({
   project,
