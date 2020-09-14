@@ -8,6 +8,7 @@ import {
 import { benitoHost } from "../../config";
 import axios, { AxiosRequestConfig } from "axios";
 import { signRequest } from "../http";
+import { post } from "jquery";
 
 export function setProjectEditionRole({
   project,
@@ -39,6 +40,7 @@ export function updateContent(
   title: String,
   description: String,
   extraContent: String,
+  posterUrl: String,
   projectId: String
 ) {
   let config: AxiosRequestConfig = {
@@ -47,6 +49,7 @@ export function updateContent(
       title: title,
       description: description,
       extraContent: extraContent,
+      posterUrl: posterUrl,
     },
     method: "PATCH",
   };

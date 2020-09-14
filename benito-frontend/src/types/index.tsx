@@ -72,6 +72,13 @@ export type LoginData = {
   token: String;
 };
 
+export type ProjectEdition = {
+  title?: String;
+  description?: String;
+  extraContent?: String;
+  posterUrl?: String,
+};   
+
 export type UpdateUser = {
   username?: String;
   fullName?: String;
