@@ -9,10 +9,14 @@ import useForm from "../../../hooks/useForm";
 import { RootState } from "../../../reducers";
 import { Person, Role } from "../../../types";
 import "./styles.scss";
+import { useAlert } from "react-alert";
+import store from "../../../store";
+import { toggleLoading } from "../../../actions/common";
 
 type Props = {
   user: Person;
   role: Role;
+  loading: Boolean;
 };
 
 const ProfileTab = (props: Props) => {
@@ -21,6 +25,8 @@ const ProfileTab = (props: Props) => {
     username: props.user.username || "",
   });
   const [validated, setValidated] = useState(false);
+
+  const alert = useAlert();
 
   const inputCol = (
     name: string,
@@ -115,14 +121,20 @@ const ProfileTab = (props: Props) => {
           onClick={() => {
             if (validate()) {
               setIsLoading(true);
+              store.dispatch(toggleLoading(true));
               updateUser(mapRoleToCollection(props.role), props.user.id, {
                 fullName: fullName,
                 username: username,
                 socials: socials.filter((s) => s.socialProfileUrl != ""),
               })
-                .then(console.log)
+                .then(() =>
+                  alert.success("Tus cambios se guardaron correctamente")
+                )
                 .then(() => setIsLoading(false))
-                .catch(console.error);
+                .then(() => store.dispatch(toggleLoading(false)))
+                .catch(() =>
+                  alert.error("Oops, hubo un error procesando tus cambios...")
+                );
             } else {
               console.log("Pará loco, no entendés nada!!");
             }
@@ -145,6 +157,7 @@ const ProfileTab = (props: Props) => {
 const mapStateToProps = (rootState: RootState) => {
   return {
     role: rootState.session.role,
+    loading: rootState.common.loading,
   };
 };
 

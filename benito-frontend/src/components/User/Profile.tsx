@@ -34,7 +34,7 @@ const Profile = (props: Props) => (
       {props.user.username}
     </div>
     {props.userId == props.user.id ? (
-      <Link to="/settings/profile">
+      <Link to="/me/profile">
         <button
           className="btn btn-primary btn-block font-weight-bolder mt-3"
           type="button"
