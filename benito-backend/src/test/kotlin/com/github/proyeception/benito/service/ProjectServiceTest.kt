@@ -6,6 +6,7 @@ import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.mock.eq
 import com.github.proyeception.benito.mock.getMock
 import com.github.proyeception.benito.mock.on
+import com.github.proyeception.benito.mongodb.MongoTextSearch
 import com.github.proyeception.benito.parser.DocumentParser
 import com.nhaarman.mockito_kotlin.any
 import io.kotlintest.matchers.shouldBe
@@ -21,11 +22,13 @@ class ProjectServiceTest : Spec() {
         val documentParserMock: DocumentParser = getMock()
         val documentService: DocumentService = getMock()
         val fileServiceMock: FileService = getMock()
+        val mongoMock: MongoTextSearch = getMock()
         val projectService = ProjectService(
             medusaClient = medusaClient,
             documentParser = documentParserMock,
             documentService = documentService,
-            fileService = fileServiceMock
+            fileService = fileServiceMock,
+            mongoTextSearch = mongoMock
         )
 
         "projects" should {
@@ -112,7 +115,7 @@ class ProjectServiceTest : Spec() {
 
                 on(medusaClient.findProjects()).thenReturn(projects)
 
-                val actual = projectService.findProjects(null, null, null, null, null)
+                val actual = projectService.findProjects(null, null, null, null, null, null)
 
                 expected shouldBe actual
 

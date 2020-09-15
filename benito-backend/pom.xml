@@ -476,6 +476,20 @@
                     </excludes>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>com.heroku.sdk</groupId>
+                <artifactId>heroku-maven-plugin</artifactId>
+                <configuration>
+                    <jdkVersion>1.8</jdkVersion>
+                    <!-- Use your own application name -->
+                    <appName>benito</appName>
+                    <processTypes>
+                        <!-- Tell Heroku how to launch your application -->
+                        <!-- You might have to remove the ./ in front   -->
+                        <web>java -jar target/returned-tablets-counter-1.0-SNAPSHOT-jar-with-dependencies.jar</web>
+                    </processTypes>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>
