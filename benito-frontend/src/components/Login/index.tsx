@@ -12,23 +12,25 @@ interface Props extends RouteComponentProps {
   loginPath: String;
 }
 
-const Login = (props: Props) => (
-  <GoogleLogin
-    clientId={googleClientId}
-    render={props.render}
-    onSuccess={(res) => {
-      let googleInfo = res as GoogleLoginResponse;
-      let loginData: LoginData = {
-        googleUserId: googleInfo.googleId,
-        fullName: googleInfo.profileObj.name,
-        profilePictureUrl: googleInfo.profileObj.imageUrl,
-        mail: googleInfo.profileObj.email,
-        token: googleInfo.tokenId,
-      };
-      startLogin(loginData, props.history, props.loginPath);
-    }}
-    onFailure={console.log}
-  ></GoogleLogin>
-);
+const Login = (props: Props) => {
+  return (
+    <GoogleLogin
+      clientId={googleClientId}
+      render={props.render}
+      onSuccess={(res) => {
+        let googleInfo = res as GoogleLoginResponse;
+        let loginData: LoginData = {
+          googleUserId: googleInfo.googleId,
+          fullName: googleInfo.profileObj.name,
+          profilePictureUrl: googleInfo.profileObj.imageUrl,
+          mail: googleInfo.profileObj.email,
+          token: googleInfo.tokenId,
+        };
+        startLogin(loginData, props.history, props.loginPath);
+      }}
+      onFailure={console.log}
+    ></GoogleLogin>
+  );
+};
 
 export default hot(module)(withRouter(Login));

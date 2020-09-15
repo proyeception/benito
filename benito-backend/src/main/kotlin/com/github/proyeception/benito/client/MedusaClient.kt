@@ -179,6 +179,13 @@ open class MedusaClient(
         ref = object : TypeReference<MedusaOrganizationDTO>() {}
     )
 
+    fun modifyProjectUsers(projectId: String, users: SetUsersDTO): MedusaProjectDTO = update(
+        collection = PROJECTS,
+        ref = object : TypeReference<MedusaProjectDTO>() {},
+        dto = users,
+        id = projectId
+    )
+
     private fun <T> find(collection: String, params: List<String>, ref: TypeReference<List<T>>): List<T> {
         val response = medusaConnector.get("/$collection?${params.joinToString("&")}")
 
@@ -249,7 +256,6 @@ open class MedusaClient(
 
     private fun String.appendOrder(orderBy: OrderDTO?): String = orderBy?.sortMethod?.let { "${this}_sort=$it&" }
         ?: this
-
     private fun String.appendParam(param: String, value: String?, filter: MedusaFilter): String =
         value?.let { "${this}${param}_${filter.filterName}=$it&" } ?: this
     private fun String.appendParam(param: String, value: String?) = value?.let { "$this${param}=$it&" } ?: this

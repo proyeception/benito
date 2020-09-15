@@ -4,6 +4,7 @@ export type Project = {
   description: String;
   posterUrl?: string;
   authors: Array<Person>;
+  supervisors: Array<Person>;
   creationDate: Date;
   tags: Array<String>;
   extraContent: String;
@@ -39,6 +40,8 @@ export type Organization = {
   displayName: String;
   name: String;
   iconUrl: String;
+  authors: Array<Person>;
+  supervisors: Array<Person>;
 };
 
 export type Social = {
@@ -73,4 +76,13 @@ export type ProjectEdition = {
   title?: String;
   description?: String;
   extraContent?: String;
+  posterUrl?: String,
+};   
+
+export type UpdateUser = {
+  username?: String;
+  fullName?: String;
+  mail?: String;
+  phone?: String;
+  socials?: Array<Social>;
 };

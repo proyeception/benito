@@ -2,44 +2,24 @@ import React, { useState, useCallback } from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
 import { Project } from "../../../../types";
-import axios, { AxiosRequestConfig } from "axios";
-import { signRequest } from "../../../../functions/http";
-import { benitoHost } from "../../../../config";
 import { faMinusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDropzone } from "react-dropzone";
-import Loader from "../../../Common/Loader";
 
 type Props = {
   project: Project;
+  setDocuments: (f: Array<File>) => void;
 };
 
 const Documents = (props: Props) => {
-  const [isUploading, setIsUploading] = useState(false);
   const [documents, setDocuments] = useState(
     props.project.documentation.map((d) => d.fileName)
   );
 
   const onDrop = useCallback((files) => {
+    props.setDocuments(files);
     const form = new FormData();
-    files.forEach((f: File) => form.append("file", f, f.name));
-
-    let config: AxiosRequestConfig = {
-      url: `${benitoHost}/benito/projects/${props.project.id}/documents`,
-      method: "POST",
-      data: form,
-    };
-
-    setIsUploading(true);
-
-    axios
-      .request(signRequest(config))
-      .then(console.log)
-      .then(() =>
-        setDocuments(documents.concat(files.map((f: File) => f.name)))
-      )
-      .catch(console.error)
-      .then(() => setIsUploading(false));
+    setDocuments(documents.concat(files.map((f: File) => f.name)))
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
@@ -57,11 +37,6 @@ const Documents = (props: Props) => {
       <div className="font-size-14 font-size-18-md pt-3 pt-md-5 mb-3">
         <div className="mb-3">Cargar documentos</div>
         <section className="container dropzone-container">
-          {isUploading ? (
-            <div className="center">
-              <Loader />
-            </div>
-          ) : (
             <div {...getRootProps({ className: "dropzone font-size-18-md" })}>
               <input {...getInputProps()} />
               {isDragActive ? (
@@ -70,7 +45,6 @@ const Documents = (props: Props) => {
                 <p>Drag 'n' drop some files here, or click to select files</p>
               )}
             </div>
-          )}
         </section>
       </div>
     </div>

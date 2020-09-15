@@ -19,6 +19,7 @@ import Author from "./components/User/Author";
 import Supervisor from "./components/User/Supervisor";
 import SupervisorLogin from "./components/Login/SupervisorLogin";
 import ProjectEditor from "./components/Project/Editor";
+import Settings from "./components/User/Settings";
 import { openLocalStoredSession } from "./functions/session";
 
 const App = (_: any) => {
@@ -58,6 +59,7 @@ const App = (_: any) => {
           <Route exact path="/search" component={Search} />
           <Route exact path="/authors/:userId" component={Author} />
           <Route exact path="/supervisors/:userId" component={Supervisor} />
+          <Route exact path="/settings/:tab" render={() => <Settings />} />
           <Route exact path="/supervisor/login" component={SupervisorLogin} />
           <Route path="/*" component={NotFound} />
         </Switch>

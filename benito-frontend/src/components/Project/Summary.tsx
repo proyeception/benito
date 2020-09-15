@@ -2,7 +2,7 @@ import React from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
 import { Project } from "../../types";
-import Separator from "./Separator";
+import Separator from "../Common/Separator";
 
 type Props = {
   project: Project;

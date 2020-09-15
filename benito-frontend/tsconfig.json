@@ -11,11 +11,13 @@
     "experimentalDecorators": true,
     "preserveConstEnums": true,
     "allowJs": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "noImplicitReturns": true,
     "moduleResolution": "node",
-    "baseUrl": "src"
+    "baseUrl": "src",
+    "emitDecoratorMetadata": true,
+    "removeComments": false
   },
   "filesGlob": [
     "typings/index.d.ts",

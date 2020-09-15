@@ -2,7 +2,7 @@ import React from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
 import ReactMarkdown from "react-markdown";
-import Separator from "./Separator";
+import Separator from "../Common/Separator";
 import { Project } from "../../types";
 
 type Props = {
