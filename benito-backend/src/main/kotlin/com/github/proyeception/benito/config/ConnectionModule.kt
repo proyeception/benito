@@ -20,7 +20,12 @@ open class ConnectionModule {
     ): Connector = Connector.create(
         objectMapperSnakeCase,
         config.getConfig("medusa"),
-        listOf(BasicHeader("Authorization", config.getString("medusa.authorization")))
+        listOf(
+            BasicHeader(
+                "Authorization",
+                System.getenv("MEDUSA_AUTHORIZATION") ?: config.getString("medusa.authorization")
+            )
+        )
     )
 
     @Bean("googleDriveConnector")
@@ -30,7 +35,8 @@ open class ConnectionModule {
     ): OAuthConnector = OAuthConnector.create(
         moduleConfig = config.getConfig("google.drive"),
         objectMapper = objectMapperCamelCase,
-        api = GoogleApi20.instance()
+        api = GoogleApi20.instance(),
+        moduleName = "google_drive"
     )
 
     @Bean("googleAccountConnector")
@@ -40,6 +46,7 @@ open class ConnectionModule {
     ): DynamicOAuthConnector = DynamicOAuthConnector.create(
         moduleConfig = config.getConfig("google.login"),
         objectMapper = objectMapperCamelCase,
-        api = GoogleApi20.instance()
+        api = GoogleApi20.instance(),
+        moduleName = "google_login"
     )
 }

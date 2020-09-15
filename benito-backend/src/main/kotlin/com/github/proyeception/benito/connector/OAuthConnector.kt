@@ -37,14 +37,16 @@ open class OAuthConnector(
         fun create(
             moduleConfig: Config,
             objectMapper: ObjectMapper,
-            api: DefaultApi20
+            api: DefaultApi20,
+            moduleName: String
         ): OAuthConnector = OAuthConnector(
-            oAuth20Service = ServiceBuilder(moduleConfig.getString("id"))
-                .apiSecret(moduleConfig.getString("secret"))
+            oAuth20Service = ServiceBuilder(System.getenv("${moduleName.toUpperCase()}_ID")
+                ?: moduleConfig.getString("id"))
+                .apiSecret(System.getenv("${moduleName.toUpperCase()}_SECRET") ?: moduleConfig.getString("secret"))
                 .callback(moduleConfig.getString("callback"))
                 .defaultScope(moduleConfig.getString("scope"))
                 .build(api),
-            token = moduleConfig.getString("token"),
+            token = System.getenv("${moduleName.toUpperCase()}_TOKEN") ?: moduleConfig.getString("token"),
             objectMapper = objectMapper
         )
     }

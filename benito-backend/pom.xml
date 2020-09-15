@@ -469,12 +469,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.2.0</version>
-                <configuration>
-                    <excludes>
-                        <exclude>**/logback.xml</exclude>
-                        <exclude>**/*.properties</exclude>
-                    </excludes>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>com.heroku.sdk</groupId>
@@ -486,7 +480,7 @@
                     <processTypes>
                         <!-- Tell Heroku how to launch your application -->
                         <!-- You might have to remove the ./ in front   -->
-                        <web>java -jar target/returned-tablets-counter-1.0-SNAPSHOT-jar-with-dependencies.jar</web>
+                        <web>java -jar target/benito-test.jar</web>
                     </processTypes>
                 </configuration>
             </plugin>

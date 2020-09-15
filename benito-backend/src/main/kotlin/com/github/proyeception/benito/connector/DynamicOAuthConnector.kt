@@ -31,9 +31,15 @@ open class DynamicOAuthConnector(
     public override fun delete(url: String, token: String): Either<Throwable, Response> = super.delete(url, token)
 
     companion object {
-        fun create(moduleConfig: Config, objectMapper: ObjectMapper, api: DefaultApi20) = DynamicOAuthConnector(
-            oAuth20Service = ServiceBuilder(moduleConfig.getString("id"))
-                .apiSecret(moduleConfig.getString("secret"))
+        fun create(
+            moduleConfig: Config,
+            objectMapper: ObjectMapper,
+            api: DefaultApi20,
+            moduleName: String
+        ) = DynamicOAuthConnector(
+            oAuth20Service = ServiceBuilder(System.getenv("${moduleName.toUpperCase()}_ID")
+                ?: moduleConfig.getString("id"))
+                .apiSecret(System.getenv("${moduleName.toUpperCase()}_SECRET") ?: moduleConfig.getString("secret"))
                 .callback(moduleConfig.getString("callback"))
                 .defaultScope(moduleConfig.getString("scope"))
                 .build(api),

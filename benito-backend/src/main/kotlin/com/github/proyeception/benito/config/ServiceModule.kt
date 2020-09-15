@@ -19,7 +19,7 @@ open class ServiceModule {
         documentParser: DocumentParser,
         documentService: DocumentService,
         fileService: FileService,
-        mongoTextSearch:MongoTextSearch
+        mongoTextSearch: MongoTextSearch
     ): ProjectService = ProjectService(
         medusaClient = medusaClient,
         documentParser = documentParser,
@@ -93,7 +93,7 @@ open class ServiceModule {
             user = storageConfig.getString("user"),
             databaseName = storageConfig.getString("db.name"),
             port = storageConfig.getInt("port"),
-            password = storageConfig.getString("password"),
+            password = System.getenv("DB_PASSWORD") ?: storageConfig.getString("password"),
             host = storageConfig.getString("host")
         )
     }
