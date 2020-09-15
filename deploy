@@ -1,0 +1,28 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]
+then
+  echo "Usage: ./deploy <version>"
+  exit 1
+fi
+
+VERSION="$1"
+
+set -e
+
+echo "mvn --batch-mode -f benito-backend/pom.xml clean test"
+mvn --batch-mode -f benito-backend/pom.xml clean test
+
+echo "mvn --batch-mode -f benito-backend/pom.xml versions:set -DnewVersion=$VERSION -Dmaven.test.skip=true -DgenerateBackupPoms=false"
+mvn --batch-mode -f benito-backend/pom.xml versions:set -DnewVersion="$VERSION" -Dmaven.test.skip=true -DgenerateBackupPoms=false
+
+git add pom.xml
+git commit -m "[RELEASE] Version $VERSION"
+git tag "$VERSION"
+git push origin HEAD
+
+./build "test" "$VERSION"
+
+echo "mvn --batch-mode -f benito-backend/pom.xml heroku:deploy -Dmaven.test.skip=true"
+mvn --batch-mode -f benito-backend/pom.xml heroku:deploy -Dmaven.test.skip=true
+
