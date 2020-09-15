@@ -4,5 +4,17 @@ declare module "react-alert-template-basic" {
 }
 
 declare module "react-loading-overlay" {
-  export default class LoadingOverlay extends React.Component<any> {}
+  export type LoadingOverlayProps = {
+    active?: boolean;
+    fadeSpeed?: number;
+    onClick?: () => void;
+    className?: string;
+    classNamePrefix?: string;
+    spinner?: boolean;
+    text?: string;
+    styles?: any;
+  };
+  export default class LoadingOverlay extends React.Component<
+    LoadingOverlayProps
+  > {}
 }
