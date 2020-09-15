@@ -66,7 +66,7 @@ data class DocumentationDTO(
     val driveId: String
 )
 
-data class CreateDocumentDTO(
+data class  CreateDocumentDTO(
     val fileName: String,
     val driveId: String,
     val content: String

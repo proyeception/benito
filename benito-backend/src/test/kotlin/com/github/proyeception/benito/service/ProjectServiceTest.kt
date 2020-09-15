@@ -211,6 +211,30 @@ class ProjectServiceTest : Spec() {
             "pass the original file to the DocumentService, parse its content and upload it to Medusa" {
                 val multipartMock: MultipartFile = getMock()
                 on(multipartMock.originalFilename).thenReturn("file.pdf")
+                val project = MedusaProjectDTO(
+                    id = "123",
+                    title = "Some title",
+                    description = "Some description",
+                    extraContent = "Some extra content",
+                    creationDate = LocalDate.now(),
+                    poster = null,
+                    authors = emptyList(),
+                    supervisors = emptyList(),
+                    documentation = emptyList(),
+                    category = CategoryDTO(name = "utn", tagName = "UTN", imageUrl = "https://image.com"),
+                    organization = MedusaOrganizationDTO(
+                        id = "123",
+                        displayName = "Some org",
+                        name = "someorg",
+                        icon = MedusaFileDTO(
+                            url = "https://icon.ico",
+                            id = "123"
+                        ),
+                        supervisors = emptyList(),
+                        authors = emptyList()
+                    ),
+                    tags = emptyList()
+                )
 
                 val inputMock: InputStream = getMock()
                 on(multipartMock.inputStream).thenReturn(inputMock)
@@ -219,15 +243,22 @@ class ProjectServiceTest : Spec() {
                     file = eq(multipartMock),
                     projectId = eq("123")
                 )).thenReturn("456")
+                on(medusaClient.saveDocuments(
+                    docs = eq(
+                        CreateDocumentsDTO(
+                            items = listOf(
+                                CreateDocumentDTO(
+                                    fileName = "file.pdf",
+                                    driveId = "456",
+                                    content = "asd"
+                                )
+                            )
+                        )
+                    ),
+                    projectId = eq("123")
+                )).thenReturn(project)
 
                 projectService.saveDocuments("123", listOf(multipartMock))
-
-                verify(medusaClient).saveDocument(
-                    projectId = eq("123"),
-                    name = eq("file.pdf"),
-                    driveId = eq("456"),
-                    content = eq("asd")
-                )
             }
         }
 
@@ -235,6 +266,30 @@ class ProjectServiceTest : Spec() {
             "create the file in Medusa and then update the project" {
                 val multipartMock: MultipartFile = getMock()
                 on(multipartMock.originalFilename).thenReturn("file.jpg")
+                val project = MedusaProjectDTO(
+                    id = "123",
+                    title = "Some title",
+                    description = "Some description",
+                    extraContent = "Some extra content",
+                    creationDate = LocalDate.now(),
+                    poster = null,
+                    authors = emptyList(),
+                    supervisors = emptyList(),
+                    documentation = emptyList(),
+                    category = CategoryDTO(name = "utn", tagName = "UTN", imageUrl = "https://image.com"),
+                    organization = MedusaOrganizationDTO(
+                        id = "123",
+                        displayName = "Some org",
+                        name = "someorg",
+                        icon = MedusaFileDTO(
+                            url = "https://icon.ico",
+                            id = "123"
+                        ),
+                        supervisors = emptyList(),
+                        authors = emptyList()
+                    ),
+                    tags = emptyList()
+                )
 
                 val file = MedusaFileDTO(
                     id = "456",
@@ -247,18 +302,45 @@ class ProjectServiceTest : Spec() {
                     any(),
                     any()
                 )).thenReturn(file)
+                on(medusaClient.updateProjectImage(
+                    projectId = eq("123"),
+                    poster = eq(
+                        UpdatePosterDTO(
+                            poster = file
+                        )
+                    )
+                )).thenReturn(project)
 
                 projectService.updateProjectImage("123", multipartMock)
-
-                verify(medusaClient).updateProjectImage(
-                    projectId = eq("123"),
-                    poster = eq(UpdatePosterDTO(poster = file))
-                )
             }
 
             "default file name to the id of the project if the upload has no original name" {
                 val multipartMock: MultipartFile = getMock()
                 on(multipartMock.originalFilename).thenReturn(null)
+                val project = MedusaProjectDTO(
+                    id = "123",
+                    title = "Some title",
+                    description = "Some description",
+                    extraContent = "Some extra content",
+                    creationDate = LocalDate.now(),
+                    poster = null,
+                    authors = emptyList(),
+                    supervisors = emptyList(),
+                    documentation = emptyList(),
+                    category = CategoryDTO(name = "utn", tagName = "UTN", imageUrl = "https://image.com"),
+                    organization = MedusaOrganizationDTO(
+                        id = "123",
+                        displayName = "Some org",
+                        name = "someorg",
+                        icon = MedusaFileDTO(
+                            url = "https://icon.ico",
+                            id = "123"
+                        ),
+                        supervisors = emptyList(),
+                        authors = emptyList()
+                    ),
+                    tags = emptyList()
+                )
 
                 val file = MedusaFileDTO(
                     id = "456",
@@ -271,6 +353,10 @@ class ProjectServiceTest : Spec() {
                     any(),
                     any()
                 )).thenReturn(file)
+                on(medusaClient.updateProjectImage(
+                    projectId = eq("123"),
+                    poster = eq(UpdatePosterDTO(poster = file))
+                )).thenReturn(project)
 
                 projectService.updateProjectImage("123", multipartMock)
 
