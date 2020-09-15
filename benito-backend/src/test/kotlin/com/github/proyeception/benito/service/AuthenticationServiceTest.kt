@@ -64,8 +64,7 @@ class AuthenticationServiceTest : Spec() {
                     info = eq(
                         SessionInfoDTO(
                             role = RoleDTO.AUTHOR,
-                            userId = "789",
-                            profilePicUrl = null
+                            userId = "789"
                         )
                     )
                 )
@@ -104,8 +103,7 @@ class AuthenticationServiceTest : Spec() {
                     info = eq(
                         SessionInfoDTO(
                             role = RoleDTO.AUTHOR,
-                            userId = "789",
-                            profilePicUrl = null
+                            userId = "789"
                         )
                     )
                 )
@@ -145,8 +143,7 @@ class AuthenticationServiceTest : Spec() {
                     token = eq("123"),
                     info = eq(SessionInfoDTO(
                         userId = "123",
-                        role = RoleDTO.SUPERVISOR,
-                        profilePicUrl = null
+                        role = RoleDTO.SUPERVISOR
                     ))
                 )
             }

@@ -18,8 +18,7 @@ open class AuthenticationService(
             val token = hash.sha256(login.token)
             sessionService[token] = SessionInfoDTO(
                 RoleDTO.SUPERVISOR,
-                it.id,
-                it.profilePicUrl
+                it.id
             )
             token
         }
@@ -48,8 +47,7 @@ open class AuthenticationService(
 
         sessionService[token] = SessionInfoDTO(
             role = RoleDTO.AUTHOR,
-            userId = userId,
-            profilePicUrl = profilePic
+            userId = userId
         )
         return token
     }

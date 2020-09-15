@@ -6,6 +6,7 @@ import {
   UPDATE_IS_FETCHING,
   UPDATE_SESSION_INFO,
   UPDATE_SESSION_TOKEN,
+  UPDATE_SESSION_PROFILE_PICTURE,
 } from "../../store/session/types";
 
 const defaultSessionState: SessionState = {
@@ -40,8 +41,13 @@ function sessionReducer(
       return {
         ...state,
         userId: action.payload.userId,
-        profilePicture: action.payload.profilePicUrl,
         role: action.payload.role,
+      };
+    }
+    case UPDATE_SESSION_PROFILE_PICTURE: {
+      return {
+        ...state,
+        profilePicture: action.payload,
       };
     }
     case INVALIDATE_SESSION: {

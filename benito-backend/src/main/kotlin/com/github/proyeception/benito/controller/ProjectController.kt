@@ -7,7 +7,6 @@ import com.github.proyeception.benito.exception.UnauthorizedException
 import com.github.proyeception.benito.service.ProjectService
 import com.github.proyeception.benito.service.SessionService
 import com.github.proyeception.benito.service.UserService
-import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
@@ -53,7 +52,7 @@ class ProjectController(
         consumes = [MediaType.MULTIPART_FORM_DATA_VALUE]
     )
     @CrossOrigin
-    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
     private fun saveFile(
         @PathVariable projectId: String,
         @RequestParam("file") files: Array<MultipartFile>
@@ -61,7 +60,7 @@ class ProjectController(
 
     @RequestMapping(value = ["/benito/projects/{id}/content"], method = [RequestMethod.PATCH])
     @CrossOrigin
-    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
     fun updateProjectContent(
         @PathVariable id: String,
         @RequestBody content: UpdateContentDTO,
@@ -74,7 +73,7 @@ class ProjectController(
         consumes = [MediaType.MULTIPART_FORM_DATA_VALUE]
     )
     @CrossOrigin
-    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
     fun updateProjectPoster(
         @PathVariable id: String,
         @RequestParam("file") image: MultipartFile,
@@ -83,7 +82,7 @@ class ProjectController(
 
     @RequestMapping(value = ["/benito/projects/{projectId}/documents/{documentId}"], method = [RequestMethod.DELETE])
     @CrossOrigin
-    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
     fun deleteDocument(
         @PathVariable projectId: String,
         @PathVariable documentId: String,
@@ -94,7 +93,7 @@ class ProjectController(
 
     @RequestMapping(value = ["/benito/projects/{projectId}/authors"], method = [RequestMethod.POST])
     @CrossOrigin
-    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
     fun addAuthors(
         @PathVariable projectId: String,
         @RequestBody users: AddUsersDTO,
@@ -103,7 +102,7 @@ class ProjectController(
 
     @RequestMapping(value = ["/benito/projects/{projectId}/users"], method = [RequestMethod.PUT])
     @CrossOrigin
-    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
     fun setUsers(
         @PathVariable projectId: String,
         @RequestBody users: SetUsersDTO,
@@ -112,7 +111,7 @@ class ProjectController(
 
     @RequestMapping(value = ["/benito/projects/{projectId}/authors"], method = [RequestMethod.DELETE])
     @CrossOrigin
-    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
     fun deleteAuthors(
         @PathVariable projectId: String,
         @RequestParam(value = "items", required = true) items: String,
@@ -121,7 +120,7 @@ class ProjectController(
 
     @RequestMapping(value = ["/benito/projects/{projectId}/supervisors"], method = [RequestMethod.POST])
     @CrossOrigin
-    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
     fun addSupervisors(
         @PathVariable projectId: String,
         @RequestBody users: AddUsersDTO,
@@ -130,7 +129,7 @@ class ProjectController(
 
     @RequestMapping(value = ["/benito/projects/{projectId}/supervisors"], method = [RequestMethod.DELETE])
     @CrossOrigin
-    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
     fun deleteSupervisors(
         @PathVariable projectId: String,
         @RequestParam(value = "items", required = true) items: String,
@@ -139,7 +138,7 @@ class ProjectController(
 
     @RequestMapping(value = ["/benito/projects"], method = [RequestMethod.POST])
     @CrossOrigin
-    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
     fun createProject(
         @RequestBody project: CreateProjectDTO,
         @RequestHeader(value = X_QUI_TOKEN, required = true) token: String

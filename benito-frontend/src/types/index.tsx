@@ -61,7 +61,6 @@ export type ProjectEditionRole = "AUTHOR" | "SUPERVISOR" | "VISITOR";
 export type SessionInfo = {
   userId: String;
   role: Role;
-  profilePicUrl: String;
 };
 
 export type LoginData = {
@@ -76,8 +75,8 @@ export type ProjectEdition = {
   title?: String;
   description?: String;
   extraContent?: String;
-  posterUrl?: String,
-};   
+  posterUrl?: String;
+};
 
 export type UpdateUser = {
   username?: String;

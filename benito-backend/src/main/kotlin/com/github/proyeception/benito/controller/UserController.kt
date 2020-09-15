@@ -6,7 +6,6 @@ import com.github.proyeception.benito.dto.UpdateUserDTO
 import com.github.proyeception.benito.exception.UnauthorizedException
 import com.github.proyeception.benito.service.SessionService
 import com.github.proyeception.benito.service.UserService
-import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
@@ -34,7 +33,7 @@ class UserController(
         consumes = [MediaType.MULTIPART_FORM_DATA_VALUE]
     )
     @CrossOrigin
-    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
     fun updateAuthorProfilePicture(
         @PathVariable id: String,
         @RequestParam("file") image: MultipartFile,
@@ -47,7 +46,7 @@ class UserController(
         consumes = [MediaType.MULTIPART_FORM_DATA_VALUE]
     )
     @CrossOrigin
-    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
     fun updateSupervisorProfilePicture(
         @PathVariable id: String,
         @RequestParam("file") image: MultipartFile,
@@ -56,7 +55,7 @@ class UserController(
 
     @RequestMapping(value = ["/benito/authors/{id}"], method = [RequestMethod.PATCH])
     @CrossOrigin
-    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
     fun updateAuthor(
         @PathVariable id: String,
         @RequestBody user: UpdateUserDTO,
@@ -65,7 +64,7 @@ class UserController(
 
     @RequestMapping(value = ["/benito/supervisors/{id}"], method = [RequestMethod.PATCH])
     @CrossOrigin
-    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
     fun updateSupervisor(
         @PathVariable id: String,
         @RequestBody user: UpdateUserDTO,

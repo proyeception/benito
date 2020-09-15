@@ -5,6 +5,7 @@ export const UPDATE_IS_LOGGED_IN = "UPDATE_IS_LOGGED_IN";
 export const INVALIDATE_SESSION = "INVALIDATE_SESSION";
 export const UPDATE_SESSION_INFO = "UPDATE_SESSION_INFO";
 export const UPDATE_IS_FETCHING = "UPDATE_IS_FETCHING";
+export const UPDATE_SESSION_PROFILE_PICTURE = "UPDATE_SESSION_PROFILE_PICTURE";
 
 interface UpdateSessionTokenAction {
   type: typeof UPDATE_SESSION_TOKEN;
@@ -29,12 +30,18 @@ interface InvalidateSessionAction {
   type: typeof INVALIDATE_SESSION;
 }
 
+interface UpdateSessionProfilePictureAction {
+  type: typeof UPDATE_SESSION_PROFILE_PICTURE;
+  payload?: String;
+}
+
 export type SessionAction =
   | UpdateSessionTokenAction
   | UpdateIsLoggedInAction
   | InvalidateSessionAction
   | UpdateSessionInfoAction
-  | UpdateIsFetchingAction;
+  | UpdateIsFetchingAction
+  | UpdateSessionProfilePictureAction;
 
 export type SessionState = {
   token?: String;

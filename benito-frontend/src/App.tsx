@@ -52,7 +52,7 @@ const App = (props: Props) => {
 
   return (
     <div className="h-100">
-      <LoadingOverlay active={props.loading} spinner>
+      <LoadingOverlay active={props.loading.valueOf()} spinner>
         <HamburgerMenu />
         <Header />
         <AnimatePresence>

@@ -5,12 +5,14 @@ import {
   startFetching,
   finishFetching,
   setLoginTrue,
+  updateSessionProfilePicture,
 } from "../../actions/session";
 import Cookies from "js-cookie";
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import { benitoHost } from "../../config";
 import { SessionInfo, LoginData } from "../../types";
 import { History } from "history";
+import { fetchUser, mapRoleToCollection } from "../user";
 
 const X_QUI_TOKEN = "x-qui-token";
 
@@ -38,7 +40,9 @@ export async function openLocalStoredSession(
       .then((s) => {
         store.dispatch(updateSessionInfo(s));
         store.dispatch(setLoginTrue());
+        return fetchUser(mapRoleToCollection(s.role), s.userId);
       })
+      .then((p) => store.dispatch(updateSessionProfilePicture(p.profilePicUrl)))
       .catch((e: AxiosError) => {
         console.error(e);
         clearLocalSession();
