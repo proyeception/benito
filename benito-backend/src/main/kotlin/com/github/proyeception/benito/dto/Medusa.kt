@@ -72,6 +72,10 @@ data class CreateDocumentDTO(
     val content: String
 )
 
+data class CreateDocumentsDTO(
+    val items: List<CreateDocumentDTO>
+)
+
 data class CategoryDTO(
     val name: String,
     val tagName: String,

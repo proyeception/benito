@@ -32,7 +32,7 @@ open class UserService(
         googleUserId: String,
         googleToken: String,
         profilePicUrl: String?
-    ): MedusaPersonDTO {
+    ): PersonDTO {
         val image = createImageFromUrl(googleUserId, profilePicUrl)
 
         val person = CreateMedusaPersonDTO(
@@ -44,20 +44,20 @@ open class UserService(
             googleToken = googleToken
         )
 
-        return medusaClient.createUser(person, UserType.AUTHOR)
+        return mapMedusaToDomain(medusaClient.createUser(person, UserType.AUTHOR))
     }
 
     fun updateAuthorProfilePicture(id: String, image: MultipartFile) = updateUserProfilePicture(
         id = id,
         image = image,
         userType = UserType.AUTHOR
-    )
+    ).let { mapMedusaToDomain(it) }
 
     fun updateSupervisorProfilePicture(id: String, image: MultipartFile) = updateUserProfilePicture(
         id = id,
         image = image,
         userType = UserType.SUPERVISOR
-    )
+    ).let { mapMedusaToDomain(it) }
 
     fun updateAuthor(id: String, user: UpdateUserDTO) = updateUser(
         id = id,
@@ -134,26 +134,28 @@ open class UserService(
         )
     )
 
-    private fun updateUserProfilePicture(id: String, image: MultipartFile, userType: UserType) {
+    private fun updateUserProfilePicture(id: String, image: MultipartFile, userType: UserType): MedusaPersonDTO {
         val file = fileService.createMedusaFileFromUpload(
             multipart = image,
             contentType = ContentType.getByMimeType(image.contentType),
             fileName = image.originalFilename ?: "$id.jpg",
             filePath = "/tmp/$id.jpg"
         )
-        medusaClient.updateUserProfilePicture(
+        return medusaClient.updateUserProfilePicture(
             userId = id,
             userType = userType,
             profilePic = UpdateProfilePictureDTO(profilePic = file)
         )
-        LOGGER.info("Successfully updated $userType $id profile picture")
+            .also {
+                LOGGER.info("Successfully updated $userType $id profile picture")
+            }
     }
 
     private fun updateUser(id: String, user: UpdateUserDTO, userType: UserType) = medusaClient.updateUser(
         userId = id,
         user = user,
         userType = userType
-    )
+    ).let { mapMedusaToDomain(it) }
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(UserService::class.java)

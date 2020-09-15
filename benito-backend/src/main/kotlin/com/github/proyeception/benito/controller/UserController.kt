@@ -1,6 +1,7 @@
 package com.github.proyeception.benito.controller
 
 import com.github.proyeception.benito.X_QUI_TOKEN
+import com.github.proyeception.benito.dto.PersonDTO
 import com.github.proyeception.benito.dto.UpdateUserDTO
 import com.github.proyeception.benito.exception.UnauthorizedException
 import com.github.proyeception.benito.service.SessionService
@@ -38,7 +39,7 @@ class UserController(
         @PathVariable id: String,
         @RequestParam("file") image: MultipartFile,
         @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
-    ) = doAuthorized(id, token) { userService.updateAuthorProfilePicture(id, image) }
+    ): PersonDTO = doAuthorized(id, token) { userService.updateAuthorProfilePicture(id, image) }
 
     @RequestMapping(
         value = ["/benito/supervisors/{id}/picture"],
@@ -51,7 +52,7 @@ class UserController(
         @PathVariable id: String,
         @RequestParam("file") image: MultipartFile,
         @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
-    ) = doAuthorized(id, token) { userService.updateSupervisorProfilePicture(id, image) }
+    ): PersonDTO = doAuthorized(id, token) { userService.updateSupervisorProfilePicture(id, image) }
 
     @RequestMapping(value = ["/benito/authors/{id}"], method = [RequestMethod.PATCH])
     @CrossOrigin
@@ -60,7 +61,7 @@ class UserController(
         @PathVariable id: String,
         @RequestBody user: UpdateUserDTO,
         @RequestHeader(X_QUI_TOKEN, required = true) token: String
-    ) = doAuthorized(id, token) { userService.updateAuthor(id, user) }
+    ): PersonDTO = doAuthorized(id, token) { userService.updateAuthor(id, user) }
 
     @RequestMapping(value = ["/benito/supervisors/{id}"], method = [RequestMethod.PATCH])
     @CrossOrigin
@@ -69,13 +70,13 @@ class UserController(
         @PathVariable id: String,
         @RequestBody user: UpdateUserDTO,
         @RequestHeader(X_QUI_TOKEN, required = true) token: String
-    ) = doAuthorized(id, token) { userService.updateSupervisor(id, user) }
+    ): PersonDTO = doAuthorized(id, token) { userService.updateSupervisor(id, user) }
 
-    private fun doAuthorized(authorId: String, token: String, f: (String) -> Unit) {
+    private fun <T> doAuthorized(authorId: String, token: String, f: (String) -> T): T {
         val session = sessionService[token]
             ?: throw UnauthorizedException("I don't know who you are")
 
-        session.userId.takeIf { it == authorId }
+        return session.userId.takeIf { it == authorId }
             ?.let(f)
             ?: throw ForbiddenException("You're not allowed to edit this user")
     }

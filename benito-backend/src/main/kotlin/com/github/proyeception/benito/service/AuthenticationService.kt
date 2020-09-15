@@ -38,7 +38,7 @@ open class AuthenticationService(
                 mail = login.mail,
                 googleToken = login.token
             )
-            Pair(person.id, person.profilePic?.url)
+            Pair(person.id, person.profilePicUrl)
         } else {
             LOGGER.info("User already exists.")
             Pair(maybePerson.id, maybePerson.profilePicUrl)

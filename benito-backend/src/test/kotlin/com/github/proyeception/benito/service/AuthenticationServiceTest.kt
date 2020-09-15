@@ -34,16 +34,15 @@ class AuthenticationServiceTest : Spec() {
                     "456",
                     null
                 )).thenReturn(
-                    MedusaPersonDTO(
+                    PersonDTO(
                         id = "789",
                         username = "benito-quinquela",
                         fullName = "Benito Quinquela",
                         organizations = emptyList(),
-                        profilePic = null,
+                        profilePicUrl = null,
                         projects = emptyList(),
                         socials = emptyList(),
-                        mail = "benito@quinquela.com",
-                        phone = null
+                        contact = null
                     )
                 )
 

@@ -16,7 +16,7 @@ function withUser(
       .then(setUser)
       .then(() => setFetching(false))
       .catch((e) => {
-        if (e.response.status == 404) {
+        if (e.response?.status == 404) {
           setNotFound(true);
         }
         setIsError(true);

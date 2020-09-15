@@ -3,9 +3,7 @@ package com.github.proyeception.benito.service
 import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.parser.DocumentParser
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import org.apache.http.entity.ContentType
 import org.slf4j.LoggerFactory
 import org.springframework.web.multipart.MultipartFile
@@ -42,27 +40,53 @@ open class ProjectService(
     fun updateProjectContent(content: UpdateContentDTO, projectId: String) = medusaClient.updateProjectContent(
         content = content,
         id = projectId
-    )
+    ).let { ProjectDTO(it) }
 
-    fun saveDocuments(projectId: String, files: List<MultipartFile>) = runBlocking {
-        files.forEach { f -> launch(Dispatchers.Default) { saveDocument(projectId, f) } }
+    fun saveDocuments(projectId: String, files: List<MultipartFile>): ProjectDTO {
+        val ids = runBlocking {
+            files.map { f -> async { documentService.saveFile(projectId = projectId, file = f) } }.awaitAll()
+        }
+
+        val docs = runBlocking {
+            files.mapIndexed { i, f ->
+                async {
+                    val fileStream = f.inputStream
+                    val content = documentParser.parse(fileStream)
+                    val driveId = ids[i]
+
+                    CreateDocumentDTO(
+                        driveId = driveId,
+                        content = content,
+                        fileName = f.originalFilename ?: f.name
+                    )
+                }
+            }.awaitAll()
+        }
+
+        return ProjectDTO(medusaClient.saveDocuments(CreateDocumentsDTO(docs), projectId))
     }
 
-    private fun saveDocument(projectId: String, file: MultipartFile) {
+    private fun saveDocument(projectId: String, file: MultipartFile): ProjectDTO {
         val fileStream = file.inputStream
         val content = documentParser.parse(fileStream)
         val driveId = documentService.saveFile(projectId = projectId, file = file)
-        medusaClient.saveDocument(projectId, file.originalFilename ?: file.name, driveId, content)
+
+        return medusaClient.saveDocument(
+            projectId,
+            file.originalFilename ?: file.name,
+            driveId,
+            content
+        ).let { ProjectDTO(it) }
     }
 
-    fun updateProjectImage(id: String, multipart: MultipartFile) {
+    fun updateProjectImage(id: String, multipart: MultipartFile): ProjectDTO {
         val file = fileService.createMedusaFileFromUpload(
             multipart = multipart,
             contentType = ContentType.IMAGE_JPEG,
             filePath = "/tmp/$id.jpg",
             fileName = multipart.originalFilename ?: "$id.jpg"
         )
-        medusaClient.updateProjectImage(id, UpdatePosterDTO(file))
+        return ProjectDTO(medusaClient.updateProjectImage(id, UpdatePosterDTO(file)))
     }
 
     fun hasAuthor(authorId: String, projectId: String): Boolean = findProject(projectId)
@@ -73,24 +97,36 @@ open class ProjectService(
         .supervisors
         .any { it.id == supervisorId }
 
-    fun deleteDocument(projectId: String, documentId: String) = medusaClient.deleteDocumentFromProject(
+    fun deleteDocument(projectId: String, documentId: String): ProjectDTO = medusaClient.deleteDocumentFromProject(
         projectId = projectId,
         documentId = documentId
-    )
+    ).let { ProjectDTO(it) }
 
-    fun addAuthors(projectId: String, users: AddUsersDTO) = medusaClient.addUsersToProject(projectId, users, UserType.AUTHOR)
+    fun addAuthors(projectId: String, users: AddUsersDTO): ProjectDTO = medusaClient.addUsersToProject(
+        projectId,
+        users,
+        UserType.AUTHOR
+    ).let { ProjectDTO(it) }
 
-    fun addSupervisors(projectId: String, users: AddUsersDTO) = medusaClient.addUsersToProject(projectId, users, UserType.SUPERVISOR)
+    fun addSupervisors(projectId: String, users: AddUsersDTO): ProjectDTO = medusaClient.addUsersToProject(
+        projectId,
+        users,
+        UserType.SUPERVISOR
+    ).let { ProjectDTO(it) }
 
-    fun deleteAuthors(projectId: String, items: String) = medusaClient.deleteUsersFromProject(
+    fun deleteAuthors(projectId: String, items: String): ProjectDTO = medusaClient.deleteUsersFromProject(
         projectId,
         items,
         UserType.AUTHOR
-    )
+    ).let { ProjectDTO(it) }
 
-    fun deleteSupervisors(projectId: String, items: String) = medusaClient.deleteUsersFromProject(projectId, items, UserType.SUPERVISOR)
+    fun deleteSupervisors(projectId: String, items: String): ProjectDTO = medusaClient.deleteUsersFromProject(
+        projectId,
+        items,
+        UserType.SUPERVISOR
+    ).let { ProjectDTO(it) }
 
-    fun createProject(supervisorId: String, project: CreateProjectDTO) {
+    fun createProject(supervisorId: String, project: CreateProjectDTO): ProjectDTO {
         val medusaProject = CreateMedusaProjectDTO(
             organization = project.organizationId,
             category = project.categoryId,
@@ -98,10 +134,13 @@ open class ProjectService(
             title = project.title
         )
         LOGGER.info("{}", medusaProject)
-        medusaClient.createProject(medusaProject)
+        return ProjectDTO(medusaClient.createProject(medusaProject))
     }
 
-    fun setAuthors(projectId: String, users: SetUsersDTO) = medusaClient.modifyProjectUsers(projectId, users)
+    fun setAuthors(projectId: String, users: SetUsersDTO) = medusaClient.modifyProjectUsers(
+        projectId = projectId,
+        users = users
+    ).let { ProjectDTO(it) }
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(ProjectService::class.java)
