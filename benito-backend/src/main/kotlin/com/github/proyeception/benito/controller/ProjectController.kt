@@ -29,8 +29,9 @@ class ProjectController(
         @RequestParam(required = false) from: String?,
         @RequestParam(required = false) to: String?,
         @RequestParam(required = false, name = "name") nameContains: String?,
-        @RequestParam(required = false, name = "category") category: String?
-    ): List<ProjectDTO> = projectService.findProjects(orderBy, from, to, nameContains, category)
+        @RequestParam(required = false, name = "category") category: String?,
+        @RequestParam(required = false, name = "keyword") keyword:String?
+    ): List<ProjectDTO> = projectService.findProjects(orderBy, from, to, nameContains, category, keyword)
 
     @RequestMapping("/benito/projects/featured", method = [RequestMethod.GET])
     @ResponseBody

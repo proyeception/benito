@@ -2,6 +2,7 @@ package com.github.proyeception.benito.service
 
 import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.dto.*
+import com.github.proyeception.benito.mongodb.MongoTextSearch
 import com.github.proyeception.benito.parser.DocumentParser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -15,21 +16,27 @@ open class ProjectService(
     private val medusaClient: MedusaClient,
     private val documentService: DocumentService,
     private val documentParser: DocumentParser,
-    private val fileService: FileService
+    private val fileService: FileService,
+    private val mongoTextSearch: MongoTextSearch
 ) {
     open fun findProjects(
         orderBy: OrderDTO?,
         from: String?,
         to: String?,
         nameContains: String?,
-        category: String?
-    ): List<ProjectDTO> = medusaClient.findProjects(
-        orderBy = orderBy,
-        from = from,
-        to = to,
-        nameContains = nameContains,
-        category = category
-    ).map { ProjectDTO(it) }
+        category: String?,
+        keyword: String?
+    ): List<ProjectDTO> {
+
+            return medusaClient.findProjects(
+                    orderBy = orderBy,
+                    from = from,
+                    to = to,
+                    nameContains = nameContains,
+                    category = category
+            ).map { ProjectDTO(it) }
+
+    }
 
     fun featuredProjects(): List<ProjectDTO> = medusaClient.findProjects(
         orderBy = OrderDTO.VIEWS_DESC,
