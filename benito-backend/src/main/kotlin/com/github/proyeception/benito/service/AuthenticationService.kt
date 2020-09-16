@@ -4,6 +4,7 @@ import com.github.proyeception.benito.dto.LoginDTO
 import com.github.proyeception.benito.dto.RoleDTO
 import com.github.proyeception.benito.dto.SessionInfoDTO
 import com.github.proyeception.benito.exception.UnauthorizedException
+import com.github.proyeception.benito.extension.fromCamelToKebab
 import com.github.proyeception.benito.utils.HashHelper
 import org.slf4j.LoggerFactory
 
@@ -17,8 +18,7 @@ open class AuthenticationService(
             val token = hash.sha256(login.token)
             sessionService[token] = SessionInfoDTO(
                 RoleDTO.SUPERVISOR,
-                it.id,
-                it.profilePicUrl
+                it.id
             )
             token
         }
@@ -33,11 +33,11 @@ open class AuthenticationService(
                 fullName = login.fullName,
                 profilePicUrl = login.profilePicUrl,
                 googleUserId = login.googleUserId,
-                username = null,
+                username = login.fullName.fromCamelToKebab(),
                 mail = login.mail,
                 googleToken = login.token
             )
-            Pair(person.id, person.profilePic?.url)
+            Pair(person.id, person.profilePicUrl)
         } else {
             LOGGER.info("User already exists.")
             Pair(maybePerson.id, maybePerson.profilePicUrl)
@@ -47,8 +47,7 @@ open class AuthenticationService(
 
         sessionService[token] = SessionInfoDTO(
             role = RoleDTO.AUTHOR,
-            userId = userId,
-            profilePicUrl = profilePic
+            userId = userId
         )
         return token
     }

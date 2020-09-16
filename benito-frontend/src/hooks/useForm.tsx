@@ -8,7 +8,6 @@ function useForm<T>(
   return [
     values,
     (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-      console.log(e);
       setValues({
         ...values,
         [e.target.name]: e.target.value,

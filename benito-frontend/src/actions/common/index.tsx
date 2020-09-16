@@ -3,6 +3,7 @@ import {
   UPDATE_CATEGORIES,
   CommonAction,
   TOGGLE_HAMBURGER_BUTTON,
+  TOGGLE_LOADING,
 } from "../../store/common/types";
 
 export function updateCategories(categories: Array<Category>): CommonAction {
@@ -15,6 +16,13 @@ export function updateCategories(categories: Array<Category>): CommonAction {
 export function toggleHamburgerButton(b: Boolean): CommonAction {
   return {
     type: TOGGLE_HAMBURGER_BUTTON,
+    payload: b,
+  };
+}
+
+export function toggleLoading(b: Boolean): CommonAction {
+  return {
+    type: TOGGLE_LOADING,
     payload: b,
   };
 }

@@ -1,7 +1,6 @@
 package com.github.proyeception.benito.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -12,18 +11,19 @@ data class MedusaProjectDTO(
     val extraContent: String?,
     val creationDate: LocalDate,
     val poster: MedusaFileDTO?,
-    val authors: List<PersonRefDTO>,
-    val supervisors: List<PersonRefDTO>,
+    val authors: List<MedusaPersonRefDTO>,
+    val supervisors: List<MedusaPersonRefDTO>,
     val documentation: List<DocumentationDTO>,
     val category: CategoryDTO,
     val organization: MedusaOrganizationDTO,
     val tags: List<MedusaTagDTO>
 )
 
-data class PersonRefDTO(
+data class MedusaPersonRefDTO(
     val id: String,
     val username: String?,
-    val fullName: String
+    val fullName: String,
+    val profilePic: MedusaFileDTO? = null
 )
 
 data class CreateMedusaPersonDTO(
@@ -66,10 +66,14 @@ data class DocumentationDTO(
     val driveId: String
 )
 
-data class CreateDocumentDTO(
+data class  CreateDocumentDTO(
     val fileName: String,
     val driveId: String,
     val content: String
+)
+
+data class CreateDocumentsDTO(
+    val items: List<CreateDocumentDTO>
 )
 
 data class CategoryDTO(
@@ -90,8 +94,8 @@ data class MedusaOrganizationDTO(
     val displayName: String,
     val name: String,
     val icon: MedusaFileDTO,
-    val supervisors: List<PersonRefDTO>,
-    val authors: List<PersonRefDTO>
+    val supervisors: List<MedusaPersonRefDTO>,
+    val authors: List<MedusaPersonRefDTO>
 )
 
 data class MedusaTagDTO(

@@ -14,6 +14,7 @@ abstract class Snapshot<T>(
     private val name: String,
     private val ref: TypeReference<List<T>>
 ) : InitializingBean, CoroutineScope {
+    @Volatile
     protected var elements = emptyList<T>()
     private val job: Job = Job()
 
@@ -28,7 +29,7 @@ abstract class Snapshot<T>(
     fun refresh() {
         LOGGER.debug("Refreshing $name snapshot...")
 
-        doRefresh()?.let { elements = it }
+        doRefresh()?.let { synchronized(this) { elements = it} }
 
         LOGGER.debug("Refreshing for $name done. Will refresh again in $refreshRate seconds")
     }

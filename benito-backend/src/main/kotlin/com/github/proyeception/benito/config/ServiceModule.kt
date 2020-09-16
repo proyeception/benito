@@ -1,6 +1,7 @@
 package com.github.proyeception.benito.config
 
 import com.github.proyeception.benito.client.MedusaClient
+import com.github.proyeception.benito.mongodb.MongoTextSearch
 import com.github.proyeception.benito.oauth.GoogleDriveClient
 import com.github.proyeception.benito.parser.DocumentParser
 import com.github.proyeception.benito.service.*
@@ -8,6 +9,7 @@ import com.github.proyeception.benito.snapshot.CategorySnapshot
 import com.github.proyeception.benito.snapshot.OrganizationSnapshot
 import com.github.proyeception.benito.utils.FileHelper
 import com.github.proyeception.benito.utils.HashHelper
+import com.typesafe.config.Config
 import org.springframework.context.annotation.Bean
 
 open class ServiceModule {
@@ -16,12 +18,14 @@ open class ServiceModule {
         medusaClient: MedusaClient,
         documentParser: DocumentParser,
         documentService: DocumentService,
-        fileService: FileService
+        fileService: FileService,
+        mongoTextSearch:MongoTextSearch
     ): ProjectService = ProjectService(
         medusaClient = medusaClient,
         documentParser = documentParser,
         documentService = documentService,
-        fileService = fileService
+        fileService = fileService,
+        mongoTextSearch = mongoTextSearch
     )
 
     @Bean
@@ -78,4 +82,19 @@ open class ServiceModule {
         medusaClient = medusaClient,
         organizationSnapshot = organizationSnapshot
     )
+
+    @Bean
+    open fun mongoTextSearch(
+        config: Config
+    ): MongoTextSearch {
+        val storageConfig = config.getConfig("storage")
+
+        return MongoTextSearch(
+            user = storageConfig.getString("user"),
+            databaseName = storageConfig.getString("db.name"),
+            port = storageConfig.getInt("port"),
+            password = storageConfig.getString("password"),
+            host = storageConfig.getString("host")
+        )
+    }
 }

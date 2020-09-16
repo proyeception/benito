@@ -22,7 +22,7 @@ const MIN_MOBILE_HEIGHT = 60;
 const ProjectInfo = (props: Props) => {
   if (!props.project) {
     return (
-      <div className="center qui-min-height">
+      <div className="center h-100">
         <Loader />
       </div>
     );

@@ -1,16 +1,39 @@
 import React, { useState, useEffect } from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
-import { Project, Person } from "../../../../types";
+import { Project, Person, Organization } from "../../../../types";
 import SlideUp from "../../../Common/SlideUp";
-import { faMinusCircle } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AxiosRequestConfig } from "axios";
 import { benitoHost } from "../../../../config";
+import axios from "axios";
+import Loader from "../../../Common/Loader";
+import Users from "./Users";
+import Separator from "../../../Common/Separator";
+import UserChanges from "./UserChanges";
+import {
+  addAuthorToAdd,
+  addAuthorToDelete,
+  addSupervisorToAdd,
+  addSupervisorToDelete,
+  closeProjectEdition,
+  removeAuthorToAdd,
+  removeAuthorToDelete,
+  removeSupervisorToAdd,
+  removeSupervisorToDelete,
+} from "../../../../actions/project";
+import { RootState } from "../../../../reducers";
+import { connect } from "react-redux";
+import { setProjectUsers } from "../../../../functions/project";
+import { withRouter, RouteComponentProps } from "react-router-dom";
+import store from "../../../../store";
 
-type Props = {
+interface Props extends RouteComponentProps {
   project: Project;
-};
+  authorsToAdd: Array<Person>;
+  authorsToDelete: Array<Person>;
+  supervisorsToAdd: Array<Person>;
+  supervisorsToDelete: Array<Person>;
+}
 
 const SupervisorEdit = (props: Props) => {
   const [
@@ -20,50 +43,164 @@ const SupervisorEdit = (props: Props) => {
     supervisors: Array<Person>;
     authors: Array<Person>;
   }>({ supervisors: [], authors: [] });
-  const [projectAuthors, setProjectAuthors] = useState(props.project.authors);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
     let config: AxiosRequestConfig = {
-      url: `${benitoHost}/benito/organizations/${props.project.organization.id}`,
+      url: `${benitoHost}/benito/organizations/${props.project.organization.id}?cached=false`,
+      method: "GET",
     };
+
+    axios
+      .request<Organization>(config)
+      .then((res) => res.data)
+      .then(setOrganizationUsers)
+      .then(() => setIsLoading(false))
+      .catch((e) => console.error(e));
   }, []);
+
+  if (isLoading) {
+    return (
+      <div className="center h-100">
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <SlideUp className="pt-5 pb-5">
       <div className="container bg-white p-3 p-md-5">
         <div className="row">
-          <div className="col-12 col-md-6">
-            <div className="font-weight-18 font-weight-24-md font-weight-bolder">
+          <div className="col-6 mt-3">
+            <div className="font-size-18 font-size-24-md font-weight-bolder">
               Título
             </div>
-            <div className="font-weight-14 font-weight-18-md font-weight-lighter">
+            <div className="font-size-14 font-size-18-md font-weight-lighter">
               {props.project.title}
             </div>
           </div>
-          <div className="col-12 col-md-6">
-            <div className="font-weight-18 font-weight-24-md font-weight-bolder">
+          <div className="col-6 mt-3">
+            <div className="font-size-18 font-size-24-md font-weight-bolder">
               Alias
             </div>
-            <div className="font-weight-14 font-weight-18-md font-weight-lighter">
+            <div className="font-size-14 font-size-18-md font-weight-lighter">
               TODO
             </div>
           </div>
-          <div className="col-12 col-md-6">
-            <div className="font-weight-18 font-weight-24-md font-weight-bolder">
+          <div className="col-12 mt-3">
+            <div className="font-size-18 font-size-24-md font-weight-bolder">
               Autores
             </div>
-            <div className="font-weight-14 font-weight-18-md font-weight-lighter">
-              {projectAuthors.map((a, idx) => (
-                <div
-                  key={idx}
-                  onClick={() =>
-                    setProjectAuthors(projectAuthors.filter((a2) => a2 != a))
-                  }
+            <Users
+              organizationUsers={organizationAuthors}
+              projectUsers={props.project.authors}
+              collection="autores"
+              projectId={props.project.id}
+              userType="authors"
+              usersToAdd={props.authorsToAdd}
+              usersToDelete={props.authorsToDelete}
+              addDispatch={addAuthorToAdd}
+              deleteDispatch={addAuthorToDelete}
+            />
+          </div>
+          <div className="col-12 mt-md-3">
+            <div className="font-size-18 font-size-24-md font-weight-bolder">
+              Supervisores
+            </div>
+            <Users
+              organizationUsers={organizationSupervisors}
+              projectUsers={props.project.supervisors}
+              collection="supervisores"
+              projectId={props.project.id}
+              userType="supervisors"
+              usersToAdd={props.supervisorsToAdd}
+              usersToDelete={props.supervisorsToDelete}
+              addDispatch={addSupervisorToAdd}
+              deleteDispatch={addSupervisorToDelete}
+            />
+          </div>
+          <div className="col-12 mt-md-3">
+            <Separator
+              display="d-block"
+              marginLeft={3}
+              marginRight={3}
+              color="primary"
+            />
+          </div>
+          <div className="col-12 col-md-6 mt-md-3">
+            <UserChanges
+              name="autores"
+              toAdd={props.authorsToAdd}
+              toDelete={props.authorsToDelete}
+              removeAddedDispatch={removeAuthorToAdd}
+              removeDeletedDispatch={removeAuthorToDelete}
+            />
+          </div>
+          <div className="col-12 col-md-6 mt-md-3">
+            <UserChanges
+              name="supervisores"
+              toAdd={props.supervisorsToAdd}
+              toDelete={props.supervisorsToDelete}
+              removeAddedDispatch={removeSupervisorToAdd}
+              removeDeletedDispatch={removeSupervisorToDelete}
+            />
+          </div>
+          <div className="col-12">
+            <div className="font-size-18 font-size-24-md font-weight-bolder mt-5">
+              <div className="d-flex justify-content-around">
+                <button
+                  type="button"
+                  className="btn btn-success font-weight-bold"
+                  disabled={isUploading}
+                  onClick={() => {
+                    setIsUploading(true);
+                    setProjectUsers(
+                      props.project.authors
+                        .filter(
+                          (a) =>
+                            !props.authorsToDelete.some((atd) => atd.id == a.id)
+                        )
+                        .concat(props.authorsToAdd),
+                      props.project.supervisors
+                        .filter(
+                          (s) =>
+                            !props.supervisorsToDelete.some(
+                              (std) => std.id == s.id
+                            )
+                        )
+                        .concat(props.supervisorsToAdd),
+                      props.project.id
+                    )
+                      .then(console.log)
+                      .then(() => store.dispatch(closeProjectEdition()))
+                      .then(() =>
+                        props.history.push(`/projects/${props.project.id}`)
+                      )
+                      .catch(console.error);
+                  }}
                 >
-                  <FontAwesomeIcon icon={faMinusCircle} color="red" />{" "}
-                  {a.fullName}
-                </div>
-              ))}
+                  {isUploading ? (
+                    <div className="spinner-border text-light" role="status">
+                      <span className="sr-only">Loading ...</span>
+                    </div>
+                  ) : (
+                    <div>
+                      <span>Guardar cambios</span>
+                    </div>
+                  )}
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-danger font-weight-bold"
+                  onClick={() => {
+                    store.dispatch(closeProjectEdition());
+                    props.history.push(`/projects/${props.project.id}`);
+                  }}
+                >
+                  Descartar
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -72,4 +209,15 @@ const SupervisorEdit = (props: Props) => {
   );
 };
 
-export default hot(module)(SupervisorEdit);
+const mapStateToProps = (rootState: RootState) => {
+  return {
+    authorsToAdd: rootState.project.authorsToAdd,
+    authorsToDelete: rootState.project.authorsToDelete,
+    supervisorsToAdd: rootState.project.supervisorsToAdd,
+    supervisorsToDelete: rootState.project.supervisorsToDelete,
+  };
+};
+
+export default hot(module)(
+  withRouter(connect(mapStateToProps)(SupervisorEdit))
+);

@@ -7,7 +7,6 @@ import com.github.proyeception.benito.exception.UnauthorizedException
 import com.github.proyeception.benito.service.ProjectService
 import com.github.proyeception.benito.service.SessionService
 import com.github.proyeception.benito.service.UserService
-import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
@@ -29,8 +28,9 @@ class ProjectController(
         @RequestParam(required = false) from: String?,
         @RequestParam(required = false) to: String?,
         @RequestParam(required = false, name = "name") nameContains: String?,
-        @RequestParam(required = false, name = "category") category: String?
-    ): List<ProjectDTO> = projectService.findProjects(orderBy, from, to, nameContains, category)
+        @RequestParam(required = false, name = "category") category: String?,
+        @RequestParam(required = false, name = "keyword") keyword:String?
+    ): List<ProjectDTO> = projectService.findProjects(orderBy, from, to, nameContains, category, keyword)
 
     @RequestMapping("/benito/projects/featured", method = [RequestMethod.GET])
     @ResponseBody
@@ -53,20 +53,20 @@ class ProjectController(
         consumes = [MediaType.MULTIPART_FORM_DATA_VALUE]
     )
     @CrossOrigin
-    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
     private fun saveFile(
         @PathVariable projectId: String,
         @RequestParam("file") files: Array<MultipartFile>
-    ): Unit = projectService.saveDocuments(projectId, files.toList())
+    ): ProjectDTO = projectService.saveDocuments(projectId, files.toList())
 
     @RequestMapping(value = ["/benito/projects/{id}/content"], method = [RequestMethod.PATCH])
     @CrossOrigin
-    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
     fun updateProjectContent(
         @PathVariable id: String,
         @RequestBody content: UpdateContentDTO,
         @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
-    ) = doAuthorAuthorized(id, token) { projectService.updateProjectContent(content, id) }
+    ): ProjectDTO = doAuthorAuthorized(id, token) { projectService.updateProjectContent(content, id) }
 
     @RequestMapping(
         value = ["/benito/projects/{id}/poster"],
@@ -74,67 +74,76 @@ class ProjectController(
         consumes = [MediaType.MULTIPART_FORM_DATA_VALUE]
     )
     @CrossOrigin
-    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
     fun updateProjectPoster(
         @PathVariable id: String,
         @RequestParam("file") image: MultipartFile,
         @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
-    ) = doAuthorAuthorized(projectId = id, token = token) { projectService.updateProjectImage(id, image) }
+    ): ProjectDTO = doAuthorAuthorized(projectId = id, token = token) { projectService.updateProjectImage(id, image) }
 
     @RequestMapping(value = ["/benito/projects/{projectId}/documents/{documentId}"], method = [RequestMethod.DELETE])
     @CrossOrigin
-    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
     fun deleteDocument(
         @PathVariable projectId: String,
         @PathVariable documentId: String,
         @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
-    ) = doAuthorAuthorized(projectId = projectId, token = token) {
+    ): ProjectDTO = doAuthorAuthorized(projectId = projectId, token = token) {
         projectService.deleteDocument(projectId, documentId)
     }
 
     @RequestMapping(value = ["/benito/projects/{projectId}/authors"], method = [RequestMethod.POST])
     @CrossOrigin
-    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
     fun addAuthors(
         @PathVariable projectId: String,
         @RequestBody users: AddUsersDTO,
         @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
-    ) = doSupervisorAuthorized(projectId, token) { projectService.addAuthors(projectId, users) }
+    ): ProjectDTO = doSupervisorAuthorized(projectId, token) { projectService.addAuthors(projectId, users) }
+
+    @RequestMapping(value = ["/benito/projects/{projectId}/users"], method = [RequestMethod.PUT])
+    @CrossOrigin
+    @ResponseBody
+    fun setUsers(
+        @PathVariable projectId: String,
+        @RequestBody users: SetUsersDTO,
+        @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
+    ): ProjectDTO = doSupervisorAuthorized(projectId, token) { projectService.setAuthors(projectId, users) }
 
     @RequestMapping(value = ["/benito/projects/{projectId}/authors"], method = [RequestMethod.DELETE])
     @CrossOrigin
-    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
     fun deleteAuthors(
         @PathVariable projectId: String,
         @RequestParam(value = "items", required = true) items: String,
         @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
-    ) = doSupervisorAuthorized(projectId, token) { projectService.deleteAuthors(projectId, items) }
+    ): ProjectDTO = doSupervisorAuthorized(projectId, token) { projectService.deleteAuthors(projectId, items) }
 
     @RequestMapping(value = ["/benito/projects/{projectId}/supervisors"], method = [RequestMethod.POST])
     @CrossOrigin
-    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
     fun addSupervisors(
         @PathVariable projectId: String,
         @RequestBody users: AddUsersDTO,
         @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
-    ) = doSupervisorAuthorized(projectId, token) { projectService.addSupervisors(projectId, users) }
+    ): ProjectDTO = doSupervisorAuthorized(projectId, token) { projectService.addSupervisors(projectId, users) }
 
     @RequestMapping(value = ["/benito/projects/{projectId}/supervisors"], method = [RequestMethod.DELETE])
     @CrossOrigin
-    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
     fun deleteSupervisors(
         @PathVariable projectId: String,
         @RequestParam(value = "items", required = true) items: String,
         @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
-    ) = doSupervisorAuthorized(projectId, token) { projectService.deleteSupervisors(projectId, items) }
+    ): ProjectDTO = doSupervisorAuthorized(projectId, token) { projectService.deleteSupervisors(projectId, items) }
 
     @RequestMapping(value = ["/benito/projects"], method = [RequestMethod.POST])
     @CrossOrigin
-    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
     fun createProject(
         @RequestBody project: CreateProjectDTO,
         @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
-    ) = doAuthorized(
+    ): ProjectDTO = doAuthorized(
         token = token,
         requiredRole = RoleDTO.SUPERVISOR,
         authorizeCheck = { userService.findSupervisor(it).organizations.any { o -> o.id == project.organizationId } },
@@ -142,30 +151,30 @@ class ProjectController(
         forbiddenMessage = "You're not allowed to create a project in this organization"
     )
 
-    private fun doSupervisorAuthorized(projectId: String, token: String, f: (String) -> Unit) = doAuthorized(
+    private fun <T> doSupervisorAuthorized(projectId: String, token: String, f: (String) -> T) = doAuthorized(
         token = token,
         requiredRole = RoleDTO.SUPERVISOR,
         authorizeCheck = { projectService.hasSupervisor(supervisorId = it, projectId = projectId) },
         f = f
     )
 
-    private fun doAuthorAuthorized(projectId: String, token: String, f: (String) -> Unit) = doAuthorized(
+    private fun <T> doAuthorAuthorized(projectId: String, token: String, f: (String) -> T) = doAuthorized(
         token = token,
         requiredRole = RoleDTO.AUTHOR,
         authorizeCheck = { projectService.hasAuthor(authorId = it, projectId = projectId) },
         f = f
     )
 
-    private fun doAuthorized(
+    private fun <T> doAuthorized(
         token: String,
         requiredRole: RoleDTO,
-        f: (String) -> Unit,
+        f: (String) -> T,
         authorizeCheck: (String) -> Boolean,
         forbiddenMessage: String = "You're not allowed to edit this project"
-    ) {
+    ): T {
         val session = sessionService[token] ?: throw UnauthorizedException("I don't know who you are")
 
-        session.takeIf { it.role == requiredRole }
+        return session.takeIf { it.role == requiredRole }
             ?.userId
             ?.takeIf(authorizeCheck)
             ?.let(f)

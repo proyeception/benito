@@ -32,7 +32,7 @@ open class UserService(
         googleUserId: String,
         googleToken: String,
         profilePicUrl: String?
-    ): MedusaPersonDTO {
+    ): PersonDTO = mapMedusaToDomain {
         val image = createImageFromUrl(googleUserId, profilePicUrl)
 
         val person = CreateMedusaPersonDTO(
@@ -44,16 +44,16 @@ open class UserService(
             googleToken = googleToken
         )
 
-        return medusaClient.createUser(person, UserType.AUTHOR)
+        medusaClient.createUser(person, UserType.AUTHOR)
     }
 
-    fun updateAuthorProfilePicture(id: String, image: MultipartFile) = updateUserProfilePicture(
+    fun updateAuthorProfilePicture(id: String, image: MultipartFile): PersonDTO = updateUserProfilePicture(
         id = id,
         image = image,
         userType = UserType.AUTHOR
     )
 
-    fun updateSupervisorProfilePicture(id: String, image: MultipartFile) = updateUserProfilePicture(
+    fun updateSupervisorProfilePicture(id: String, image: MultipartFile): PersonDTO = updateUserProfilePicture(
         id = id,
         image = image,
         userType = UserType.SUPERVISOR
@@ -79,7 +79,7 @@ open class UserService(
         .let {
             when (it.size) {
                 0 -> null
-                1 -> mapMedusaToDomain(it.first())
+                1 -> mapMedusaToDomain(it::first)
                 else -> {
                     LOGGER.error("Ambiguous filter $filters")
                     throw AmbiguousReferenceException("Ambiguous filter")
@@ -92,12 +92,12 @@ open class UserService(
         Pair("google_user_id", id)
     )
 
-    private fun findUserById(userId: String, userType: UserType) = mapMedusaToDomain(
+    private fun findUserById(userId: String, userType: UserType) = mapMedusaToDomain {
         medusaClient.findUser(
             userId,
             userType
         )
-    )
+    }
 
     private fun createImageFromUrl(userId: String, profilePicUrl: String?): MedusaFileDTO? = profilePicUrl?.let {
         fileService.createMedusaFileFromUrl(
@@ -112,29 +112,31 @@ open class UserService(
     private fun mapIdToOrganization(organizationId: String): OrganizationDTO = organizationService
         .find(organizationId)
 
-    private fun mapMedusaToDomain(medusa: MedusaPersonDTO): PersonDTO = PersonDTO(
-        id = medusa.id,
-        username = medusa.username,
-        fullName = medusa.fullName,
-        organizations = medusa.organizations.map { OrganizationDTO(it) },
-        profilePicUrl = medusa.profilePic?.url,
-        projects = medusa.projects.map {
-            ProjectRefDTO(
-                id = it.id,
-                title = it.title,
-                posterUrl = it.poster?.url,
-                organization = mapIdToOrganization(it.organizationId),
-                description = it.description
+    private fun mapMedusaToDomain(f: () -> MedusaPersonDTO): PersonDTO = f().let { medusa ->
+        PersonDTO(
+            id = medusa.id,
+            username = medusa.username,
+            fullName = medusa.fullName,
+            organizations = medusa.organizations.map { OrganizationDTO(it) },
+            profilePicUrl = medusa.profilePic?.url,
+            projects = medusa.projects.map {
+                ProjectRefDTO(
+                    id = it.id,
+                    title = it.title,
+                    posterUrl = it.poster?.url,
+                    organization = mapIdToOrganization(it.organizationId),
+                    description = it.description
+                )
+            },
+            socials = medusa.socials,
+            contact = ContactDTO(
+                mail = medusa.mail,
+                phone = medusa.mail
             )
-        },
-        socials = medusa.socials,
-        contact = ContactDTO(
-            mail = medusa.mail,
-            phone = medusa.mail
         )
-    )
+    }
 
-    private fun updateUserProfilePicture(id: String, image: MultipartFile, userType: UserType) {
+    private fun updateUserProfilePicture(id: String, image: MultipartFile, userType: UserType) = mapMedusaToDomain {
         val file = fileService.createMedusaFileFromUpload(
             multipart = image,
             contentType = ContentType.getByMimeType(image.contentType),
@@ -146,14 +148,18 @@ open class UserService(
             userType = userType,
             profilePic = UpdateProfilePictureDTO(profilePic = file)
         )
-        LOGGER.info("Successfully updated $userType $id profile picture")
+            .also {
+                LOGGER.info("Successfully updated $userType $id profile picture")
+            }
     }
 
-    private fun updateUser(id: String, user: UpdateUserDTO, userType: UserType) = medusaClient.updateUser(
-        userId = id,
-        user = user,
-        userType = userType
-    )
+    private fun updateUser(id: String, user: UpdateUserDTO, userType: UserType) = mapMedusaToDomain {
+        medusaClient.updateUser(
+            userId = id,
+            user = user,
+            userType = userType
+        )
+    }
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(UserService::class.java)

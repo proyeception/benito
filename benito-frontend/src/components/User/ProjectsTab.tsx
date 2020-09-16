@@ -3,7 +3,7 @@ import { hot } from "react-hot-loader";
 import "./styles.scss";
 import { Person } from "../../types";
 import Project from "./Project";
-import Separator from "../Project/Separator";
+import Separator from "../Common/Separator";
 import OneByOne from "../Common/OneByOne";
 import SlideIn from "../Common/SlideIn";
 

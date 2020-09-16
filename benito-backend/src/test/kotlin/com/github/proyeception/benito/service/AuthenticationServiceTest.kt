@@ -27,23 +27,22 @@ class AuthenticationServiceTest : Spec() {
                 on(hashMock.sha256(eq("456"))).thenReturn("hash456")
                 on(userServiceMock.findAuthorByGoogleId(eq("123"))).thenReturn(null)
                 on(userServiceMock.createAuthor(
-                    null,
+                    "benito-quinquela",
                     "Benito Quinquela",
                     "benito@quinquela.com",
                     "123",
                     "456",
                     null
                 )).thenReturn(
-                    MedusaPersonDTO(
+                    PersonDTO(
                         id = "789",
-                        username = null,
+                        username = "benito-quinquela",
                         fullName = "Benito Quinquela",
                         organizations = emptyList(),
-                        profilePic = null,
+                        profilePicUrl = null,
                         projects = emptyList(),
                         socials = emptyList(),
-                        mail = "benito@quinquela.com",
-                        phone = null
+                        contact = null
                     )
                 )
 
@@ -65,8 +64,7 @@ class AuthenticationServiceTest : Spec() {
                     info = eq(
                         SessionInfoDTO(
                             role = RoleDTO.AUTHOR,
-                            userId = "789",
-                            profilePicUrl = null
+                            userId = "789"
                         )
                     )
                 )
@@ -105,8 +103,7 @@ class AuthenticationServiceTest : Spec() {
                     info = eq(
                         SessionInfoDTO(
                             role = RoleDTO.AUTHOR,
-                            userId = "789",
-                            profilePicUrl = null
+                            userId = "789"
                         )
                     )
                 )
@@ -146,8 +143,7 @@ class AuthenticationServiceTest : Spec() {
                     token = eq("123"),
                     info = eq(SessionInfoDTO(
                         userId = "123",
-                        role = RoleDTO.SUPERVISOR,
-                        profilePicUrl = null
+                        role = RoleDTO.SUPERVISOR
                     ))
                 )
             }

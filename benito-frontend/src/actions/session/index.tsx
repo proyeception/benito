@@ -5,6 +5,7 @@ import {
   INVALIDATE_SESSION,
   UPDATE_SESSION_INFO,
   UPDATE_IS_FETCHING,
+  UPDATE_SESSION_PROFILE_PICTURE,
 } from "../../store/session/types";
 import { SessionInfo } from "../../types";
 
@@ -46,5 +47,14 @@ export function finishFetching(): SessionAction {
   return {
     type: UPDATE_IS_FETCHING,
     payload: false,
+  };
+}
+
+export function updateSessionProfilePicture(
+  profilePicUrl?: String
+): SessionAction {
+  return {
+    type: UPDATE_SESSION_PROFILE_PICTURE,
+    payload: profilePicUrl,
   };
 }

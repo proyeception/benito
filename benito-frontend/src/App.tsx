@@ -19,9 +19,17 @@ import Author from "./components/User/Author";
 import Supervisor from "./components/User/Supervisor";
 import SupervisorLogin from "./components/Login/SupervisorLogin";
 import ProjectEditor from "./components/Project/Editor";
+import Me from "./components/User/Me";
 import { openLocalStoredSession } from "./functions/session";
+import LoadingOverlay from "react-loading-overlay";
+import { RootState } from "./reducers";
+import { connect } from "react-redux";
 
-const App = (_: any) => {
+type Props = {
+  loading: Boolean;
+};
+
+const App = (props: Props) => {
   const [isLoggingIn, setIsLoggingIn] = useState(true);
   useEffect(() => {
     let config: AxiosRequestConfig = {
@@ -43,28 +51,37 @@ const App = (_: any) => {
   }
 
   return (
-    <div className="bg-light-gray h-100">
-      <HamburgerMenu />
-      <Header />
-      <AnimatePresence>
-        <Switch>
-          <Route exact path="/projects/:projectId" component={ViewProject} />
-          <Route
-            exact
-            path="/projects/:projectId/edit"
-            component={ProjectEditor}
-          />
-          <Route exact path="/" component={Home} />
-          <Route exact path="/search" component={Search} />
-          <Route exact path="/authors/:userId" component={Author} />
-          <Route exact path="/supervisors/:userId" component={Supervisor} />
-          <Route exact path="/supervisor/login" component={SupervisorLogin} />
-          <Route path="/*" component={NotFound} />
-        </Switch>
-      </AnimatePresence>
-      <Footer />
+    <div className="h-100">
+      <LoadingOverlay active={props.loading.valueOf()} spinner>
+        <HamburgerMenu />
+        <Header />
+        <AnimatePresence>
+          <Switch>
+            <Route exact path="/projects/:projectId" component={ViewProject} />
+            <Route
+              exact
+              path="/projects/:projectId/edit"
+              component={ProjectEditor}
+            />
+            <Route exact path="/" component={Home} />
+            <Route exact path="/search" component={Search} />
+            <Route exact path="/authors/:userId" component={Author} />
+            <Route exact path="/supervisors/:userId" component={Supervisor} />
+            <Route exact path="/me/:tab" render={() => <Me />} />
+            <Route exact path="/supervisor/login" component={SupervisorLogin} />
+            <Route path="/*" component={NotFound} />
+          </Switch>
+        </AnimatePresence>
+        <Footer />
+      </LoadingOverlay>
     </div>
   );
 };
 
-export default hot(module)(App);
+const mapStateToProps = (rootState: RootState) => {
+  return {
+    loading: rootState.common.loading,
+  };
+};
+
+export default hot(module)(connect(mapStateToProps)(App));

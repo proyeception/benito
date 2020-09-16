@@ -11,20 +11,30 @@
     "experimentalDecorators": true,
     "preserveConstEnums": true,
     "allowJs": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "noImplicitReturns": true,
     "moduleResolution": "node",
-    "baseUrl": "src"
+    "baseUrl": "src",
+    "emitDecoratorMetadata": true,
+    "removeComments": false
   },
   "filesGlob": [
     "typings/index.d.ts",
+    "src/index.d.ts",
     "src/**/*.ts",
     "src/**/*.tsx",
     "node_modules/typescript/lib/lib.es6.d.ts"
   ],
   "exclude": ["build", "dist", "node_modules", "__tests__", "config"],
-  "types": ["node", "webpack", "react", "react-dom", "reactstrap"],
-  "include": ["src/config.ts", "src/store/*/types.tsx"],
+  "types": [
+    "node",
+    "webpack",
+    "react",
+    "react-dom",
+    "reactstrap",
+    "src/index.d.ts"
+  ],
+  "include": ["src/config.ts", "src/index.d.ts", "src/store/*/types.tsx"],
   "compileOnSave": false
 }

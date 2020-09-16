@@ -26,10 +26,15 @@ const defaultState: RootState = {
   common: {
     categories: [],
     isMenuOpen: false,
+    loading: false,
   },
   project: {
     editionRole: "VISITOR",
     isEditing: false,
+    authorsToAdd: [],
+    authorsToDelete: [],
+    supervisorsToAdd: [],
+    supervisorsToDelete: [],
   },
 };
 

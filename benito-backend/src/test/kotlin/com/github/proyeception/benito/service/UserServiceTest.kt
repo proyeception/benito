@@ -4,11 +4,9 @@ import com.github.proyeception.benito.Spec
 import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.AmbiguousReferenceException
-import com.github.proyeception.benito.exception.NotFoundException
 import com.github.proyeception.benito.mock.eq
 import com.github.proyeception.benito.mock.getMock
 import com.github.proyeception.benito.mock.on
-import com.github.proyeception.benito.snapshot.OrganizationSnapshot
 import com.nhaarman.mockito_kotlin.any
 import io.kotlintest.matchers.shouldBe
 import io.kotlintest.matchers.shouldThrow
@@ -221,16 +219,7 @@ class UserServiceTest : Spec() {
                     contentType = eq(ContentType.IMAGE_JPEG)
                 )).thenReturn(profilePicFile)
 
-                userService.createAuthor(
-                    username = null,
-                    fullName = "Benito Quinquela",
-                    mail = "benito@quinquela.com.ar",
-                    googleUserId = "g-123",
-                    googleToken = "123",
-                    profilePicUrl = "https://profilepic.com"
-                )
-
-                verify(medusaMock).createUser(
+                on(medusaMock.createUser(
                     CreateMedusaPersonDTO(
                         username = null,
                         fullName = "Benito Quinquela",
@@ -240,10 +229,17 @@ class UserServiceTest : Spec() {
                         profilePic = profilePicFile
                     ),
                     UserType.AUTHOR
-                )
-            }
-
-            "not create the file if user has no profile picture" {
+                )).thenReturn(MedusaPersonDTO(
+                    id = "123",
+                    username = null,
+                    fullName = "Benito Quinquela",
+                    organizations = emptyList(),
+                    profilePic = null,
+                    projects = emptyList(),
+                    socials = emptyList(),
+                    mail = null,
+                    phone = null
+                ))
 
                 userService.createAuthor(
                     username = null,
@@ -251,9 +247,12 @@ class UserServiceTest : Spec() {
                     mail = "benito@quinquela.com.ar",
                     googleUserId = "g-123",
                     googleToken = "123",
-                    profilePicUrl = null
+                    profilePicUrl = "https://profilepic.com"
                 )
-                verify(medusaMock).createUser(
+            }
+
+            "not create the file if user has no profile picture" {
+                on(medusaMock.createUser(
                     CreateMedusaPersonDTO(
                         username = null,
                         fullName = "Benito Quinquela",
@@ -263,6 +262,25 @@ class UserServiceTest : Spec() {
                         profilePic = null
                     ),
                     UserType.AUTHOR
+                )).thenReturn(MedusaPersonDTO(
+                    id = "123",
+                    username = null,
+                    fullName = "Benito Quinquela",
+                    organizations = emptyList(),
+                    profilePic = null,
+                    projects = emptyList(),
+                    socials = emptyList(),
+                    mail = null,
+                    phone = null
+                ))
+
+                userService.createAuthor(
+                    username = null,
+                    fullName = "Benito Quinquela",
+                    mail = "benito@quinquela.com.ar",
+                    googleUserId = "g-123",
+                    googleToken = "123",
+                    profilePicUrl = null
                 )
             }
         }

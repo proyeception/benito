@@ -53,7 +53,11 @@ class MedusaClientTest : Spec() {
                 authors = listOf(author),
                 supervisors = listOf(supervisor),
                 tags = listOf("tag1", "tag2"),
-                documentation = listOf(documentation)
+                documentation = listOf(documentation),
+                organization = OrganizationRefDTO(
+                    id = "123",
+                    displayName = "Proyectate"
+                )
             )
 
             "get to /projects returns all projects" {
@@ -284,13 +288,13 @@ class MedusaClientTest : Spec() {
 
         "findProject" should {
             val responseMock: Response = getMock()
-            val author = PersonRefDTO(
+            val author = MedusaPersonRefDTO(
                 id = "123",
                 username = "author",
                 fullName = "UnNombre"
             )
 
-            val supervisor = PersonRefDTO(
+            val supervisor = MedusaPersonRefDTO(
                 id = "1234",
                 username = "supervisor",
                 fullName = "UnNombre"

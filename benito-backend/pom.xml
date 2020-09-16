@@ -365,6 +365,15 @@
             <version>7.0.0</version>
         </dependency>
         <!-- Oauth library -->
+
+        <!-- MongoDB -->
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongo-java-driver</artifactId>
+            <version>3.12.7</version>
+        </dependency>
+        <!-- MongoDB -->
+
     </dependencies>
 
     <build>
@@ -465,6 +474,20 @@
                         <exclude>**/logback.xml</exclude>
                         <exclude>**/*.properties</exclude>
                     </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.heroku.sdk</groupId>
+                <artifactId>heroku-maven-plugin</artifactId>
+                <configuration>
+                    <jdkVersion>1.8</jdkVersion>
+                    <!-- Use your own application name -->
+                    <appName>benito</appName>
+                    <processTypes>
+                        <!-- Tell Heroku how to launch your application -->
+                        <!-- You might have to remove the ./ in front   -->
+                        <web>java -jar target/returned-tablets-counter-1.0-SNAPSHOT-jar-with-dependencies.jar</web>
+                    </processTypes>
                 </configuration>
             </plugin>
         </plugins>

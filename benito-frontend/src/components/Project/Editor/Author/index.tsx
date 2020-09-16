@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
 import { Project } from "../../../../types";
@@ -8,12 +8,13 @@ import ReactMarkdown from "react-markdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import Separator from "../../Separator";
 import SlideUp from "../../../Common/SlideUp";
 import SaveChanges from "./SaveChanges";
 import DiscardChanges from "./DiscardChanges";
 import Documents from "./Documents";
+import Poster from "./Poster";
 import Image from "./Image";
+import Separator from "../../../Common/Separator";
 
 interface Props {
   project: Project;
@@ -24,11 +25,15 @@ function Render(props: any) {
 }
 
 const AuthorEdit = (props: Props) => {
-  const [{ title, description, extraContent }, setValues] = useForm({
+  const [{ title, description, extraContent, posterUrl }, setValues] = useForm({
     title: props.project.title,
     description: props.project.description,
     extraContent: props.project.extraContent,
+    posterUrl: props.project.posterUrl,
   });
+
+  const [poster, setPoster] = useState<File>(null);
+  const [documents, setDocuments] = useState<Array<File>>(null);
 
   return (
     <SlideUp className="pt-5 pb-5">
@@ -46,6 +51,9 @@ const AuthorEdit = (props: Props) => {
             />
           </div>
         </div>
+
+        <Poster project={props.project} setPoster={setPoster} />
+
         <div className="font-size-18 font-size-24-md mt-2 mt-md-4">
           <div className="font-weight-bolder mb-2 mb-md-2">Descripción</div>
           <div className="font-weight-lighter">
@@ -58,7 +66,9 @@ const AuthorEdit = (props: Props) => {
             />
           </div>
         </div>
-        <Documents project={props.project} />
+
+        <Documents project={props.project} setDocuments={setDocuments} />
+
         <div className="font-size-18 font-size-24-md mt-2 mt-md-4">
           <div className="font-weight-bolder mb-2 mb-md-2">Contenido extra</div>
           <Tabs defaultActiveKey="edit">
@@ -101,8 +111,11 @@ const AuthorEdit = (props: Props) => {
                 title={title}
                 description={description}
                 extraContent={extraContent}
+                posterUrl={posterUrl}
                 id={props.project.id}
                 className="d-none d-md-block cursor-pointer"
+                poster={poster}
+                documents={documents}
               >
                 <FontAwesomeIcon icon={faSave} color="green" /> Guardar cambios
               </SaveChanges>

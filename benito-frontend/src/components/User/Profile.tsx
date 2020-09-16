@@ -4,9 +4,13 @@ import "./styles.scss";
 import { Person } from "../../types";
 import Contact from "./Contact";
 import { faPhone, faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { RootState } from "../../reducers";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
 type Props = {
   user: Person;
+  userId?: String;
 };
 
 const Profile = (props: Props) => (
@@ -29,7 +33,19 @@ const Profile = (props: Props) => (
     <div className="text-muted font-size-18 center-horizontally">
       {props.user.username}
     </div>
-    <div className="mt-5">
+    {props.userId == props.user.id ? (
+      <Link to="/me/profile">
+        <button
+          className="btn btn-primary btn-block font-weight-bolder mt-3"
+          type="button"
+        >
+          Editar perfil
+        </button>
+      </Link>
+    ) : (
+      <div />
+    )}
+    <div className="mt-4">
       {props.user.contact?.mail && (
         <Contact icon={faEnvelope} text={props.user.contact.mail} />
       )}
@@ -40,4 +56,10 @@ const Profile = (props: Props) => (
   </div>
 );
 
-export default hot(module)(Profile);
+const mapStateToProps = (rootState: RootState) => {
+  return {
+    userId: rootState.session?.userId,
+  };
+};
+
+export default hot(module)(connect(mapStateToProps)(Profile));
