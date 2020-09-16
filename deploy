@@ -24,5 +24,4 @@ git push origin HEAD
 ./build "test" "$VERSION"
 
 echo "mvn --batch-mode -f benito-backend/pom.xml heroku:deploy -Dmaven.test.skip=true"
-mvn --batch-mode -f benito-backend/pom.xml heroku:deploy -Dmaven.test.skip=true
 
