@@ -94,7 +94,7 @@ const AuthorEdit = (props: Props) => {
             >
               <ReactMarkdown
                 className="font-weight-light border-right border-left border-bottom pl-md-3 pr-md-3 p-md-2 h-100"
-                source={props.project.extraContent.valueOf()}
+                source={extraContent.valueOf()}
                 renderers={{ image: Render }}
               />
             </Tab>
