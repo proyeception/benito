@@ -6,7 +6,7 @@
 
     <groupId>com.github.proyeception</groupId>
     <artifactId>benito</artifactId>
-    <version>1.0.1-test</version>
+    <version>1.0.2-test</version>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
