@@ -6,7 +6,7 @@
 
     <groupId>com.github.proyeception</groupId>
     <artifactId>benito</artifactId>
-    <version>test</version>
+    <version>1.0.4-test</version>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -456,7 +456,7 @@
                     <processTypes>
                         <!-- Tell Heroku how to launch your application -->
                         <!-- You might have to remove the ./ in front   -->
-                        <web>java -jar target/benito-${version}.jar</web>
+                        <web>java -jar target/benito-${project.version}.jar</web>
                     </processTypes>
                 </configuration>
             </plugin>
