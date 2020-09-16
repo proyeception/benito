@@ -115,6 +115,11 @@ public class Benito {
     }
 
     private int port(String[] args) {
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        if (processBuilder.environment().get("PORT") != null) {
+            return Integer.parseInt(processBuilder.environment().get("PORT"));
+        }
+
         return args.length > 0 ? Integer.parseInt(args[0]) : DEFAULT_PORT;
     }
 }
