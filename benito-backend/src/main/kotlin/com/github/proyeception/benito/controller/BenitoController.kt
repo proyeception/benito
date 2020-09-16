@@ -6,6 +6,14 @@ import org.springframework.web.servlet.ModelAndView
 
 @Controller
 open class BenitoController {
-    @GetMapping(value = ["/", "/search"])
+    @GetMapping(value = [
+        "/",
+        "/search",
+        "/projects/*",
+        "/authors/*",
+        "/supervisors/*",
+        "/me/*",
+        "/supervisor/login"
+    ])
     open fun index(): ModelAndView = ModelAndView("index")
 }
