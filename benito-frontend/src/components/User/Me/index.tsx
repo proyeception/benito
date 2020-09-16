@@ -33,6 +33,8 @@ interface Props extends RouteComponentProps<MatchParams> {
   role: Role;
 }
 
+const noUserImage = "https://image.flaticon.com/icons/png/512/61/61205.png";
+
 const Me = (props: Props) => {
   const render = () => {
     const [user, fetching, isError] = withUser(
@@ -74,7 +76,7 @@ const Me = (props: Props) => {
               <div className="col-12 center">
                 <div className="qui-user-profile-picture-container cursor-pointer darken-overlay">
                   <motion.img
-                    src={user.profilePicUrl?.valueOf()}
+                    src={user.profilePicUrl?.valueOf() || noUserImage}
                     className="img-circle img-hover-blur darken-on-hover"
                     whileHover={{
                       scale: 1.2,
