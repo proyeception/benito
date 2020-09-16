@@ -16,7 +16,7 @@ open class LoginController(
 ) {
     @RequestMapping(value = ["/benito/author/login"], method = [RequestMethod.POST], produces = ["application/json"])
     @ResponseStatus(HttpStatus.OK)
-    @CrossOrigin(origins = ["http://localhost:8080"], allowCredentials = "true")
+    @CrossOrigin
     open fun authorLogin(@RequestBody login: LoginDTO, response: HttpServletResponse) {
         LOGGER.info("New author login")
         val token = authenticationService.authenticateOrCreateAuthor(login)
@@ -25,7 +25,7 @@ open class LoginController(
 
     @RequestMapping(value = ["/benito/supervisor/login"], method = [RequestMethod.POST], produces = ["application/json"])
     @ResponseStatus(HttpStatus.OK)
-    @CrossOrigin(origins = ["http://localhost:8080"], allowCredentials = "true")
+    @CrossOrigin
     open fun supervisorLogin(@RequestBody login: LoginDTO, response: HttpServletResponse) {
         LOGGER.info("New supervisor login")
         val token = authenticationService.authenticateSupervisor(login)
