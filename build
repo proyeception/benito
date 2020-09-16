@@ -6,18 +6,19 @@ then
   exit -1
 fi
 
-OPTIND=1
+set -e
 
+ENVIRONMENT=$1
+VERSION=$2
 FRONTEND="benito-frontend"
 BACKEND="benito-backend"
 BACKEND_RESOURCES=$BACKEND/src/main/resources
-ARTIFACT="benito-jar-with-dependencies"
-FINAL_ARTIFACT_NAME="benito"
-ENVIRONMENT=$0
-VERSION=$1
+BACKEND_ENVIRONMENTS=$BACKEND/environments
+ARTIFACT="benito"
+FINAL_ARTIFACT_NAME="benito-$VERSION"
 
 npm install --prefix $FRONTEND
-npm run "build-$VERSION" --prefix $FRONTEND
+npm run "build-$ENVIRONMENT" --prefix $FRONTEND
 
 rm -rf $BACKEND_RESOURCES/templates
 rm -rf $BACKEND_RESOURCES/static
@@ -28,8 +29,16 @@ mkdir $BACKEND_RESOURCES/static
 cp -r $FRONTEND/build/index.html $BACKEND_RESOURCES/templates/index.ftl
 cp -r $FRONTEND/build/static/* $BACKEND_RESOURCES/static/
 
-find $BACKEND_RESOURCES -type f -print0 | xargs -0 sed -i -e 's/\/static\///g'
+find $BACKEND_RESOURCES -type f -print0 | xargs -0 sed -i -e 's/\/static//g'
+
+cp $BACKEND_RESOURCES/logback.xml logback.xml.original
+cp $BACKEND_RESOURCES/application.conf application.conf.original
+cp $BACKEND_ENVIRONMENTS/$ENVIRONMENT/logback.xml $BACKEND_RESOURCES/logback.xml
+cp $BACKEND_ENVIRONMENTS/$ENVIRONMENT/application.conf $BACKEND_RESOURCES/application.conf
 
 mvn -f $BACKEND/pom.xml -Dmaven.test.skip=true clean package
-mv $BACKEND/target/$ARTIFACT.jar $BACKEND/target/$FINAL_ARTIFACT_NAME-$VERSION.jar
+mv $BACKEND/target/$ARTIFACT.jar $BACKEND/target/$FINAL_ARTIFACT_NAME.jar
+
+mv logback.xml.original $BACKEND_RESOURCES/logback.xml
+mv application.conf.original $BACKEND_RESOURCES/application.conf
 
