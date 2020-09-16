@@ -26,15 +26,18 @@ open class ProjectService(
         category: String?,
         keyword: String?
     ): List<ProjectDTO> {
-
-            return medusaClient.findProjects(
+        return if(keyword.isNullOrEmpty()) {
+            medusaClient.findProjects(
                     orderBy = orderBy,
                     from = from,
                     to = to,
                     nameContains = nameContains,
                     category = category
             ).map { ProjectDTO(it) }
-
+        }
+        else {
+            mongoTextSearch.getDocuments(keyword)
+        }
     }
 
     fun featuredProjects(): List<ProjectDTO> = medusaClient.findProjects(
