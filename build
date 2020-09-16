@@ -11,6 +11,7 @@ OPTIND=1
 FRONTEND="benito-frontend"
 BACKEND="benito-backend"
 BACKEND_RESOURCES=$BACKEND/src/main/resources
+BACKEND_ENVIRONMENTS=$BACKEND/environments
 ARTIFACT="benito-jar-with-dependencies"
 FINAL_ARTIFACT_NAME="benito"
 ENVIRONMENT=$0
@@ -30,6 +31,14 @@ cp -r $FRONTEND/build/static/* $BACKEND_RESOURCES/static/
 
 find $BACKEND_RESOURCES -type f -print0 | xargs -0 sed -i -e 's/\/static\///g'
 
+cp $BACKEND_RESOURCES/logback.xml logback.xml.original
+cp $BACKEND_RESOURCES/application.conf application.conf.original
+cp $BACKEND_ENVIRONMENTS/$ENVIRONMENT/logback.xml $BACKEND_RESOURCES/logback.xml
+cp $BACKEND_ENVIRONMENTS/$ENVIRONMENT/application.conf $BACKEND_RESOURCES/application.conf
+
 mvn -f $BACKEND/pom.xml -Dmaven.test.skip=true clean package
 mv $BACKEND/target/$ARTIFACT.jar $BACKEND/target/$FINAL_ARTIFACT_NAME-$VERSION.jar
+
+mv logback.xml.original $BACKEND_RESOURCES/logback.xml
+mv application.conf.original $BACKEND_RESOURCES/application.conf
 
