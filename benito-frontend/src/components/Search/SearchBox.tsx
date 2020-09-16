@@ -56,10 +56,6 @@ const SearchBox = (props: Props) => {
         <KeywordInput className="qui-search-input" />
       </div>
       <div className="qui-search-filter">
-        <div className="qui-font-text">Documentación</div>
-        <DocumentationInput className="qui-search-input" />
-      </div>
-      <div className="qui-search-filter">
         <div className="qui-font-text">Ordenar proyectos</div>
         <SortSelector className="qui-search-combo qui-search-input" />
       </div>

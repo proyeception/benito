@@ -34,6 +34,7 @@ export function buildQueryParams({
   fromDate,
   toDate,
   sortMethod,
+  keyword
 }: Params) {
   return "?"
     .concat(buildQueryParamProperty("name", name))
@@ -41,6 +42,7 @@ export function buildQueryParams({
     .concat(buildQueryParamProperty("from", fromDate))
     .concat(buildQueryParamProperty("to", toDate))
     .concat(buildQueryParamProperty("orderBy", sortMethod))
+    .concat(buildQueryParamProperty("keyword", keyword))
     .slice(0, -1);
   //TODO
   //params = params.concat(this.buildQueryParamProperty("keyword", this.state.keyword))
