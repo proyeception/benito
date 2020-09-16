@@ -74,7 +74,7 @@ const Me = (props: Props) => {
               <div className="col-12 center">
                 <div className="qui-user-profile-picture-container cursor-pointer darken-overlay">
                   <motion.img
-                    src={user.profilePicUrl.valueOf()}
+                    src={user.profilePicUrl?.valueOf()}
                     className="img-circle img-hover-blur darken-on-hover"
                     whileHover={{
                       scale: 1.2,
