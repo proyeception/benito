@@ -16,7 +16,7 @@ mvn --batch-mode -f benito-backend/pom.xml clean test
 echo "mvn --batch-mode -f benito-backend/pom.xml versions:set -DnewVersion=$VERSION -Dmaven.test.skip=true -DgenerateBackupPoms=false"
 mvn --batch-mode -f benito-backend/pom.xml versions:set -DnewVersion="$VERSION" -Dmaven.test.skip=true -DgenerateBackupPoms=false
 
-git add pom.xml
+git add .
 git commit -m "[RELEASE] Version $VERSION"
 git tag "$VERSION"
 git push origin HEAD
