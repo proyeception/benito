@@ -6,19 +6,19 @@ then
   exit -1
 fi
 
-OPTIND=1
+set -e
 
+ENVIRONMENT=$1
+VERSION=$2
 FRONTEND="benito-frontend"
 BACKEND="benito-backend"
 BACKEND_RESOURCES=$BACKEND/src/main/resources
 BACKEND_ENVIRONMENTS=$BACKEND/environments
-ARTIFACT="benito-jar-with-dependencies"
-FINAL_ARTIFACT_NAME="benito"
-ENVIRONMENT=$0
-VERSION=$1
+ARTIFACT="benito"
+FINAL_ARTIFACT_NAME="benito-$VERSION"
 
 npm install --prefix $FRONTEND
-npm run "build-$VERSION" --prefix $FRONTEND
+npm run "build-$ENVIRONMENT" --prefix $FRONTEND
 
 rm -rf $BACKEND_RESOURCES/templates
 rm -rf $BACKEND_RESOURCES/static
@@ -37,7 +37,7 @@ cp $BACKEND_ENVIRONMENTS/$ENVIRONMENT/logback.xml $BACKEND_RESOURCES/logback.xml
 cp $BACKEND_ENVIRONMENTS/$ENVIRONMENT/application.conf $BACKEND_RESOURCES/application.conf
 
 mvn -f $BACKEND/pom.xml -Dmaven.test.skip=true clean package
-mv $BACKEND/target/$ARTIFACT.jar $BACKEND/target/$FINAL_ARTIFACT_NAME-$VERSION.jar
+mv $BACKEND/target/$ARTIFACT.jar $BACKEND/target/$FINAL_ARTIFACT_NAME.jar
 
 mv logback.xml.original $BACKEND_RESOURCES/logback.xml
 mv application.conf.original $BACKEND_RESOURCES/application.conf
