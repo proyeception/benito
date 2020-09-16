@@ -41,13 +41,15 @@ open class MongoTextSearch(
 
         val projects = mutableListOf<ProjectDTO>()
         val a: ObjectMapper = ObjectMapper()
+        val mongoCollectionProjects = mongoClient.getDatabase(databaseName).getCollection("projects")
 
         while (cursor.hasNext()) {
             val doc: Document = cursor.next()
-            val project:Document = mongoCollection.find(
-                    Filters.eq("documentation", ObjectId(doc.get("_Id", String::class.java))))
+            val project:Document = mongoCollectionProjects.find(
+                    Filters.eq("documentation", doc.get("_id", ObjectId::class.java)))
+                    .projection(Projections.exclude("documentation", "authors", "documents", "supervisors", "organization"))
                     .first()!!
-
+            project.remove("documentation")
             projects.add(a.readValue(project.toJson(), ProjectDTO::class.java))
         }
 
