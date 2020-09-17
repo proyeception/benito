@@ -20,7 +20,7 @@ const defaultState: RootState = {
     toDate: "",
     keyword: "",
     documentation: "",
-    sortMethod: SortMethod.DateDesc,
+    orderBy: SortMethod.DateDesc,
     organization: "",
   },
   common: {

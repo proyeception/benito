@@ -66,7 +66,7 @@ export enum SortMethod {
   AlphaAsc = "ALPHA_ASC",
   AlphaDesc = "ALPHA_DESC",
   ViewsAsc = "VIEWS_ASC",
-  ViewsDesc = "VIEWS_DESC"
+  ViewsDesc = "VIEWS_DESC",
 }
 
 export type SearchAction =
@@ -89,6 +89,6 @@ export type SearchState = {
   toDate: String;
   keyword: String;
   documentation: String;
-  sortMethod: SortMethod;
+  orderBy: SortMethod;
   organization: String;
 };

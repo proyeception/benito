@@ -28,7 +28,7 @@ const CategorySelector = (props: Props) => (
       )
     }
   >
-    <option disabled value={0} />
+    <option value={0} />
     {props.categories.map((cat, idx) => (
       <option value={idx + 1} key={idx}>
         {cat.name}

@@ -22,7 +22,7 @@ const defaultSearchState: SearchState = {
   toDate: "",
   keyword: "",
   documentation: "",
-  sortMethod: SortMethod.DateDesc,
+  orderBy: SortMethod.DateDesc,
   organization: "",
 };
 
@@ -69,7 +69,7 @@ function searchReducer(
     case UPDATE_SORT_METHOD:
       return {
         ...state,
-        sortMethod: action.payload,
+        orderBy: action.payload,
       };
     case RESET_SEARCH_PARAMETERS:
       return {

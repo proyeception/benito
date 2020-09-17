@@ -260,7 +260,8 @@ open class MedusaClient(
         return response.body?.toInt() ?: throw FailedDependencyException("Medusa returned null for count")
     }
 
-    private fun String.appendOrder(orderBy: OrderDTO?): String = orderBy?.sortMethod?.let { "${this}_sort=$it&" }
+    private fun String.appendOrder(orderBy: OrderDTO?): String = orderBy?.sortMethod
+        ?.let { "${this}_sort=${it}&" }
         ?: this
     private fun String.appendParam(param: String, value: String?, filter: MedusaFilter): String =
         value?.let { "${this}${param}_${filter.filterName}=$it&" } ?: this

@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosPromise } from "axios";
 import { benitoHost } from "../../config";
+import { SortMethod } from "../../store/search/types";
 import { Project } from "../../types";
 
 export interface Params {
@@ -9,7 +10,7 @@ export interface Params {
   toDate?: String;
   keyword?: String;
   documentation?: String;
-  sortMethod?: String;
+  orderBy?: SortMethod;
 }
 
 export function fetchProject(id: String): AxiosPromise<Project> {
@@ -21,6 +22,7 @@ export function fetchProject(id: String): AxiosPromise<Project> {
 }
 
 export function fetchProjects(params: Params): AxiosPromise<Array<Project>> {
+  console.log(params);
   let config: AxiosRequestConfig = {
     url: `${benitoHost}/benito/projects${buildQueryParams(params)}`,
   };
@@ -33,15 +35,15 @@ export function buildQueryParams({
   category,
   fromDate,
   toDate,
-  sortMethod,
-  keyword
+  orderBy,
+  keyword,
 }: Params) {
   return "?"
     .concat(buildQueryParamProperty("name", name))
     .concat(buildQueryParamProperty("category", category))
     .concat(buildQueryParamProperty("from", fromDate))
     .concat(buildQueryParamProperty("to", toDate))
-    .concat(buildQueryParamProperty("orderBy", sortMethod))
+    .concat(buildQueryParamProperty("orderBy", orderBy))
     .concat(buildQueryParamProperty("keyword", keyword))
     .slice(0, -1);
   //TODO

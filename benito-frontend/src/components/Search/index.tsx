@@ -15,6 +15,7 @@ import {
   updateKeyword,
   emptyProjects,
   updateProjects,
+  updateSortMethod,
 } from "../../actions/search";
 import { fetchProjects } from "../../functions/search";
 import qs from "qs";
@@ -25,6 +26,8 @@ import NoResultsFound from "./NoResultsFound";
 import SlideIn from "../Common/SlideIn";
 import SearchError from "./SearchError";
 import OneByOne from "../Common/OneByOne";
+import { SortMethod } from "../../store/search/types";
+import _ from "lodash";
 
 type MatchParams = {
   name?: string;
@@ -33,15 +36,16 @@ type MatchParams = {
   toDate?: string;
   keyword?: string;
   documentation?: string;
+  orderBy?: SortMethod;
 };
 
 interface Props extends RouteChildrenProps<MatchParams> {
   projects: Array<Project>;
-  name: String;
-  category: String;
-  fromDate: String;
-  toDate: String;
-  sortMethod: String;
+  name?: string;
+  category?: string;
+  fromDate?: string;
+  toDate?: string;
+  orderBy?: SortMethod;
 }
 
 function passQueryParamsToState(queryParams: MatchParams) {
@@ -57,6 +61,9 @@ function passQueryParamsToState(queryParams: MatchParams) {
     : {};
   queryParams.toDate ? store.dispatch(updateToDate(queryParams.toDate)) : {};
   queryParams.keyword ? store.dispatch(updateKeyword(queryParams.keyword)) : {};
+  queryParams.orderBy
+    ? store.dispatch(updateSortMethod(queryParams.orderBy))
+    : {};
 }
 
 const Search = (props: Props) => {
@@ -68,7 +75,7 @@ const Search = (props: Props) => {
   const [isError, setIsError] = useState(false);
 
   const search = (params?: MatchParams) => {
-    fetchProjects(params ? params : props)
+    fetchProjects(params && !_.isEmpty(params) ? params : props.match.params)
       .then((res) => res.data)
       .then((ps) => {
         store.dispatch(updateProjects(ps));
@@ -96,7 +103,7 @@ const Search = (props: Props) => {
           <SearchBox
             searchCallback={() => {
               setLoading(true);
-              search();
+              search(props);
             }}
           />
         </div>
