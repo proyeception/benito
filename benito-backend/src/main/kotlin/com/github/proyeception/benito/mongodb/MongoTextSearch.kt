@@ -41,17 +41,20 @@ open class MongoTextSearch(
 
         val projects = mutableListOf<ProjectDTO>()
         val a: ObjectMapper = ObjectMapper()
+        val mongoCollectionProjects = mongoClient.getDatabase(databaseName).getCollection("projects")
 
         //el match siempre tiene que ser primero para mejorar performace
-        val pipeline = mutableListOf(Aggregates.match(Filters.eq("documentation", "a")), Aggregates.lookup("authors", "authors", "_id", "authors"),Aggregates.lookup("organizations", "organization", "_id", "organization"), Aggregates.lookup("supervisors", "supervisors", "_id", "supervisors"))
+        val pipeline = mutableListOf(Aggregates.match(Filters.eq("documentation", "")), Aggregates.lookup("authors", "authors", "_id", "authors"),Aggregates.lookup("organizations", "organization", "_id", "organization"), Aggregates.lookup("supervisors", "supervisors", "_id", "supervisors"))
 
         while (cursor.hasNext()) {
             val doc: Document = cursor.next()
-            pipeline[0] = Filters.eq("documentation", doc["id"])
-            val project:Document? = mongoCollection.aggregate(pipeline).first()
+            pipeline[0] = Filters.eq("documentation", doc["_id"])
+            val project:Document? = mongoCollectionProjects.aggregate(pipeline).first()
 
-            if(!project.isNullOrEmpty())
+            if(!project.isNullOrEmpty()) {
+                project.remove("documentation")
                 projects.add(a.readValue(project.toJson(), ProjectDTO::class.java))
+            }
         }
 
         mongoClient.close()
