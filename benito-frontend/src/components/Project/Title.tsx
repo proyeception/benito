@@ -22,10 +22,11 @@ interface Props extends RouteComponentProps {
 const Title = (props: Props) => {
   const [height, setHeight] = useState(props.maxHeight);
   const handleScroll = () => {
-    let scrollTop = window.scrollY;
-    setHeight(
-      Math.max(props.minHeight.valueOf(), props.maxHeight.valueOf() - scrollTop)
-    );
+    if (window.pageYOffset >= props.minHeight) {
+      setHeight(props.minHeight);
+    } else {
+      setHeight(props.maxHeight);
+    }
   };
 
   useEffect(() => {
@@ -44,12 +45,12 @@ const Title = (props: Props) => {
           backgroundImage: `url(${
             props.project.posterUrl || noImageAvailableHorizontal
           })`,
-          height: height.valueOf(),
+          height: props.minHeight.valueOf(),
         }}
       >
         <div
           className="qui-backdrop d-flex justify-content-between justify-content-md-start font-size-24 font-size-45-md qui-project-title"
-          style={{ height: height.valueOf() }}
+          style={{ height: props.minHeight.valueOf() }}
         >
           <div className="ml-3 ml-md-4">{props.project.title} </div>
 

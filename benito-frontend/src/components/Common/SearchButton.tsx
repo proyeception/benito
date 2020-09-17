@@ -1,26 +1,24 @@
 import React, { CSSProperties } from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
-import { buildQueryParams } from "../../functions/search";
+import { buildQueryParams, Params } from "../../functions/search";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { SearchState } from "../../store/search/types";
-import { RootState } from "../../reducers";
-import { connect } from "react-redux";
+import store from "../../store";
 
 interface Props extends RouteComponentProps {
   className: string;
   onSuccess?: () => void;
   text?: string;
   style?: CSSProperties;
-  searchState: SearchState;
   onClick?: () => void;
+  params?: Params;
 }
 
 const SearchButton = (props: Props) => {
   const search = () => {
     props.history.push({
       pathname: "/search",
-      search: buildQueryParams(props.searchState),
+      search: buildQueryParams(props.params || store.getState().search),
     });
     props.onSuccess?.call({});
   };
@@ -40,8 +38,4 @@ const SearchButton = (props: Props) => {
   );
 };
 
-const mapStateToProps = (rootState: RootState) => {
-  return { searchState: rootState.search };
-};
-
-export default hot(module)(connect(mapStateToProps)(withRouter(SearchButton)));
+export default hot(module)(withRouter(SearchButton));
