@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/sapiens/authenticate"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": "{\"session\":\"1212\",\"userData\":{\"name\":\"rochy\",\"lastName\":\"chipian\",\"profilePicUrl\":\"www.coolurl.com\",\"email\":\"rochy@chipian.com\",\"organization\":\"CoolOrg\",\"projectRefs\":{},\"socials\":{}}}"
+    }
+}
