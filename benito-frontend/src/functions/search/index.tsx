@@ -22,7 +22,6 @@ export function fetchProject(id: String): AxiosPromise<Project> {
 }
 
 export function fetchProjects(params: Params): AxiosPromise<Array<Project>> {
-  console.log(params);
   let config: AxiosRequestConfig = {
     url: `${benitoHost}/benito/projects${buildQueryParams(params)}`,
   };
