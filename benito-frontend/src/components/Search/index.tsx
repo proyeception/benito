@@ -47,7 +47,6 @@ const Search = (props: Props) => {
     let queryParams: MatchParams = qs.parse(props.location.search, {
       ignoreQueryPrefix: true,
     });
-    console.log("Search");
     setSearchState(SEARCHING);
     fetchProjects(queryParams)
       .then((res) => res.data)

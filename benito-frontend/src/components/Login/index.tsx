@@ -28,7 +28,7 @@ const Login = (props: Props) => {
         };
         startLogin(loginData, props.history, props.loginPath);
       }}
-      onFailure={console.log}
+      onFailure={console.warn}
     ></GoogleLogin>
   );
 };
