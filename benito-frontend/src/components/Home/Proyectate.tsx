@@ -74,6 +74,7 @@ const Proyectate = (props: Props) => {
                 text="Ver todos los proyectos"
                 onClick={() => store.dispatch(resetSearchParameters())}
                 style={{ borderRadius: "24px" }}
+                params={{}}
               />
             </div>
           </div>

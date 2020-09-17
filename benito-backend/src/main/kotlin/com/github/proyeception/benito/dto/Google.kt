@@ -56,3 +56,13 @@ data class GoogleProfileDTO(
     val names: List<GoogleProfileNameDTO>,
     val metadata: GoogleProfileMetadataDTO
 )
+
+data class CreateFolderDTO(
+    val name: String,
+    val mimeType: String = "application/vnd.google-apps.folder"
+)
+
+data class CreatePermissionDTO(
+    val role: String,
+    val type: String
+)

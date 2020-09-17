@@ -18,6 +18,9 @@ open class DynamicOAuthConnector(
 
     public override fun post(url: String, token: String) = super.post(url, token)
 
+    public override fun post(url: String, body: Any?, token: String): Either<Throwable, Response> =
+        super.post(url, body, token)
+
     public override fun post(
         url: String,
         token: String,

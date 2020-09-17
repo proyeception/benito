@@ -74,7 +74,6 @@ function searchReducer(
     case RESET_SEARCH_PARAMETERS:
       return {
         ...defaultSearchState,
-        projects: state.projects,
       };
     case UPDATE_ORGANIZATION:
       return {

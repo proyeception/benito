@@ -21,6 +21,8 @@ open class OAuthConnector(
 
     open fun post(url: String): Either<Throwable, Response> = post(url, token)
 
+    open fun post(url: String, body: Any?): Either<Throwable, Response> = post(url, body, token)
+
     open fun post(url: String, vararg bodyParts: Pair<String, ByteArray>): Either<Throwable, Response> = post(
         url,
         token,

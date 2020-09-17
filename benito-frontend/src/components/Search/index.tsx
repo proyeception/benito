@@ -6,17 +6,7 @@ import { RootState } from "../../reducers";
 import { connect } from "react-redux";
 import { Project } from "../../types";
 import store from "../../store";
-import {
-  updateCategory,
-  updateName,
-  updateDocumentation,
-  updateFromDate,
-  updateToDate,
-  updateKeyword,
-  emptyProjects,
-  updateProjects,
-  updateSortMethod,
-} from "../../actions/search";
+import { emptyProjects, updateProjects } from "../../actions/search";
 import { fetchProjects } from "../../functions/search";
 import qs from "qs";
 import { RouteChildrenProps } from "react-router-dom";
@@ -41,29 +31,6 @@ type MatchParams = {
 
 interface Props extends RouteChildrenProps<MatchParams> {
   projects: Array<Project>;
-  name?: string;
-  category?: string;
-  fromDate?: string;
-  toDate?: string;
-  orderBy?: SortMethod;
-}
-
-function passQueryParamsToState(queryParams: MatchParams) {
-  queryParams.category
-    ? store.dispatch(updateCategory(queryParams.category))
-    : {};
-  queryParams.name ? store.dispatch(updateName(queryParams.name)) : {};
-  queryParams.documentation
-    ? store.dispatch(updateDocumentation(queryParams.documentation))
-    : {};
-  queryParams.fromDate
-    ? store.dispatch(updateFromDate(queryParams.fromDate))
-    : {};
-  queryParams.toDate ? store.dispatch(updateToDate(queryParams.toDate)) : {};
-  queryParams.keyword ? store.dispatch(updateKeyword(queryParams.keyword)) : {};
-  queryParams.orderBy
-    ? store.dispatch(updateSortMethod(queryParams.orderBy))
-    : {};
 }
 
 const Search = (props: Props) => {
@@ -74,23 +41,16 @@ const Search = (props: Props) => {
   const [loading, setLoading] = useState(props.projects.length == 0);
   const [isError, setIsError] = useState(false);
 
-  const search = (params?: MatchParams) => {
-    fetchProjects(params && !_.isEmpty(params) ? params : props.match.params)
+  const search = () => {
+    fetchProjects(queryParams)
       .then((res) => res.data)
-      .then((ps) => {
-        store.dispatch(updateProjects(ps));
-      })
-      .then(() => setLoading(false))
-      .catch((e) => {
-        console.error(e);
-        setIsError(true);
-      });
+      .then((ps) => store.dispatch(updateProjects(ps)))
+      .catch(() => setIsError(true))
+      .then(() => setLoading(false));
   };
 
   useEffect(() => {
-    passQueryParamsToState(queryParams);
-    search(queryParams);
-
+    search();
     return () => {
       store.dispatch(emptyProjects());
     };
@@ -103,7 +63,7 @@ const Search = (props: Props) => {
           <SearchBox
             searchCallback={() => {
               setLoading(true);
-              search(props);
+              search();
             }}
           />
         </div>
