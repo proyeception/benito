@@ -4,11 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.proyeception.benito.dto.ProjectDTO
 import com.mongodb.MongoClientURI
 import com.mongodb.client.MongoCursor
+import com.mongodb.client.model.Aggregates
 import com.mongodb.client.model.Filters
 import com.mongodb.client.model.Projections
 import org.bson.Document
-import org.bson.conversions.Bson
-import org.bson.types.ObjectId
+
 
 open class MongoTextSearch(
     private val user: String,
@@ -42,13 +42,16 @@ open class MongoTextSearch(
         val projects = mutableListOf<ProjectDTO>()
         val a: ObjectMapper = ObjectMapper()
 
+        //el match siempre tiene que ser primero para mejorar performace
+        val pipeline = mutableListOf(Aggregates.match(Filters.eq("documentation", "a")), Aggregates.lookup("authors", "authors", "_id", "authors"),Aggregates.lookup("organizations", "organization", "_id", "organization"), Aggregates.lookup("supervisors", "supervisors", "_id", "supervisors"))
+
         while (cursor.hasNext()) {
             val doc: Document = cursor.next()
-            val project:Document = mongoCollection.find(
-                    Filters.eq("documentation", ObjectId(doc.get("_Id", String::class.java))))
-                    .first()!!
+            pipeline[0] = Filters.eq("documentation", doc["id"])
+            val project:Document? = mongoCollection.aggregate(pipeline).first()
 
-            projects.add(a.readValue(project.toJson(), ProjectDTO::class.java))
+            if(!project.isNullOrEmpty())
+                projects.add(a.readValue(project.toJson(), ProjectDTO::class.java))
         }
 
         mongoClient.close()
