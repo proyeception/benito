@@ -10,6 +10,7 @@ open class BenitoController {
         "/",
         "/search",
         "/projects/*",
+        "projects/*/edit",
         "/authors/*",
         "/supervisors/*",
         "/me/*",

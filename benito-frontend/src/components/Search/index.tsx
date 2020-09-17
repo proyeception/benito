@@ -33,24 +33,35 @@ interface Props extends RouteChildrenProps<MatchParams> {
   projects: Array<Project>;
 }
 
-const Search = (props: Props) => {
-  let queryParams: MatchParams = qs.parse(props.location.search, {
-    ignoreQueryPrefix: true,
-  });
+const PENDING = "PENDING";
+const SEARCHING = "SEARCHING";
+const DONE = "DONE";
 
-  const [loading, setLoading] = useState(props.projects.length == 0);
+type SearchState = typeof PENDING | typeof SEARCHING | typeof DONE;
+
+const Search = (props: Props) => {
   const [isError, setIsError] = useState(false);
+  const [searchState, setSearchState] = useState<SearchState>(PENDING);
 
   const search = () => {
+    let queryParams: MatchParams = qs.parse(props.location.search, {
+      ignoreQueryPrefix: true,
+    });
+    setSearchState(SEARCHING);
     fetchProjects(queryParams)
       .then((res) => res.data)
       .then((ps) => store.dispatch(updateProjects(ps)))
       .catch(() => setIsError(true))
-      .then(() => setLoading(false));
+      .then(() => setSearchState(DONE));
   };
 
+  switch (searchState) {
+    case PENDING: {
+      search();
+    }
+  }
+
   useEffect(() => {
-    search();
     return () => {
       store.dispatch(emptyProjects());
     };
@@ -62,8 +73,7 @@ const Search = (props: Props) => {
         <div className="col-md-2 qui-searchbox-md d-none d-md-block">
           <SearchBox
             searchCallback={() => {
-              setLoading(true);
-              search();
+              setSearchState(PENDING);
             }}
           />
         </div>
@@ -73,7 +83,7 @@ const Search = (props: Props) => {
           </div>
           {isError ? (
             <SearchError />
-          ) : loading ? (
+          ) : searchState == SEARCHING ? (
             <div className="center min-h-240 min-h-720-md">
               <Loader />
             </div>
