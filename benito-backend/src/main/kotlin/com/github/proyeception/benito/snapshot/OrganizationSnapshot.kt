@@ -7,7 +7,7 @@ import com.github.proyeception.benito.dto.MedusaOrganizationDTO
 open class OrganizationSnapshot(
     medusaConnector: Connector
 ) : Snapshot<MedusaOrganizationDTO>(
-    refreshRate = 3600,
+    refreshRate = 180,
     endpoint = "/organizations",
     connector = medusaConnector,
     name = "organization",

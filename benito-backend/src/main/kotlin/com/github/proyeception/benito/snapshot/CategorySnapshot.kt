@@ -8,7 +8,7 @@ class CategorySnapshot(
     medusaConnector: Connector
 ) : Snapshot<CategoryDTO>(
     name = "categories",
-    refreshRate = 3600,
+    refreshRate = 180,
     endpoint = "/categories",
     ref = object : TypeReference<List<CategoryDTO>>() {},
     connector = medusaConnector
