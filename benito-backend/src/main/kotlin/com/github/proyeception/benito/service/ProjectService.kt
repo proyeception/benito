@@ -36,7 +36,7 @@ open class ProjectService(
             ).map { ProjectDTO(it) }
         }
         else {
-            mongoTextSearch.getDocuments(keyword)
+            mongoTextSearch.getDocuments(keyword, from, to, nameContains, category)
         }
     }
 

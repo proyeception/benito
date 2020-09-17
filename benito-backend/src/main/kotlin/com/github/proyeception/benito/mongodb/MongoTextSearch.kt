@@ -1,6 +1,5 @@
 package com.github.proyeception.benito.mongodb
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.proyeception.benito.dto.DocumentationDTO
 import com.github.proyeception.benito.dto.OrganizationRefDTO
 import com.github.proyeception.benito.dto.PersonRefDTO
@@ -11,8 +10,8 @@ import com.mongodb.client.model.Aggregates
 import com.mongodb.client.model.Filters
 import com.mongodb.client.model.Projections
 import org.bson.Document
+import org.bson.conversions.Bson
 import java.time.LocalDate
-import java.time.ZoneId
 
 
 open class MongoTextSearch(
@@ -31,7 +30,7 @@ open class MongoTextSearch(
         return com.mongodb.MongoClient(uri)
     }
 
-    open fun getDocuments(line: String): MutableList<ProjectDTO> {
+    open fun getDocuments(line: String, from: String?, to: String?, nameContains: String?, category: String?): MutableList<ProjectDTO> {
         val mongoClient = startConnection()
         val mongoCollection = mongoClient.getDatabase(databaseName).getCollection(collection)
         val cursor: MongoCursor<Document> = mongoCollection.find(
@@ -44,11 +43,19 @@ open class MongoTextSearch(
             .sort(Projections.metaTextScore("score"))
             .cursor()
 
-        val projects = mutableListOf<ProjectDTO>()
+        val projects = mutableSetOf<ProjectDTO>()
         val mongoCollectionProjects = mongoClient.getDatabase(databaseName).getCollection("projects")
 
+        val variableFilters:List<Bson> = createVariableFilters(from, to, nameContains, category);
+
         //el match siempre tiene que ser primero para mejorar performace
-        val pipeline = mutableListOf(Aggregates.match(Filters.eq("documentation", "")), Aggregates.lookup("authors", "authors", "_id", "authors"),Aggregates.lookup("organizations", "organization", "_id", "organization"), Aggregates.lookup("supervisors", "supervisors", "_id", "supervisors"), Aggregates.lookup("documentation", "documentation", "_id", "documentation"))
+        val pipeline = mutableListOf(Aggregates.match(Filters.eq("documentation", "")),
+                Aggregates.lookup("authors", "authors", "_id", "authors"),
+                Aggregates.lookup("organizations", "organization", "_id", "organization"),
+                Aggregates.lookup("supervisors", "supervisors", "_id", "supervisors"),
+                Aggregates.lookup("documentation", "documentation", "_id", "documentation"))
+
+        pipeline.addAll(variableFilters)
 
         while (cursor.hasNext()) {
             val doc: Document = cursor.next()
@@ -73,6 +80,23 @@ open class MongoTextSearch(
 
         mongoClient.close()
 
-        return projects
+        return projects.toMutableList()
+    }
+
+    private fun createVariableFilters(from: String?, to: String?, nameContains: String?, category: String?): List<Bson> {
+        val filters:MutableList<Bson> = mutableListOf()
+        if(!from.isNullOrEmpty()){
+            filters.add(Aggregates.match(Filters.gte("creation_date", from)))
+        }
+        if(!to.isNullOrEmpty()){
+            filters.add(Aggregates.match(Filters.lte("creation_date", to)))
+        }
+        if(!nameContains.isNullOrEmpty()){
+            filters.add(Aggregates.match(Filters.regex("title", ".*$nameContains.*")))
+        }
+        if(!category.isNullOrEmpty()){
+            filters.add(Aggregates.match(Filters.gte("category", category)))
+        }
+        return filters
     }
 }
