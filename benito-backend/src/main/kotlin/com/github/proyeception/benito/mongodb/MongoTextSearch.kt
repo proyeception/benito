@@ -1,6 +1,9 @@
 package com.github.proyeception.benito.mongodb
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.github.proyeception.benito.dto.DocumentationDTO
+import com.github.proyeception.benito.dto.OrganizationRefDTO
+import com.github.proyeception.benito.dto.PersonRefDTO
 import com.github.proyeception.benito.dto.ProjectDTO
 import com.mongodb.MongoClientURI
 import com.mongodb.client.MongoCursor
@@ -8,6 +11,8 @@ import com.mongodb.client.model.Aggregates
 import com.mongodb.client.model.Filters
 import com.mongodb.client.model.Projections
 import org.bson.Document
+import java.time.LocalDate
+import java.time.ZoneId
 
 
 open class MongoTextSearch(
@@ -40,20 +45,29 @@ open class MongoTextSearch(
             .cursor()
 
         val projects = mutableListOf<ProjectDTO>()
-        val a: ObjectMapper = ObjectMapper()
         val mongoCollectionProjects = mongoClient.getDatabase(databaseName).getCollection("projects")
 
         //el match siempre tiene que ser primero para mejorar performace
-        val pipeline = mutableListOf(Aggregates.match(Filters.eq("documentation", "")), Aggregates.lookup("authors", "authors", "_id", "authors"),Aggregates.lookup("organizations", "organization", "_id", "organization"), Aggregates.lookup("supervisors", "supervisors", "_id", "supervisors"))
+        val pipeline = mutableListOf(Aggregates.match(Filters.eq("documentation", "")), Aggregates.lookup("authors", "authors", "_id", "authors"),Aggregates.lookup("organizations", "organization", "_id", "organization"), Aggregates.lookup("supervisors", "supervisors", "_id", "supervisors"), Aggregates.lookup("documentation", "documentation", "_id", "documentation"))
 
         while (cursor.hasNext()) {
             val doc: Document = cursor.next()
-            pipeline[0] = Filters.eq("documentation", doc["_id"])
-            val project:Document? = mongoCollectionProjects.aggregate(pipeline).first()
+            pipeline[0] = Aggregates.match(Filters.eq("documentation", doc["_id"]))
+            val projectDocument:Document? = mongoCollectionProjects.aggregate(pipeline).first()
 
-            if(!project.isNullOrEmpty()) {
-                project.remove("documentation")
-                projects.add(a.readValue(project.toJson(), ProjectDTO::class.java))
+            if(!projectDocument.isNullOrEmpty()) {
+                var authors:List<PersonRefDTO>
+                var supervisors:List<PersonRefDTO>
+                var documentation = listOf<DocumentationDTO>()
+                var organization:OrganizationRefDTO
+                var project: ProjectDTO
+
+                authors = projectDocument.getList("authors", Document::class.java).map { it -> PersonRefDTO(it["_id"].toString(), it.get("full_name", String::class.java), it.get("username",  String::class.java), null) }
+                supervisors = projectDocument.getList("supervisors", Document::class.java).map { it -> PersonRefDTO(it["_id"].toString(), it.get("full_name", String::class.java), it.get("username",  String::class.java), null) }
+                organization = OrganizationRefDTO(projectDocument.getList("organization", Document::class.java)[0]["_id"].toString(), projectDocument.getList("organization", Document::class.java)[0]["display_name"].toString())
+                project = ProjectDTO(projectDocument["_id"].toString(), projectDocument.get("title", String::class.java), projectDocument.get("description", String::class.java), projectDocument.get("extra_content", String::class.java), LocalDate.parse(projectDocument["creation_date"].toString()), null, authors, supervisors, projectDocument.getList("tags", String::class.java), documentation, organization)
+
+                projects.add(project)
             }
         }
 
