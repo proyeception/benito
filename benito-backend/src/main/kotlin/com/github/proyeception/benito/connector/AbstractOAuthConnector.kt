@@ -28,13 +28,23 @@ abstract class AbstractOAuthConnector(
         verb: Verb,
         url: String,
         token: String,
-        vararg bodyParts: Pair<String, ByteArray>
+        body: OAuthRequestBody?
     ): Either<Throwable, Response> {
         val accessToken = oAuth20Service.refreshAccessToken(token)
         val request = OAuthRequest(verb, url)
-        if (bodyParts.isNotEmpty()) request.initMultipartPayload()
-        bodyParts.forEach {
-            request.addByteArrayBodyPartPayloadInMultipartPayload(it.second, it.first)
+        body?.let { b ->
+            when (b) {
+                is MultipartBody -> {
+                    request.initMultipartPayload()
+                    b.parts.forEach {
+                        request.addByteArrayBodyPartPayloadInMultipartPayload(it.second, it.first)
+                    }
+                }
+                is JsonBody -> {
+                    request.addHeader("Content-Type", "application/json;charset=UTF-8")
+                    request.setPayload(objectMapper.writeValueAsString(b.body))
+                }
+            }
         }
         oAuth20Service.signRequest(accessToken, request)
         val response = oAuth20Service.execute(request)
@@ -55,35 +65,53 @@ abstract class AbstractOAuthConnector(
     protected open fun get(url: String, token: String): Either<Throwable, Response> = executeRequest(
         verb = Verb.GET,
         url = url,
-        token = token
+        token = token,
+        body = null
     )
 
-    protected open fun post(url: String, token: String): Either<Throwable, Response> = post(url, token)
+    protected open fun post(url: String, token: String): Either<Throwable, Response> = post(
+        url = url,
+        token = token,
+        body = null
+    )
 
-    protected open fun post(url: String, token: String, vararg bodyParts: Pair<String, ByteArray>): Either<Throwable, Response> =
-        executeRequest(
-            Verb.POST,
-            url,
-            token,
-            *bodyParts
-        )
+    protected open fun post(url: String, body: Any?, token: String): Either<Throwable, Response> = executeRequest(
+        verb = Verb.POST,
+        url = url,
+        token = token,
+        body = body?.let { JsonBody(it) }
+    )
+
+    protected open fun post(
+        url: String,
+        token: String,
+        vararg bodyParts: Pair<String, ByteArray>
+    ): Either<Throwable, Response> = executeRequest(
+        verb = Verb.POST,
+        url = url,
+        token = token,
+        body = MultipartBody(*bodyParts)
+    )
 
     protected open fun delete(url: String, token: String): Either<Throwable, Response> = executeRequest(
         verb = Verb.DELETE,
         url = url,
-        token = token
+        token = token,
+        body = null
     )
 
     protected open fun put(url: String, token: String): Either<Throwable, Response> = executeRequest(
         verb = Verb.PUT,
         url = url,
-        token = token
+        token = token,
+        body = null
     )
 
     protected open fun patch(url: String, token: String): Either<Throwable, Response> = executeRequest(
         verb = Verb.PATCH,
         url = url,
-        token = token
+        token = token,
+        body = null
     )
 
     companion object {

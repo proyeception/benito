@@ -75,7 +75,7 @@ class OAuthConnectorTest : Spec() {
                         status = 200,
                         headers = emptyMap()
                     )
-                    val actual = oAuthClient.executeRequest(it, "/123", "123")
+                    val actual = oAuthClient.executeRequest(it, "/123", "123", null)
                         .getOrElse { throw NoSuchElementException() }
 
                     actual shouldBeEqual expected
@@ -95,7 +95,7 @@ class OAuthConnectorTest : Spec() {
                     on(responseMock.code).thenReturn(status)
                     on(responseMock.message).thenReturn("ERROR")
 
-                    val actual = oAuthClient.executeRequest(verb, "/123", "123")
+                    val actual = oAuthClient.executeRequest(verb, "/123", "123", null)
 
                     verify(authServiceMock, atLeastOnce()).refreshAccessToken(eq("123"))
                     verify(authServiceMock, atLeastOnce()).signRequest(eq(accessTokenMock), requestCaptor.capture())
