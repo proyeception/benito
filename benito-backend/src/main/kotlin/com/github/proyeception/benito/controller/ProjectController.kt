@@ -22,7 +22,6 @@ class ProjectController(
 
     @RequestMapping("/benito/projects", method = [RequestMethod.GET])
     @ResponseBody
-    @CrossOrigin
     private fun findProject(
         @RequestParam(required = false) orderBy: OrderDTO?,
         @RequestParam(required = false) from: String?,
@@ -34,17 +33,14 @@ class ProjectController(
 
     @RequestMapping("/benito/projects/featured", method = [RequestMethod.GET])
     @ResponseBody
-    @CrossOrigin
     private fun featuredProjects(): List<ProjectDTO> = projectService.featuredProjects()
 
     @RequestMapping("/benito/project-count", method = [RequestMethod.GET])
     @ResponseBody
-    @CrossOrigin
     private fun count(): CountDTO = projectService.count()
 
     @RequestMapping("/benito/projects/{id}", method = [RequestMethod.GET])
     @ResponseBody
-    @CrossOrigin
     private fun findProject(@PathVariable id: String): ProjectDTO = projectService.findProject(id)
 
     @RequestMapping(
@@ -52,7 +48,6 @@ class ProjectController(
         method = [RequestMethod.POST],
         consumes = [MediaType.MULTIPART_FORM_DATA_VALUE]
     )
-    @CrossOrigin
     @ResponseBody
     private fun saveFile(
         @PathVariable projectId: String,
@@ -60,7 +55,6 @@ class ProjectController(
     ): ProjectDTO = projectService.saveDocuments(projectId, files.toList())
 
     @RequestMapping(value = ["/benito/projects/{id}/content"], method = [RequestMethod.PATCH])
-    @CrossOrigin
     @ResponseBody
     fun updateProjectContent(
         @PathVariable id: String,
@@ -73,7 +67,6 @@ class ProjectController(
         method = [RequestMethod.POST], // should be a PUT, but it seems PUT doesn't work with multipart
         consumes = [MediaType.MULTIPART_FORM_DATA_VALUE]
     )
-    @CrossOrigin
     @ResponseBody
     fun updateProjectPoster(
         @PathVariable id: String,
@@ -82,7 +75,6 @@ class ProjectController(
     ): ProjectDTO = doAuthorAuthorized(projectId = id, token = token) { projectService.updateProjectImage(id, image) }
 
     @RequestMapping(value = ["/benito/projects/{projectId}/documents/{documentId}"], method = [RequestMethod.DELETE])
-    @CrossOrigin
     @ResponseBody
     fun deleteDocument(
         @PathVariable projectId: String,
@@ -93,7 +85,6 @@ class ProjectController(
     }
 
     @RequestMapping(value = ["/benito/projects/{projectId}/authors"], method = [RequestMethod.POST])
-    @CrossOrigin
     @ResponseBody
     fun addAuthors(
         @PathVariable projectId: String,
@@ -102,7 +93,6 @@ class ProjectController(
     ): ProjectDTO = doSupervisorAuthorized(projectId, token) { projectService.addAuthors(projectId, users) }
 
     @RequestMapping(value = ["/benito/projects/{projectId}/users"], method = [RequestMethod.PUT])
-    @CrossOrigin
     @ResponseBody
     fun setUsers(
         @PathVariable projectId: String,
@@ -111,7 +101,6 @@ class ProjectController(
     ): ProjectDTO = doSupervisorAuthorized(projectId, token) { projectService.setAuthors(projectId, users) }
 
     @RequestMapping(value = ["/benito/projects/{projectId}/authors"], method = [RequestMethod.DELETE])
-    @CrossOrigin
     @ResponseBody
     fun deleteAuthors(
         @PathVariable projectId: String,
@@ -120,7 +109,6 @@ class ProjectController(
     ): ProjectDTO = doSupervisorAuthorized(projectId, token) { projectService.deleteAuthors(projectId, items) }
 
     @RequestMapping(value = ["/benito/projects/{projectId}/supervisors"], method = [RequestMethod.POST])
-    @CrossOrigin
     @ResponseBody
     fun addSupervisors(
         @PathVariable projectId: String,
@@ -129,7 +117,6 @@ class ProjectController(
     ): ProjectDTO = doSupervisorAuthorized(projectId, token) { projectService.addSupervisors(projectId, users) }
 
     @RequestMapping(value = ["/benito/projects/{projectId}/supervisors"], method = [RequestMethod.DELETE])
-    @CrossOrigin
     @ResponseBody
     fun deleteSupervisors(
         @PathVariable projectId: String,
@@ -138,7 +125,6 @@ class ProjectController(
     ): ProjectDTO = doSupervisorAuthorized(projectId, token) { projectService.deleteSupervisors(projectId, items) }
 
     @RequestMapping(value = ["/benito/projects"], method = [RequestMethod.POST])
-    @CrossOrigin
     @ResponseBody
     fun createProject(
         @RequestBody project: CreateProjectDTO,

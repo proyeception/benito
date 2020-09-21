@@ -19,12 +19,10 @@ class UserController(
 ) {
     @RequestMapping(value = ["/benito/authors/{id}"], method = [RequestMethod.GET])
     @ResponseBody
-    @CrossOrigin
     fun findAuthor(@PathVariable id: String) = userService.findAuthor(id)
 
     @RequestMapping(value = ["/benito/supervisors/{id}"], method = [RequestMethod.GET])
     @ResponseBody
-    @CrossOrigin
     fun findSupervisor(@PathVariable id: String) = userService.findSupervisor(id)
 
     @RequestMapping(
@@ -32,7 +30,6 @@ class UserController(
         method = [RequestMethod.POST], // should be a PUT, but it seems PUT doesn't work with multipart
         consumes = [MediaType.MULTIPART_FORM_DATA_VALUE]
     )
-    @CrossOrigin
     @ResponseBody
     fun updateAuthorProfilePicture(
         @PathVariable id: String,
@@ -45,7 +42,6 @@ class UserController(
         method = [RequestMethod.POST], // should be a PUT, but it seems PUT doesn't work with multipart
         consumes = [MediaType.MULTIPART_FORM_DATA_VALUE]
     )
-    @CrossOrigin
     @ResponseBody
     fun updateSupervisorProfilePicture(
         @PathVariable id: String,
@@ -54,7 +50,6 @@ class UserController(
     ): PersonDTO = doAuthorized(id, token) { userService.updateSupervisorProfilePicture(id, image) }
 
     @RequestMapping(value = ["/benito/authors/{id}"], method = [RequestMethod.PATCH])
-    @CrossOrigin
     @ResponseBody
     fun updateAuthor(
         @PathVariable id: String,
@@ -63,7 +58,6 @@ class UserController(
     ): PersonDTO = doAuthorized(id, token) { userService.updateAuthor(id, user) }
 
     @RequestMapping(value = ["/benito/supervisors/{id}"], method = [RequestMethod.PATCH])
-    @CrossOrigin
     @ResponseBody
     fun updateSupervisor(
         @PathVariable id: String,

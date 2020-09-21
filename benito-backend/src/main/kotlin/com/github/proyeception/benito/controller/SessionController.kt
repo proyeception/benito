@@ -14,13 +14,11 @@ class SessionController(
 ) {
     @RequestMapping(value = ["/benito/session"], method = [RequestMethod.GET])
     @ResponseBody
-    @CrossOrigin
     fun sessionInfo(
         @RequestHeader(X_QUI_TOKEN) token: String
     ): SessionInfoDTO = sessionService[token] ?: throw UnauthorizedException("Unauthorized user")
 
     @RequestMapping(value = ["/benito/session"], method = [RequestMethod.DELETE])
-    @CrossOrigin
     @ResponseStatus(HttpStatus.OK)
     fun deleteSession(
         @RequestHeader(X_QUI_TOKEN) token: String
