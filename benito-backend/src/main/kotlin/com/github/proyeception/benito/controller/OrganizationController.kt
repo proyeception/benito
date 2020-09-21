@@ -11,7 +11,6 @@ class OrganizationController(
 ) {
     @RequestMapping(value = ["/benito/organizations/{id}"], method = [RequestMethod.GET])
     @ResponseBody
-    @CrossOrigin
     fun organization(
         @PathVariable id: String,
         @RequestParam(required = false, defaultValue = "true") cached: Boolean
@@ -19,7 +18,6 @@ class OrganizationController(
 
     @RequestMapping(value = ["/benito/organizations"], method = [RequestMethod.GET])
     @ResponseBody
-    @CrossOrigin
     fun organizations(
         @RequestParam(required = false, defaultValue = "true") cached: Boolean
     ): List<OrganizationDTO> = organizationService.findAll(cached)
