@@ -57,11 +57,11 @@ data class MedusaProjectRefDTO(
 
 data class MedusaFileDTO(
     val url: String,
-    @JsonProperty("_id") val id: String
+    val id: String
 )
 
 data class DocumentationDTO(
-    @JsonProperty("_id") val id: String,
+    val id: String,
     val fileName: String,
     val driveId: String
 )
@@ -94,8 +94,8 @@ data class MedusaOrganizationDTO(
     val displayName: String,
     val name: String,
     val icon: MedusaFileDTO,
-    val supervisors: List<MedusaPersonRefDTO>,
-    val authors: List<MedusaPersonRefDTO>
+    val supervisors: List<MedusaPersonRefDTO> = emptyList(),
+    val authors: List<MedusaPersonRefDTO> = emptyList()
 )
 
 data class MedusaTagDTO(

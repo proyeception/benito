@@ -8,6 +8,10 @@ import com.github.proyeception.benito.dto.MedusaProjectDTO
 open class MedusaGraphClient(
     private val medusaGraphConnector: GraphConnector
 ) {
+    data class Projects(
+        val projects: List<MedusaProjectDTO>
+    )
+
     open fun projectsWithAuthor(
         authorId: String?,
         docContains: String?
@@ -18,7 +22,7 @@ open class MedusaGraphClient(
 
         return medusaGraphConnector.execute(
             """
-            query  {
+            query {
               projects(where: { ${where.joinToString(", ")} }) {
                 id
                 title
@@ -33,11 +37,16 @@ open class MedusaGraphClient(
                   id
                   name
                   tag_name
+                  image_url
                 }
                 organization {
                   id
                   name
                   display_name
+                  icon {
+                    id
+                    url
+                  }
                 }
                 tags {
                   tag_name
@@ -61,9 +70,18 @@ open class MedusaGraphClient(
                     url
                   }
                 }
+                documentation {
+                  id
+                  file_name
+                  drive_id
+                }
               }
             }
         """.trimIndent()
-        ).map { it.deserializeAs(object : TypeReference<List<MedusaProjectDTO>>() {}) }
+        ).map { it.deserializeAs(PROJECTS_REF).projects }
+    }
+
+    private companion object {
+        private val PROJECTS_REF = object : TypeReference<Projects>() {}
     }
 }

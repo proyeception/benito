@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 
 open class GraphResponse(
-    private val body: String?,
+    val body: Map<String, Any>?,
     private val objectMapper: ObjectMapper
 ) {
-    open fun <T> deserializeAs(ref: TypeReference<T>): T = objectMapper.readValue(body, ref)
+    open fun <T> deserializeAs(ref: TypeReference<T>): T = objectMapper.convertValue(body, ref)
 }
