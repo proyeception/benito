@@ -6,6 +6,7 @@ import com.github.proyeception.benito.connector.GraphConnector
 import com.github.proyeception.benito.dto.MedusaProjectDTO
 import com.github.proyeception.benito.dto.OrderDTO
 import com.github.proyeception.benito.extension.replaceUrlSpaces
+import org.slf4j.LoggerFactory
 
 open class MedusaGraphClient(
     private val medusaGraphConnector: GraphConnector
@@ -18,21 +19,25 @@ open class MedusaGraphClient(
         orderBy: OrderDTO? = null,
         from: String? = null,
         to: String? = null,
-        nameContains: String? = null,
+        title: String? = null,
         category: String? = null,
         authorId: String? = null,
         authorName: String? = null,
         keyword: String? = null,
-        page: Int = 0
+        organizationId: String? = null,
+        organizationName: String? = null,
+        page: Int
     ): Either<Throwable, List<MedusaProjectDTO>> {
         val where = mutableListOf<String>()
-        authorId?.let { where.add("""authors: { id: "$it" }""") }
+        title?.let { where.add("""title_contains: "$it"""") }
         keyword?.let { where.add("""documentation: { content_contains: "${it.replaceUrlSpaces()}" }""") }
         from?.let { where.add("""creation_date_gte: "$it"""") }
         to?.let { where.add("""creation_date_lte: "$it"""") }
-        nameContains?.let { where.add("""title_contains: "$it"""") }
         category?.let { where.add("""category: { name: "$it" }""") }
-        authorName?.let { where.add("""authors: { full_name_contains: "${it.replaceUrlSpaces()}" }""")}
+        authorId?.let { where.add("""authors: { id: "$it" }""") }
+        authorName?.let { where.add("""authors: { full_name_contains: "${it.replaceUrlSpaces()}" }""") }
+        organizationId?.let { where.add("""organization: { id: "$it" }""") }
+        organizationName?.let { where.add(""""organization: { name_contains: "$it" }""") }
 
         val sort = orderBy?.let { """sort: "${it.sortMethod}"""" }
 
@@ -47,6 +52,8 @@ open class MedusaGraphClient(
         params.add(start)
         params.add(limit)
         sort?.let { params.add(it) }
+
+        LOGGER.info("Project search params: ${params.joinToString(", ")}")
 
         return medusaGraphConnector.execute(
             """
@@ -112,5 +119,6 @@ open class MedusaGraphClient(
     private companion object {
         private val PROJECTS_REF = object : TypeReference<Projects>() {}
         private const val PAGE_SIZE = 15
+        private val LOGGER = LoggerFactory.getLogger(MedusaGraphClient::class.java)
     }
 }

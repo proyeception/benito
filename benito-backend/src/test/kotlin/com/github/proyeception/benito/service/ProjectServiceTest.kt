@@ -118,7 +118,19 @@ class ProjectServiceTest : Spec() {
 
                 on(medusaClient.findProjects()).thenReturn(projects)
 
-                val actual = projectService.findProjects(null, null, null, null, null, null)
+                val actual = projectService.findProjects(
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+                )
 
                 expected shouldBe actual
 

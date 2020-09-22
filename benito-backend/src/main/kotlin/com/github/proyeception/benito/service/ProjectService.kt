@@ -5,7 +5,6 @@ import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.client.MedusaGraphClient
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.FailedDependencyException
-import com.github.proyeception.benito.extension.getOrThrow
 import com.github.proyeception.benito.mongodb.MongoTextSearch
 import com.github.proyeception.benito.parser.DocumentParser
 import kotlinx.coroutines.async
@@ -27,16 +26,26 @@ open class ProjectService(
         orderBy: OrderDTO?,
         from: String?,
         to: String?,
-        nameContains: String?,
+        title: String?,
         category: String?,
-        keyword: String?
+        keyword: String?,
+        authorId: String?,
+        authorName: String?,
+        organizationId: String?,
+        organizationName: String?,
+        page: Int?
     ): List<ProjectDTO> = medusaGraphClient.findProjects(
         orderBy = orderBy,
         from = from,
         to = to,
-        nameContains = nameContains,
+        title = title,
         category = category,
-        keyword = keyword
+        authorId = authorId,
+        authorName = authorName,
+        keyword = keyword,
+        organizationId = organizationId,
+        organizationName = organizationName,
+        page = page ?: 0
     )
         .getOrHandle {
             LOGGER.error("Error getting projects from Medusa with Graph")
