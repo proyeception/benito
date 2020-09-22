@@ -36,7 +36,7 @@ public class LoggingFilter implements Filter {
     private static final List<String> EXCLUDED_URIS_REQUEST_BODY = ImmutableList.of(
         "/benito/authors/.*/picture",
         "/benito/supervisors/.*/picture",
-        "/benito/projects/.*/poster",
+        "/benito/projects/.*/picture",
         "/benito/projects/.*/documents",
         "/benito/author/login",
         "/benito/supervisor/login"

@@ -15,7 +15,7 @@ const FeaturedProject = ({ project }: Props) => {
     <FadeIn className="card qui-featured-card">
       <img
         className="card-img-top qui-card-image"
-        src={project.posterUrl?.valueOf() || noImageAvailableVertical}
+        src={project.pictureUrl?.valueOf() || noImageAvailableVertical}
       />
       <div className="card-body">
         <h5 className="card-title font-size-18">{project.title}</h5>

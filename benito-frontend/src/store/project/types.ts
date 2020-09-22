@@ -5,7 +5,7 @@ export const OPEN_PROJECT_EDITION = "OPEN_PROJECT_EDITION";
 export const CLOSE_PROJECT_EDITION = "CLOSE_PROJECT_EDITION";
 export const EDIT_TITLE = "EDIT_TITLE";
 export const EDIT_DESCRIPTION = "EDIT_DESCRIPTION";
-export const EDIT_POSTERURL = "EDIT_POSTERURL";
+export const EDIT_PICTUREURL = "EDIT_PICTUREURL";
 export const EDIT_EXTRA_CONTENT = "EDIT_EXTRA_CONTENT";
 export const UPDATE_CURRENT_PROJECT = "UPDATE_CURRENT_PROJECT";
 export const UPDATE_AUTHORS_TO_ADD = "UPDATE_AUTHORS_TO_ADD";
@@ -37,8 +37,8 @@ interface EditDescriptionAction {
   payload: String;
 }
 
-interface EditPosterUrlAction {
-  type: typeof EDIT_POSTERURL;
+interface EditPictureUrlAction {
+  type: typeof EDIT_PICTUREURL;
   payload: String;
 }
 
@@ -88,7 +88,7 @@ export type ProjectAction =
   | CloseProjectEditionAction
   | EditTitleAction
   | EditDescriptionAction
-  | EditPosterUrlAction
+  | EditPictureUrlAction
   | EditExtraContentAction
   | UpdateCurrentProjectAction
   | UpdateAuthorsToAddAction

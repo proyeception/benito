@@ -61,7 +61,7 @@ class ProjectServiceTest : Spec() {
                     description = "project description",
                     extraContent = "nicely formatted content",
                     creationDate = LocalDate.of(2020, 2, 6),
-                    posterUrl = "",
+                    pictureUrl = "",
                     authors = listOf(
                         PersonRefDTO(
                             id = "123",
@@ -90,7 +90,7 @@ class ProjectServiceTest : Spec() {
                     description = "project description",
                     extraContent = "nicely formatted content",
                     creationDate = LocalDate.of(2020, 2, 6),
-                    poster = MedusaFileDTO(url = "", id = ""),
+                    picture = MedusaFileDTO(url = "", id = ""),
                     authors = listOf(author),
                     supervisors = listOf(supervisor),
                     documentation = listOf(documentation),
@@ -164,7 +164,7 @@ class ProjectServiceTest : Spec() {
                     description = "project description",
                     extraContent = "nicely formatted content",
                     creationDate = LocalDate.of(2020, 2, 6),
-                    posterUrl = "",
+                    pictureUrl = "",
                     authors = listOf(
                         PersonRefDTO(
                             id = "123",
@@ -193,7 +193,7 @@ class ProjectServiceTest : Spec() {
                     description = "project description",
                     extraContent = "nicely formatted content",
                     creationDate = LocalDate.of(2020, 2, 6),
-                    poster = MedusaFileDTO(url = "", id = ""),
+                    picture = MedusaFileDTO(url = "", id = ""),
                     authors = listOf(author),
                     supervisors = listOf(supervisor),
                     documentation = listOf(documentation),
@@ -235,7 +235,7 @@ class ProjectServiceTest : Spec() {
                     description = "Some description",
                     extraContent = "Some extra content",
                     creationDate = LocalDate.now(),
-                    poster = null,
+                    picture = null,
                     authors = emptyList(),
                     supervisors = emptyList(),
                     documentation = emptyList(),
@@ -290,7 +290,7 @@ class ProjectServiceTest : Spec() {
                     description = "Some description",
                     extraContent = "Some extra content",
                     creationDate = LocalDate.now(),
-                    poster = null,
+                    picture = null,
                     authors = emptyList(),
                     supervisors = emptyList(),
                     documentation = emptyList(),
@@ -322,9 +322,9 @@ class ProjectServiceTest : Spec() {
                 )).thenReturn(file)
                 on(medusaClient.updateProjectImage(
                     projectId = eq("123"),
-                    poster = eq(
-                        UpdatePosterDTO(
-                            poster = file
+                    picture = eq(
+                        UpdatePictureDTO(
+                            picture = file
                         )
                     )
                 )).thenReturn(project)
@@ -341,7 +341,7 @@ class ProjectServiceTest : Spec() {
                     description = "Some description",
                     extraContent = "Some extra content",
                     creationDate = LocalDate.now(),
-                    poster = null,
+                    picture = null,
                     authors = emptyList(),
                     supervisors = emptyList(),
                     documentation = emptyList(),
@@ -373,14 +373,14 @@ class ProjectServiceTest : Spec() {
                 )).thenReturn(file)
                 on(medusaClient.updateProjectImage(
                     projectId = eq("123"),
-                    poster = eq(UpdatePosterDTO(poster = file))
+                    picture = eq(UpdatePictureDTO(picture = file))
                 )).thenReturn(project)
 
                 projectService.updateProjectImage("123", multipartMock)
 
                 verify(medusaClient).updateProjectImage(
                     projectId = eq("123"),
-                    poster = eq(UpdatePosterDTO(poster = file))
+                    picture = eq(UpdatePictureDTO(picture = file))
                 )
             }
         }

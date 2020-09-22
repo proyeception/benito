@@ -80,7 +80,7 @@ class ProjectController(
     ): ProjectDTO = doAuthorAuthorized(id, token) { projectService.updateProjectContent(content, id) }
 
     @RequestMapping(
-        value = ["/benito/projects/{id}/poster"],
+        value = ["/benito/projects/{id}/picture"],
         method = [RequestMethod.POST], // should be a PUT, but it seems PUT doesn't work with multipart
         consumes = [MediaType.MULTIPART_FORM_DATA_VALUE]
     )

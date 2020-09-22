@@ -99,7 +99,7 @@ open class ProjectService(
             filePath = "/tmp/$id.jpg",
             fileName = multipart.originalFilename ?: "$id.jpg"
         )
-        medusaClient.updateProjectImage(id, UpdatePosterDTO(file))
+        medusaClient.updateProjectImage(id, UpdatePictureDTO(file))
     }
 
     fun hasAuthor(authorId: String, projectId: String): Boolean = findProject(projectId)

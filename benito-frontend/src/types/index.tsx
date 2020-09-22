@@ -2,7 +2,7 @@ export type Project = {
   id: String;
   title: String;
   description: String;
-  posterUrl?: string;
+  pictureUrl?: string;
   authors: Array<Person>;
   supervisors: Array<Person>;
   creationDate: Date;
@@ -75,7 +75,7 @@ export type ProjectEdition = {
   title?: String;
   description?: String;
   extraContent?: String;
-  posterUrl?: String;
+  pictureUrl?: String;
 };
 
 export type UpdateUser = {

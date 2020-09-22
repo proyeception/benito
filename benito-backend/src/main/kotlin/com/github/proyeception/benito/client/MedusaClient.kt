@@ -119,10 +119,10 @@ open class MedusaClient(
         ref = object : TypeReference<MedusaProjectDTO>() {}
     )
 
-    open fun updateProjectImage(projectId: String, poster: UpdatePosterDTO): MedusaProjectDTO = update(
+    open fun updateProjectImage(projectId: String, picture: UpdatePictureDTO): MedusaProjectDTO = update(
         collection = PROJECTS,
         id = projectId,
-        dto = poster,
+        dto = picture,
         ref = object : TypeReference<MedusaProjectDTO>() {}
     )
 

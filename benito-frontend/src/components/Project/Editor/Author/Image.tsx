@@ -13,7 +13,7 @@ const Image = (props: Props) => (
       Imagen
     </div>
     <div className="center">
-      <img className="w-100" src={props.project.posterUrl} />
+      <img className="w-100" src={props.project.pictureUrl} />
     </div>
   </div>
 );

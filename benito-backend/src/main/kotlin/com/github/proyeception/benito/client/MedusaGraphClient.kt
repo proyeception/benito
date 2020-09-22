@@ -64,7 +64,7 @@ open class MedusaGraphClient(
                 description
                 extra_content
                 creation_date
-                poster {
+                picture {
                   url
                   id
                 }
