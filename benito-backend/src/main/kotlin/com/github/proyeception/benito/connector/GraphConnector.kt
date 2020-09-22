@@ -8,11 +8,11 @@ import com.github.proyeception.benito.exception.GraphQueryException
 import klient.graphql.GraphQLClient
 import klient.graphql.GraphQLRequest
 
-class GraphConnector(
+open class GraphConnector(
     private val klient: GraphQLClient,
     private val objectMapper: ObjectMapper
 ) {
-    fun execute(query: String): Either<Throwable, GraphResponse> {
+    open fun execute(query: String): Either<Throwable, GraphResponse> {
         val request = GraphQLRequest(query)
 
         val response = klient.performRequest<String>(request)
