@@ -2,6 +2,7 @@ package com.github.proyeception.benito.service
 
 import com.github.proyeception.benito.Spec
 import com.github.proyeception.benito.client.MedusaClient
+import com.github.proyeception.benito.client.MedusaGraphClient
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.mock.eq
 import com.github.proyeception.benito.mock.getMock
@@ -23,12 +24,14 @@ class ProjectServiceTest : Spec() {
         val documentService: DocumentService = getMock()
         val fileServiceMock: FileService = getMock()
         val mongoMock: MongoTextSearch = getMock()
+        val medusaGraphClientMock: MedusaGraphClient = getMock()
         val projectService = ProjectService(
             medusaClient = medusaClient,
             documentParser = documentParserMock,
             documentService = documentService,
             fileService = fileServiceMock,
-            mongoTextSearch = mongoMock
+            mongoTextSearch = mongoMock,
+            medusaGraphClient = medusaGraphClientMock
         )
 
         "projects" should {

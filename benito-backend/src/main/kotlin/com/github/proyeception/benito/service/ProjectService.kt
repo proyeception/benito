@@ -1,7 +1,11 @@
 package com.github.proyeception.benito.service
 
+import arrow.core.getOrHandle
 import com.github.proyeception.benito.client.MedusaClient
+import com.github.proyeception.benito.client.MedusaGraphClient
 import com.github.proyeception.benito.dto.*
+import com.github.proyeception.benito.exception.FailedDependencyException
+import com.github.proyeception.benito.extension.getOrThrow
 import com.github.proyeception.benito.mongodb.MongoTextSearch
 import com.github.proyeception.benito.parser.DocumentParser
 import kotlinx.coroutines.async
@@ -13,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile
 
 open class ProjectService(
     private val medusaClient: MedusaClient,
+    private val medusaGraphClient: MedusaGraphClient,
     private val documentService: DocumentService,
     private val documentParser: DocumentParser,
     private val fileService: FileService,
@@ -25,20 +30,19 @@ open class ProjectService(
         nameContains: String?,
         category: String?,
         keyword: String?
-    ): List<ProjectDTO> {
-        return if(keyword.isNullOrEmpty()) {
-            medusaClient.findProjects(
-                    orderBy = orderBy,
-                    from = from,
-                    to = to,
-                    nameContains = nameContains,
-                    category = category
-            ).map { ProjectDTO(it) }
+    ): List<ProjectDTO> = medusaGraphClient.findProjects(
+        orderBy = orderBy,
+        from = from,
+        to = to,
+        nameContains = nameContains,
+        category = category,
+        keyword = keyword
+    )
+        .getOrHandle {
+            LOGGER.error("Error getting projects from Medusa with Graph")
+            throw FailedDependencyException("Error getting projects from Medusa")
         }
-        else {
-            mongoTextSearch.getDocuments(keyword, from, to, nameContains, category)
-        }
-    }
+        .map { ProjectDTO(it) }
 
     fun featuredProjects(): List<ProjectDTO> = medusaClient.findProjects(
         orderBy = OrderDTO.VIEWS_DESC,
