@@ -18,20 +18,20 @@ open class DynamicOAuthConnector(
 
     public override fun post(url: String, token: String) = super.post(url, token)
 
-    public override fun post(url: String, body: Any?, token: String): Either<Throwable, Response> =
+    public override fun post(url: String, body: Any?, token: String): Either<Throwable, HttpResponse> =
         super.post(url, body, token)
 
     public override fun post(
         url: String,
         token: String,
         vararg bodyParts: Pair<String, ByteArray>
-    ): Either<Throwable, Response> = super.post(url, token, *bodyParts)
+    ): Either<Throwable, HttpResponse> = super.post(url, token, *bodyParts)
 
-    public override fun put(url: String, token: String): Either<Throwable, Response> = super.put(url, token)
+    public override fun put(url: String, token: String): Either<Throwable, HttpResponse> = super.put(url, token)
 
-    public override fun patch(url: String, token: String): Either<Throwable, Response> = super.patch(url, token)
+    public override fun patch(url: String, token: String): Either<Throwable, HttpResponse> = super.patch(url, token)
 
-    public override fun delete(url: String, token: String): Either<Throwable, Response> = super.delete(url, token)
+    public override fun delete(url: String, token: String): Either<Throwable, HttpResponse> = super.delete(url, token)
 
     companion object {
         fun create(

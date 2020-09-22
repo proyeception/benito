@@ -17,23 +17,23 @@ open class OAuthConnector(
     objectMapper = objectMapper
 ) {
 
-    open fun get(url: String): Either<Throwable, Response> = get(url, token)
+    open fun get(url: String): Either<Throwable, HttpResponse> = get(url, token)
 
-    open fun post(url: String): Either<Throwable, Response> = post(url, token)
+    open fun post(url: String): Either<Throwable, HttpResponse> = post(url, token)
 
-    open fun post(url: String, body: Any?): Either<Throwable, Response> = post(url, body, token)
+    open fun post(url: String, body: Any?): Either<Throwable, HttpResponse> = post(url, body, token)
 
-    open fun post(url: String, vararg bodyParts: Pair<String, ByteArray>): Either<Throwable, Response> = post(
+    open fun post(url: String, vararg bodyParts: Pair<String, ByteArray>): Either<Throwable, HttpResponse> = post(
         url,
         token,
         *bodyParts
     )
 
-    open fun delete(url: String): Either<Throwable, Response> = delete(url, token)
+    open fun delete(url: String): Either<Throwable, HttpResponse> = delete(url, token)
 
-    open fun put(url: String): Either<Throwable, Response> = put(url, token)
+    open fun put(url: String): Either<Throwable, HttpResponse> = put(url, token)
 
-    open fun patch(url: String): Either<Throwable, Response> = patch(url, token)
+    open fun patch(url: String): Either<Throwable, HttpResponse> = patch(url, token)
 
     companion object {
         fun create(

@@ -1,7 +1,7 @@
 package com.github.proyeception.benito.client
 
 import com.fasterxml.jackson.core.type.TypeReference
-import com.github.proyeception.benito.connector.Connector
+import com.github.proyeception.benito.connector.HttpConnector
 import com.github.proyeception.benito.connector.MultipartMetadataBuilder
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.FailedDependencyException
@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory
 import java.io.File
 
 open class MedusaClient(
-    private val medusaConnector: Connector
+    private val medusaConnector: HttpConnector
 ) {
     open fun findProjects(
         orderBy: OrderDTO? = null,

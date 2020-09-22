@@ -2,8 +2,8 @@ package com.github.proyeception.benito.client
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.github.proyeception.benito.Spec
-import com.github.proyeception.benito.connector.Connector
-import com.github.proyeception.benito.connector.Response
+import com.github.proyeception.benito.connector.HttpConnector
+import com.github.proyeception.benito.connector.HttpResponse
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.FailedDependencyException
 import com.github.proyeception.benito.exception.NotFoundException
@@ -20,11 +20,11 @@ import java.time.LocalDate
 
 class MedusaClientTest : Spec() {
     init {
-        val medusaConnector: Connector = getMock()
+        val medusaConnector: HttpConnector = getMock()
         val medusaClient = MedusaClient(medusaConnector)
 
         "findProjects" should {
-            val responseMock: Response = getMock()
+            val responseMock: HttpResponse = getMock()
             val author = PersonRefDTO(
                 id = "123",
                 username = "author",
@@ -242,7 +242,7 @@ class MedusaClientTest : Spec() {
         }
 
         "projectCount" should {
-            val responseMock: Response = getMock()
+            val responseMock: HttpResponse = getMock()
 
             "make a GET to /projects/count" {
                 on(medusaConnector.get(anyString())).thenReturn(responseMock)
@@ -275,7 +275,7 @@ class MedusaClientTest : Spec() {
         }
 
         "featuredProjects" should {
-            val responseMock: Response = getMock()
+            val responseMock: HttpResponse = getMock()
 
             "make a GET to /projects with limit 10 and order by views" {
                 on(medusaConnector.get(anyString())).thenReturn(responseMock)
@@ -287,7 +287,7 @@ class MedusaClientTest : Spec() {
         }
 
         "findProject" should {
-            val responseMock: Response = getMock()
+            val responseMock: HttpResponse = getMock()
             val author = MedusaPersonRefDTO(
                 id = "123",
                 username = "author",
@@ -352,7 +352,7 @@ class MedusaClientTest : Spec() {
         }
 
         "findUser" should {
-            val responseMock: Response = getMock()
+            val responseMock: HttpResponse = getMock()
 
             "make a GET to medusa" {
                 on(medusaConnector.get(eq("/authors/1"))).thenReturn(responseMock)
