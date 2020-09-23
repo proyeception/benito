@@ -23,7 +23,7 @@ const ProjectSummary = (props: Props) => (
       <div className="d-sm-block d-md-none">
         <img
           className="qui-summary-image-sm"
-          src={props.project.posterUrl || noImageAvailableVertical}
+          src={props.project.pictureUrl || noImageAvailableVertical}
         />
       </div>
       <div className="font-weight-lighter qui-font-text font-size-11 font-size-16-md mt-3 ml-md-3">
@@ -36,7 +36,7 @@ const ProjectSummary = (props: Props) => (
     <div className="col-md-2 d-none d-md-flex align-items-center">
       <img
         className="qui-summary-image-md"
-        src={props.project.posterUrl || noImageAvailableVertical}
+        src={props.project.pictureUrl || noImageAvailableVertical}
       />
     </div>
   </div>

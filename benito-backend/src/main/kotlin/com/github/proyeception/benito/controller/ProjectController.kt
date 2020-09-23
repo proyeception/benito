@@ -26,10 +26,27 @@ class ProjectController(
         @RequestParam(required = false) orderBy: OrderDTO?,
         @RequestParam(required = false) from: String?,
         @RequestParam(required = false) to: String?,
-        @RequestParam(required = false, name = "name") nameContains: String?,
-        @RequestParam(required = false, name = "category") category: String?,
-        @RequestParam(required = false, name = "keyword") keyword:String?
-    ): List<ProjectDTO> = projectService.findProjects(orderBy, from, to, nameContains, category, keyword)
+        @RequestParam(required = false) title: String?,
+        @RequestParam(required = false) category: String?,
+        @RequestParam(required = false) keyword:String?,
+        @RequestParam(required = false, name = "author") authorId: String?,
+        @RequestParam(required = false) authorName: String?,
+        @RequestParam(required = false, name = "organization") organizationId: String?,
+        @RequestParam(required = false) organizationName: String?,
+        @RequestParam(required = false) page: Int?
+    ): List<ProjectDTO> = projectService.findProjects(
+        orderBy = orderBy,
+        from = from,
+        to = to,
+        title = title,
+        category = category,
+        keyword = keyword,
+        page = page,
+        authorName = authorName,
+        authorId = authorId,
+        organizationId = organizationId,
+        organizationName = organizationName
+    )
 
     @RequestMapping("/benito/projects/featured", method = [RequestMethod.GET])
     @ResponseBody
@@ -63,7 +80,7 @@ class ProjectController(
     ): ProjectDTO = doAuthorAuthorized(id, token) { projectService.updateProjectContent(content, id) }
 
     @RequestMapping(
-        value = ["/benito/projects/{id}/poster"],
+        value = ["/benito/projects/{id}/picture"],
         method = [RequestMethod.POST], // should be a PUT, but it seems PUT doesn't work with multipart
         consumes = [MediaType.MULTIPART_FORM_DATA_VALUE]
     )

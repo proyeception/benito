@@ -14,16 +14,16 @@ import org.apache.http.impl.client.HttpClientBuilder
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
-open class Connector(
+open class HttpConnector(
     private val apacheClient: HttpClient,
     private val objectMapper: ObjectMapper,
     private val host: String
 ) {
-    open fun get(path: String): Response = execute(path, HttpMethod.GET, null)
+    open fun get(path: String): com.github.proyeception.benito.connector.HttpResponse = execute(path, HttpMethod.GET, null)
 
-    open fun post(path: String): Response = post(path, null)
+    open fun post(path: String): com.github.proyeception.benito.connector.HttpResponse = post(path, null)
 
-    open fun post(path: String, body: Any?): Response = execute(
+    open fun post(path: String, body: Any?): com.github.proyeception.benito.connector.HttpResponse = execute(
         path,
         HttpMethod.POST,
         body?.let { SimpleJsonRequest(it) }
@@ -35,25 +35,25 @@ open class Connector(
         multipartMetadata
     )
 
-    open fun put(path: String): Response = put(path, null)
+    open fun put(path: String): com.github.proyeception.benito.connector.HttpResponse = put(path, null)
 
-    open fun put(path: String, body: Any?): Response = execute(
+    open fun put(path: String, body: Any?): com.github.proyeception.benito.connector.HttpResponse = execute(
         path,
         HttpMethod.PUT,
         body?.let { SimpleJsonRequest(it) }
     )
 
-    open fun patch(path: String): Response = patch(path, null)
+    open fun patch(path: String): com.github.proyeception.benito.connector.HttpResponse = patch(path, null)
 
-    open fun patch(path: String, body: Any?): Response = execute(
+    open fun patch(path: String, body: Any?): com.github.proyeception.benito.connector.HttpResponse = execute(
         path,
         HttpMethod.PATCH,
         body?.let { SimpleJsonRequest(it) }
     )
 
-    open fun delete(path: String): Response = execute(path, HttpMethod.DELETE, null)
+    open fun delete(path: String): com.github.proyeception.benito.connector.HttpResponse = execute(path, HttpMethod.DELETE, null)
 
-    private fun execute(path: String, httpMethod: HttpMethod, body: RequestBody?): Response {
+    private fun execute(path: String, httpMethod: HttpMethod, body: RequestBody?): com.github.proyeception.benito.connector.HttpResponse {
         val endpoint = "$host${if (path.startsWith("/")) path else "/$path"}"
         val request = requestOf(httpMethod, body)(endpoint)
 
@@ -63,7 +63,7 @@ open class Connector(
         val status = response.statusLine.statusCode
         request.releaseConnection()
 
-        return Response(
+        return HttpResponse(
             headers = headers,
             body = responseBody,
             status = status,
@@ -112,8 +112,8 @@ open class Connector(
             objectMapper: ObjectMapper,
             moduleConfig: Config,
             defaultHeaders: List<Header> = emptyList()
-        ): Connector {
-            return Connector(
+        ): HttpConnector {
+            return HttpConnector(
                 objectMapper = objectMapper,
                 host = moduleConfig.getString("host"),
                 apacheClient = HttpClientBuilder.create()

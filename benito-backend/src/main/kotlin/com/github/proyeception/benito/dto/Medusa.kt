@@ -10,7 +10,7 @@ data class MedusaProjectDTO(
     val description: String,
     val extraContent: String?,
     val creationDate: LocalDate,
-    val poster: MedusaFileDTO?,
+    val picture: MedusaFileDTO?,
     val authors: List<MedusaPersonRefDTO>,
     val supervisors: List<MedusaPersonRefDTO>,
     val documentation: List<DocumentationDTO>,
@@ -50,18 +50,18 @@ data class MedusaPersonDTO(
 data class MedusaProjectRefDTO(
     val id: String,
     val title: String,
-    val poster: MedusaFileDTO?,
+    val picture: MedusaFileDTO?,
     @JsonProperty("organization") val organizationId: String,
     val description: String
 )
 
 data class MedusaFileDTO(
     val url: String,
-    @JsonProperty("_id") val id: String
+    val id: String
 )
 
 data class DocumentationDTO(
-    @JsonProperty("_id") val id: String,
+    val id: String,
     val fileName: String,
     val driveId: String
 )
@@ -94,8 +94,8 @@ data class MedusaOrganizationDTO(
     val displayName: String,
     val name: String,
     val icon: MedusaFileDTO,
-    val supervisors: List<MedusaPersonRefDTO>,
-    val authors: List<MedusaPersonRefDTO>
+    val supervisors: List<MedusaPersonRefDTO> = emptyList(),
+    val authors: List<MedusaPersonRefDTO> = emptyList()
 )
 
 data class MedusaTagDTO(
@@ -113,8 +113,8 @@ data class ContactDTO(
     val mail: String?
 )
 
-data class UpdatePosterDTO(
-    val poster: MedusaFileDTO
+data class UpdatePictureDTO(
+    val picture: MedusaFileDTO
 )
 
 data class UpdateProfilePictureDTO(

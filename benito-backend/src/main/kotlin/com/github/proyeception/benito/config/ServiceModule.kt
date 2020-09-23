@@ -1,6 +1,7 @@
 package com.github.proyeception.benito.config
 
 import com.github.proyeception.benito.client.MedusaClient
+import com.github.proyeception.benito.client.MedusaGraphClient
 import com.github.proyeception.benito.mongodb.MongoTextSearch
 import com.github.proyeception.benito.oauth.GoogleDriveClient
 import com.github.proyeception.benito.parser.DocumentParser
@@ -19,13 +20,15 @@ open class ServiceModule {
         documentParser: DocumentParser,
         documentService: DocumentService,
         fileService: FileService,
-        mongoTextSearch: MongoTextSearch
+        mongoTextSearch: MongoTextSearch,
+        medusaGraphClient: MedusaGraphClient
     ): ProjectService = ProjectService(
         medusaClient = medusaClient,
         documentParser = documentParser,
         documentService = documentService,
         fileService = fileService,
-        mongoTextSearch = mongoTextSearch
+        mongoTextSearch = mongoTextSearch,
+        medusaGraphClient = medusaGraphClient
     )
 
     @Bean

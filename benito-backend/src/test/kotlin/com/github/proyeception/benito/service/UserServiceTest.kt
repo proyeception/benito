@@ -61,9 +61,9 @@ class UserServiceTest : Spec() {
                                 title = "Some cool title",
                                 description = "Some cool description",
                                 organizationId = "123",
-                                poster = MedusaFileDTO(
-                                    url = "https://poster.com",
-                                    id = "poster"
+                                picture = MedusaFileDTO(
+                                    url = "https://picture.com",
+                                    id = "picture"
                                 )
                             )
                         ),
@@ -107,7 +107,7 @@ class UserServiceTest : Spec() {
                         ProjectRefDTO(
                             id = "123",
                             title = "Some cool title",
-                            posterUrl = "https://poster.com",
+                            pictureUrl = "https://picture.com",
                             description = "Some cool description",
                             organization = OrganizationDTO(
                                 displayName = "UTN FRBA",

@@ -39,7 +39,7 @@ export function updateContent(
   title: String,
   description: String,
   extraContent: String,
-  posterUrl: String,
+  pictureUrl: String,
   projectId: String
 ) {
   let config: AxiosRequestConfig = {
@@ -48,7 +48,7 @@ export function updateContent(
       title: title,
       description: description,
       extraContent: extraContent,
-      posterUrl: posterUrl,
+      pictureUrl: pictureUrl,
     },
     method: "PATCH",
   };

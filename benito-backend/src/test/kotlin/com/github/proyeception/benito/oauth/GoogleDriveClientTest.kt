@@ -5,7 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.proyeception.benito.Spec
 import com.github.proyeception.benito.connector.OAuthConnector
-import com.github.proyeception.benito.connector.Response
+import com.github.proyeception.benito.connector.HttpResponse
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.mock.eq
 import com.github.proyeception.benito.mock.getMock
@@ -28,7 +28,7 @@ class GoogleDriveClientTest : Spec() {
 
         "getFile" should {
             "retrieve the fileId asking for webContentLink, mimeType and name of the file" {
-                val responseMock: Response = getMock()
+                val responseMock: HttpResponse = getMock()
                 on(connectorMock.get(anyString())).thenReturn(responseMock.right())
                 on(responseMock.deserializeAs(any(TypeReference::class.java))).thenReturn(
                     GoogleFileDTO(
@@ -59,7 +59,7 @@ class GoogleDriveClientTest : Spec() {
         "createFile" should {
             "make a POST to the API with the file" {
                 val metadataBytes = ByteArray(60)
-                val responseMock: Response = getMock()
+                val responseMock: HttpResponse = getMock()
                 on(mapperMock.writeValueAsBytes(any(MetadataDTO::class.java))).thenReturn(metadataBytes)
                 on(connectorMock.post(
                     anyString(),
@@ -97,7 +97,7 @@ class GoogleDriveClientTest : Spec() {
         "createFolder" should {
             "make a POST to the API and then make it public" {
                 val metadataBytes = ByteArray(60)
-                val responseMock: Response = getMock()
+                val responseMock: HttpResponse = getMock()
                 on(mapperMock.writeValueAsBytes(any(MetadataDTO::class.java))).thenReturn(metadataBytes)
                 on(connectorMock.post(
                     anyString(),

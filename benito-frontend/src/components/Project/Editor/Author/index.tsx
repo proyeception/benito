@@ -12,7 +12,7 @@ import SlideUp from "../../../Common/SlideUp";
 import SaveChanges from "./SaveChanges";
 import DiscardChanges from "./DiscardChanges";
 import Documents from "./Documents";
-import Poster from "./Poster";
+import Picture from "./Picture";
 import Image from "./Image";
 import Separator from "../../../Common/Separator";
 
@@ -25,14 +25,16 @@ function Render(props: any) {
 }
 
 const AuthorEdit = (props: Props) => {
-  const [{ title, description, extraContent, posterUrl }, setValues] = useForm({
-    title: props.project.title,
-    description: props.project.description,
-    extraContent: props.project.extraContent,
-    posterUrl: props.project.posterUrl,
-  });
+  const [{ title, description, extraContent, pictureUrl }, setValues] = useForm(
+    {
+      title: props.project.title,
+      description: props.project.description,
+      extraContent: props.project.extraContent,
+      pictureUrl: props.project.pictureUrl,
+    }
+  );
 
-  const [poster, setPoster] = useState<File>(null);
+  const [picture, setPicture] = useState<File>(null);
   const [documents, setDocuments] = useState<Array<File>>(null);
 
   return (
@@ -52,7 +54,7 @@ const AuthorEdit = (props: Props) => {
           </div>
         </div>
 
-        <Poster project={props.project} setPoster={setPoster} />
+        <Picture project={props.project} setPicture={setPicture} />
 
         <div className="font-size-18 font-size-24-md mt-2 mt-md-4">
           <div className="font-weight-bolder mb-2 mb-md-2">Descripción</div>
@@ -111,10 +113,10 @@ const AuthorEdit = (props: Props) => {
                 title={title}
                 description={description}
                 extraContent={extraContent}
-                posterUrl={posterUrl}
+                pictureUrl={pictureUrl}
                 id={props.project.id}
                 className="d-none d-md-block cursor-pointer"
-                poster={poster}
+                picture={picture}
                 documents={documents}
               >
                 <FontAwesomeIcon icon={faSave} color="green" /> Guardar cambios

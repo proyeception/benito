@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.proyeception.benito.extension.isError
 
-open class Response(
+open class HttpResponse(
     open val headers: Map<String, String>,
     open val body: String?,
     open val status: Int,

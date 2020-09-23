@@ -10,13 +10,13 @@ import io.kotlintest.properties.forAll
 import io.kotlintest.properties.forNone
 import org.mockito.Mockito
 
-open class ResponseTest : Spec() {
+open class HttpResponseTest : Spec() {
     init {
         val objectMapperMock: ObjectMapper = getMock()
 
         "isError should be true for any number between 400 and 599" {
             forAll(Gen.choose(400, 599)) { x: Int ->
-                val response = Response(
+                val response = HttpResponse(
                     headers = emptyMap(),
                     status = x,
                     objectMapper = objectMapperMock,
@@ -29,7 +29,7 @@ open class ResponseTest : Spec() {
 
         "isError should be false for any other number outside of said range" {
             val assertion = { x: Int ->
-                val response = Response(
+                val response = HttpResponse(
                     headers = emptyMap(),
                     status = x,
                     objectMapper = objectMapperMock,
@@ -45,7 +45,7 @@ open class ResponseTest : Spec() {
 
         "deserializeAs should pass its body and the type reference to the objectMapper" {
             forAll { s: String ->
-                val response = Response(
+                val response = HttpResponse(
                     headers = emptyMap(),
                     status = 200,
                     objectMapper = objectMapperMock,

@@ -1,7 +1,10 @@
 package com.github.proyeception.benito.service
 
+import arrow.core.getOrHandle
 import com.github.proyeception.benito.client.MedusaClient
+import com.github.proyeception.benito.client.MedusaGraphClient
 import com.github.proyeception.benito.dto.*
+import com.github.proyeception.benito.exception.FailedDependencyException
 import com.github.proyeception.benito.mongodb.MongoTextSearch
 import com.github.proyeception.benito.parser.DocumentParser
 import kotlinx.coroutines.async
@@ -13,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile
 
 open class ProjectService(
     private val medusaClient: MedusaClient,
+    private val medusaGraphClient: MedusaGraphClient,
     private val documentService: DocumentService,
     private val documentParser: DocumentParser,
     private val fileService: FileService,
@@ -22,23 +26,32 @@ open class ProjectService(
         orderBy: OrderDTO?,
         from: String?,
         to: String?,
-        nameContains: String?,
+        title: String?,
         category: String?,
-        keyword: String?
-    ): List<ProjectDTO> {
-        return if(keyword.isNullOrEmpty()) {
-            medusaClient.findProjects(
-                    orderBy = orderBy,
-                    from = from,
-                    to = to,
-                    nameContains = nameContains,
-                    category = category
-            ).map { ProjectDTO(it) }
+        keyword: String?,
+        authorId: String?,
+        authorName: String?,
+        organizationId: String?,
+        organizationName: String?,
+        page: Int?
+    ): List<ProjectDTO> = medusaGraphClient.findProjects(
+        orderBy = orderBy,
+        from = from,
+        to = to,
+        title = title,
+        category = category,
+        authorId = authorId,
+        authorName = authorName,
+        keyword = keyword,
+        organizationId = organizationId,
+        organizationName = organizationName,
+        page = page ?: 0
+    )
+        .getOrHandle {
+            LOGGER.error("Error getting projects from Medusa with Graph")
+            throw FailedDependencyException("Error getting projects from Medusa")
         }
-        else {
-            mongoTextSearch.getDocuments(keyword, from, to, nameContains, category)
-        }
-    }
+        .map { ProjectDTO(it) }
 
     fun featuredProjects(): List<ProjectDTO> = medusaClient.findProjects(
         orderBy = OrderDTO.VIEWS_DESC,
@@ -86,7 +99,7 @@ open class ProjectService(
             filePath = "/tmp/$id.jpg",
             fileName = multipart.originalFilename ?: "$id.jpg"
         )
-        medusaClient.updateProjectImage(id, UpdatePosterDTO(file))
+        medusaClient.updateProjectImage(id, UpdatePictureDTO(file))
     }
 
     fun hasAuthor(authorId: String, projectId: String): Boolean = findProject(projectId)

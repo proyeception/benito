@@ -43,7 +43,7 @@ const Title = (props: Props) => {
         className="qui-blurred-image"
         style={{
           backgroundImage: `url(${
-            props.project.posterUrl || noImageAvailableHorizontal
+            props.project.pictureUrl || noImageAvailableHorizontal
           })`,
           height: props.minHeight.valueOf(),
         }}
