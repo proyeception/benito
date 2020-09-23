@@ -1,5 +1,6 @@
 package com.github.proyeception.benito.service
 
+import arrow.core.right
 import com.github.proyeception.benito.Spec
 import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.client.MedusaGraphClient
@@ -116,7 +117,7 @@ class ProjectServiceTest : Spec() {
                 val projects = listOf(newProject)
                 val expected = listOf(project)
 
-                on(medusaClient.findProjects()).thenReturn(projects)
+                on(medusaGraphClientMock.findProjects()).thenReturn(projects.right())
 
                 val actual = projectService.findProjects(
                     null,
@@ -133,8 +134,6 @@ class ProjectServiceTest : Spec() {
                 )
 
                 expected shouldBe actual
-
-                Mockito.verify(medusaClient).findProjects()
             }
         }
 

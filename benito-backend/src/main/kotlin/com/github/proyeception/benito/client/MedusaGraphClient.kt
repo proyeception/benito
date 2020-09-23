@@ -26,39 +26,28 @@ open class MedusaGraphClient(
         keyword: String? = null,
         organizationId: String? = null,
         organizationName: String? = null,
-        page: Int
+        page: Int = 0
     ): Either<Throwable, List<MedusaProjectDTO>> {
-        val where = mutableListOf<String>()
-        title?.let { where.add("""title_contains: "$it"""") }
-        keyword?.let { where.add("""documentation: { content_contains: "${it.replaceUrlSpaces()}" }""") }
-        from?.let { where.add("""creation_date_gte: "$it"""") }
-        to?.let { where.add("""creation_date_lte: "$it"""") }
-        category?.let { where.add("""category: { name: "$it" }""") }
-        authorId?.let { where.add("""authors: { id: "$it" }""") }
-        authorName?.let { where.add("""authors: { full_name_contains: "${it.replaceUrlSpaces()}" }""") }
-        organizationId?.let { where.add("""organization: { id: "$it" }""") }
-        organizationName?.let { where.add(""""organization: { name_contains: "$it" }""") }
+        val params = formatParams(
+            orderBy = orderBy,
+            from = from,
+            to = to,
+            title = title,
+            category = category,
+            authorId = authorId,
+            authorName = authorName,
+            keyword = keyword,
+            organizationId = organizationId,
+            organizationName = organizationName,
+            page = page
+        )
 
-        val sort = orderBy?.let { """sort: "${it.sortMethod}"""" }
-
-        val start = """start: ${page * PAGE_SIZE}"""
-
-        val limit = """limit: $PAGE_SIZE"""
-
-        val params = mutableListOf<String>()
-        where.takeUnless { it.isEmpty() }?.let {
-            params.add("where: { ${it.joinToString(", ")} }")
-        }
-        params.add(start)
-        params.add(limit)
-        sort?.let { params.add(it) }
-
-        LOGGER.info("Project search params: ${params.joinToString(", ")}")
+        LOGGER.info("Search params: $params")
 
         return medusaGraphConnector.execute(
             """
             query {
-              projects(${params.joinToString(", ")}) {
+              projects($params) {
                 id
                 title
                 description
@@ -116,9 +105,50 @@ open class MedusaGraphClient(
         ).map { it.deserializeAs(PROJECTS_REF).projects }
     }
 
+    open fun formatParams(
+        orderBy: OrderDTO? = null,
+        from: String? = null,
+        to: String? = null,
+        title: String? = null,
+        category: String? = null,
+        authorId: String? = null,
+        authorName: String? = null,
+        keyword: String? = null,
+        organizationId: String? = null,
+        organizationName: String? = null,
+        page: Int = 0
+    ): String {
+        val where = mutableListOf<String>()
+        title?.let { where.add("""title_contains: "$it"""") }
+        keyword?.let { where.add("""documentation: { content_contains: "${it.replaceUrlSpaces()}" }""") }
+        from?.let { where.add("""creation_date_gte: "$it"""") }
+        to?.let { where.add("""creation_date_lte: "$it"""") }
+        category?.let { where.add("""category: { name: "$it" }""") }
+        authorId?.let { where.add("""authors: { id: "$it" }""") }
+        authorName?.let { where.add("""authors: { full_name_contains: "${it.replaceUrlSpaces()}" }""") }
+        organizationId?.let { where.add("""organization: { id: "$it" }""") }
+        organizationName?.let { where.add(""""organization: { name_contains: "$it" }""") }
+
+        val sort = orderBy?.let { """sort: "${it.sortMethod}"""" }
+
+        val start = """start: ${page * PAGE_SIZE}"""
+
+        val limit = """limit: $PAGE_SIZE"""
+
+        val params = mutableListOf<String>()
+        where.takeUnless { it.isEmpty() }?.let {
+            params.add("where: { ${it.joinToString(", ")} }")
+        }
+        params.add(start)
+        params.add(limit)
+        sort?.let { params.add(it) }
+
+        return params.joinToString(", ")
+    }
+
     private companion object {
         private val PROJECTS_REF = object : TypeReference<Projects>() {}
-        private const val PAGE_SIZE = 15
+        private const val PAGE_SIZE = 10
         private val LOGGER = LoggerFactory.getLogger(MedusaGraphClient::class.java)
     }
 }
