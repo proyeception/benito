@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
 import CategoriesSearchCarousel from "./CategoriesSearchCarousel";
@@ -6,23 +6,17 @@ import HomeSearchBox from "./HomeSearchBox";
 import FeaturedGallery from "./FeaturedGallery";
 import Proyectate from "./Proyectate";
 import FadeIn from "../Common/FadeIn";
-import { RootState } from "../../reducers";
-import { connect } from "react-redux";
 import store from "../../store";
-import { toggleLoading } from "../../actions/common";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { benitoHost } from "../../config";
 import axios from "axios";
 import { Project } from "../../types";
 import { updateFeaturedProjects } from "../../actions/home";
+import Loader from "../Common/Loader";
 
-type Props = {
-  loading: Boolean;
-};
-
-const Home = (props: Props) => {
+const Home = () => {
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
-    store.dispatch(toggleLoading(true));
     let config: AxiosRequestConfig = {
       method: "GET",
       url: `${benitoHost}/benito/projects/featured`,
@@ -31,12 +25,16 @@ const Home = (props: Props) => {
     axios(config)
       .then((response: AxiosResponse<Array<Project>>) => response.data)
       .then((projects) => store.dispatch(updateFeaturedProjects(projects)))
-      .then(() => store.dispatch(toggleLoading(false)))
+      .then(() => setLoading(false))
       .catch(console.error);
   }, []);
 
-  if (props.loading) {
-    return <div></div>;
+  if (loading) {
+    return (
+      <div className="center h-100">
+        <Loader />
+      </div>
+    );
   }
 
   return (
@@ -49,10 +47,4 @@ const Home = (props: Props) => {
   );
 };
 
-const mapStateToProps = (rootState: RootState) => {
-  return {
-    loading: rootState.common.loading,
-  };
-};
-
-export default hot(module)(connect(mapStateToProps)(Home));
+export default hot(module)(Home);
