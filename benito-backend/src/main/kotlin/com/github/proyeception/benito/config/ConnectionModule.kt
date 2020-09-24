@@ -23,7 +23,7 @@ open class ConnectionModule {
         config.getConfig("medusa"),
         listOf(
             BasicHeader(
-                "Authorization",
+                "medusa-api-key",
                 System.getenv("MEDUSA_AUTHORIZATION") ?: config.getString("medusa.authorization")
             )
         )
@@ -58,6 +58,6 @@ open class ConnectionModule {
     ): GraphConnector = GraphConnector.create(
         moduleConfig = config.getConfig("medusa.graph"),
         objectMapper = objectMapperSnakeCase,
-        defaultHeaders = mapOf("Authorization" to config.getString("medusa.authorization"))
+        defaultHeaders = mapOf("medusa-api-key" to config.getString("medusa.authorization"))
     )
 }
