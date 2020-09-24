@@ -26,6 +26,7 @@
         <java.compiler.version>1.8</java.compiler.version>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
         <jetty.version>9.4.18.v20190429</jetty.version>
+        <graphql-klient.version>1.0.1</graphql-klient.version>
     </properties>
 
     <dependencies>
@@ -374,6 +375,14 @@
         </dependency>
         <!-- MongoDB -->
 
+        <!-- GraphQL -->
+        <dependency>
+            <groupId>com.github.excitement-engineer</groupId>
+            <artifactId>graphql-klient</artifactId>
+            <version>${graphql-klient.version}</version>
+        </dependency>
+        <!-- GraphQL -->
+
     </dependencies>
 
     <build>
@@ -461,5 +470,14 @@
                 </configuration>
             </plugin>
         </plugins>
+
     </build>
+
+    <repositories>
+        <repository>
+            <id>bintray-excitement-engineer-graphql-klient</id>
+            <name>bintray</name>
+            <url>https://dl.bintray.com/excitement-engineer/graphql-klient</url>
+        </repository>
+    </repositories>
 </project>

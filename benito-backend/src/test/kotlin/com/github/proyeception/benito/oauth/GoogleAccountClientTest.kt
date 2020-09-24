@@ -5,7 +5,7 @@ import arrow.core.right
 import com.fasterxml.jackson.core.type.TypeReference
 import com.github.proyeception.benito.Spec
 import com.github.proyeception.benito.connector.DynamicOAuthConnector
-import com.github.proyeception.benito.connector.Response
+import com.github.proyeception.benito.connector.HttpResponse
 import com.github.proyeception.benito.dto.GoogleProfileDTO
 import com.github.proyeception.benito.dto.GoogleProfileMetadataDTO
 import com.github.proyeception.benito.mock.eq
@@ -24,7 +24,7 @@ class GoogleAccountClientTest : Spec() {
 
         "userInfo" should {
             "ask the connector to fetch the user and deserialize it" {
-                val responseMock: Response = getMock()
+                val responseMock: HttpResponse = getMock()
                 val profile = GoogleProfileDTO(
                     emailAddresses = emptyList(),
                     photos = emptyList(),

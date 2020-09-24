@@ -29,7 +29,7 @@ abstract class AbstractOAuthConnector(
         url: String,
         token: String,
         body: OAuthRequestBody?
-    ): Either<Throwable, Response> {
+    ): Either<Throwable, HttpResponse> {
         val accessToken = oAuth20Service.refreshAccessToken(token)
         val request = OAuthRequest(verb, url)
         body?.let { b ->
@@ -54,7 +54,7 @@ abstract class AbstractOAuthConnector(
             return HttpException.of(response.code, response.message).left()
         }
 
-        return Response(
+        return HttpResponse(
             objectMapper = objectMapper,
             body = response.body,
             status = response.code,
@@ -62,20 +62,20 @@ abstract class AbstractOAuthConnector(
         ).right()
     }
 
-    protected open fun get(url: String, token: String): Either<Throwable, Response> = executeRequest(
+    protected open fun get(url: String, token: String): Either<Throwable, HttpResponse> = executeRequest(
         verb = Verb.GET,
         url = url,
         token = token,
         body = null
     )
 
-    protected open fun post(url: String, token: String): Either<Throwable, Response> = post(
+    protected open fun post(url: String, token: String): Either<Throwable, HttpResponse> = post(
         url = url,
         token = token,
         body = null
     )
 
-    protected open fun post(url: String, body: Any?, token: String): Either<Throwable, Response> = executeRequest(
+    protected open fun post(url: String, body: Any?, token: String): Either<Throwable, HttpResponse> = executeRequest(
         verb = Verb.POST,
         url = url,
         token = token,
@@ -86,28 +86,28 @@ abstract class AbstractOAuthConnector(
         url: String,
         token: String,
         vararg bodyParts: Pair<String, ByteArray>
-    ): Either<Throwable, Response> = executeRequest(
+    ): Either<Throwable, HttpResponse> = executeRequest(
         verb = Verb.POST,
         url = url,
         token = token,
         body = MultipartBody(*bodyParts)
     )
 
-    protected open fun delete(url: String, token: String): Either<Throwable, Response> = executeRequest(
+    protected open fun delete(url: String, token: String): Either<Throwable, HttpResponse> = executeRequest(
         verb = Verb.DELETE,
         url = url,
         token = token,
         body = null
     )
 
-    protected open fun put(url: String, token: String): Either<Throwable, Response> = executeRequest(
+    protected open fun put(url: String, token: String): Either<Throwable, HttpResponse> = executeRequest(
         verb = Verb.PUT,
         url = url,
         token = token,
         body = null
     )
 
-    protected open fun patch(url: String, token: String): Either<Throwable, Response> = executeRequest(
+    protected open fun patch(url: String, token: String): Either<Throwable, HttpResponse> = executeRequest(
         verb = Verb.PATCH,
         url = url,
         token = token,

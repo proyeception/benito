@@ -69,7 +69,7 @@ class OAuthConnectorTest : Spec() {
                     on(responseMock.headers).thenReturn(emptyMap())
                     on(mapperMock.readValue(any(String::class.java), any(TypeReference::class.java))).thenReturn(null)
 
-                    val expected = Response(
+                    val expected = HttpResponse(
                         objectMapper = mapperMock,
                         body = "{}",
                         status = 200,

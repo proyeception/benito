@@ -13,9 +13,9 @@ type Props = {
   title?: String;
   description?: String;
   extraContent?: String;
-  posterUrl?: String;
+  pictureUrl?: String;
   id: String;
-  poster?: File;
+  picture?: File;
   documents?: Array<File>;
 };
 
@@ -29,24 +29,24 @@ const SaveChanges = (props: Props) => (
         props.title,
         props.description,
         props.extraContent,
-        props.posterUrl,
+        props.pictureUrl,
         props.id
       )
         .then(console.log)
         .catch(console.error);
 
-      //poster
-      if (props.poster) {
-        const posterForm = new FormData();
-        posterForm.set("file", props.poster);
+      //picture
+      if (props.picture) {
+        const pictureForm = new FormData();
+        pictureForm.set("file", props.picture);
 
-        let posterConfig: AxiosRequestConfig = {
-          url: `${benitoHost}/benito/projects/${props.id}/poster`,
+        let pictureConfig: AxiosRequestConfig = {
+          url: `${benitoHost}/benito/projects/${props.id}/picture`,
           method: "POST",
-          data: posterForm,
+          data: pictureForm,
         };
 
-        axios.request(signRequest(posterConfig)).then(console.log);
+        axios.request(signRequest(pictureConfig)).then(console.log);
       }
 
       //documents

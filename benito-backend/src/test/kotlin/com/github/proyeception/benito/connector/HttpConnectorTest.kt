@@ -16,7 +16,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
 
-open class ConnectorTest : Spec() {
+open class HttpConnectorTest : Spec() {
     init {
         data class TestObject(
             val data: String
@@ -24,7 +24,7 @@ open class ConnectorTest : Spec() {
 
         val apacheClientMock: HttpClient = getMock()
         val objectMapperMock: ObjectMapper = getMock()
-        val connector = Connector(
+        val connector = HttpConnector(
             host = "localhost",
             apacheClient = apacheClientMock,
             objectMapper = objectMapperMock
@@ -42,7 +42,7 @@ open class ConnectorTest : Spec() {
             on(responseMock.statusLine).thenReturn(statusLineMock)
             on(statusLineMock.statusCode).thenReturn(200)
 
-            val expected = Response(
+            val expected = HttpResponse(
                 headers = mapOf("Foo" to "Bar"),
                 body = "TEST",
                 status = 200,
@@ -68,7 +68,7 @@ open class ConnectorTest : Spec() {
             on(responseMock.statusLine).thenReturn(statusLineMock)
             on(statusLineMock.statusCode).thenReturn(200)
 
-            val expected = Response(
+            val expected = HttpResponse(
                 headers = mapOf("Foo" to "Bar"),
                 body = "TEST",
                 status = 200,
@@ -95,7 +95,7 @@ open class ConnectorTest : Spec() {
             on(responseMock.statusLine).thenReturn(statusLineMock)
             on(statusLineMock.statusCode).thenReturn(200)
 
-            val expected = Response(
+            val expected = HttpResponse(
                 headers = mapOf("Foo" to "Bar"),
                 body = "TEST",
                 status = 200,
@@ -121,7 +121,7 @@ open class ConnectorTest : Spec() {
             on(responseMock.statusLine).thenReturn(statusLineMock)
             on(statusLineMock.statusCode).thenReturn(200)
 
-            val expected = Response(
+            val expected = HttpResponse(
                 headers = mapOf("Foo" to "Bar"),
                 body = "TEST",
                 status = 200,
@@ -148,7 +148,7 @@ open class ConnectorTest : Spec() {
             on(responseMock.statusLine).thenReturn(statusLineMock)
             on(statusLineMock.statusCode).thenReturn(200)
 
-            val expected = Response(
+            val expected = HttpResponse(
                 headers = mapOf("Foo" to "Bar"),
                 body = "TEST",
                 status = 200,
@@ -174,7 +174,7 @@ open class ConnectorTest : Spec() {
             on(responseMock.statusLine).thenReturn(statusLineMock)
             on(statusLineMock.statusCode).thenReturn(200)
 
-            val expected = Response(
+            val expected = HttpResponse(
                 headers = mapOf("Foo" to "Bar"),
                 body = "TEST",
                 status = 200,
@@ -201,7 +201,7 @@ open class ConnectorTest : Spec() {
             on(responseMock.statusLine).thenReturn(statusLineMock)
             on(statusLineMock.statusCode).thenReturn(200)
 
-            val expected = Response(
+            val expected = HttpResponse(
                 headers = mapOf("Foo" to "Bar"),
                 body = "TEST",
                 status = 200,
@@ -227,7 +227,7 @@ open class ConnectorTest : Spec() {
             on(responseMock.statusLine).thenReturn(statusLineMock)
             on(statusLineMock.statusCode).thenReturn(200)
 
-            val expected = Response(
+            val expected = HttpResponse(
                 headers = mapOf("Foo" to "Bar"),
                 body = "TEST",
                 status = 200,

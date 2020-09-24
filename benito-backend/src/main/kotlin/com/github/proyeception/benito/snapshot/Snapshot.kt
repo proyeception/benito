@@ -1,7 +1,7 @@
 package com.github.proyeception.benito.snapshot
 
 import com.fasterxml.jackson.core.type.TypeReference
-import com.github.proyeception.benito.connector.Connector
+import com.github.proyeception.benito.connector.HttpConnector
 import kotlinx.coroutines.*
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.InitializingBean
@@ -10,7 +10,7 @@ import kotlin.coroutines.CoroutineContext
 abstract class Snapshot<T>(
     private val refreshRate: Int, // in seconds
     private val endpoint: String,
-    private val connector: Connector,
+    private val connector: HttpConnector,
     private val name: String,
     private val ref: TypeReference<List<T>>
 ) : InitializingBean, CoroutineScope {

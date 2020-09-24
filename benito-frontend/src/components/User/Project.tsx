@@ -15,7 +15,7 @@ const Project = (props: Props) => (
       <div className="d-none d-md-block col-md-4">
         <div className="qui-user-profile-project-image-container text-center border-right">
           <img
-            src={props.project.posterUrl || noImageAvailableVertical}
+            src={props.project.pictureUrl || noImageAvailableVertical}
             alt={props.project.title.valueOf()}
             className="qui-user-profile-project-image"
           />
@@ -29,7 +29,7 @@ const Project = (props: Props) => (
                 <div className="qui-user-profile-project-image-container-sm mr-4">
                   <img
                     src={
-                      props.project.posterUrl?.valueOf() ||
+                      props.project.pictureUrl?.valueOf() ||
                       noImageAvailableVertical
                     }
                     alt="avatar"

@@ -54,7 +54,7 @@ open class MongoTextSearch(
             Aggregates.lookup("organizations", "organization", "_id", "organization"),
             Aggregates.lookup("supervisors", "supervisors", "_id", "supervisors"),
             Aggregates.lookup("documentation", "documentation", "_id", "documentation"),
-            Aggregates.lookup("upload_file", "poster", "_id", "upload_file")
+            Aggregates.lookup("upload_file", "picture", "_id", "upload_file")
         )
 
         pipeline.addAll(variableFilters)
@@ -70,7 +70,7 @@ open class MongoTextSearch(
                 val documentation = listOf<DocumentationDTO>()
                 var organization: OrganizationRefDTO
                 var project: ProjectDTO
-                var posterUrl: String?
+                var pictureUrl: String?
 
                 authors = projectDocument.getList("authors", Document::class.java).map {
                     PersonRefDTO(
@@ -92,7 +92,7 @@ open class MongoTextSearch(
                     projectDocument.getList("organization", Document::class.java)[0]["_id"].toString(),
                     projectDocument.getList("organization", Document::class.java)[0]["display_name"].toString()
                 )
-                posterUrl = projectDocument.getList("upload_file", Document::class.java)
+                pictureUrl = projectDocument.getList("upload_file", Document::class.java)
                     .firstOrNull()
                     ?.get("url")
                     ?.toString()
@@ -102,7 +102,7 @@ open class MongoTextSearch(
                     description = projectDocument.get("description", String::class.java),
                     extraContent = projectDocument.get("extra_content", String::class.java),
                     creationDate = LocalDate.parse(projectDocument["creation_date"].toString()),
-                    posterUrl = posterUrl,
+                    pictureUrl = pictureUrl,
                     authors = authors,
                     supervisors = supervisors,
                     tags = projectDocument.getList("tags", String::class.java),

@@ -1,11 +1,11 @@
 package com.github.proyeception.benito.snapshot
 
 import com.fasterxml.jackson.core.type.TypeReference
-import com.github.proyeception.benito.connector.Connector
+import com.github.proyeception.benito.connector.HttpConnector
 import com.github.proyeception.benito.dto.MedusaOrganizationDTO
 
 open class OrganizationSnapshot(
-    medusaConnector: Connector
+    medusaConnector: HttpConnector
 ) : Snapshot<MedusaOrganizationDTO>(
     refreshRate = 180,
     endpoint = "/organizations",

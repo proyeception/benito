@@ -1,8 +1,9 @@
 package com.github.proyeception.benito.config
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.github.proyeception.benito.connector.Connector
 import com.github.proyeception.benito.connector.DynamicOAuthConnector
+import com.github.proyeception.benito.connector.GraphConnector
+import com.github.proyeception.benito.connector.HttpConnector
 import com.github.proyeception.benito.connector.OAuthConnector
 import com.github.scribejava.apis.GoogleApi20
 import com.typesafe.config.Config
@@ -17,12 +18,12 @@ open class ConnectionModule {
     open fun medusaConnector(
         @Qualifier("objectMapperSnakeCase") objectMapperSnakeCase: ObjectMapper,
         config: Config
-    ): Connector = Connector.create(
+    ): HttpConnector = HttpConnector.create(
         objectMapperSnakeCase,
         config.getConfig("medusa"),
         listOf(
             BasicHeader(
-                "Authorization",
+                "medusa-api-key",
                 System.getenv("MEDUSA_AUTHORIZATION") ?: config.getString("medusa.authorization")
             )
         )
@@ -48,5 +49,15 @@ open class ConnectionModule {
         objectMapper = objectMapperCamelCase,
         api = GoogleApi20.instance(),
         moduleName = "google_login"
+    )
+
+    @Bean("medusaGraphConnector")
+    open fun medusaGraphConnector(
+        @Qualifier("objectMapperSnakeCase") objectMapperSnakeCase: ObjectMapper,
+        config: Config
+    ): GraphConnector = GraphConnector.create(
+        moduleConfig = config.getConfig("medusa.graph"),
+        objectMapper = objectMapperSnakeCase,
+        defaultHeaders = mapOf("medusa-api-key" to config.getString("medusa.authorization"))
     )
 }

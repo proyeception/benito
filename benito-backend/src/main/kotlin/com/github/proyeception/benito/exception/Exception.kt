@@ -2,7 +2,7 @@ package com.github.proyeception.benito.exception
 
 sealed class HttpException(val status: Int, message: String) : RuntimeException(message) {
     companion object {
-        fun of(status: Int?, message: String): HttpException = when(status) {
+        fun of(status: Int?, message: String): HttpException = when (status) {
             400 -> BadRequestException(message)
             401 -> UnauthorizedException(message)
             403 -> ForbiddenException(message)
@@ -23,3 +23,7 @@ class InternalServerErrorException(message: String, cause: Throwable?) : HttpExc
 }
 
 class AmbiguousReferenceException(message: String) : RuntimeException(message)
+
+class EmptyGraphBodyException(message: String) : RuntimeException(message)
+
+class GraphQueryException(val messages: List<String>) : RuntimeException()

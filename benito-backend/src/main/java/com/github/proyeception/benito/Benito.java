@@ -1,6 +1,7 @@
 package com.github.proyeception.benito;
 
 import com.github.proyeception.benito.config.ServiceContext;
+import com.github.proyeception.benito.http.TrackingFilter;
 import com.github.proyeception.benito.utils.LoggingFilter;
 import org.eclipse.jetty.jmx.MBeanContainer;
 import org.eclipse.jetty.server.Server;
@@ -112,6 +113,10 @@ public class Benito {
         LoggingFilter loggingFilter = new LoggingFilter();
         FilterHolder loggingFilterHolder = new FilterHolder(loggingFilter);
         handler.addFilter(loggingFilterHolder, "/*", EnumSet.of(DispatcherType.REQUEST));
+
+        TrackingFilter trackingFilter = new TrackingFilter();
+        FilterHolder trackingFilterHolder = new FilterHolder(trackingFilter);
+        handler.addFilter(trackingFilterHolder, "/*", EnumSet.of(DispatcherType.REQUEST));
     }
 
     private int port(String[] args) {
