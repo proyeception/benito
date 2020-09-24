@@ -4,6 +4,7 @@ import "./styles.scss";
 import { Project } from "../../types";
 import { Link } from "react-router-dom";
 import { noImageAvailableVertical } from "../../constants";
+import Dotdotdot from "react-clamp";
 
 type Props = {
   project: Project;
@@ -26,9 +27,12 @@ const ProjectSummary = (props: Props) => (
           src={props.project.pictureUrl || noImageAvailableVertical}
         />
       </div>
-      <div className="font-weight-lighter qui-font-text font-size-11 font-size-16-md mt-3 ml-md-3">
+      <Dotdotdot
+        clamp={5}
+        className="font-weight-lighter qui-font-text font-size-11 font-size-16-md mt-3 ml-md-3"
+      >
         {props.project.description}
-      </div>
+      </Dotdotdot>
       <div className="font-size-10 font-size-16-md text-right text-muted font-weight-light">
         {props.project.authors.map((a) => a.fullName).join(", ")}
       </div>
