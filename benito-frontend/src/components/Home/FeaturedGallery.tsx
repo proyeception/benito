@@ -1,11 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import { benitoHost } from "../../config";
-import store from "../../store";
 import { Project } from "../../types";
-import { updateFeaturedProjects } from "../../actions/home";
 import { RootState } from "../../reducers";
 import { connect } from "react-redux";
 import FeaturedProject from "./FeaturedProject";
@@ -33,18 +29,6 @@ const responsive = {
 };
 
 const FeaturedGallery = ({ featuredProjects }: Props) => {
-  useEffect(() => {
-    let config: AxiosRequestConfig = {
-      method: "GET",
-      url: `${benitoHost}/benito/projects/featured`,
-    };
-
-    axios(config)
-      .then((response: AxiosResponse<Array<Project>>) => response.data)
-      .then((projects) => store.dispatch(updateFeaturedProjects(projects)))
-      .catch(console.error);
-  }, []);
-
   return (
     <div className="container-fluid mt-3 pt-3">
       <div className="font-weight-bold text-center font-size-24">

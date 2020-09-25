@@ -14,7 +14,6 @@ type Props = {
   toDate: String;
   fromDate: String;
   category: String;
-  setDoRedirect: () => void;
 };
 
 class HomeSearchBox extends React.Component<Props> {

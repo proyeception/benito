@@ -1,43 +1,50 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { hot } from "react-hot-loader";
 import "./styles.scss";
 import CategoriesSearchCarousel from "./CategoriesSearchCarousel";
 import HomeSearchBox from "./HomeSearchBox";
 import FeaturedGallery from "./FeaturedGallery";
 import Proyectate from "./Proyectate";
-import { RootState } from "../../reducers";
-import { connect } from "react-redux";
 import FadeIn from "../Common/FadeIn";
+import store from "../../store";
+import { AxiosRequestConfig, AxiosResponse } from "axios";
+import { benitoHost } from "../../config";
+import axios from "axios";
+import { Project } from "../../types";
+import { updateFeaturedProjects } from "../../actions/home";
+import Loader from "../Common/Loader";
 
-type Props = {
-  name: String;
-  category: String;
-  fromDate: String;
-  toDate: String;
-};
+const Home = () => {
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    let config: AxiosRequestConfig = {
+      method: "GET",
+      url: `${benitoHost}/benito/projects/featured`,
+    };
 
-class Home extends React.Component<Props> {
-  constructor(props: Props, ctx: any) {
-    super(props, ctx);
-    this.state = {};
-  }
+    axios(config)
+      .then((response: AxiosResponse<Array<Project>>) => response.data)
+      .then((projects) => store.dispatch(updateFeaturedProjects(projects)))
+      .then(() => setLoading(false))
+      .catch(console.error);
+  }, []);
 
-  render() {
+  if (loading) {
     return (
-      <FadeIn className="pt-5">
-        <HomeSearchBox
-          setDoRedirect={() => this.setState({ doRedirect: true })}
-        />
-        <FeaturedGallery />
-        <CategoriesSearchCarousel />
-        <Proyectate />
-      </FadeIn>
+      <div className="center h-100">
+        <Loader />
+      </div>
     );
   }
-}
 
-const mapStateToProps = (rootState: RootState) => {
-  return rootState.search;
+  return (
+    <FadeIn className="pt-5">
+      <HomeSearchBox />
+      <FeaturedGallery />
+      <CategoriesSearchCarousel />
+      <Proyectate />
+    </FadeIn>
+  );
 };
 
-export default hot(module)(connect(mapStateToProps)(Home));
+export default hot(module)(Home);

@@ -95,7 +95,7 @@ const AuthorEdit = (props: Props) => {
               className="qui-project-edit-extra-content-container"
             >
               <ReactMarkdown
-                className="font-weight-light border-right border-left border-bottom pl-md-3 pr-md-3 p-md-2 h-100"
+                className="font-weight-light border-right border-left border-bottom pl-md-3 pr-md-3 p-md-2 h-100 overflow-auto"
                 source={extraContent.valueOf()}
                 renderers={{ image: Render }}
               />

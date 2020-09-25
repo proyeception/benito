@@ -19,7 +19,7 @@ const Documents = (props: Props) => {
   const onDrop = useCallback((files) => {
     props.setDocuments(files);
     const form = new FormData();
-    setDocuments(documents.concat(files.map((f: File) => f.name)))
+    setDocuments(documents.concat(files.map((f: File) => f.name)));
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
@@ -29,22 +29,25 @@ const Documents = (props: Props) => {
         Documentos
       </div>
       {documents.map((d, idx) => (
-        <div key={idx} className="center-vertically mb-1 mt-1">
+        <div
+          key={idx}
+          className="center-vertically mb-1 mt-1 underline-hover cursor-pointer"
+        >
           <FontAwesomeIcon icon={faMinusCircle} color="red" className="mr-2" />{" "}
           {d}
         </div>
       ))}
-      <div className="font-size-14 font-size-18-md pt-3 pt-md-5 mb-3">
+      <div className="font-size-14 font-size-18-md pt-3 pt-md-3 mb-3">
         <div className="mb-3">Cargar documentos</div>
         <section className="container dropzone-container">
-            <div {...getRootProps({ className: "dropzone font-size-18-md" })}>
-              <input {...getInputProps()} />
-              {isDragActive ? (
-                <p>Drop the files here...</p>
-              ) : (
-                <p>Drag 'n' drop some files here, or click to select files</p>
-              )}
-            </div>
+          <div {...getRootProps({ className: "dropzone font-size-18-md" })}>
+            <input {...getInputProps()} />
+            {isDragActive ? (
+              <p>Drop the files here...</p>
+            ) : (
+              <p>Drag 'n' drop some files here, or click to select files</p>
+            )}
+          </div>
         </section>
       </div>
     </div>

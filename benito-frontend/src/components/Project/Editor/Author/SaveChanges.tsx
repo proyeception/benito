@@ -5,8 +5,11 @@ import { updateContent } from "../../../../functions/project";
 import axios, { AxiosRequestConfig } from "axios";
 import { benitoHost } from "../../../../config";
 import { signRequest } from "../../../../functions/http";
+import { RouteComponentProps, withRouter } from "react-router-dom";
+import store from "../../../../store";
+import { toggleLoading } from "../../../../actions/common";
 
-type Props = {
+interface Props extends RouteComponentProps {
   className?: string;
   children: React.ReactNode;
   onClick?: () => void;
@@ -17,15 +20,17 @@ type Props = {
   id: String;
   picture?: File;
   documents?: Array<File>;
-};
+}
 
 const SaveChanges = (props: Props) => (
   <div
     className={props.className}
     onClick={() => {
+      store.dispatch(toggleLoading(true));
       props.onClick?.apply(2);
+      let proms = [];
 
-      updateContent(
+      const contentProm = updateContent(
         props.title,
         props.description,
         props.extraContent,
@@ -34,6 +39,7 @@ const SaveChanges = (props: Props) => (
       )
         .then(console.log)
         .catch(console.error);
+      proms.push(contentProm);
 
       //picture
       if (props.picture) {
@@ -46,7 +52,10 @@ const SaveChanges = (props: Props) => (
           data: pictureForm,
         };
 
-        axios.request(signRequest(pictureConfig)).then(console.log);
+        const picProm = axios
+          .request(signRequest(pictureConfig))
+          .then(console.log);
+        proms.push(picProm);
       }
 
       //documents
@@ -60,12 +69,20 @@ const SaveChanges = (props: Props) => (
           data: form,
         };
 
-        axios.request(signRequest(documentsConfig)).then(console.log);
+        const docProm = axios
+          .request(signRequest(documentsConfig))
+          .then(console.log);
+        proms.push(docProm);
       }
+
+      Promise.all(proms)
+        .then(() => props.history.push(`/projects/${props.id}`))
+        .then(() => store.dispatch(toggleLoading(false)))
+        .catch(console.error);
     }}
   >
     {props.children}
   </div>
 );
 
-export default hot(module)(SaveChanges);
+export default hot(module)(withRouter(SaveChanges));

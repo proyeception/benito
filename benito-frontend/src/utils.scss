@@ -1,6 +1,7 @@
 $small-max-breakpoint: 767px;
 $large-min-breakpoint: 768px;
 $light-gray: #f1f1f1;
+$sides: bottom, top, right, left;
 
 @for $i from 8 through 48 {
   .font-size-#{$i} {
@@ -52,6 +53,11 @@ $light-gray: #f1f1f1;
   .un-mb-md-#{$i} {
     @media screen and (min-width: $large-min-breakpoint) {
       margin-bottom: -#{$i * 15}px;
+    }
+  }
+  @each $side in $sides {
+    .#{$side}-#{$i} {
+      #{$side}: #{$i * 15}px;
     }
   }
 }

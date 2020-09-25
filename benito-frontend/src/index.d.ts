@@ -18,3 +18,12 @@ declare module "react-loading-overlay" {
     LoadingOverlayProps
   > {}
 }
+
+declare module "react-clamp" {
+  export type DotdotdotProps = {
+    clamp: number | string | "auto";
+    ellipsis?: string;
+    className?: string;
+  };
+  export default class Dotdotdot extends React.Component<DotdotdotProps> {}
+}

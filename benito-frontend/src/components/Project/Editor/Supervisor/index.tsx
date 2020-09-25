@@ -26,6 +26,7 @@ import { connect } from "react-redux";
 import { setProjectUsers } from "../../../../functions/project";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import store from "../../../../store";
+import { toggleLoading } from "../../../../actions/common";
 
 interface Props extends RouteComponentProps {
   project: Project;
@@ -33,6 +34,7 @@ interface Props extends RouteComponentProps {
   authorsToDelete: Array<Person>;
   supervisorsToAdd: Array<Person>;
   supervisorsToDelete: Array<Person>;
+  loading: Boolean;
 }
 
 const SupervisorEdit = (props: Props) => {
@@ -43,10 +45,9 @@ const SupervisorEdit = (props: Props) => {
     supervisors: Array<Person>;
     authors: Array<Person>;
   }>({ supervisors: [], authors: [] });
-  const [isLoading, setIsLoading] = useState(true);
-  const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
+    store.dispatch(toggleLoading(true));
     let config: AxiosRequestConfig = {
       url: `${benitoHost}/benito/organizations/${props.project.organization.id}?cached=false`,
       method: "GET",
@@ -56,11 +57,11 @@ const SupervisorEdit = (props: Props) => {
       .request<Organization>(config)
       .then((res) => res.data)
       .then(setOrganizationUsers)
-      .then(() => setIsLoading(false))
+      .then(() => store.dispatch(toggleLoading(false)))
       .catch((e) => console.error(e));
   }, []);
 
-  if (isLoading) {
+  if (props.loading) {
     return (
       <div className="center h-100">
         <Loader />
@@ -152,9 +153,9 @@ const SupervisorEdit = (props: Props) => {
                 <button
                   type="button"
                   className="btn btn-success font-weight-bold"
-                  disabled={isUploading}
+                  disabled={props.loading.valueOf()}
                   onClick={() => {
-                    setIsUploading(true);
+                    store.dispatch(toggleLoading(true));
                     setProjectUsers(
                       props.project.authors
                         .filter(
@@ -174,21 +175,16 @@ const SupervisorEdit = (props: Props) => {
                     )
                       .then(console.log)
                       .then(() => store.dispatch(closeProjectEdition()))
+                      .then(() => store.dispatch(toggleLoading(false)))
                       .then(() =>
                         props.history.push(`/projects/${props.project.id}`)
                       )
                       .catch(console.error);
                   }}
                 >
-                  {isUploading ? (
-                    <div className="spinner-border text-light" role="status">
-                      <span className="sr-only">Loading ...</span>
-                    </div>
-                  ) : (
-                    <div>
-                      <span>Guardar cambios</span>
-                    </div>
-                  )}
+                  <div>
+                    <span>Guardar cambios</span>
+                  </div>
                 </button>
                 <button
                   type="button"
@@ -215,6 +211,7 @@ const mapStateToProps = (rootState: RootState) => {
     authorsToDelete: rootState.project.authorsToDelete,
     supervisorsToAdd: rootState.project.supervisorsToAdd,
     supervisorsToDelete: rootState.project.supervisorsToDelete,
+    loading: rootState.common.loading,
   };
 };
 
