@@ -1,40 +1,25 @@
 {
   "compilerOptions": {
-    "module": "es2015",
-    "target": "es2015",
-    "jsx": "react",
-    "rootDir": "src",
-    "outDir": "build",
-    "allowSyntheticDefaultImports": true,
-    "noImplicitAny": true,
-    "sourceMap": true,
-    "experimentalDecorators": true,
-    "preserveConstEnums": true,
+    "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "noImplicitReturns": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
     "moduleResolution": "node",
-    "baseUrl": "src",
-    "emitDecoratorMetadata": true,
-    "removeComments": false
+    "resolveJsonModule": true,
+    "noEmit": true,
+    "jsx": "react",
+    "isolatedModules": true,
   },
-  "filesGlob": [
-    "typings/index.d.ts",
-    "src/index.d.ts",
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "node_modules/typescript/lib/lib.es6.d.ts"
-  ],
-  "exclude": ["build", "dist", "node_modules", "__tests__", "config"],
-  "types": [
-    "node",
-    "webpack",
-    "react",
-    "react-dom",
-    "reactstrap",
-    "src/index.d.ts"
-  ],
-  "include": ["src/config.ts", "src/index.d.ts", "src/store/*/types.tsx"],
-  "compileOnSave": false
+  "include": [
+    "src"
+  ]
 }
