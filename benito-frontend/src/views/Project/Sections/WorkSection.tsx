@@ -11,10 +11,15 @@ import CustomInput from "../../../components/CustomInput/CustomInput";
 import Button from "../../../components/CustomButtons/Button";
 
 import styles from "../../../assets/jss/material-kit-react/views/landingPageSections/workStyle";
+import { Project } from "../../../types";
 
 const useStyles = makeStyles(styles);
 
-export default function WorkSection() {
+type WorkSectionProps = {
+  project: Project;
+};
+
+export default function WorkSection(props: WorkSectionProps) {
   const classes = useStyles();
   return (
     <div className={classes.section}>
@@ -34,7 +39,7 @@ export default function WorkSection() {
                   labelText="Your Name"
                   id="name"
                   formControlProps={{
-                    fullWidth: true
+                    fullWidth: true,
                   }}
                 />
               </GridItem>
@@ -43,7 +48,7 @@ export default function WorkSection() {
                   labelText="Your Email"
                   id="email"
                   formControlProps={{
-                    fullWidth: true
+                    fullWidth: true,
                   }}
                 />
               </GridItem>
@@ -52,11 +57,11 @@ export default function WorkSection() {
                 id="message"
                 formControlProps={{
                   fullWidth: true,
-                  className: classes.textArea
+                  className: classes.textArea,
                 }}
                 inputProps={{
                   multiline: true,
-                  rows: 5
+                  rows: 5,
                 }}
               />
               <GridItem xs={12} sm={12} md={4}>

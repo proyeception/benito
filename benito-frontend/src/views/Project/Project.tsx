@@ -11,7 +11,6 @@ import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import GridContainer from "../../components/Grid/GridContainer";
 import GridItem from "../../components/Grid/GridItem";
-import Button from "../../components/CustomButtons/Button";
 import HeaderLinks from "../../components/Header/HeaderLinks";
 import Parallax from "../../components/Parallax/Parallax";
 
@@ -20,63 +19,71 @@ import styles from "../../assets/jss/material-kit-react/views/landingPage";
 // Sections for this page
 import ProductSection from "./Sections/ProductSection";
 import TeamSection from "./Sections/TeamSection";
-import WorkSection from "./Sections/WorkSection";
+import DocumentsSection from "./Sections/DocumentsSection";
+import { hot } from "react-hot-loader";
+import { RouteComponentProps, withRouter } from "react-router-dom";
+import withProject from "../../hooks/withProject";
+import { PENDING, ERROR } from "../../hooks/withFetch";
 
 const dashboardRoutes: any = [];
 
 const useStyles = makeStyles(styles);
 
-export default function LandingPage(props: any) {
+type Any = any;
+
+type MatchParams = {
+  id: string;
+};
+
+interface Props extends RouteComponentProps<MatchParams>, Any {}
+
+const Project = (props: Props) => {
   const classes = useStyles();
   const { ...rest } = props;
+
+  const project = withProject(props.match.params.id);
+
+  if (project.type == PENDING) {
+    return <div>Cargan2</div>;
+  }
+
+  if (project.type == ERROR) {
+    return <div>Bueno, capo, rompiste algo, eh</div>;
+  }
+
   return (
     <div>
       <Header
         color="transparent"
         routes={dashboardRoutes}
-        brand="Material Kit React"
         rightLinks={<HeaderLinks />}
         fixed
         changeColorOnScroll={{
           height: 400,
-          color: "white"
+          color: "white",
         }}
         {...rest}
       />
-      <Parallax filter image={require("../../assets/img/landing-bg.jpg")}>
+      <Parallax filter image={project.value.pictureUrl}>
         <div className={classes.container}>
           <GridContainer>
             <GridItem xs={12} sm={12} md={6}>
-              <h1 className={classes.title}>Your Story Starts With Us.</h1>
-              <h4>
-                Every landing page needs a small description after the big bold
-                title, that{"'"}s why we added this text here. Add here all the
-                information that can make you or your product create the first
-                impression.
-              </h4>
+              <h1 className={classes.title}>{project.value.title}</h1>
               <br />
-              <Button
-                color="danger"
-                size="lg"
-                href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ref=creativetim"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <i className="fas fa-play" />
-                Watch video
-              </Button>
             </GridItem>
           </GridContainer>
         </div>
       </Parallax>
       <div className={classNames(classes.main, classes.mainRaised)}>
         <div className={classes.container}>
-          <ProductSection />
-          <TeamSection />
-          <WorkSection />
+          <ProductSection project={project.value} />
+          <TeamSection project={project.value} />
+          <DocumentsSection project={project.value} />
         </div>
       </div>
       <Footer />
     </div>
   );
-}
+};
+
+export default hot(module)(withRouter(Project));

@@ -14,9 +14,12 @@ import Menu from "@material-ui/icons/Menu";
 // core components
 import styles from "../../assets/jss/material-kit-react/components/headerStyle";
 
-const getKeyValue = <T extends object, U extends keyof T>(obj: T) => (key: U) => obj[key];
+const getKeyValue = <T extends object, U extends keyof T>(obj: T) => (key: U) =>
+  obj[key];
 
 const useStyles = makeStyles(styles);
+
+const brand = "Proyectate";
 
 export default function Header(props: any) {
   const classes = useStyles();
@@ -53,12 +56,12 @@ export default function Header(props: any) {
         .classList.remove(getKeyValue(classes)(changeColorOnScroll.color));
     }
   };
-  const { color, rightLinks, leftLinks, brand, fixed, absolute } = props;
+  const { color, rightLinks, leftLinks, fixed, absolute } = props;
   const appBarClasses = classNames({
     [classes.appBar]: true,
     [getKeyValue(classes)(color)]: color,
     [classes.absolute]: absolute,
-    [classes.fixed]: fixed
+    [classes.fixed]: fixed,
   });
   const brandComponent = <Button className={classes.title}>{brand}</Button>;
   return (
@@ -93,7 +96,7 @@ export default function Header(props: any) {
           anchor={"right"}
           open={mobileOpen}
           classes={{
-            paper: classes.drawerPaper
+            paper: classes.drawerPaper,
           }}
           onClose={handleDrawerToggle}
         >
@@ -108,5 +111,5 @@ export default function Header(props: any) {
 }
 
 Header.defaultProp = {
-  color: "white"
+  color: "white",
 };

@@ -1,7 +1,7 @@
 import { title } from "../../../material-kit-react";
 import { createStyles } from "@material-ui/core/styles";
 
-const productStyle = createStyles({
+const documentsStyle = createStyles({
   section: {
     padding: "70px 0",
     textAlign: "left",
@@ -16,6 +16,13 @@ const productStyle = createStyles({
   description: {
     color: "#999",
   },
+  documentsContainer: {
+    maxHeight: "360px",
+    overflow: "scroll",
+  },
+  document: {
+    display: "flex",
+  },
 });
 
-export default productStyle;
+export default documentsStyle;

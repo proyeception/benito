@@ -4,10 +4,11 @@ import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import "./assets/scss/material-kit-react.scss?v=1.9.0";
+import "./utils.scss";
 
 // pages for this product
 import Components from "./views/Components/Components";
-import LandingPage from "./views/LandingPage/LandingPage";
+import Project from "./views/Project/Project";
 import ProfilePage from "./views/ProfilePage/ProfilePage";
 import LoginPage from "./views/LoginPage/LoginPage";
 
@@ -21,7 +22,7 @@ ReactDOM.render(
   //<HashRouter>
   <BrowserRouter>
     <Switch>
-      <Route path="/landing-page" component={LandingPage} />
+      <Route path="/projects/:id" component={Project} />
       <Route path="/profile-page" component={ProfilePage} />
       <Route path="/login-page" component={LoginPage} />
       <Route path="/" component={Components} />

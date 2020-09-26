@@ -6,7 +6,8 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import styles from "../../assets/jss/material-kit-react/components/infoStyle";
 
-const getKeyValue = <T extends object, U extends keyof T>(obj: T) => (key: U) => obj[key];
+const getKeyValue = <T extends object, U extends keyof T>(obj: T) => (key: U) =>
+  obj[key];
 
 const useStyles = makeStyles(styles);
 
@@ -16,19 +17,23 @@ export default function InfoArea(props: any) {
   const iconWrapper = classNames({
     [classes.iconWrapper]: true,
     [getKeyValue(classes)(iconColor)]: true,
-    [classes.iconWrapperVertical]: vertical
+    [classes.iconWrapperVertical]: vertical,
   });
   const iconClasses = classNames({
     [classes.icon]: true,
-    [classes.iconVertical]: vertical
+    [classes.iconVertical]: vertical,
   });
   return (
     <div className={classes.infoArea}>
-      <div className={iconWrapper}>
-        <props.icon className={iconClasses} />
-      </div>
+      {props.icon ? (
+        <div className={iconWrapper}>
+          <props.icon className={iconClasses} />
+        </div>
+      ) : (
+        <div></div>
+      )}
       <div className={classes.descriptionWrapper}>
-        <h4 className={classes.title}>{title}</h4>
+        {props.title ? <h4 className={classes.title}>{title}</h4> : <div></div>}
         <p className={classes.description}>{description}</p>
       </div>
     </div>
@@ -36,5 +41,5 @@ export default function InfoArea(props: any) {
 }
 
 InfoArea.defaultProps = {
-  iconColor: "gray"
+  iconColor: "gray",
 };
