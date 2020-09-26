@@ -10,6 +10,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Favorite from "@material-ui/icons/Favorite";
 
 import styles from "../../assets/jss/material-kit-react/components/footerStyle";
+import { Facebook, GitHub, Instagram, Twitter } from "@material-ui/icons";
 
 const useStyles = makeStyles(styles);
 
@@ -18,11 +19,11 @@ export default function Footer(props: any) {
   const { whiteFont } = props;
   const footerClasses = classNames({
     [classes.footer]: true,
-    [classes.footerWhiteFont]: whiteFont
+    [classes.footerWhiteFont]: whiteFont,
   });
   const aClasses = classNames({
     [classes.a]: true,
-    [classes.footerWhiteFont]: whiteFont
+    [classes.footerWhiteFont]: whiteFont,
   });
   return (
     <footer className={footerClasses}>
@@ -31,53 +32,44 @@ export default function Footer(props: any) {
           <List className={classes.list}>
             <ListItem className={classes.inlineBlock}>
               <a
-                href="https://www.creative-tim.com/?ref=mkr-footer"
+                href="https://www.twitter.com/proyectate"
                 className={classes.block}
                 target="_blank"
               >
-                Creative Tim
+                <Twitter />
               </a>
             </ListItem>
             <ListItem className={classes.inlineBlock}>
               <a
-                href="https://www.creative-tim.com/presentation?ref=mkr-footer"
+                href="https://www.github.com/proyeception"
                 className={classes.block}
                 target="_blank"
               >
-                About us
+                <GitHub />
               </a>
             </ListItem>
             <ListItem className={classes.inlineBlock}>
               <a
-                href="http://blog.creative-tim.com/?ref=mkr-footer"
+                href="http://www.facebook.com/proyectate"
                 className={classes.block}
                 target="_blank"
               >
-                Blog
+                <Facebook />
               </a>
             </ListItem>
             <ListItem className={classes.inlineBlock}>
               <a
-                href="https://www.creative-tim.com/license?ref=mkr-footer"
+                href="https://www.instagram.com/proyectate"
                 className={classes.block}
                 target="_blank"
               >
-                Licenses
+                <Instagram />
               </a>
             </ListItem>
           </List>
         </div>
         <div className={classes.right}>
-          &copy; {new Date().getFullYear()} , made with{" "}
-          <Favorite className={classes.icon} /> by{" "}
-          <a
-            href="https://www.creative-tim.com?ref=mkr-footer"
-            className={aClasses}
-            target="_blank"
-          >
-            Creative Tim
-          </a>{" "}
-          for a better web.
+          &copy; {new Date().getFullYear()} , Proyectate
         </div>
       </div>
     </footer>

@@ -13,6 +13,8 @@ import Drawer from "@material-ui/core/Drawer";
 import Menu from "@material-ui/icons/Menu";
 // core components
 import styles from "../../assets/jss/material-kit-react/components/headerStyle";
+import { hot } from "react-hot-loader";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 
 const getKeyValue = <T extends object, U extends keyof T>(obj: T) => (key: U) =>
   obj[key];
@@ -21,7 +23,11 @@ const useStyles = makeStyles(styles);
 
 const brand = "Proyectate";
 
-export default function Header(props: any) {
+type Any = any;
+
+interface HeaderProps extends RouteComponentProps, Any {}
+
+const Header = (props: HeaderProps) => {
   const classes = useStyles();
   const [mobileOpen, setMobileOpen] = React.useState(false);
   React.useEffect(() => {
@@ -63,7 +69,11 @@ export default function Header(props: any) {
     [classes.absolute]: absolute,
     [classes.fixed]: fixed,
   });
-  const brandComponent = <Button className={classes.title}>{brand}</Button>;
+  const brandComponent = (
+    <Button onClick={() => props.history.push("/")} className={classes.title}>
+      {brand}
+    </Button>
+  );
   return (
     <AppBar className={appBarClasses}>
       <Toolbar className={classes.container}>
@@ -108,8 +118,10 @@ export default function Header(props: any) {
       </Hidden>
     </AppBar>
   );
-}
+};
 
 Header.defaultProp = {
   color: "white",
 };
+
+export default hot(module)(withRouter(Header));

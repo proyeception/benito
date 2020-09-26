@@ -21,15 +21,18 @@ import CustomInput from "../../components/CustomInput/CustomInput";
 
 import styles from "../../assets/jss/material-kit-react/views/loginPage";
 
-import image from "../../assets/img/bg7.jpg";
+const image =
+  "https://res.cloudinary.com/proyectate/image/upload/v1600383533/proyectate_90e388a10b.jpg";
+import { hot } from "react-hot-loader";
 
-const getKeyValue = <T extends object, U extends keyof T>(obj: T) => (key: U) => obj[key];
+const getKeyValue = <T extends object, U extends keyof T>(obj: T) => (key: U) =>
+  obj[key];
 
 const useStyles = makeStyles(styles);
 
-export default function LoginPage(props: any) {
+const LoginPage = (props: any) => {
   const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
-  setTimeout(function() {
+  setTimeout(function () {
     setCardAnimation("");
   }, 700);
   const classes = useStyles();
@@ -48,13 +51,17 @@ export default function LoginPage(props: any) {
         style={{
           backgroundImage: "url(" + image + ")",
           backgroundSize: "cover",
-          backgroundPosition: "top center"
+          backgroundPosition: "top center",
         }}
       >
         <div className={classes.container}>
           <GridContainer justify="center">
             <GridItem xs={12} sm={12} md={4}>
-              <Card className={getKeyValue(classes)(cardAnimaton as (keyof typeof styles))}>
+              <Card
+                className={getKeyValue(classes)(
+                  cardAnimaton as keyof typeof styles
+                )}
+              >
                 <form className={classes.form}>
                   <CardHeader color="primary" className={classes.cardHeader}>
                     <h4>Login</h4>
@@ -94,7 +101,7 @@ export default function LoginPage(props: any) {
                       labelText="First Name..."
                       id="first"
                       formControlProps={{
-                        fullWidth: true
+                        fullWidth: true,
                       }}
                       inputProps={{
                         type: "text",
@@ -102,14 +109,14 @@ export default function LoginPage(props: any) {
                           <InputAdornment position="end">
                             <People className={classes.inputIconsColor} />
                           </InputAdornment>
-                        )
+                        ),
                       }}
                     />
                     <CustomInput
                       labelText="Email..."
                       id="email"
                       formControlProps={{
-                        fullWidth: true
+                        fullWidth: true,
                       }}
                       inputProps={{
                         type: "email",
@@ -117,14 +124,14 @@ export default function LoginPage(props: any) {
                           <InputAdornment position="end">
                             <Email className={classes.inputIconsColor} />
                           </InputAdornment>
-                        )
+                        ),
                       }}
                     />
                     <CustomInput
                       labelText="Password"
                       id="pass"
                       formControlProps={{
-                        fullWidth: true
+                        fullWidth: true,
                       }}
                       inputProps={{
                         type: "password",
@@ -135,7 +142,7 @@ export default function LoginPage(props: any) {
                             </Icon>
                           </InputAdornment>
                         ),
-                        autoComplete: "off"
+                        autoComplete: "off",
                       }}
                     />
                   </CardBody>
@@ -153,4 +160,6 @@ export default function LoginPage(props: any) {
       </div>
     </div>
   );
-}
+};
+
+export default hot(module)(LoginPage);

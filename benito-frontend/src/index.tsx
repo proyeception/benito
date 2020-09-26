@@ -26,7 +26,7 @@ ReactDOM.render(
       <Route path="/projects/:id" component={ProjectPage} />
       <Route path="/authors/:id" component={AuthorPage} />
       <Route path="/supervisors/:id" component={SupervisorPage} />
-      <Route path="/login-page" component={LoginPage} />
+      <Route path="/login" component={LoginPage} />
       <Route path="/" component={Components} />
     </Switch>
   </BrowserRouter>,
