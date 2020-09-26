@@ -4,9 +4,6 @@ import classNames from "classnames";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // @material-ui/icons
-import Camera from "@material-ui/icons/Camera";
-import Palette from "@material-ui/icons/Palette";
-import Favorite from "@material-ui/icons/Favorite";
 // core components
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
@@ -14,49 +11,80 @@ import Button from "../../components/CustomButtons/Button";
 import GridContainer from "../../components/Grid/GridContainer";
 import GridItem from "../../components/Grid/GridItem";
 import HeaderLinks from "../../components/Header/HeaderLinks";
-import NavPills from "../../components/NavPills/NavPills";
 import Parallax from "../../components/Parallax/Parallax";
 
-import profile from "../../assets/img/faces/christian.jpg";
-
-import studio1 from "../../assets/img/examples/studio-1.jpg";
-import studio2 from "../../assets/img/examples/studio-2.jpg";
-import studio3 from "../../assets/img/examples/studio-3.jpg";
-import studio4 from "../../assets/img/examples/studio-4.jpg";
-import studio5 from "../../assets/img/examples/studio-5.jpg";
-import work1 from "../../assets/img/examples/olu-eletu.jpg";
-import work2 from "../../assets/img/examples/clem-onojeghuo.jpg";
-import work3 from "../../assets/img/examples/cynthia-del-rio.jpg";
-import work4 from "../../assets/img/examples/mariya-georgieva.jpg";
-import work5 from "../../assets/img/examples/clem-onojegaw.jpg";
-
 import styles from "../../assets/jss/material-kit-react/views/profilePage";
+import { hot } from "react-hot-loader";
+import { Role } from "../../types";
+import withUser from "../../hooks/withUser";
+import { RouteComponentProps } from "react-router-dom";
+import { ERROR, PENDING } from "../../hooks/withFetch";
+import { socialToIcon } from "../../functions/user";
+import { Link } from "react-router-dom";
+import { Card } from "@material-ui/core";
+import CardBody from "../../components/Card/CardBody";
+import CardFooter from "../../components/Card/CardFooter";
+import { cardTitle, title } from "../../assets/jss/material-kit-react";
 
-const useStyles = makeStyles(styles);
+const useStyles = makeStyles({
+  ...styles,
+  cardTitle,
+  textMuted: {
+    color: "#6c757d",
+  },
+});
 
-export default function ProfilePage(props: any) {
+type Props = { role: Role };
+
+type MatchParams = {
+  id: string;
+};
+
+interface ProfilePageProps extends Props, RouteComponentProps<MatchParams> {}
+
+const ProfilePage = (props: ProfilePageProps) => {
   const classes = useStyles();
   const { ...rest } = props;
   const imageClasses = classNames(
     classes.imgRaised,
     classes.imgRoundedCircle,
-    classes.imgFluid
+    classes.imgFluid,
+    classes.imgWhiteBackground
   );
   const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
+
+  const organizationImageClasses = classNames(
+    classes.organization,
+    classes.imgRoundedCircle
+  );
+
+  const user = withUser(props.role, props.match.params.id);
+
+  if (user.type == PENDING) {
+    return <div>Cargan2</div>;
+  }
+
+  if (user.type == ERROR) {
+    return <div>Uh loco rompiste algo eh</div>;
+  }
+
   return (
     <div>
       <Header
         color="transparent"
-        brand="Material Kit React"
         rightLinks={<HeaderLinks />}
         fixed
         changeColorOnScroll={{
           height: 200,
-          color: "white"
+          color: "white",
         }}
         {...rest}
       />
-      <Parallax small filter image={require("../../assets/img/profile-bg.jpg")} />
+      <Parallax
+        small
+        filter
+        image={require("../../assets/img/profile-bg.jpg")}
+      />
       <div className={classNames(classes.main, classes.mainRaised)}>
         <div>
           <div className={classes.container}>
@@ -64,150 +92,102 @@ export default function ProfilePage(props: any) {
               <GridItem xs={12} sm={12} md={6}>
                 <div className={classes.profile}>
                   <div>
-                    <img src={profile} alt="..." className={imageClasses} />
+                    <img
+                      src={user.value.profilePicUrl?.valueOf()}
+                      alt={user.value.fullName.valueOf()}
+                      className={imageClasses}
+                    />
                   </div>
                   <div className={classes.name}>
-                    <h3 className={classes.title}>Christian Louboutin</h3>
-                    <h6>DESIGNER</h6>
-                    {/* <Button justIcon link className={classes.margin5}> */}
-                    <Button justIcon link>
-                      <i className={"fab fa-twitter"} />
-                    </Button>
-                    {/* <Button justIcon link className={classes.margin5}> */}
-                    <Button justIcon link>
-                      <i className={"fab fa-instagram"} />
-                    </Button>
-                    {/* <Button justIcon link className={classes.margin5}> */}
-                    <Button justIcon link>
-                      <i className={"fab fa-facebook"} />
-                    </Button>
+                    <h3 className={classes.title}>{user.value.fullName}</h3>
+                    <h6>{user.value.username}</h6>
+                    {user.value.socials.map((s, idx) => (
+                      <a
+                        target="_blank"
+                        href={s.socialProfileUrl.valueOf()}
+                        key={idx}
+                      >
+                        <Button justIcon link>
+                          {socialToIcon(s)}
+                        </Button>
+                      </a>
+                    ))}
                   </div>
                 </div>
               </GridItem>
             </GridContainer>
             <div className={classes.description}>
-              <p>
-                An artist of considerable range, Chet Faker — the name taken by
-                Melbourne-raised, Brooklyn-based Nick Murphy — writes, performs
-                and records all of his own music, giving it a warm, intimate
-                feel with a solid groove structure.{" "}
-              </p>
+              <p>{user.value.about}</p>
             </div>
-            <GridContainer justify="center">
-              <GridItem xs={12} sm={12} md={8} className={classes.navWrapper}>
-                <NavPills
-                  alignCenter
-                  color="primary"
-                  tabs={[
-                    {
-                      tabButton: "Studio",
-                      tabIcon: Camera,
-                      tabContent: (
-                        <GridContainer justify="center">
-                          <GridItem xs={12} sm={12} md={4}>
-                            <img
-                              alt="..."
-                              src={studio1}
-                              className={navImageClasses}
-                            />
-                            <img
-                              alt="..."
-                              src={studio2}
-                              className={navImageClasses}
-                            />
-                          </GridItem>
-                          <GridItem xs={12} sm={12} md={4}>
-                            <img
-                              alt="..."
-                              src={studio5}
-                              className={navImageClasses}
-                            />
-                            <img
-                              alt="..."
-                              src={studio4}
-                              className={navImageClasses}
-                            />
-                          </GridItem>
-                        </GridContainer>
-                      )
-                    },
-                    {
-                      tabButton: "Work",
-                      tabIcon: Palette,
-                      tabContent: (
-                        <GridContainer justify="center">
-                          <GridItem xs={12} sm={12} md={4}>
-                            <img
-                              alt="..."
-                              src={work1}
-                              className={navImageClasses}
-                            />
-                            <img
-                              alt="..."
-                              src={work2}
-                              className={navImageClasses}
-                            />
-                            <img
-                              alt="..."
-                              src={work3}
-                              className={navImageClasses}
-                            />
-                          </GridItem>
-                          <GridItem xs={12} sm={12} md={4}>
-                            <img
-                              alt="..."
-                              src={work4}
-                              className={navImageClasses}
-                            />
-                            <img
-                              alt="..."
-                              src={work5}
-                              className={navImageClasses}
-                            />
-                          </GridItem>
-                        </GridContainer>
-                      )
-                    },
-                    {
-                      tabButton: "Favorite",
-                      tabIcon: Favorite,
-                      tabContent: (
-                        <GridContainer justify="center">
-                          <GridItem xs={12} sm={12} md={4}>
-                            <img
-                              alt="..."
-                              src={work4}
-                              className={navImageClasses}
-                            />
-                            <img
-                              alt="..."
-                              src={studio3}
-                              className={navImageClasses}
-                            />
-                          </GridItem>
-                          <GridItem xs={12} sm={12} md={4}>
-                            <img
-                              alt="..."
-                              src={work2}
-                              className={navImageClasses}
-                            />
-                            <img
-                              alt="..."
-                              src={work1}
-                              className={navImageClasses}
-                            />
-                            <img
-                              alt="..."
-                              src={studio1}
-                              className={navImageClasses}
-                            />
-                          </GridItem>
-                        </GridContainer>
-                      )
-                    }
-                  ]}
-                />
+            <GridContainer justify="center" className={classes.description}>
+              <GridItem xs={12} sm={12} md={12}>
+                <h3>Miembro de estas organizaciones</h3>
               </GridItem>
+              {user.value.organizations.map((o, idx) => (
+                <GridItem key={idx}>
+                  <Link
+                    to={`/search?organization=${o.name.valueOf()}`}
+                    className="normalize-link"
+                  >
+                    <img
+                      className={organizationImageClasses}
+                      src={o.iconUrl.valueOf()}
+                      alt={o.displayName.valueOf()}
+                    />
+                    <h6 className="underline-hover">{o.displayName}</h6>
+                  </Link>
+                </GridItem>
+              ))}
+            </GridContainer>
+            <GridContainer justify="center">
+              <GridItem xs={12} sm={12} md={12} style={{ textAlign: "center" }}>
+                <h3 className={classes.description}>
+                  Autor de estos proyectos
+                </h3>
+              </GridItem>
+              {user.value.projects.map((p, idx) => (
+                <GridItem
+                  xs={12}
+                  sm={12}
+                  md={6}
+                  className={classes.navWrapper}
+                  key={idx}
+                >
+                  <Card style={{ textAlign: "left" }}>
+                    <Link to={`/projects/${p.id}`} className="normalize-link">
+                      <img
+                        src={p.pictureUrl?.valueOf()}
+                        alt={p.title.valueOf()}
+                        className={classNames(
+                          classes.imgCardTop,
+                          classes.projectCard
+                        )}
+                      />
+                    </Link>
+                    <CardBody style={{ height: "192px" }}>
+                      <Link to={`/projects/${p.id}`} className="normalize-link">
+                        <h4 className={classes.imgCardTop + "underline-hover"}>
+                          {p.title}
+                        </h4>
+                      </Link>
+                      <p
+                        style={{
+                          height: "64px",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                        }}
+                      >
+                        {p.description}
+                      </p>
+                      <p>
+                        <small className={classes.textMuted}>
+                          {p.organization.displayName}
+                        </small>
+                      </p>
+                    </CardBody>
+                  </Card>
+                </GridItem>
+              ))}
             </GridContainer>
           </div>
         </div>
@@ -215,4 +195,6 @@ export default function ProfilePage(props: any) {
       <Footer />
     </div>
   );
-}
+};
+
+export default hot(module)(ProfilePage);

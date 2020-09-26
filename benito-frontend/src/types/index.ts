@@ -21,6 +21,7 @@ export type Person = {
   projects: Array<Project>;
   socials: Array<Social>;
   contact?: Contact;
+  about?: String;
 };
 
 export type Category = {

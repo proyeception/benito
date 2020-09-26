@@ -119,9 +119,7 @@ class AuthenticationServiceTest : Spec() {
                         fullName = "Benito Quinquela",
                         organizations = emptyList(),
                         projects = emptyList(),
-                        socials = emptyList(),
-                        profilePicUrl = null,
-                        contact = null
+                        socials = emptyList()
                     )
                 )
                 on(hashMock.sha256(eq("456"))).thenReturn("123")

@@ -27,7 +27,7 @@ open class AuthenticationService(
     open fun authenticateOrCreateAuthor(login: LoginDTO): String {
         val maybePerson = userService.findAuthorByGoogleId(login.googleUserId)
 
-        val (userId, profilePic) = if (maybePerson == null) {
+        val (userId, _) = if (maybePerson == null) {
             LOGGER.info("User does not exist. Creating...")
             val person = userService.createAuthor(
                 fullName = login.fullName,

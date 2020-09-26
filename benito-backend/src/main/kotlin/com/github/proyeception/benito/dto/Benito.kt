@@ -51,13 +51,14 @@ data class ProjectDTO(
 
 data class PersonDTO(
     val id: String,
-    val username: String?,
+    val username: String? = null,
     val fullName: String,
     val organizations: List<OrganizationDTO>,
-    val profilePicUrl: String?,
+    val profilePicUrl: String? = null,
     val projects: List<ProjectRefDTO>,
     val socials: List<SocialDTO>,
-    val contact: ContactDTO?
+    val contact: ContactDTO? = null,
+    val about: String? = null
 )
 
 data class OrganizationRefDTO(

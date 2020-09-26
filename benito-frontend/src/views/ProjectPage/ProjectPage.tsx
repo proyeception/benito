@@ -37,7 +37,7 @@ type MatchParams = {
 
 interface Props extends RouteComponentProps<MatchParams>, Any {}
 
-const Project = (props: Props) => {
+const ProjectPage = (props: Props) => {
   const classes = useStyles();
   const { ...rest } = props;
 
@@ -86,4 +86,4 @@ const Project = (props: Props) => {
   );
 };
 
-export default hot(module)(withRouter(Project));
+export default hot(module)(withRouter(ProjectPage));

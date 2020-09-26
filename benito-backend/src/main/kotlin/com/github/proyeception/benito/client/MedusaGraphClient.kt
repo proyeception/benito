@@ -84,6 +84,7 @@ open class MedusaGraphClient(
                     id
                     url
                   }
+                  about
                 }
                 supervisors {
                   id
@@ -93,6 +94,7 @@ open class MedusaGraphClient(
                     id
                     url
                   }
+                  about
                 }
                 documentation {
                   id

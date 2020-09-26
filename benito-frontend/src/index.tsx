@@ -8,9 +8,10 @@ import "./utils.scss";
 
 // pages for this product
 import Components from "./views/Components/Components";
-import Project from "./views/Project/Project";
-import ProfilePage from "./views/ProfilePage/ProfilePage";
+import ProjectPage from "./views/ProjectPage/ProjectPage";
 import LoginPage from "./views/LoginPage/LoginPage";
+import AuthorPage from "./views/ProfilePage/AuthorPage";
+import SupervisorPage from "./views/ProfilePage/SupervisorPage";
 
 //var hist = createBrowserHistory();
 
@@ -22,8 +23,9 @@ ReactDOM.render(
   //<HashRouter>
   <BrowserRouter>
     <Switch>
-      <Route path="/projects/:id" component={Project} />
-      <Route path="/profile-page" component={ProfilePage} />
+      <Route path="/projects/:id" component={ProjectPage} />
+      <Route path="/authors/:id" component={AuthorPage} />
+      <Route path="/supervisors/:id" component={SupervisorPage} />
       <Route path="/login-page" component={LoginPage} />
       <Route path="/" component={Components} />
     </Switch>
