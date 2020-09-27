@@ -15,7 +15,7 @@ export function setProjectEditionRole({
   role,
 }: {
   project: Project;
-  userId?: String;
+  userId?: string;
   role?: Role;
 }) {
   if (
@@ -36,11 +36,11 @@ export function setProjectEditionRole({
 }
 
 export function updateContent(
-  title: String,
-  description: String,
-  extraContent: String,
-  pictureUrl: String,
-  projectId: String
+  title: string,
+  description: string,
+  extraContent: string,
+  pictureUrl: string,
+  projectId: string
 ) {
   let config: AxiosRequestConfig = {
     url: `${benitoHost}/benito/projects/${projectId}/content`,
@@ -58,7 +58,7 @@ export function updateContent(
 
 export function addUsersToProject(
   authors: Array<Person>,
-  projectId: String,
+  projectId: string,
   userType: "authors" | "supervisors"
 ) {
   let config: AxiosRequestConfig = {
@@ -75,7 +75,7 @@ export function addUsersToProject(
 export function setProjectUsers(
   authors: Array<Person>,
   supervisors: Array<Person>,
-  projectId: String
+  projectId: string
 ) {
   let config: AxiosRequestConfig = {
     url: `${benitoHost}/benito/projects/${projectId}/users`,

@@ -56,7 +56,7 @@ export async function openLocalStoredSession(
 export function startLogin(
   login: LoginData,
   history: History,
-  loginPath: String
+  loginPath: string
 ) {
   let config: AxiosRequestConfig = {
     method: "POST",
@@ -70,7 +70,7 @@ export function startLogin(
     .catch(console.error);
 }
 
-export function clearSession(token: String) {
+export function clearSession(token: string) {
   axios.delete(`${benitoHost}/benito/session`, {
     headers: { "x-qui-token": token },
   });

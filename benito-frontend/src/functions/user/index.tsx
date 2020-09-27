@@ -10,7 +10,7 @@ import TwitterIcon from "@material-ui/icons/Twitter";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import InstagramIcon from "@material-ui/icons/Instagram";
 
-export async function fetchUser(collection: String, userId: String) {
+export async function fetchUser(collection: string, userId: string) {
   let config: AxiosRequestConfig = {
     method: "GET",
     url: `${benitoHost}/benito/${collection}/${userId}`,
@@ -31,8 +31,8 @@ export function mapRoleToCollection(role: Role): "authors" | "supervisors" {
 }
 
 export async function updateUser(
-  collection: String,
-  userId: String,
+  collection: string,
+  userId: string,
   user: UpdateUser
 ) {
   let config: AxiosRequestConfig = {

@@ -23,6 +23,6 @@ export function buildQueryParams({
   //params = params.concat(this.buildQueryParamProperty("documentation", this.state.documentation))
 }
 
-function buildQueryParamProperty(key: String, value?: String) {
+function buildQueryParamProperty(key: string, value?: string) {
   return value ? key + "=" + value + "&" : "";
 }

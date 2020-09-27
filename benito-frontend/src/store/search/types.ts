@@ -13,27 +13,27 @@ export const UPDATE_ORGANIZATION = "UPDATE_ORGANIZATION";
 
 interface UpdateTitleAction {
   type: typeof UPDATE_TITLE;
-  payload: String;
+  payload: string;
 }
 
 interface UpdateFromDateAction {
   type: typeof UPDATE_FROM_DATE;
-  payload: String;
+  payload: string;
 }
 
 interface UpdateToDateAction {
   type: typeof UPDATE_TO_DATE;
-  payload: String;
+  payload: string;
 }
 
 interface UpdateKeywordAction {
   type: typeof UPDATE_KEYWORD;
-  payload: String;
+  payload: string;
 }
 
 interface UpdateDocumentationAction {
   type: typeof UPDATE_DOCUMENTATION;
-  payload: String;
+  payload: string;
 }
 
 interface UpdateCategoryAction {
@@ -57,7 +57,7 @@ interface ResetSearchParametersAction {
 
 interface UpdateOrganization {
   type: typeof UPDATE_ORGANIZATION;
-  payload: String;
+  payload: string;
 }
 export type SearchAction =
   | UpdateTitleAction
@@ -72,13 +72,13 @@ export type SearchAction =
   | UpdateOrganization;
 
 export type SearchState = {
-  title: String;
+  title: string;
   projects: Array<Project>;
   category: Category | null;
-  fromDate: String;
-  toDate: String;
-  keyword: String;
-  documentation: String;
+  fromDate: string;
+  toDate: string;
+  keyword: string;
+  documentation: string;
   orderBy: SortMethod;
-  organization: String;
+  organization: string;
 };

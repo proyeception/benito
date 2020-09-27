@@ -1,58 +1,58 @@
 export type Project = {
-  id: String;
-  title: String;
-  description: String;
+  id: string;
+  title: string;
+  description: string;
   pictureUrl?: string;
   authors: Array<Person>;
   supervisors: Array<Person>;
   creationDate: Date;
-  tags: Array<String>;
-  extraContent: String;
+  tags: Array<string>;
+  extraContent: string;
   documentation: Array<Documentation>;
   organization: Organization;
 };
 
 export type Person = {
-  username: String;
-  fullName: String;
-  id: String;
-  profilePicUrl?: String;
+  username: string;
+  fullName: string;
+  id: string;
+  profilePicUrl?: string;
   organizations: Array<Organization>;
   projects: Array<Project>;
   socials: Array<Social>;
   contact?: Contact;
-  about?: String;
+  about?: string;
 };
 
 export type Category = {
-  name: String;
-  imageUrl: String;
-  tagName: String;
+  name: string;
+  imageUrl: string;
+  tagName: string;
 };
 
 export type Documentation = {
-  fileName: String;
-  id: String;
-  driveId: String;
+  fileName: string;
+  id: string;
+  driveId: string;
 };
 
 export type Organization = {
-  id: String;
-  displayName: String;
-  name: String;
-  iconUrl: String;
+  id: string;
+  displayName: string;
+  name: string;
+  iconUrl: string;
   authors: Array<Person>;
   supervisors: Array<Person>;
 };
 
 export type Social = {
-  socialName: String;
-  socialProfileUrl: String;
+  socialName: string;
+  socialProfileUrl: string;
 };
 
 export type Contact = {
-  phone?: String;
-  mail?: String;
+  phone?: string;
+  mail?: string;
 };
 
 export type Role = "SUPERVISOR" | "AUTHOR";
@@ -60,30 +60,30 @@ export type Role = "SUPERVISOR" | "AUTHOR";
 export type ProjectEditionRole = "AUTHOR" | "SUPERVISOR" | "VISITOR";
 
 export type SessionInfo = {
-  userId: String;
+  userId: string;
   role: Role;
 };
 
 export type LoginData = {
-  googleUserId: String;
-  fullName: String;
-  mail: String;
-  profilePictureUrl: String;
-  token: String;
+  googleUserId: string;
+  fullName: string;
+  mail: string;
+  profilePictureUrl: string;
+  token: string;
 };
 
 export type ProjectEdition = {
-  title?: String;
-  description?: String;
-  extraContent?: String;
-  pictureUrl?: String;
+  title?: string;
+  description?: string;
+  extraContent?: string;
+  pictureUrl?: string;
 };
 
 export type UpdateUser = {
-  username?: String;
-  fullName?: String;
-  mail?: String;
-  phone?: String;
+  username?: string;
+  fullName?: string;
+  mail?: string;
+  phone?: string;
   socials?: Array<Social>;
 };
 

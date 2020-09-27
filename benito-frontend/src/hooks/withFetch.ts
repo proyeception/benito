@@ -22,7 +22,7 @@ interface FetchPending {
 
 export type FetchStatus<T> = FetchSuccess<T> | FetchError | FetchPending;
 
-export default function withFetch<T>(path: String): FetchStatus<T> {
+export default function withFetch<T>(path: string): FetchStatus<T> {
   const [status, setFetch] = useState<FetchStatus<T>>({ type: PENDING });
 
   useEffect(() => {

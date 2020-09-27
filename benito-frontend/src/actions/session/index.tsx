@@ -9,7 +9,7 @@ import {
 } from "../../store/session/types";
 import { SessionInfo } from "../../types";
 
-export function updateSessionToken(token: String): SessionAction {
+export function updateSessionToken(token: string): SessionAction {
   return {
     type: UPDATE_SESSION_TOKEN,
     payload: token,
@@ -51,7 +51,7 @@ export function finishFetching(): SessionAction {
 }
 
 export function updateSessionProfilePicture(
-  profilePicUrl?: String
+  profilePicUrl?: string
 ): SessionAction {
   return {
     type: UPDATE_SESSION_PROFILE_PICTURE,

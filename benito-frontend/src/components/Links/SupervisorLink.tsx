@@ -3,7 +3,7 @@ import { hot } from "react-hot-loader";
 import { Link } from "react-router-dom";
 
 type SupervisorLinkProps = {
-  id: String;
+  id: string;
   children: React.ReactNode;
 };
 

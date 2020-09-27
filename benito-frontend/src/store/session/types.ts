@@ -9,7 +9,7 @@ export const UPDATE_SESSION_PROFILE_PICTURE = "UPDATE_SESSION_PROFILE_PICTURE";
 
 interface UpdateSessionTokenAction {
   type: typeof UPDATE_SESSION_TOKEN;
-  payload: String;
+  payload: string;
 }
 interface UpdateIsLoggedInAction {
   type: typeof UPDATE_IS_LOGGED_IN;
@@ -32,7 +32,7 @@ interface InvalidateSessionAction {
 
 interface UpdateSessionProfilePictureAction {
   type: typeof UPDATE_SESSION_PROFILE_PICTURE;
-  payload?: String;
+  payload?: string;
 }
 
 export type SessionAction =
@@ -44,9 +44,9 @@ export type SessionAction =
   | UpdateSessionProfilePictureAction;
 
 export type SessionState = {
-  token?: String;
-  userId?: String;
-  profilePicture?: String;
+  token?: string;
+  userId?: string;
+  profilePicture?: string;
   isLoggedIn: Boolean;
   fetching: Boolean;
   role?: Role;

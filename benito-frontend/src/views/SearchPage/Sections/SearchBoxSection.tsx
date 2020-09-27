@@ -38,6 +38,7 @@ interface SearchBoxSectionProps extends RouteChildrenProps<SearchParams> {
   categories: Array<Category>;
   category: Category | null;
   sort?: SortMethod;
+  title?: string;
 }
 
 const SearchBoxSection = (props: SearchBoxSectionProps) => {
@@ -183,6 +184,9 @@ const mapStateToProps = (rootState: RootState) => {
     title: rootState.search.title,
     category: rootState.search.category,
     sort: rootState.search.orderBy,
+    from: rootState.search.fromDate,
+    to: rootState.search.toDate,
+    organization: rootState.search.organization,
   };
 };
 

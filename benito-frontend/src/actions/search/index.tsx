@@ -12,7 +12,7 @@ import {
 } from "../../store/search/types";
 import { Category, Project, SortMethod } from "../../types";
 
-export function updateTitle(name: String): SearchAction {
+export function updateTitle(name: string): SearchAction {
   return {
     type: UPDATE_TITLE,
     payload: name,
@@ -33,28 +33,28 @@ export function updateProjects(projects: Array<Project>): SearchAction {
   };
 }
 
-export function updateFromDate(fromDate: String): SearchAction {
+export function updateFromDate(fromDate: string): SearchAction {
   return {
     type: UPDATE_FROM_DATE,
     payload: fromDate,
   };
 }
 
-export function updateToDate(toDate: String): SearchAction {
+export function updateToDate(toDate: string): SearchAction {
   return {
     type: UPDATE_TO_DATE,
     payload: toDate,
   };
 }
 
-export function updateKeyword(keyword: String): SearchAction {
+export function updateKeyword(keyword: string): SearchAction {
   return {
     type: UPDATE_KEYWORD,
     payload: keyword,
   };
 }
 
-export function updateDocumentation(documentation: String): SearchAction {
+export function updateDocumentation(documentation: string): SearchAction {
   return {
     type: UPDATE_DOCUMENTATION,
     payload: documentation,

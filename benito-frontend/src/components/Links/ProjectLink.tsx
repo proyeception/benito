@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 type ProjectLinkProps = {
   children: React.ReactNode;
-  id: String;
+  id: string;
 };
 
 const ProjectLink = (props: ProjectLinkProps) => (
