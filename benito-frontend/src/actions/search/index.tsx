@@ -1,6 +1,6 @@
 import {
   SearchAction,
-  UPDATE_NAME,
+  UPDATE_TITLE,
   UPDATE_CATEGORY,
   UPDATE_PROJECTS,
   UPDATE_FROM_DATE,
@@ -8,19 +8,18 @@ import {
   UPDATE_KEYWORD,
   UPDATE_DOCUMENTATION,
   UPDATE_SORT_METHOD,
-  SortMethod,
   RESET_SEARCH_PARAMETERS,
 } from "../../store/search/types";
-import { Project } from "../../types";
+import { Category, Project, SortMethod } from "../../types";
 
-export function updateName(name: String): SearchAction {
+export function updateTitle(name: String): SearchAction {
   return {
-    type: UPDATE_NAME,
+    type: UPDATE_TITLE,
     payload: name,
   };
 }
 
-export function updateCategory(category: String): SearchAction {
+export function updateCategory(category: Category): SearchAction {
   return {
     type: UPDATE_CATEGORY,
     payload: category,

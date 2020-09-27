@@ -86,3 +86,23 @@ export type UpdateUser = {
   phone?: String;
   socials?: Array<Social>;
 };
+
+export enum SortMethod {
+  DateAsc = "DATE_ASC",
+  DateDesc = "DATE_DESC",
+  AlphaAsc = "ALPHA_ASC",
+  AlphaDesc = "ALPHA_DESC",
+  ViewsAsc = "VIEWS_ASC",
+  ViewsDesc = "VIEWS_DESC",
+}
+
+export type SearchParams = {
+  title?: string;
+  category?: string;
+  fromDate?: string;
+  toDate?: string;
+  keyword?: string;
+  documentation?: string;
+  organization?: string;
+  orderBy?: SortMethod;
+};

@@ -1,50 +1,22 @@
-import axios, { AxiosRequestConfig, AxiosPromise } from "axios";
-import { benitoHost } from "../../config";
-import { SortMethod } from "../../store/search/types";
-import { Project } from "../../types";
-
-export async function findById(projectId: String) {
-  let config: AxiosRequestConfig = {
-    method: "GET",
-    url: `${benitoHost}/benito/projects/${projectId}`,
-  };
-
-  return axios.request<Project>(config).then((res) => res.data);
-}
-
-export interface Params {
-  name?: string;
-  category?: string;
-  fromDate?: string;
-  toDate?: string;
-  keyword?: string;
-  documentation?: string;
-  orderBy?: SortMethod;
-}
-
-export function fetchProjects(params: Params): AxiosPromise<Array<Project>> {
-  let config: AxiosRequestConfig = {
-    url: `${benitoHost}/benito/projects${buildQueryParams(params)}`,
-  };
-
-  return axios.request<Array<Project>>(config);
-}
+import { SearchParams } from "../../types";
 
 export function buildQueryParams({
-  name,
+  title,
   category,
   fromDate,
   toDate,
   orderBy,
   keyword,
-}: Params) {
+  organization,
+}: SearchParams) {
   return "?"
-    .concat(buildQueryParamProperty("name", name))
+    .concat(buildQueryParamProperty("title", title))
     .concat(buildQueryParamProperty("category", category))
     .concat(buildQueryParamProperty("from", fromDate))
     .concat(buildQueryParamProperty("to", toDate))
     .concat(buildQueryParamProperty("orderBy", orderBy))
     .concat(buildQueryParamProperty("keyword", keyword))
+    .concat(buildQueryParamProperty("organization", organization))
     .slice(0, -1);
   //TODO
   //params = params.concat(this.buildQueryParamProperty("keyword", this.state.keyword))

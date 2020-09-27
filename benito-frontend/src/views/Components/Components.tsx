@@ -36,15 +36,14 @@ export default function Components(props: any) {
   const classes = useStyles();
   const { ...rest } = props;
   return (
-    <div>      
+    <div>
       <Header
-        brand="Material Kit React"
         rightLinks={<HeaderLinks />}
         fixed
         color="transparent"
         changeColorOnScroll={{
           height: 400,
-          color: "white"
+          color: "white",
         }}
         {...rest}
       />

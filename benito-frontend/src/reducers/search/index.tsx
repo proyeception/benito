@@ -1,22 +1,22 @@
 import {
   SearchAction,
   SearchState,
-  UPDATE_NAME,
+  UPDATE_TITLE,
   UPDATE_CATEGORY,
   UPDATE_PROJECTS,
   UPDATE_FROM_DATE,
   UPDATE_TO_DATE,
   UPDATE_KEYWORD,
   UPDATE_DOCUMENTATION,
-  SortMethod,
   UPDATE_SORT_METHOD,
   RESET_SEARCH_PARAMETERS,
   UPDATE_ORGANIZATION,
 } from "../../store/search/types";
+import { SortMethod } from "../../types";
 
 const defaultSearchState: SearchState = {
-  name: "",
-  category: "",
+  title: "",
+  category: null,
   projects: [],
   fromDate: "",
   toDate: "",
@@ -31,10 +31,10 @@ function searchReducer(
   action: SearchAction
 ): SearchState {
   switch (action.type) {
-    case UPDATE_NAME:
+    case UPDATE_TITLE:
       return {
         ...state,
-        name: action.payload,
+        title: action.payload,
       };
     case UPDATE_PROJECTS:
       return {

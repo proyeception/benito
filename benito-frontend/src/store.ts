@@ -1,6 +1,6 @@
 import { createStore, compose } from "redux";
 import rootReducer, { RootState } from "./reducers/index";
-import { SortMethod } from "./store/search/types";
+import { SortMethod } from "./types";
 
 const defaultState: RootState = {
   session: {
@@ -13,8 +13,8 @@ const defaultState: RootState = {
     projectTotal: 0,
   },
   search: {
-    name: "",
-    category: "",
+    title: "",
+    category: null,
     projects: [],
     fromDate: "",
     toDate: "",

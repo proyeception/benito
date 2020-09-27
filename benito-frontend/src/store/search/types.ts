@@ -1,6 +1,6 @@
-import { Project } from "../../types";
+import { Category, Project, SortMethod } from "../../types";
 
-export const UPDATE_NAME = "UPDATE_NAME";
+export const UPDATE_TITLE = "UPDATE_TITLE";
 export const UPDATE_CATEGORY = "UPDATE_CATEGORY";
 export const UPDATE_FROM_DATE = "UPDATE_FROM_DATE";
 export const UPDATE_TO_DATE = "UPDATE_TO_DATE";
@@ -11,8 +11,8 @@ export const UPDATE_SORT_METHOD = "UPDATE_SORT_METHOD";
 export const RESET_SEARCH_PARAMETERS = "RESET_SEARCH_PARAMETERS";
 export const UPDATE_ORGANIZATION = "UPDATE_ORGANIZATION";
 
-interface UpdateNameAction {
-  type: typeof UPDATE_NAME;
+interface UpdateTitleAction {
+  type: typeof UPDATE_TITLE;
   payload: String;
 }
 
@@ -38,7 +38,7 @@ interface UpdateDocumentationAction {
 
 interface UpdateCategoryAction {
   type: typeof UPDATE_CATEGORY;
-  payload: String;
+  payload: Category;
 }
 
 interface UpdateProjects {
@@ -59,18 +59,8 @@ interface UpdateOrganization {
   type: typeof UPDATE_ORGANIZATION;
   payload: String;
 }
-
-export enum SortMethod {
-  DateAsc = "DATE_ASC",
-  DateDesc = "DATE_DESC",
-  AlphaAsc = "ALPHA_ASC",
-  AlphaDesc = "ALPHA_DESC",
-  ViewsAsc = "VIEWS_ASC",
-  ViewsDesc = "VIEWS_DESC",
-}
-
 export type SearchAction =
-  | UpdateNameAction
+  | UpdateTitleAction
   | UpdateCategoryAction
   | UpdateProjects
   | UpdateFromDateAction
@@ -82,9 +72,9 @@ export type SearchAction =
   | UpdateOrganization;
 
 export type SearchState = {
-  name: String;
+  title: String;
   projects: Array<Project>;
-  category: String;
+  category: Category | null;
   fromDate: String;
   toDate: String;
   keyword: String;
