@@ -1,4 +1,10 @@
-import { SearchParams } from "../../types";
+import { updateSearchParams } from "../../actions/search";
+import searchPageStyle from "../../assets/jss/material-kit-react/views/searchPage";
+import store from "../../store";
+import { NOTHING, SearchState } from "../../store/search/types";
+import { SearchParams, SortMethod } from "../../types";
+import { fromCategoryName } from "../categories";
+import moment from "moment";
 
 export function buildQueryParams({
   title,
@@ -25,4 +31,23 @@ export function buildQueryParams({
 
 function buildQueryParamProperty(key: string, value?: string) {
   return value ? key + "=" + value + "&" : "";
+}
+
+export function syncParamsToState(params: SearchParams) {
+  let state: SearchState = {
+    title: params.title || "",
+    category: fromCategoryName(params.category),
+    fromDate: params.fromDate
+      ? moment(params.fromDate, "yyyy/MM/dd").toDate()
+      : undefined,
+    toDate: params.toDate
+      ? moment(params.toDate, "yyyy/MM/dd").toDate()
+      : undefined,
+    documentation: params.documentation || "",
+    keyword: params.keyword || "",
+    orderBy: params.orderBy || SortMethod.DateDesc,
+    organization: params.organization || "",
+    status: NOTHING,
+  };
+  store.dispatch(updateSearchParams(state));
 }

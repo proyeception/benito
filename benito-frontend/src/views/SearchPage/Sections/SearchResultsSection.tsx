@@ -8,13 +8,34 @@ import styles from "../../../assets/jss/material-kit-react/views/searchSections/
 import { Hidden, makeStyles } from "@material-ui/core";
 import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
+import qs from "qs";
+import { syncParamsToState } from "../../../functions/search";
+import { RootState } from "../../../reducers";
+import { connect } from "react-redux";
+import { Fetch, NOTHING, REFRESH } from "../../../store/search/types";
+import store from "../../../store";
+import { updateFetchStatus } from "../../../actions/search";
 
-interface SearchResultsSectionProps extends RouteChildrenProps<SearchParams> {}
+interface SearchResultsSectionProps extends RouteChildrenProps<SearchParams> {
+  status: Fetch;
+}
 
 const useStyles = makeStyles(styles);
 
 const SearchResultsSection = (props: SearchResultsSectionProps) => {
-  const projects = withProjects(props.match?.params || {});
+  let queryParams: SearchParams = qs.parse(props.location.search, {
+    ignoreQueryPrefix: true,
+  });
+
+  syncParamsToState(queryParams);
+
+  const [projects, refresh] = withProjects(queryParams);
+
+  if (props.status == REFRESH) {
+    store.dispatch(updateFetchStatus(NOTHING));
+    refresh(queryParams);
+  }
+
   const classes = useStyles();
 
   if (projects.type == ERROR) {
@@ -23,6 +44,10 @@ const SearchResultsSection = (props: SearchResultsSectionProps) => {
 
   if (projects.type == PENDING) {
     return <div>pará flaco, calmate un poco que esto toma un ratito</div>;
+  }
+
+  if (projects.value.length == 0) {
+    return <div>no hay nada capo</div>;
   }
 
   return (
@@ -59,4 +84,12 @@ const SearchResultsSection = (props: SearchResultsSectionProps) => {
   );
 };
 
-export default hot(module)(withRouter(SearchResultsSection));
+const mapStateToProps = (rootState: RootState) => {
+  return {
+    status: rootState.search.status,
+  };
+};
+
+export default hot(module)(
+  withRouter(connect(mapStateToProps)(SearchResultsSection))
+);

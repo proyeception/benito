@@ -1,7 +1,5 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
-import Badge from "./components/Badge/Badge";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import ProjectPage from "./views/ProjectPage/ProjectPage";
 import SearchPage from "./views/SearchPage/SearchPage";
@@ -13,6 +11,9 @@ import withCategories from "./hooks/withCategories";
 import { ERROR, PENDING, SUCCESS } from "./hooks/withFetch";
 import store from "./store";
 import { updateCategories } from "./actions/common";
+
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
 
 const App = () => {
   const categories = withCategories();
@@ -30,16 +31,18 @@ const App = () => {
   }
 
   return (
-    <BrowserRouter>
-      <Switch>
-        <Route path="/projects/:id" component={ProjectPage} />
-        <Route path="/search" component={SearchPage} />
-        <Route path="/authors/:id" component={AuthorPage} />
-        <Route path="/supervisors/:id" component={SupervisorPage} />
-        <Route path="/login" component={LoginPage} />
-        <Route path="/" component={Components} />
-      </Switch>
-    </BrowserRouter>
+    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+      <BrowserRouter>
+        <Switch>
+          <Route path="/projects/:id" component={ProjectPage} />
+          <Route path="/search" component={SearchPage} />
+          <Route path="/authors/:id" component={AuthorPage} />
+          <Route path="/supervisors/:id" component={SupervisorPage} />
+          <Route path="/login" component={LoginPage} />
+          <Route path="/" component={Components} />
+        </Switch>
+      </BrowserRouter>
+    </MuiPickersUtilsProvider>
   );
 };
 

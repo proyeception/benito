@@ -22,21 +22,40 @@ interface FetchPending {
 
 export type FetchStatus<T> = FetchSuccess<T> | FetchError | FetchPending;
 
-export default function withFetch<T>(path: string): FetchStatus<T> {
-  const [status, setFetch] = useState<FetchStatus<T>>({ type: PENDING });
+export default function withFetch<T>(
+  path: string,
+  onSuccess?: (arg0: T) => void
+): [FetchStatus<T>, (path: string) => void] {
+  const [status, setStatus] = useState<FetchStatus<T>>({ type: PENDING });
+  const [isFetching, setIsFetching] = useState(false);
 
-  useEffect(() => {
-    let config: AxiosRequestConfig = {
-      url: `${benitoHost}/benito/${path}`,
-      method: "GET",
-    };
+  const initialPath = path;
 
-    axios
-      .request<T>(config)
-      .then((res) => res.data)
-      .then((t) => setFetch({ type: SUCCESS, value: t }))
-      .catch((e) => setFetch({ type: ERROR, status: e.response?.status }));
-  }, []);
+  const fetch = (path?: string) => {
+    if (!isFetching) {
+      setIsFetching(true);
 
-  return status;
+      setStatus({ type: PENDING });
+      let config: AxiosRequestConfig = {
+        url: `${benitoHost}/benito/${path || initialPath}`,
+        method: "GET",
+      };
+
+      axios
+        .request<T>(config)
+        .then((res) => res.data)
+        .then((t) => {
+          setStatus({ type: SUCCESS, value: t });
+          if (onSuccess) {
+            onSuccess(t);
+          }
+        })
+        .catch((e) => setStatus({ type: ERROR, status: e.response?.status }))
+        .then(() => setIsFetching(false));
+    }
+  };
+
+  useEffect(fetch, []);
+
+  return [status, fetch];
 }

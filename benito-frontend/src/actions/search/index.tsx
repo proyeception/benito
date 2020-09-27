@@ -9,8 +9,12 @@ import {
   UPDATE_DOCUMENTATION,
   UPDATE_SORT_METHOD,
   RESET_SEARCH_PARAMETERS,
+  UPDATE_SEARCH_PARAMS,
+  SearchState,
+  Fetch,
+  UPDATE_FETCH_STATUS,
 } from "../../store/search/types";
-import { Category, Project, SortMethod } from "../../types";
+import { Category, Project, SearchParams, SortMethod } from "../../types";
 
 export function updateTitle(name: string): SearchAction {
   return {
@@ -26,21 +30,14 @@ export function updateCategory(category: Category): SearchAction {
   };
 }
 
-export function updateProjects(projects: Array<Project>): SearchAction {
-  return {
-    type: UPDATE_PROJECTS,
-    payload: projects,
-  };
-}
-
-export function updateFromDate(fromDate: string): SearchAction {
+export function updateFromDate(fromDate: Date): SearchAction {
   return {
     type: UPDATE_FROM_DATE,
     payload: fromDate,
   };
 }
 
-export function updateToDate(toDate: string): SearchAction {
+export function updateToDate(toDate: Date): SearchAction {
   return {
     type: UPDATE_TO_DATE,
     payload: toDate,
@@ -75,8 +72,22 @@ export function emptyProjects(): SearchAction {
   };
 }
 
+export function updateSearchParams(searchParams: SearchState): SearchAction {
+  return {
+    type: UPDATE_SEARCH_PARAMS,
+    payload: searchParams,
+  };
+}
+
 export function resetSearchParameters(): SearchAction {
   return {
     type: RESET_SEARCH_PARAMETERS,
+  };
+}
+
+export function updateFetchStatus(fetch: Fetch): SearchAction {
+  return {
+    type: UPDATE_FETCH_STATUS,
+    payload: fetch,
   };
 }

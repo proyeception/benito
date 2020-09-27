@@ -16,6 +16,7 @@ import { connect } from "react-redux";
 import store from "../../../store";
 import {
   updateCategory,
+  updateFetchStatus,
   updateFromDate,
   updateKeyword,
   updateSortMethod,
@@ -24,21 +25,22 @@ import {
 } from "../../../actions/search";
 import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
+import { KeyboardDatePicker } from "@material-ui/pickers";
 import Button from "../../../components/CustomButtons/Button";
 import { buildQueryParams } from "../../../functions/search";
+import moment from "moment";
+import { REFRESH } from "../../../store/search/types";
 
 const useStyles = makeStyles(styles);
 
 interface SearchBoxSectionProps extends RouteChildrenProps<SearchParams> {
   categories: Array<Category>;
-  category: Category | null;
+  category?: Category;
   sort?: SortMethod;
   title?: string;
+  from?: Date;
+  to?: Date;
+  keyword?: string;
 }
 
 const SearchBoxSection = (props: SearchBoxSectionProps) => {
@@ -46,134 +48,126 @@ const SearchBoxSection = (props: SearchBoxSectionProps) => {
 
   return (
     <div className={classes.section}>
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <GridContainer spacing={5}>
-          <GridItem>
-            <TextField
-              label="Título"
-              fullWidth
-              onChange={(e) => store.dispatch(updateTitle(e.target.value))}
-            />
-          </GridItem>
-          <GridItem>
-            {/* TOOD: use the Autocomplete component? */}
-            <InputLabel htmlFor="category">Categoría</InputLabel>
-            <Select
-              onChange={(e) =>
-                store.dispatch(
-                  updateCategory(
-                    props.categories.find((c) => c.tagName == e.target.value)!
-                  )
+      <GridContainer spacing={5}>
+        <GridItem>
+          <TextField
+            label="Título"
+            fullWidth
+            onChange={(e) => store.dispatch(updateTitle(e.target.value))}
+            value={props.title}
+          />
+        </GridItem>
+        <GridItem>
+          {/* TOOD: use the Autocomplete component? */}
+          <InputLabel htmlFor="category">Categoría</InputLabel>
+          <Select
+            onChange={(e) =>
+              store.dispatch(
+                updateCategory(
+                  props.categories.find((c) => c.tagName == e.target.value)!
                 )
+              )
+            }
+            fullWidth
+            inputProps={{
+              name: "category",
+              id: "category",
+            }}
+            label="Categoría"
+            value={props.category?.tagName || ""}
+          >
+            <MenuItem aria-label="None" value="" />
+            {props.categories.map((c, idx) => (
+              <MenuItem value={c.tagName.valueOf()} key={idx}>
+                {c.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </GridItem>
+        <GridItem md={6}>
+          <KeyboardDatePicker
+            clearable={true}
+            placeholder="08/04/2016"
+            variant="inline"
+            format="dd/MM/yyyy"
+            label="Comienzo"
+            value={props.from || null}
+            onChange={(e) => {
+              if (e) {
+                store.dispatch(updateFromDate(e));
               }
-              fullWidth
-              inputProps={{
-                name: "category",
-                id: "category",
-              }}
-              value={props.category?.tagName || ""}
-            >
-              <MenuItem aria-label="None" value="" />
-              {props.categories.map((c, idx) => (
-                <MenuItem value={c.tagName.valueOf()} key={idx}>
-                  {c.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </GridItem>
-          <GridItem md={6}>
-            <KeyboardDatePicker
-              disableToolbar
-              variant="inline"
-              format="MM/dd/yyyy"
-              id="date-picker-inline"
-              label="Comienzo"
-              value={"2020-08-08"}
-              onChange={(e) =>
-                //TODO: use some library or something to interpolate this idk
-                store.dispatch(
-                  updateFromDate(
-                    e ? `${e.getFullYear()}/${e.getMonth()}/${e.getDay()}` : ""
-                  )
-                )
+            }}
+          />
+        </GridItem>
+        <GridItem md={6}>
+          <KeyboardDatePicker
+            clearable={true}
+            placeholder="08/04/2016"
+            variant="inline"
+            format="dd/MM/yyyy"
+            label="Fin"
+            value={props.to || null}
+            onChange={(e) => {
+              if (e) {
+                store.dispatch(updateToDate(e));
               }
-              KeyboardButtonProps={{
-                "aria-label": "change date",
-              }}
-            />
-          </GridItem>
-          <GridItem md={6}>
-            <KeyboardDatePicker
-              disableToolbar
-              variant="inline"
-              format="MM/dd/yyyy"
-              id="date-picker-inline"
-              label="Fin"
-              value={"2020-08-08"}
-              onChange={(e) =>
-                store.dispatch(
-                  updateToDate(
-                    e ? `${e.getFullYear()}/${e.getMonth()}/${e.getDay()}` : ""
-                  )
-                )
-              }
-              KeyboardButtonProps={{
-                "aria-label": "change date",
-              }}
-            />
-          </GridItem>
-          <GridItem>
-            <TextField
-              label="Palabra clave"
-              fullWidth
-              onChange={(e) => store.dispatch(updateKeyword(e.target.value))}
-            />
-          </GridItem>
-          <GridItem>
-            <InputLabel htmlFor="sort">Ordenamiento</InputLabel>
-            <Select
-              onChange={(e) => {
-                store.dispatch(updateSortMethod(e.target.value as SortMethod));
-              }}
-              fullWidth
-              inputProps={{
-                name: "sort",
-                id: "sort",
-              }}
-              value={props.sort}
-            >
-              <MenuItem aria-label="None" value="" />
-              <ListSubheader>Fecha de creación</ListSubheader>
-              <MenuItem value={SortMethod.DateDesc}>Más recientes</MenuItem>
-              <MenuItem value={SortMethod.DateAsc}>Más antiguos</MenuItem>
-              <ListSubheader>Alfabético</ListSubheader>
-              <MenuItem value={SortMethod.AlphaDesc}>A-Z</MenuItem>
-              <MenuItem value={SortMethod.AlphaAsc}>Z-A</MenuItem>
-              <ListSubheader>Visitas</ListSubheader>
-              <MenuItem value={SortMethod.ViewsDesc}>Más visitas</MenuItem>
-              <MenuItem value={SortMethod.ViewsAsc}>Menos visitas</MenuItem>
-            </Select>
-          </GridItem>
-          <GridItem>
-            <Button
-              color="primary"
-              round
-              fullWidth
-              onClick={() =>
-                props.history.push(
-                  "/search?" +
-                    buildQueryParams({
-                      ...props,
-                      category: props.category?.tagName?.valueOf(),
-                    })
-                )
-              }
-            >
-              Buscar
-            </Button>
-          </GridItem>
-        </GridContainer>
-      </MuiPickersUtilsProvider>
+            }}
+          />
+        </GridItem>
+        <GridItem>
+          <TextField
+            label="Palabra clave"
+            fullWidth
+            value={props.keyword}
+            onChange={(e) => store.dispatch(updateKeyword(e.target.value))}
+          />
+        </GridItem>
+        <GridItem>
+          <InputLabel htmlFor="sort">Ordenamiento</InputLabel>
+          <Select
+            onChange={(e) => {
+              store.dispatch(updateSortMethod(e.target.value as SortMethod));
+            }}
+            fullWidth
+            inputProps={{
+              name: "sort",
+              id: "sort",
+            }}
+            value={props.sort}
+          >
+            <MenuItem aria-label="None" value="" />
+            <ListSubheader>Fecha de creación</ListSubheader>
+            <MenuItem value={SortMethod.DateDesc}>Más recientes</MenuItem>
+            <MenuItem value={SortMethod.DateAsc}>Más antiguos</MenuItem>
+            <ListSubheader>Alfabético</ListSubheader>
+            <MenuItem value={SortMethod.AlphaDesc}>A-Z</MenuItem>
+            <MenuItem value={SortMethod.AlphaAsc}>Z-A</MenuItem>
+            <ListSubheader>Visitas</ListSubheader>
+            <MenuItem value={SortMethod.ViewsDesc}>Más visitas</MenuItem>
+            <MenuItem value={SortMethod.ViewsAsc}>Menos visitas</MenuItem>
+          </Select>
+        </GridItem>
+        <GridItem>
+          <Button
+            color="primary"
+            round
+            fullWidth
+            onClick={() => {
+              props.history.push(
+                "/search" +
+                  buildQueryParams({
+                    ...props,
+                    category: props.category?.tagName?.valueOf(),
+                  })
+              );
+              console.log("aaaaaaaaaaaaa");
+              store.dispatch(updateFetchStatus(REFRESH));
+            }}
+          >
+            Buscar
+          </Button>
+        </GridItem>
+      </GridContainer>
     </div>
   );
 };
@@ -187,6 +181,7 @@ const mapStateToProps = (rootState: RootState) => {
     from: rootState.search.fromDate,
     to: rootState.search.toDate,
     organization: rootState.search.organization,
+    keyword: rootState.search.keyword,
   };
 };
 

@@ -1,4 +1,4 @@
-import { Category, Project, SortMethod } from "../../types";
+import { Category, Project, SearchParams, SortMethod } from "../../types";
 
 export const UPDATE_TITLE = "UPDATE_TITLE";
 export const UPDATE_CATEGORY = "UPDATE_CATEGORY";
@@ -10,6 +10,8 @@ export const UPDATE_PROJECTS = "UPDATE_PROJECTS";
 export const UPDATE_SORT_METHOD = "UPDATE_SORT_METHOD";
 export const RESET_SEARCH_PARAMETERS = "RESET_SEARCH_PARAMETERS";
 export const UPDATE_ORGANIZATION = "UPDATE_ORGANIZATION";
+export const UPDATE_SEARCH_PARAMS = "UPDATE_SEARCH_PARAMS";
+export const UPDATE_FETCH_STATUS = "UPDATE_FETCH_STATUS";
 
 interface UpdateTitleAction {
   type: typeof UPDATE_TITLE;
@@ -18,12 +20,12 @@ interface UpdateTitleAction {
 
 interface UpdateFromDateAction {
   type: typeof UPDATE_FROM_DATE;
-  payload: string;
+  payload: Date;
 }
 
 interface UpdateToDateAction {
   type: typeof UPDATE_TO_DATE;
-  payload: string;
+  payload: Date;
 }
 
 interface UpdateKeywordAction {
@@ -59,6 +61,22 @@ interface UpdateOrganization {
   type: typeof UPDATE_ORGANIZATION;
   payload: string;
 }
+
+interface UpdateSearchParamsAction {
+  type: typeof UPDATE_SEARCH_PARAMS;
+  payload: SearchState;
+}
+
+interface UpdateFetchStatusAction {
+  type: typeof UPDATE_FETCH_STATUS;
+  payload: Fetch;
+}
+
+export const NOTHING = "NOTHING";
+export const REFRESH = "REFRESH";
+
+export type Fetch = typeof NOTHING | typeof REFRESH;
+
 export type SearchAction =
   | UpdateTitleAction
   | UpdateCategoryAction
@@ -69,16 +87,18 @@ export type SearchAction =
   | UpdateDocumentationAction
   | UpdateSortMethod
   | ResetSearchParametersAction
-  | UpdateOrganization;
+  | UpdateOrganization
+  | UpdateSearchParamsAction
+  | UpdateFetchStatusAction;
 
 export type SearchState = {
-  title: string;
-  projects: Array<Project>;
-  category: Category | null;
-  fromDate: string;
-  toDate: string;
-  keyword: string;
-  documentation: string;
+  title?: string;
+  category?: Category;
+  fromDate?: Date;
+  toDate?: Date;
+  keyword?: string;
+  documentation?: string;
   orderBy: SortMethod;
-  organization: string;
+  organization?: string;
+  status: Fetch;
 };
