@@ -1,9 +1,10 @@
 import { title } from "../../../material-kit-react";
 import { createStyles } from "@material-ui/core/styles";
 
-const workStyle = createStyles({
+const searchBoxStyle = createStyles({
   section: {
     padding: "70px 0",
+    position: "sticky",
   },
   title: {
     ...title,
@@ -29,4 +30,4 @@ const workStyle = createStyles({
   },
 });
 
-export default workStyle;
+export default searchBoxStyle;

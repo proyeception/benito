@@ -1,7 +1,7 @@
 import { title } from "../../../material-kit-react";
 import { createStyles, Theme } from "@material-ui/core/styles";
 
-const productStyle = (theme: Theme) =>
+const searchResultsStyle = (theme: Theme) =>
   createStyles({
     section: {
       [theme.breakpoints.up("md")]: {
@@ -23,6 +23,11 @@ const productStyle = (theme: Theme) =>
       display: "block",
       maxWidth: "100%",
     },
+    authors: {
+      color: "#999",
+      textAlign: "right",
+      fontSize: "13px",
+    },
   });
 
-export default productStyle;
+export default searchResultsStyle;

@@ -8,7 +8,9 @@ type ProjectLinkProps = {
 };
 
 const ProjectLink = (props: ProjectLinkProps) => (
-  <Link to={`/projects/${props.id}`}>{props.children}</Link>
+  <Link to={`/projects/${props.id}`} className="normalize-link">
+    {props.children}
+  </Link>
 );
 
 export default hot(module)(ProjectLink);

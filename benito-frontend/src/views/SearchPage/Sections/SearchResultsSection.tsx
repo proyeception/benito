@@ -15,6 +15,7 @@ import { connect } from "react-redux";
 import { Fetch, NOTHING, REFRESH } from "../../../store/search/types";
 import store from "../../../store";
 import { updateFetchStatus } from "../../../actions/search";
+import ProjectLink from "../../../components/Links/ProjectLink";
 
 interface SearchResultsSectionProps extends RouteChildrenProps<SearchParams> {
   status: Fetch;
@@ -57,24 +58,33 @@ const SearchResultsSection = (props: SearchResultsSectionProps) => {
           <GridItem key={idx} xs={12} sm={12} md={12}>
             <GridContainer>
               <GridItem xs={12} sm={12} md={9}>
-                <div className={classes.title}>{p.title}</div>
-                <Hidden mdUp>
-                  <img
-                    src={p.pictureUrl?.valueOf()}
-                    alt={p.title.valueOf()}
-                    className={classes.picture}
-                  />
-                </Hidden>
+                <ProjectLink id={p.id}>
+                  <div className={classes.title + " underline-hover"}>
+                    {p.title}
+                  </div>
+                  <Hidden mdUp>
+                    <img
+                      src={p.pictureUrl?.valueOf()}
+                      alt={p.title.valueOf()}
+                      className={classes.picture}
+                    />
+                  </Hidden>
+                </ProjectLink>
                 <div className={classes.description}>{p.description}</div>
+                <div className={classes.authors}>
+                  {p.authors.map((a) => a.fullName).join(", ")}{" "}
+                </div>
               </GridItem>
               <GridItem md={3}>
-                <Hidden only={["xs", "sm"]}>
-                  <img
-                    src={p.pictureUrl?.valueOf()}
-                    alt={p.title.valueOf()}
-                    className={classes.picture}
-                  />
-                </Hidden>
+                <ProjectLink id={p.id}>
+                  <Hidden only={["xs", "sm"]}>
+                    <img
+                      src={p.pictureUrl?.valueOf()}
+                      alt={p.title.valueOf()}
+                      className={classes.picture}
+                    />
+                  </Hidden>
+                </ProjectLink>
               </GridItem>
             </GridContainer>
           </GridItem>

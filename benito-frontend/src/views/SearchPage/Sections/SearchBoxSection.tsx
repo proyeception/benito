@@ -28,7 +28,6 @@ import GridItem from "../../../components/Grid/GridItem";
 import { KeyboardDatePicker } from "@material-ui/pickers";
 import Button from "../../../components/CustomButtons/Button";
 import { buildQueryParams } from "../../../functions/search";
-import moment from "moment";
 import { REFRESH } from "../../../store/search/types";
 
 const useStyles = makeStyles(styles);
