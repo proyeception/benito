@@ -1,14 +1,15 @@
 import React from "react";
 import { hot } from "react-hot-loader";
-import { Link } from "react-router-dom";
+import UserLink from "./UserLink";
 
 type SupervisorLinkProps = {
   id: string;
   children: React.ReactNode;
+  className?: string;
 };
 
 const SupervisorLink = (props: SupervisorLinkProps) => (
-  <Link to={`/supervisors/${props.id}`}>{props.children}</Link>
+  <UserLink role="SUPERVISOR" {...props} />
 );
 
 export default hot(module)(SupervisorLink);
