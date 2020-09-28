@@ -24,6 +24,10 @@ import styles from "../../assets/jss/material-kit-react/views/loginPage";
 const image =
   "https://res.cloudinary.com/proyectate/image/upload/v1600383533/proyectate_90e388a10b.jpg";
 import { hot } from "react-hot-loader";
+import GoogleLogin, { GoogleLoginResponse } from "react-google-login";
+import { googleClientId } from "../../config";
+import { LoginData } from "../../types";
+import { startLogin } from "../../functions/session";
 
 const getKeyValue = <T extends object, U extends keyof T>(obj: T) => (key: U) =>
   obj[key];
@@ -66,6 +70,31 @@ const LoginPage = (props: any) => {
                   <CardHeader color="primary" className={classes.cardHeader}>
                     <h4>Login</h4>
                     <div className={classes.socialLine}>
+                      <GoogleLogin
+                        clientId={googleClientId}
+                        render={(renderProps) => (
+                          <Button
+                            onClick={renderProps.onClick}
+                            justIcon
+                            color="transparent"
+                          >
+                            <i className={"fab fa-google-plus-g"} />
+                          </Button>
+                        )}
+                        onSuccess={(res) => {
+                          let googleInfo = res as GoogleLoginResponse;
+                          let loginData: LoginData = {
+                            googleUserId: googleInfo.googleId,
+                            fullName: googleInfo.profileObj.name,
+                            profilePictureUrl: googleInfo.profileObj.imageUrl,
+                            mail: googleInfo.profileObj.email,
+                            token: googleInfo.tokenId,
+                          };
+                          startLogin(loginData, props.history, "author");
+                        }}
+                        onFailure={console.warn}
+                      />
+
                       <Button
                         justIcon
                         href="#pablo"
@@ -83,15 +112,6 @@ const LoginPage = (props: any) => {
                         onClick={(e: any) => e.preventDefault()}
                       >
                         <i className={"fab fa-facebook"} />
-                      </Button>
-                      <Button
-                        justIcon
-                        href="#pablo"
-                        target="_blank"
-                        color="transparent"
-                        onClick={(e: any) => e.preventDefault()}
-                      >
-                        <i className={"fab fa-google-plus-g"} />
                       </Button>
                     </div>
                   </CardHeader>

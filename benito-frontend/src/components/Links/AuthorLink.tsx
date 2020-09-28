@@ -8,7 +8,9 @@ type AuthorLinkProps = {
 };
 
 const AuthorLink = (props: AuthorLinkProps) => (
-  <Link to={`/authors/${props.id}`}>{props.children}</Link>
+  <Link className="normalize-link" to={`/authors/${props.id}`}>
+    {props.children}
+  </Link>
 );
 
 export default hot(module)(AuthorLink);

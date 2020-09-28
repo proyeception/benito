@@ -22,11 +22,17 @@ const searchResultsStyle = (theme: Theme) =>
     picture: {
       display: "block",
       maxWidth: "100%",
+      maxHeight: "100%",
     },
     authors: {
       color: "#999",
       textAlign: "right",
       fontSize: "13px",
+    },
+    result: {
+      [theme.breakpoints.up("md")]: {
+        height: "240px",
+      },
     },
   });
 

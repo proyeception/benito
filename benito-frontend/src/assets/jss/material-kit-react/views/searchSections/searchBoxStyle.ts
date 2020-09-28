@@ -4,7 +4,6 @@ import { createStyles } from "@material-ui/core/styles";
 const searchBoxStyle = createStyles({
   section: {
     padding: "70px 0",
-    position: "sticky",
   },
   title: {
     ...title,

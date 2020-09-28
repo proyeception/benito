@@ -56,7 +56,7 @@ const SearchResultsSection = (props: SearchResultsSectionProps) => {
       <GridContainer spacing={3}>
         {projects.value.map((p, idx) => (
           <GridItem key={idx} xs={12} sm={12} md={12}>
-            <GridContainer>
+            <GridContainer className={classes.result}>
               <GridItem xs={12} sm={12} md={9}>
                 <ProjectLink id={p.id}>
                   <div className={classes.title + " underline-hover"}>

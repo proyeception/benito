@@ -16,22 +16,52 @@ import Button from "../CustomButtons/Button";
 
 import styles from "../../assets/jss/material-kit-react/components/headerLinksStyle";
 import { hot } from "react-hot-loader";
+import { RootState } from "../../reducers";
+import { connect } from "react-redux";
+import classNames from "classnames";
+import { Role } from "../../types";
+import { mapRoleToCollection } from "../../functions/user";
+import AuthorLink from "../Links/AuthorLink";
 
 const useStyles = makeStyles(styles);
 
-const HeaderLinks = (props: any) => {
+type Props = {
+  isLoggedIn: Boolean;
+  userId?: string;
+  profilePic?: string;
+  role?: Role;
+};
+
+const HeaderLinks = (props: Props) => {
   const classes = useStyles();
   return (
     <List className={classes.list}>
       <ListItem className={classes.listItem}>
-        <Link to="/login" className="normalize-link">
-          <Button color="transparent" className={classes.navLink}>
-            <ExitToApp className={classes.socialIcons} /> Iniciar sesión
-          </Button>
-        </Link>
+        {props.isLoggedIn ? (
+          <AuthorLink id={props.userId!}>
+            <Button color="transparent" className={classNames(classes.navLink)}>
+              Mi perfil
+            </Button>
+          </AuthorLink>
+        ) : (
+          <Link to="/login" className="normalize-link">
+            <Button color="transparent" className={classes.navLink}>
+              <ExitToApp className={classes.socialIcons} /> Iniciar sesión
+            </Button>
+          </Link>
+        )}
       </ListItem>
     </List>
   );
 };
 
-export default hot(module)(HeaderLinks);
+const mapStateToProps = (rootState: RootState) => {
+  return {
+    isLoggedIn: rootState.session.isLoggedIn,
+    userId: rootState.session.userId,
+    profilePic: rootState.session.profilePicture,
+    role: rootState.session.role,
+  };
+};
+
+export default hot(module)(connect(mapStateToProps)(HeaderLinks));

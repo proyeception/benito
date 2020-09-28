@@ -50,4 +50,5 @@ export type SessionState = {
   isLoggedIn: Boolean;
   fetching: Boolean;
   role?: Role;
+  name?: string;
 };

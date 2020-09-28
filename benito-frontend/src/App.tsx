@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import ProjectPage from "./views/ProjectPage/ProjectPage";
@@ -11,23 +11,33 @@ import withCategories from "./hooks/withCategories";
 import { ERROR, PENDING, SUCCESS } from "./hooks/withFetch";
 import store from "./store";
 import { updateCategories } from "./actions/common";
-
+import axios from "axios";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
+import { openLocalStoredSession } from "./functions/session";
+import { AxiosRequestConfig } from "axios";
+import { benitoHost } from "./config";
+import { Category } from "./types";
 
 const App = () => {
-  const categories = withCategories();
+  const [isLoggingIn, setIsLoggingIn] = useState(true);
+  useEffect(() => {
+    let config: AxiosRequestConfig = {
+      method: "GET",
+      url: `${benitoHost}/benito/categories`,
+    };
 
-  if (categories.type == PENDING) {
-    return <div></div>;
-  }
+    openLocalStoredSession(setIsLoggingIn);
 
-  if (categories.type == ERROR) {
-    return <div>Uh se rompió algo</div>;
-  }
+    axios
+      .request<Array<Category>>(config)
+      .then((res) => res.data)
+      .then((categories) => store.dispatch(updateCategories(categories)))
+      .catch(console.error);
+  }, []);
 
-  if (categories.type == SUCCESS) {
-    store.dispatch(updateCategories(categories.value));
+  if (isLoggingIn) {
+    return <div id="login" />;
   }
 
   return (

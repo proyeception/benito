@@ -76,7 +76,8 @@ const searchPageStyle = (theme: Theme) =>
       zIndex: 3,
       margin: "15px",
       [theme.breakpoints.up("sm")]: {
-        paddingLeft: "75px",
+        paddingLeft: "60px",
+        paddingRight: "45px",
         paddingTop: "0px",
       },
     },
@@ -87,6 +88,7 @@ const searchPageStyle = (theme: Theme) =>
       margin: "15px",
       [theme.breakpoints.up("sm")]: {
         paddingLeft: "75px",
+        paddingRight: "0px",
         paddingTop: "0px",
       },
     },
