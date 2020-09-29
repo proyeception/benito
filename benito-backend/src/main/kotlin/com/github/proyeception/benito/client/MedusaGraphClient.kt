@@ -129,7 +129,7 @@ open class MedusaGraphClient(
         authorId?.let { where.add("""authors: { id: "$it" }""") }
         authorName?.let { where.add("""authors: { full_name_contains: "${it.replaceUrlSpaces()}" }""") }
         organizationId?.let { where.add("""organization: { id: "$it" }""") }
-        organizationName?.let { where.add(""""organization: { name_contains: "$it" }""") }
+        organizationName?.let { where.add("""organization: { name: "$it" }""") }
 
         val sort = orderBy?.let { """sort: "${it.sortMethod}"""" }
 

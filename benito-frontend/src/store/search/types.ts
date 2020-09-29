@@ -1,4 +1,10 @@
-import { Category, Project, SearchParams, SortMethod } from "../../types";
+import {
+  Category,
+  Organization,
+  Project,
+  SearchParams,
+  SortMethod,
+} from "../../types";
 
 export const UPDATE_TITLE = "UPDATE_TITLE";
 export const UPDATE_CATEGORY = "UPDATE_CATEGORY";
@@ -59,7 +65,7 @@ interface ResetSearchParametersAction {
 
 interface UpdateOrganization {
   type: typeof UPDATE_ORGANIZATION;
-  payload: string;
+  payload: Organization;
 }
 
 interface UpdateSearchParamsAction {
@@ -99,6 +105,6 @@ export type SearchState = {
   keyword?: string;
   documentation?: string;
   orderBy: SortMethod;
-  organization?: string;
+  organization?: Organization;
   status: Fetch;
 };

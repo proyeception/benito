@@ -1,7 +1,12 @@
 import React from "react";
 import { hot } from "react-hot-loader";
 import { RouteChildrenProps, withRouter } from "react-router-dom";
-import { Category, SearchParams, SortMethod } from "../../../types";
+import {
+  Category,
+  Organization,
+  SearchParams,
+  SortMethod,
+} from "../../../types";
 import styles from "../../../assets/jss/material-kit-react/views/searchSections/searchBoxStyle";
 import {
   InputLabel,
@@ -19,6 +24,7 @@ import {
   updateFetchStatus,
   updateFromDate,
   updateKeyword,
+  updateOrganization,
   updateSortMethod,
   updateTitle,
   updateToDate,
@@ -29,12 +35,15 @@ import { KeyboardDatePicker } from "@material-ui/pickers";
 import Button from "../../../components/CustomButtons/Button";
 import { buildQueryParams } from "../../../functions/search";
 import { REFRESH } from "../../../store/search/types";
+import AutoComplete from "@material-ui/lab/Autocomplete";
 
 const useStyles = makeStyles(styles);
 
 interface SearchBoxSectionProps extends RouteChildrenProps<SearchParams> {
   categories: Array<Category>;
+  organizations: Array<Organization>;
   category?: Category;
+  organization?: Organization;
   sort?: SortMethod;
   title?: string;
   from?: Date;
@@ -147,6 +156,26 @@ const SearchBoxSection = (props: SearchBoxSectionProps) => {
           </Select>
         </GridItem>
         <GridItem>
+          <AutoComplete
+            id="combo-box-demo"
+            fullWidth
+            options={props.organizations}
+            getOptionLabel={(option) => option.displayName}
+            defaultValue={props.organization}
+            onChange={(e, o) => {
+              store.dispatch(updateOrganization(o!));
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                fullWidth
+                label="Organización"
+                variant="outlined"
+              />
+            )}
+          />
+        </GridItem>
+        <GridItem>
           <Button
             color="primary"
             round
@@ -157,6 +186,7 @@ const SearchBoxSection = (props: SearchBoxSectionProps) => {
                   buildQueryParams({
                     ...props,
                     category: props.category?.tagName?.valueOf(),
+                    organizationName: props.organization?.name?.valueOf(),
                   })
               );
               console.log("aaaaaaaaaaaaa");
@@ -174,6 +204,7 @@ const SearchBoxSection = (props: SearchBoxSectionProps) => {
 const mapStateToProps = (rootState: RootState) => {
   return {
     categories: rootState.common.categories,
+    organizations: rootState.common.organizations,
     title: rootState.search.title,
     category: rootState.search.category,
     sort: rootState.search.orderBy,

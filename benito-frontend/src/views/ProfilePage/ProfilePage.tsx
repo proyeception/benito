@@ -126,7 +126,7 @@ const ProfilePage = (props: ProfilePageProps) => {
               {user.value.organizations.map((o, idx) => (
                 <GridItem key={idx}>
                   <Link
-                    to={`/search?organization=${o.name.valueOf()}`}
+                    to={`/search?organizationName=${o.name.valueOf()}`}
                     className="normalize-link"
                   >
                     <img

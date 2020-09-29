@@ -7,10 +7,8 @@ import AuthorPage from "./views/ProfilePage/AuthorPage";
 import SupervisorPage from "./views/ProfilePage/SupervisorPage";
 import LoginPage from "./views/LoginPage/LoginPage";
 import Components from "./views/Components/Components";
-import withCategories from "./hooks/withCategories";
-import { ERROR, PENDING, SUCCESS } from "./hooks/withFetch";
 import store from "./store";
-import { updateCategories } from "./actions/common";
+import { updateCategories, updateOrganizations } from "./actions/common";
 import axios from "axios";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
@@ -18,6 +16,7 @@ import { openLocalStoredSession } from "./functions/session";
 import { AxiosRequestConfig } from "axios";
 import { benitoHost } from "./config";
 import { Category } from "./types";
+import { fetchOrganizations } from "./functions/organization";
 
 const App = () => {
   const [isLoggingIn, setIsLoggingIn] = useState(true);
@@ -33,6 +32,11 @@ const App = () => {
       .request<Array<Category>>(config)
       .then((res) => res.data)
       .then((categories) => store.dispatch(updateCategories(categories)))
+      .catch(console.error);
+
+    fetchOrganizations()
+      .then((res) => res.data)
+      .then((orgs) => store.dispatch(updateOrganizations(orgs)))
       .catch(console.error);
   }, []);
 

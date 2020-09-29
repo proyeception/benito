@@ -18,6 +18,7 @@ const defaultState: RootState = {
   },
   common: {
     categories: [],
+    organizations: [],
     isMenuOpen: false,
     loading: false,
   },

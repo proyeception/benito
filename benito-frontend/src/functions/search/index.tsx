@@ -5,6 +5,7 @@ import { NOTHING, SearchState } from "../../store/search/types";
 import { SearchParams, SortMethod } from "../../types";
 import { fromCategoryName } from "../categories";
 import moment from "moment";
+import { fromOrganizationName } from "../organization";
 
 export function buildQueryParams({
   title,
@@ -13,7 +14,7 @@ export function buildQueryParams({
   toDate,
   orderBy,
   keyword,
-  organization,
+  organizationName: organization,
 }: SearchParams) {
   return "?"
     .concat(buildQueryParamProperty("title", title))
@@ -22,7 +23,7 @@ export function buildQueryParams({
     .concat(buildQueryParamProperty("to", toDate))
     .concat(buildQueryParamProperty("orderBy", orderBy))
     .concat(buildQueryParamProperty("keyword", keyword))
-    .concat(buildQueryParamProperty("organization", organization))
+    .concat(buildQueryParamProperty("organizationName", organization))
     .slice(0, -1);
   //TODO
   //params = params.concat(this.buildQueryParamProperty("keyword", this.state.keyword))
@@ -46,7 +47,7 @@ export function syncParamsToState(params: SearchParams) {
     documentation: params.documentation || "",
     keyword: params.keyword || "",
     orderBy: params.orderBy || SortMethod.DateDesc,
-    organization: params.organization || "",
+    organization: fromOrganizationName(params.organizationName),
     status: NOTHING,
   };
   store.dispatch(updateSearchParams(state));

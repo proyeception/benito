@@ -103,6 +103,6 @@ export type SearchParams = {
   toDate?: string;
   keyword?: string;
   documentation?: string;
-  organization?: string;
+  organizationName?: string;
   orderBy?: SortMethod;
 };

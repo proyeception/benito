@@ -13,8 +13,9 @@ import {
   SearchState,
   Fetch,
   UPDATE_FETCH_STATUS,
+  UPDATE_ORGANIZATION,
 } from "../../store/search/types";
-import { Category, Project, SearchParams, SortMethod } from "../../types";
+import { Category, Organization, SortMethod } from "../../types";
 
 export function updateTitle(name: string): SearchAction {
   return {
@@ -89,5 +90,12 @@ export function updateFetchStatus(fetch: Fetch): SearchAction {
   return {
     type: UPDATE_FETCH_STATUS,
     payload: fetch,
+  };
+}
+
+export function updateOrganization(o: Organization): SearchAction {
+  return {
+    type: UPDATE_ORGANIZATION,
+    payload: o,
   };
 }
