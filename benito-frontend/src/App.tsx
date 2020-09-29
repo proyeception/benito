@@ -27,7 +27,7 @@ const App = () => {
       url: `${benitoHost}/benito/categories`,
     };
 
-    openLocalStoredSession(setIsLoggingIn);
+    openLocalStoredSession(() => setIsLoggingIn(false));
 
     axios
       .request<Array<Category>>(config)

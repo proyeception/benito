@@ -59,7 +59,7 @@ export type Role = "SUPERVISOR" | "AUTHOR";
 
 export type ProjectEditionRole = "AUTHOR" | "SUPERVISOR" | "VISITOR";
 
-export type SessionInfo = {
+export type Session = {
   userId: string;
   role: Role;
 };

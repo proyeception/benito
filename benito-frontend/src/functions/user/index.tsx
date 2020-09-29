@@ -7,8 +7,6 @@ import { Icon } from "@material-ui/core";
 import React from "react";
 import GithubIcon from "@material-ui/icons/GitHub";
 import TwitterIcon from "@material-ui/icons/Twitter";
-import FacebookIcon from "@material-ui/icons/Facebook";
-import InstagramIcon from "@material-ui/icons/Instagram";
 
 export async function fetchUser(collection: string, userId: string) {
   let config: AxiosRequestConfig = {

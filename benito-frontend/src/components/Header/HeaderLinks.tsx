@@ -24,33 +24,31 @@ import UserLink from "../Links/UserLink";
 import CustomDropdown from "../CustomDropdown/CustomDropdown";
 import { invalidateSession } from "../../actions/session";
 import { clearSession } from "../../functions/session";
+import { LoggedInState, SessionState } from "../../store/session/types";
 
 const useStyles = makeStyles(styles);
 
 interface Props extends RouteComponentProps {
-  isLoggedIn: Boolean;
-  userId?: string;
-  profilePic?: string;
-  role?: Role;
-  token?: string;
+  session: SessionState;
 }
 
 const HeaderLinks = (props: Props) => {
   const classes = useStyles();
+
   return (
     <List className={classes.list}>
       <ListItem className={classes.listItem}>
-        {props.isLoggedIn ? (
+        {props.session.isLoggedIn ? (
           <CustomDropdown
             buttonText="Mi cuenta"
             dropdownList={[
-              <UserLink role={props.role!} id={props.userId!}>
+              <UserLink role={props.session.role} id={props.session.userId}>
                 Mi perfil
               </UserLink>,
               { divider: true },
               <div
                 onClick={() => {
-                  clearSession(props.token!);
+                  clearSession((props.session as LoggedInState).token);
                   props.history.push("/");
                   props.history.go(0);
                 }}
@@ -73,11 +71,7 @@ const HeaderLinks = (props: Props) => {
 
 const mapStateToProps = (rootState: RootState) => {
   return {
-    isLoggedIn: rootState.session.isLoggedIn,
-    userId: rootState.session.userId,
-    profilePic: rootState.session.profilePicture,
-    role: rootState.session.role,
-    token: rootState.session.token,
+    session: rootState.session,
   };
 };
 
