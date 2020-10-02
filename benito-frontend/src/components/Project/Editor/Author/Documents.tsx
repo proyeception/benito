@@ -5,6 +5,7 @@ import { Project } from "../../../../types";
 import { faMinusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDropzone } from "react-dropzone";
+import Loader from "react-loader-spinner";
 
 type Props = {
   project: Project;
@@ -12,15 +13,21 @@ type Props = {
 };
 
 const Documents = (props: Props) => {
+  const [isUploading, setIsUploading] = useState(false);
   const [documents, setDocuments] = useState(
     props.project.documentation.map((d) => d.fileName)
   );
+
+  setIsUploading(true);
 
   const onDrop = useCallback((files) => {
     props.setDocuments(files);
     const form = new FormData();
     setDocuments(documents.concat(files.map((f: File) => f.name)));
   }, []);
+
+  setIsUploading(false);
+  
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   return (
@@ -39,6 +46,7 @@ const Documents = (props: Props) => {
       ))}
       <div className="font-size-14 font-size-18-md pt-3 pt-md-3 mb-3">
         <div className="mb-3">Cargar documentos</div>
+
         <section className="container dropzone-container">
           <div {...getRootProps({ className: "dropzone font-size-18-md" })}>
             <input {...getInputProps()} />
