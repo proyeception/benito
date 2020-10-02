@@ -17,6 +17,7 @@ import { AxiosRequestConfig } from "axios";
 import { benitoHost } from "./config";
 import { Category } from "./types";
 import { fetchOrganizations } from "./functions/organization";
+import MePage from "./views/MePage/MePage";
 
 const App = () => {
   const [isLoggingIn, setIsLoggingIn] = useState(true);
@@ -53,6 +54,7 @@ const App = () => {
           <Route path="/authors/:id" component={AuthorPage} />
           <Route path="/supervisors/:id" component={SupervisorPage} />
           <Route path="/login" component={LoginPage} />
+          <Route path="/me/:tab" component={MePage} />
           <Route path="/" component={Components} />
         </Switch>
       </BrowserRouter>

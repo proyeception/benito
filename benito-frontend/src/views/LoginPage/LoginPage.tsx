@@ -28,13 +28,24 @@ import GoogleLogin, { GoogleLoginResponse } from "react-google-login";
 import { googleClientId } from "../../config";
 import { LoginData } from "../../types";
 import { startLogin } from "../../functions/session";
+import { RootState } from "../../reducers";
+import { connect } from "react-redux";
+import { Redirect, RouteComponentProps, withRouter } from "react-router-dom";
 
 const getKeyValue = <T extends object, U extends keyof T>(obj: T) => (key: U) =>
   obj[key];
 
 const useStyles = makeStyles(styles);
 
-const LoginPage = (props: any) => {
+interface LoginPageProps extends RouteComponentProps {
+  isLoggedIn: boolean;
+}
+
+const LoginPage = (props: LoginPageProps) => {
+  if (props.isLoggedIn) {
+    return <Redirect to="/" />;
+  }
+
   const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
   setTimeout(function () {
     setCardAnimation("");
@@ -182,4 +193,10 @@ const LoginPage = (props: any) => {
   );
 };
 
-export default hot(module)(LoginPage);
+const mapStateToProps = (rootState: RootState) => {
+  return {
+    isLoggedIn: rootState.session.isLoggedIn,
+  };
+};
+
+export default hot(module)(connect(mapStateToProps)(withRouter(LoginPage)));

@@ -14,7 +14,8 @@ import GridItem from "../Grid/GridItem";
 
 import styles from "../../assets/jss/material-kit-react/components/navPillsStyle";
 
-const getKeyValue = <T extends object, U extends keyof T>(obj: T) => (key: U) => obj[key];
+const getKeyValue = <T extends object, U extends keyof T>(obj: T) => (key: U) =>
+  obj[key];
 
 const useStyles = makeStyles(styles);
 
@@ -30,7 +31,7 @@ export default function NavPills(props: any) {
   const { tabs, direction, color, horizontal, alignCenter } = props;
   const flexContainerClasses = classNames({
     [classes.flexContainer]: true,
-    [classes.horizontalDisplay]: horizontal !== undefined
+    [classes.horizontalDisplay]: horizontal !== undefined,
   });
   const tabButtons = (
     <Tabs
@@ -38,21 +39,24 @@ export default function NavPills(props: any) {
         root: classes.root,
         fixed: classes.fixed,
         flexContainer: flexContainerClasses,
-        indicator: classes.displayNone
+        indicator: classes.displayNone,
       }}
       value={active}
-      onChange={handleChange}
+      onChange={(e, v) => {
+        handleChange(e, v);
+        props.onChange(e, v);
+      }}
       centered={alignCenter}
     >
       {tabs.map((prop: any, key: any) => {
-        var icon: {[k: string]: any} = {};
+        var icon: { [k: string]: any } = {};
         if (prop.tabIcon !== undefined) {
           icon.icon = <prop.tabIcon className={classes.tabIcon} />;
         }
         const pillsClasses = classNames({
           [classes.pills]: true,
           [classes.horizontalPills]: horizontal !== undefined,
-          [classes.pillsWithIcons]: prop.tabIcon !== undefined
+          [classes.pillsWithIcons]: prop.tabIcon !== undefined,
         });
         return (
           <Tab
@@ -62,7 +66,7 @@ export default function NavPills(props: any) {
             classes={{
               root: pillsClasses,
               selected: getKeyValue(classes)(color),
-              wrapper: classes.tabWrapper
+              wrapper: classes.tabWrapper,
             }}
           />
         );
@@ -79,9 +83,7 @@ export default function NavPills(props: any) {
         {tabs.map((prop: any, key: any) => {
           return (
             // <div className={classes.tabContent} key={key}>
-            <div key={key}>
-              {prop.tabContent}
-            </div>
+            <div key={key}>{prop.tabContent}</div>
           );
         })}
       </SwipeableViews>
@@ -102,5 +104,5 @@ export default function NavPills(props: any) {
 
 NavPills.defaultProps = {
   active: 0,
-  color: "primary"
+  color: "primary",
 };

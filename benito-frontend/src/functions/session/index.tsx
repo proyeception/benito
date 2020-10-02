@@ -65,7 +65,6 @@ export function startLogin(
   axios
     .request(config)
     .then(() => {
-      history.push("/");
       history.go(0);
     })
     .catch(console.error);
