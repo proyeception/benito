@@ -29,22 +29,22 @@ interface CloseProjectEditionAction {
 
 interface EditTitleAction {
   type: typeof EDIT_TITLE;
-  payload: String;
+  payload: string;
 }
 
 interface EditDescriptionAction {
   type: typeof EDIT_DESCRIPTION;
-  payload: String;
+  payload: string;
 }
 
 interface EditPictureUrlAction {
   type: typeof EDIT_PICTUREURL;
-  payload: String;
+  payload: string;
 }
 
 interface EditExtraContentAction {
   type: typeof EDIT_EXTRA_CONTENT;
-  payload: String;
+  payload: string;
 }
 
 interface UpdateCurrentProjectAction {

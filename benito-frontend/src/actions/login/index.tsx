@@ -11,14 +11,14 @@ import {
   DISPEL_USERNAME_ERROR,
 } from "../../store/login/types";
 
-export function updateLoginUsername(newUsername: String): LoginAction {
+export function updateLoginUsername(newUsername: string): LoginAction {
   return {
     type: UPDATE_LOGIN_USERNAME,
     payload: newUsername,
   };
 }
 
-export function updateLoginPassword(newPassword: String): LoginAction {
+export function updateLoginPassword(newPassword: string): LoginAction {
   return {
     type: UPDATE_LOGIN_PASSWORD,
     payload: newPassword,

@@ -1,9 +1,10 @@
-import { Category } from "../../types";
+import { Category, Organization } from "../../types";
 import {
   UPDATE_CATEGORIES,
   CommonAction,
   TOGGLE_HAMBURGER_BUTTON,
   TOGGLE_LOADING,
+  UPDATE_ORGANIZATIONS,
 } from "../../store/common/types";
 
 export function updateCategories(categories: Array<Category>): CommonAction {
@@ -24,5 +25,12 @@ export function toggleLoading(b: Boolean): CommonAction {
   return {
     type: TOGGLE_LOADING,
     payload: b,
+  };
+}
+
+export function updateOrganizations(orgs: Array<Organization>): CommonAction {
+  return {
+    type: UPDATE_ORGANIZATIONS,
+    payload: orgs,
   };
 }

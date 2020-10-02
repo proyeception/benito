@@ -1,35 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { hot } from "react-hot-loader";
-import "./styles.scss";
-import Header from "./components/Header/index";
-import Footer from "./components/Footer";
-import { Switch, Route } from "react-router-dom";
-import Search from "./components/Search";
-import Home from "./components/Home";
-import axios, { AxiosRequestConfig } from "axios";
+import "./App.css";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import ProjectPage from "./views/ProjectPage/ProjectPage";
+import SearchPage from "./views/SearchPage/SearchPage";
+import AuthorPage from "./views/ProfilePage/AuthorPage";
+import SupervisorPage from "./views/ProfilePage/SupervisorPage";
+import LoginPage from "./views/LoginPage/LoginPage";
+import Components from "./views/Components/Components";
+import store from "./store";
+import { updateCategories, updateOrganizations } from "./actions/common";
+import axios from "axios";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
+import { openLocalStoredSession } from "./functions/session";
+import { AxiosRequestConfig } from "axios";
 import { benitoHost } from "./config";
 import { Category } from "./types";
-import store from "./store";
-import { updateCategories } from "./actions/common";
-import { AnimatePresence } from "framer-motion";
-import HamburgerMenu from "./components/Header/HamburgerMenu";
-import ViewProject from "./components/Project/index";
-import NotFound from "./components/NotFound";
-import Author from "./components/User/Author";
-import Supervisor from "./components/User/Supervisor";
-import SupervisorLogin from "./components/Login/SupervisorLogin";
-import ProjectEditor from "./components/Project/Editor";
-import Me from "./components/User/Me";
-import { openLocalStoredSession } from "./functions/session";
-import LoadingOverlay from "react-loading-overlay";
-import { RootState } from "./reducers";
-import { connect } from "react-redux";
+import { fetchOrganizations } from "./functions/organization";
+import MePage from "./views/MePage/MePage";
 
-type Props = {
-  loading: Boolean;
-};
-
-const App = (props: Props) => {
+const App = () => {
   const [isLoggingIn, setIsLoggingIn] = useState(true);
   useEffect(() => {
     let config: AxiosRequestConfig = {
@@ -37,12 +27,17 @@ const App = (props: Props) => {
       url: `${benitoHost}/benito/categories`,
     };
 
-    openLocalStoredSession(setIsLoggingIn);
+    openLocalStoredSession(() => setIsLoggingIn(false));
 
     axios
       .request<Array<Category>>(config)
       .then((res) => res.data)
       .then((categories) => store.dispatch(updateCategories(categories)))
+      .catch(console.error);
+
+    fetchOrganizations()
+      .then((res) => res.data)
+      .then((orgs) => store.dispatch(updateOrganizations(orgs)))
       .catch(console.error);
   }, []);
 
@@ -51,37 +46,20 @@ const App = (props: Props) => {
   }
 
   return (
-    <div className="h-100">
-      <LoadingOverlay active={props.loading.valueOf()} spinner>
-        <HamburgerMenu />
-        <Header />
-        <AnimatePresence>
-          <Switch>
-            <Route exact path="/projects/:projectId" component={ViewProject} />
-            <Route
-              exact
-              path="/projects/:projectId/edit"
-              component={ProjectEditor}
-            />
-            <Route exact path="/" component={Home} />
-            <Route exact path="/search" component={Search} />
-            <Route exact path="/authors/:userId" component={Author} />
-            <Route exact path="/supervisors/:userId" component={Supervisor} />
-            <Route exact path="/me/:tab" render={() => <Me />} />
-            <Route exact path="/supervisor/login" component={SupervisorLogin} />
-            <Route path="/*" component={NotFound} />
-          </Switch>
-        </AnimatePresence>
-        <Footer />
-      </LoadingOverlay>
-    </div>
+    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+      <BrowserRouter>
+        <Switch>
+          <Route path="/projects/:id" component={ProjectPage} />
+          <Route path="/search" component={SearchPage} />
+          <Route path="/authors/:id" component={AuthorPage} />
+          <Route path="/supervisors/:id" component={SupervisorPage} />
+          <Route path="/login" component={LoginPage} />
+          <Route path="/me/:tab" component={MePage} />
+          <Route path="/" component={Components} />
+        </Switch>
+      </BrowserRouter>
+    </MuiPickersUtilsProvider>
   );
 };
 
-const mapStateToProps = (rootState: RootState) => {
-  return {
-    loading: rootState.common.loading,
-  };
-};
-
-export default hot(module)(connect(mapStateToProps)(App));
+export default App;

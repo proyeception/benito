@@ -1,6 +1,12 @@
-import { Project } from "../../types";
+import {
+  Category,
+  Organization,
+  Project,
+  SearchParams,
+  SortMethod,
+} from "../../types";
 
-export const UPDATE_NAME = "UPDATE_NAME";
+export const UPDATE_TITLE = "UPDATE_TITLE";
 export const UPDATE_CATEGORY = "UPDATE_CATEGORY";
 export const UPDATE_FROM_DATE = "UPDATE_FROM_DATE";
 export const UPDATE_TO_DATE = "UPDATE_TO_DATE";
@@ -10,35 +16,37 @@ export const UPDATE_PROJECTS = "UPDATE_PROJECTS";
 export const UPDATE_SORT_METHOD = "UPDATE_SORT_METHOD";
 export const RESET_SEARCH_PARAMETERS = "RESET_SEARCH_PARAMETERS";
 export const UPDATE_ORGANIZATION = "UPDATE_ORGANIZATION";
+export const UPDATE_SEARCH_PARAMS = "UPDATE_SEARCH_PARAMS";
+export const UPDATE_FETCH_STATUS = "UPDATE_FETCH_STATUS";
 
-interface UpdateNameAction {
-  type: typeof UPDATE_NAME;
-  payload: String;
+interface UpdateTitleAction {
+  type: typeof UPDATE_TITLE;
+  payload: string;
 }
 
 interface UpdateFromDateAction {
   type: typeof UPDATE_FROM_DATE;
-  payload: String;
+  payload: Date;
 }
 
 interface UpdateToDateAction {
   type: typeof UPDATE_TO_DATE;
-  payload: String;
+  payload: Date;
 }
 
 interface UpdateKeywordAction {
   type: typeof UPDATE_KEYWORD;
-  payload: String;
+  payload: string;
 }
 
 interface UpdateDocumentationAction {
   type: typeof UPDATE_DOCUMENTATION;
-  payload: String;
+  payload: string;
 }
 
 interface UpdateCategoryAction {
   type: typeof UPDATE_CATEGORY;
-  payload: String;
+  payload: Category;
 }
 
 interface UpdateProjects {
@@ -57,20 +65,26 @@ interface ResetSearchParametersAction {
 
 interface UpdateOrganization {
   type: typeof UPDATE_ORGANIZATION;
-  payload: String;
+  payload: Organization;
 }
 
-export enum SortMethod {
-  DateAsc = "DATE_ASC",
-  DateDesc = "DATE_DESC",
-  AlphaAsc = "ALPHA_ASC",
-  AlphaDesc = "ALPHA_DESC",
-  ViewsAsc = "VIEWS_ASC",
-  ViewsDesc = "VIEWS_DESC",
+interface UpdateSearchParamsAction {
+  type: typeof UPDATE_SEARCH_PARAMS;
+  payload: SearchState;
 }
+
+interface UpdateFetchStatusAction {
+  type: typeof UPDATE_FETCH_STATUS;
+  payload: Fetch;
+}
+
+export const NOTHING = "NOTHING";
+export const REFRESH = "REFRESH";
+
+export type Fetch = typeof NOTHING | typeof REFRESH;
 
 export type SearchAction =
-  | UpdateNameAction
+  | UpdateTitleAction
   | UpdateCategoryAction
   | UpdateProjects
   | UpdateFromDateAction
@@ -79,16 +93,18 @@ export type SearchAction =
   | UpdateDocumentationAction
   | UpdateSortMethod
   | ResetSearchParametersAction
-  | UpdateOrganization;
+  | UpdateOrganization
+  | UpdateSearchParamsAction
+  | UpdateFetchStatusAction;
 
 export type SearchState = {
-  name: String;
-  projects: Array<Project>;
-  category: String;
-  fromDate: String;
-  toDate: String;
-  keyword: String;
-  documentation: String;
+  title?: string;
+  category?: Category;
+  fromDate?: Date;
+  toDate?: Date;
+  keyword?: string;
+  documentation?: string;
   orderBy: SortMethod;
-  organization: String;
+  organization?: Organization;
+  status: Fetch;
 };
