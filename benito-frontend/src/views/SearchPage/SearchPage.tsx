@@ -38,7 +38,7 @@ const SearchPage = (props: any) => {
   return (
     <div>
       <Header
-        color="primary"
+        color="darkGray"
         routes={dashboardRoutes}
         rightLinks={<HeaderLinks />}
         fixed

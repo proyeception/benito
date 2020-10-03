@@ -70,6 +70,7 @@ const defaultFont = {
 };
 
 const primaryColor = "#c41234";
+const darkGrayColor = "#2f3336";
 const warningColor = "#ff9800";
 const dangerColor = "#f44336";
 const successColor = "#4caf50";
@@ -189,6 +190,7 @@ export {
   card,
   defaultFont,
   primaryColor,
+  darkGrayColor,
   warningColor,
   dangerColor,
   successColor,

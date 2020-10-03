@@ -90,7 +90,7 @@ const MePage = (props: MePageProps) => {
   return (
     <div>
       <Header
-        color="primary"
+        color="darkGray"
         rightLinks={<HeaderLinks />}
         fixed
         {...rest}

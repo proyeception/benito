@@ -54,7 +54,7 @@ const ProjectPage = (props: Props) => {
   return (
     <div>
       <Header
-        color="primary"
+        color="darkGray"
         routes={dashboardRoutes}
         rightLinks={<HeaderLinks />}
         fixed

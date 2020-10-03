@@ -15,13 +15,19 @@ import Menu from "@material-ui/icons/Menu";
 import styles from "../../assets/jss/material-kit-react/components/headerStyle";
 import { hot } from "react-hot-loader";
 import { RouteComponentProps, withRouter } from "react-router-dom";
+import logo from '../../assets/img/proyectate/proyectate-logo-transparent.png';
+import utnLogo from '../../assets/img/proyectate/utn-logo-transparent.png';
 
 const getKeyValue = <T extends object, U extends keyof T>(obj: T) => (key: U) =>
   obj[key];
 
 const useStyles = makeStyles(styles);
 
-const brand = "Proyectate";
+const brand = 
+<div className="brand-logo">
+  <img src={logo} className="brand-logo" />
+  <img src={utnLogo} className="brand-logo" />
+</div>;
 
 type Any = any;
 

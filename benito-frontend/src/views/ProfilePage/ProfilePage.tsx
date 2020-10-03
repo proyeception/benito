@@ -71,7 +71,7 @@ const ProfilePage = (props: ProfilePageProps) => {
   return (
     <div>
       <Header
-        color="primary"
+        color="darkGray"
         rightLinks={<HeaderLinks />}
         fixed
         {...rest}
