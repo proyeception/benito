@@ -69,7 +69,8 @@ const defaultFont = {
   lineHeight: "1.5em"
 };
 
-const primaryColor = "#9c27b0";
+const primaryColor = "#c41234";
+const darkGrayColor = "#2f3336";
 const warningColor = "#ff9800";
 const dangerColor = "#f44336";
 const successColor = "#4caf50";
@@ -156,11 +157,19 @@ const defaultBoxShadow = {
 };
 
 const title = {
-  color: "#3C4858",
+  color: primaryColor,
   margin: "1.75rem 0 0.875rem",
   textDecoration: "none",
   fontWeight: 700,
-  fontFamily: `"Roboto Slab", "Times New Roman", serif`
+  fontFamily: `"oswald", "helvetica", "arial", "verdana", sans-serif`
+};
+
+const subtitle = {
+  color: darkGrayColor,
+  margin: "1.75rem 0 0.875rem",
+  textDecoration: "none",
+  fontWeight: 700,
+  fontFamily: `"oswald", "helvetica", "arial", "verdana", sans-serif`
 };
 
 const cardTitle = {
@@ -189,6 +198,7 @@ export {
   card,
   defaultFont,
   primaryColor,
+  darkGrayColor,
   warningColor,
   dangerColor,
   successColor,
@@ -211,6 +221,7 @@ export {
   cardHeader,
   defaultBoxShadow,
   title,
+  subtitle,
   cardTitle,
   cardLink,
   cardSubtitle

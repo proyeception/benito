@@ -178,7 +178,7 @@ const SearchBoxSection = (props: SearchBoxSectionProps) => {
         <GridItem>
           <Button
             color="primary"
-            round
+            default
             fullWidth
             onClick={() => {
               props.history.push(

@@ -1,4 +1,4 @@
-import { title } from "../../../material-kit-react";
+import { title, subtitle } from "../../../material-kit-react";
 import { createStyles } from "@material-ui/core/styles";
 
 const documentsStyle = createStyles({
@@ -8,6 +8,13 @@ const documentsStyle = createStyles({
   },
   title: {
     ...title,
+    marginBottom: "1rem",
+    marginTop: "30px",
+    minHeight: "32px",
+    textDecoration: "none",
+  },
+  subtitle: {
+    ...subtitle,
     marginBottom: "1rem",
     marginTop: "30px",
     minHeight: "32px",

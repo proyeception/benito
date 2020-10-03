@@ -23,7 +23,7 @@ const DocumentsSection = ({ project }: DocumentsSectionProps) => {
     <div className={classes.section}>
       <GridContainer justify="center">
         <GridItem xs={12} sm={12} md={12}>
-          <h2 className={classes.title} style={{ textAlign: "center" }}>
+          <h2 className={classes.subtitle} style={{ textAlign: "center" }}>
             Ficha técnica
           </h2>
         </GridItem>

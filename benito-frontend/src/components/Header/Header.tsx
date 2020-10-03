@@ -15,13 +15,19 @@ import Menu from "@material-ui/icons/Menu";
 import styles from "../../assets/jss/material-kit-react/components/headerStyle";
 import { hot } from "react-hot-loader";
 import { RouteComponentProps, withRouter } from "react-router-dom";
+import logo from '../../assets/img/proyectate/proyectate-logo-transparent.png';
+import utnLogo from '../../assets/img/proyectate/utn-logo-transparent.png';
 
 const getKeyValue = <T extends object, U extends keyof T>(obj: T) => (key: U) =>
   obj[key];
 
 const useStyles = makeStyles(styles);
 
-const brand = "Proyectate";
+const brand = 
+<div className="brand-logo">
+  <img src={logo} className="brand-logo" />
+  <img src={utnLogo} className="brand-logo" />
+</div>;
 
 type Any = any;
 
@@ -30,37 +36,8 @@ interface HeaderProps extends RouteComponentProps, Any {}
 const Header = (props: HeaderProps) => {
   const classes = useStyles();
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  React.useEffect(() => {
-    if (props.changeColorOnScroll) {
-      window.addEventListener("scroll", headerColorChange);
-    }
-    return function cleanup() {
-      if (props.changeColorOnScroll) {
-        window.removeEventListener("scroll", headerColorChange);
-      }
-    };
-  });
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
-  };
-  const headerColorChange = () => {
-    const { color, changeColorOnScroll } = props;
-    const windowsScrollTop = window.pageYOffset;
-    if (windowsScrollTop > changeColorOnScroll.height) {
-      document.body
-        .getElementsByTagName("header")[0]
-        .classList.remove(getKeyValue(classes)(color));
-      document.body
-        .getElementsByTagName("header")[0]
-        .classList.add(getKeyValue(classes)(changeColorOnScroll.color));
-    } else {
-      document.body
-        .getElementsByTagName("header")[0]
-        .classList.add(getKeyValue(classes)(color));
-      document.body
-        .getElementsByTagName("header")[0]
-        .classList.remove(getKeyValue(classes)(changeColorOnScroll.color));
-    }
   };
   const { color, rightLinks, leftLinks, fixed, absolute } = props;
   const appBarClasses = classNames({
@@ -121,7 +98,7 @@ const Header = (props: HeaderProps) => {
 };
 
 Header.defaultProp = {
-  color: "white",
+  color: "primary",
 };
 
 export default hot(module)(withRouter(Header));

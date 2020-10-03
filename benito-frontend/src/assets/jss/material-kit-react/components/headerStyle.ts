@@ -2,6 +2,7 @@ import {
   container,
   defaultFont,
   primaryColor,
+  darkGrayColor,
   infoColor,
   successColor,
   warningColor,
@@ -71,6 +72,12 @@ const headerStyle = createStyles({
   },
   primary: {
     backgroundColor: primaryColor,
+    color: "#FFFFFF",
+    boxShadow:
+      "0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 12px -5px rgba(156, 39, 176, 0.46)"
+  },
+  darkGray: {
+    backgroundColor: darkGrayColor,
     color: "#FFFFFF",
     boxShadow:
       "0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 12px -5px rgba(156, 39, 176, 0.46)"

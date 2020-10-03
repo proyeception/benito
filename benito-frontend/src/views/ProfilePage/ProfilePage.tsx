@@ -71,13 +71,9 @@ const ProfilePage = (props: ProfilePageProps) => {
   return (
     <div>
       <Header
-        color="transparent"
+        color="darkGray"
         rightLinks={<HeaderLinks />}
         fixed
-        changeColorOnScroll={{
-          height: 200,
-          color: "white",
-        }}
         {...rest}
       />
       <Parallax
