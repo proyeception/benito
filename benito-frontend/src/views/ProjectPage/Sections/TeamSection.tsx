@@ -37,7 +37,7 @@ export default function TeamSection({ project }: TeamSectionProps) {
   );
   return (
     <div className={classes.section}>
-      <h2 className={classes.title}>Conocé al equipo</h2>
+      <h2 className={classes.subtitle}>Conocé al equipo</h2>
       <div>
         <GridContainer>
           {project.authors.map((a, idx) => (

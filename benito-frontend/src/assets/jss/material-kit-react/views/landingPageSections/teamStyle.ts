@@ -1,4 +1,4 @@
-import { cardTitle, title } from "../../../material-kit-react";
+import { cardTitle, title, subtitle } from "../../../material-kit-react";
 import imagesStyle from "../../imagesStyles";
 import { createStyles } from "@material-ui/core/styles";
 
@@ -13,6 +13,13 @@ const teamStyle = createStyles({
     marginTop: "30px",
     minHeight: "32px",
     textDecoration: "none"
+  },
+  subtitle: {
+    ...subtitle,
+    marginBottom: "1rem",
+    marginTop: "30px",
+    minHeight: "32px",
+    textDecoration: "none",
   },
   ...imagesStyle,
   itemGrid: {
