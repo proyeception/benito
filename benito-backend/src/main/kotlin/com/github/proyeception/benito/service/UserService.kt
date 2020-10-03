@@ -132,7 +132,8 @@ open class UserService(
             contact = ContactDTO(
                 mail = medusa.mail,
                 phone = medusa.mail
-            )
+            ),
+            about = medusa.about
         )
     }
 

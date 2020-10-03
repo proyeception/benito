@@ -84,6 +84,7 @@ open class MedusaGraphClient(
                     id
                     url
                   }
+                  about
                 }
                 supervisors {
                   id
@@ -93,6 +94,7 @@ open class MedusaGraphClient(
                     id
                     url
                   }
+                  about
                 }
                 documentation {
                   id
@@ -123,11 +125,11 @@ open class MedusaGraphClient(
         keyword?.let { where.add("""documentation: { content_contains: "${it.replaceUrlSpaces()}" }""") }
         from?.let { where.add("""creation_date_gte: "$it"""") }
         to?.let { where.add("""creation_date_lte: "$it"""") }
-        category?.let { where.add("""category: { name: "$it" }""") }
+        category?.let { where.add("""category: { tag_name: "$it" }""") }
         authorId?.let { where.add("""authors: { id: "$it" }""") }
         authorName?.let { where.add("""authors: { full_name_contains: "${it.replaceUrlSpaces()}" }""") }
         organizationId?.let { where.add("""organization: { id: "$it" }""") }
-        organizationName?.let { where.add(""""organization: { name_contains: "$it" }""") }
+        organizationName?.let { where.add("""organization: { name: "$it" }""") }
 
         val sort = orderBy?.let { """sort: "${it.sortMethod}"""" }
 

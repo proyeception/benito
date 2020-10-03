@@ -10,7 +10,7 @@
         </encoder>
     </appender>
 
-    <logger name="com.github.proyeception.benito" level="DEBUG"/>
+    <logger name="com.github.proyeception.benito" level="INFO"/>
 
     <root level="INFO">
         <appender-ref ref="STDOUT"/>

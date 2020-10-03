@@ -40,11 +40,12 @@ data class MedusaPersonDTO(
     val username: String?,
     val fullName: String,
     val organizations: List<MedusaOrganizationDTO>,
-    val profilePic: MedusaFileDTO?,
+    val profilePic: MedusaFileDTO? = null,
     val projects: List<MedusaProjectRefDTO>,
     val socials: List<SocialDTO>,
-    val mail: String?,
-    val phone: String?
+    val mail: String? = null,
+    val phone: String? = null,
+    val about: String? = null
 )
 
 data class MedusaProjectRefDTO(

@@ -9,7 +9,7 @@ const assetsPublicPath = "/";
 const staticPath = "static";
 const outputPath = path.join(__dirname, "build");
 const publicPath = path.join(__dirname, "public");
-const mainEntry = path.join(__dirname, "src", "entry.tsx");
+const mainEntry = path.join(__dirname, "src", "index.tsx");
 const environment = {
   isProduction: process.env.NODE_ENV === "production",
   isDevelopment: process.env.NODE_ENV !== "production",

@@ -66,9 +66,7 @@ class UserServiceTest : Spec() {
                                     id = "picture"
                                 )
                             )
-                        ),
-                        mail = null,
-                        phone = null
+                        )
                     )
                 )
                 on(organizationMock.find(eq("123"), eq(true))).thenReturn(
@@ -180,22 +178,16 @@ class UserServiceTest : Spec() {
                         username = null,
                         fullName = "Benito Quinquela",
                         organizations = emptyList(),
-                        profilePic = null,
                         projects = emptyList(),
-                        socials = emptyList(),
-                        mail = null,
-                        phone = null
+                        socials = emptyList()
                     ),
                     MedusaPersonDTO(
                         id = "123",
                         username = null,
                         fullName = "Benito Quinquela",
                         organizations = emptyList(),
-                        profilePic = null,
                         projects = emptyList(),
-                        socials = emptyList(),
-                        mail = null,
-                        phone = null
+                        socials = emptyList()
                     )
                 ))
 
@@ -234,11 +226,8 @@ class UserServiceTest : Spec() {
                     username = null,
                     fullName = "Benito Quinquela",
                     organizations = emptyList(),
-                    profilePic = null,
                     projects = emptyList(),
-                    socials = emptyList(),
-                    mail = null,
-                    phone = null
+                    socials = emptyList()
                 ))
 
                 userService.createAuthor(
@@ -267,11 +256,8 @@ class UserServiceTest : Spec() {
                     username = null,
                     fullName = "Benito Quinquela",
                     organizations = emptyList(),
-                    profilePic = null,
                     projects = emptyList(),
-                    socials = emptyList(),
-                    mail = null,
-                    phone = null
+                    socials = emptyList()
                 ))
 
                 userService.createAuthor(

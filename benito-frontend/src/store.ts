@@ -1,11 +1,11 @@
 import { createStore, compose } from "redux";
 import rootReducer, { RootState } from "./reducers/index";
-import { SortMethod } from "./store/search/types";
+import { NOTHING } from "./store/search/types";
+import { SortMethod } from "./types";
 
 const defaultState: RootState = {
   session: {
     isLoggedIn: false,
-    fetching: false,
   },
   home: {
     featuredProjects: [],
@@ -13,18 +13,12 @@ const defaultState: RootState = {
     projectTotal: 0,
   },
   search: {
-    name: "",
-    category: "",
-    projects: [],
-    fromDate: "",
-    toDate: "",
-    keyword: "",
-    documentation: "",
     orderBy: SortMethod.DateDesc,
-    organization: "",
+    status: NOTHING,
   },
   common: {
     categories: [],
+    organizations: [],
     isMenuOpen: false,
     loading: false,
   },

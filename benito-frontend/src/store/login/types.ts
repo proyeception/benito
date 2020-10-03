@@ -10,12 +10,12 @@ export const SET_PASSWORD_INVALID = "SET_PASSWORD_INVALID";
 
 interface UpdateUsernameAction {
   type: typeof UPDATE_LOGIN_USERNAME;
-  payload: String;
+  payload: string;
 }
 
 interface UpdatePasswordAction {
   type: typeof UPDATE_LOGIN_PASSWORD;
-  payload: String;
+  payload: string;
 }
 
 interface LoadLoginAction {
@@ -58,8 +58,8 @@ export type LoginAction =
   | SetPasswordInvalidAction;
 
 export type LoginState = {
-  username: String;
-  password: String;
+  username: string;
+  password: string;
   displayLoader: Boolean;
   isLoggedIn: Boolean;
   usernameError: Boolean;

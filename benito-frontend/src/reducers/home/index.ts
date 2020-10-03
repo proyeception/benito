@@ -9,7 +9,7 @@ import {
 const defaultHomeState: HomeState = {
   featuredProjects: [],
   latestProjects: [],
-  projectTotal: null,
+  projectTotal: 0,
 };
 
 function homeReducer(state = defaultHomeState, action: HomeAction) {
