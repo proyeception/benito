@@ -38,14 +38,10 @@ const SearchPage = (props: any) => {
   return (
     <div>
       <Header
-        color="transparent"
+        color="primary"
         routes={dashboardRoutes}
         rightLinks={<HeaderLinks />}
         fixed
-        changeColorOnScroll={{
-          height: 400,
-          color: "white",
-        }}
         {...rest}
       />
       <Parallax

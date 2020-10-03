@@ -30,37 +30,8 @@ interface HeaderProps extends RouteComponentProps, Any {}
 const Header = (props: HeaderProps) => {
   const classes = useStyles();
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  React.useEffect(() => {
-    if (props.changeColorOnScroll) {
-      window.addEventListener("scroll", headerColorChange);
-    }
-    return function cleanup() {
-      if (props.changeColorOnScroll) {
-        window.removeEventListener("scroll", headerColorChange);
-      }
-    };
-  });
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
-  };
-  const headerColorChange = () => {
-    const { color, changeColorOnScroll } = props;
-    const windowsScrollTop = window.pageYOffset;
-    if (windowsScrollTop > changeColorOnScroll.height) {
-      document.body
-        .getElementsByTagName("header")[0]
-        .classList.remove(getKeyValue(classes)(color));
-      document.body
-        .getElementsByTagName("header")[0]
-        .classList.add(getKeyValue(classes)(changeColorOnScroll.color));
-    } else {
-      document.body
-        .getElementsByTagName("header")[0]
-        .classList.add(getKeyValue(classes)(color));
-      document.body
-        .getElementsByTagName("header")[0]
-        .classList.remove(getKeyValue(classes)(changeColorOnScroll.color));
-    }
   };
   const { color, rightLinks, leftLinks, fixed, absolute } = props;
   const appBarClasses = classNames({
@@ -121,7 +92,7 @@ const Header = (props: HeaderProps) => {
 };
 
 Header.defaultProp = {
-  color: "white",
+  color: "primary",
 };
 
 export default hot(module)(withRouter(Header));

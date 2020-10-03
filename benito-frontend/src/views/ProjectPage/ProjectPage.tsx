@@ -54,14 +54,10 @@ const ProjectPage = (props: Props) => {
   return (
     <div>
       <Header
-        color="transparent"
+        color="primary"
         routes={dashboardRoutes}
         rightLinks={<HeaderLinks />}
         fixed
-        changeColorOnScroll={{
-          height: 400,
-          color: "white",
-        }}
         {...rest}
       />
       <Parallax filter image={project.value.pictureUrl}>
