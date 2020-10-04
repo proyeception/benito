@@ -55,16 +55,18 @@ open class MedusaClient(
 
     open fun categoriesCount() = count("categories")
 
+    private val typeReference = MEDUSA_PROJECT_REF
+
     open fun findProject(projectId: String): MedusaProjectDTO = findOne(
         collection = PROJECTS,
         id = projectId,
-        ref = object : TypeReference<MedusaProjectDTO>() {}
+        ref = MEDUSA_PROJECT_REF
     )
 
     open fun saveDocuments(docs: CreateDocumentsDTO, projectId: String): MedusaProjectDTO = create(
         collection = "projects/$projectId/documents",
         dto = docs,
-        ref = object : TypeReference<MedusaProjectDTO>() {}
+        ref = MEDUSA_PROJECT_REF
     )
 
     open fun saveDocument(projectId: String, name: String, driveId: String, content: String): MedusaProjectDTO = create(
@@ -74,19 +76,19 @@ open class MedusaClient(
             driveId = driveId,
             content = content
         ),
-        ref = object : TypeReference<MedusaProjectDTO>() {}
+        ref = MEDUSA_PROJECT_REF
     )
 
     open fun findUser(userId: String, userType: UserType): MedusaPersonDTO = findOne(
         collection = userType.collection,
         id = userId,
-        ref = object : TypeReference<MedusaPersonDTO>() {}
+        ref = MEDUSA_PERSON_REF
     )
 
     open fun createUser(person: CreateMedusaPersonDTO, userType: UserType): MedusaPersonDTO = create(
         collection = userType.collection,
         dto = person,
-        ref = object : TypeReference<MedusaPersonDTO>() {}
+        ref = MEDUSA_PERSON_REF
     )
 
     open fun findUsersBy(userType: UserType, vararg params: Pair<String, String>): List<MedusaPersonDTO> = find(
@@ -116,14 +118,14 @@ open class MedusaClient(
         collection = PROJECTS,
         id = id,
         dto = content,
-        ref = object : TypeReference<MedusaProjectDTO>() {}
+        ref = MEDUSA_PROJECT_REF
     )
 
     open fun updateProjectImage(projectId: String, picture: UpdatePictureDTO): MedusaProjectDTO = update(
         collection = PROJECTS,
         id = projectId,
         dto = picture,
-        ref = object : TypeReference<MedusaProjectDTO>() {}
+        ref = MEDUSA_PROJECT_REF
     )
 
     open fun updateUserProfilePicture(
@@ -134,26 +136,26 @@ open class MedusaClient(
         collection = userType.collection,
         id = userId,
         dto = profilePic,
-        ref = object : TypeReference<MedusaPersonDTO>() {}
+        ref = MEDUSA_PERSON_REF
     )
 
     open fun updateUser(userId: String, user: UpdateUserDTO, userType: UserType): MedusaPersonDTO = update(
         collection = userType.collection,
         id = userId,
         dto = user,
-        ref = object : TypeReference<MedusaPersonDTO>() {}
+        ref = MEDUSA_PERSON_REF
     )
 
     open fun deleteDocumentFromProject(projectId: String, documentId: String): MedusaProjectDTO = delete(
         collection = "projects/$projectId",
         id = documentId,
-        ref = object : TypeReference<MedusaProjectDTO>() {}
+        ref = MEDUSA_PROJECT_REF
     )
 
     fun addUsersToProject(projectId: String, users: AddUsersDTO, userType: UserType): MedusaProjectDTO = create(
         collection = "projects/$projectId/${userType.collection}",
         dto = users,
-        ref = object : TypeReference<MedusaProjectDTO>() {}
+        ref = MEDUSA_PROJECT_REF
     )
 
     fun deleteUsersFromProject(projectId: String, items: String, userType: UserType): MedusaProjectDTO {
@@ -164,12 +166,12 @@ open class MedusaClient(
             throw FailedDependencyException("Error deleting ${userType.collection} from $projectId on Medusa")
         }
 
-        return response.deserializeAs(object : TypeReference<MedusaProjectDTO>() {})
+        return response.deserializeAs(MEDUSA_PROJECT_REF)
     }
 
     fun createProject(project: CreateMedusaProjectDTO) = create(
         collection = PROJECTS,
-        ref = object : TypeReference<MedusaProjectDTO>() {},
+        ref = MEDUSA_PROJECT_REF,
         dto = project
     )
 
@@ -187,9 +189,15 @@ open class MedusaClient(
 
     fun modifyProjectUsers(projectId: String, users: SetUsersDTO): MedusaProjectDTO = update(
         collection = PROJECTS,
-        ref = object : TypeReference<MedusaProjectDTO>() {},
+        ref = MEDUSA_PROJECT_REF,
         dto = users,
         id = projectId
+    )
+
+    fun leaveOrganization(userId: String, organizationId: String, userType: UserType): MedusaPersonDTO = delete(
+        collection = "${userType.collection}/$userId/organizations",
+        id = organizationId,
+        ref = MEDUSA_PERSON_REF
     )
 
     private fun <T> find(collection: String, params: List<String>, ref: TypeReference<List<T>>): List<T> {
@@ -263,12 +271,16 @@ open class MedusaClient(
     private fun String.appendOrder(orderBy: OrderDTO?): String = orderBy?.sortMethod
         ?.let { "${this}_sort=${it}&" }
         ?: this
+
     private fun String.appendParam(param: String, value: String?, filter: MedusaFilter): String =
         value?.let { "${this}${param}_${filter.filterName}=$it&" } ?: this
+
     private fun String.appendParam(param: String, value: String?) = value?.let { "$this${param}=$it&" } ?: this
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(MedusaClient::class.java)
         private const val PROJECTS = "projects"
+        private val MEDUSA_PROJECT_REF = object : TypeReference<MedusaProjectDTO>() {}
+        private val MEDUSA_PERSON_REF = object : TypeReference<MedusaPersonDTO>() {}
     }
 }

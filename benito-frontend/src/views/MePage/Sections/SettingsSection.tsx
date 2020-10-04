@@ -1,9 +1,10 @@
 import React from "react";
 import { hot } from "react-hot-loader";
-import { Person } from "../../../types";
+import { Person, Role } from "../../../types";
 
 type SettingsSectionProps = {
   user: Person;
+  role: Role;
 };
 
 const SettingsSection = (props: SettingsSectionProps) => (

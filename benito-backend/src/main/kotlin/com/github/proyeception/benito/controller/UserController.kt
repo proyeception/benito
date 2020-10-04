@@ -65,6 +65,28 @@ class UserController(
         @RequestHeader(X_QUI_TOKEN, required = true) token: String
     ): PersonDTO = doAuthorized(id, token) { userService.updateSupervisor(id, user) }
 
+    @RequestMapping(
+        value = ["/benito/authors/{authorId}/organizations/{organizationId}"],
+        method = [RequestMethod.DELETE]
+    )
+    @ResponseBody
+    fun authorLeaveOrganization(
+        @PathVariable authorId: String,
+        @PathVariable organizationId: String,
+        @RequestHeader(X_QUI_TOKEN, required = true) token: String
+    ): PersonDTO = doAuthorized(authorId, token) { userService.authorLeaveOrganization(authorId, organizationId) }
+
+    @RequestMapping(
+        value = ["/benito/supervisors/{supervisorId}/organizations/{organizationId}"],
+        method = [RequestMethod.DELETE]
+    )
+    @ResponseBody
+    fun supervisorLeaveOrganization(
+        @PathVariable supervisorId: String,
+        @PathVariable organizationId: String,
+        @RequestHeader(X_QUI_TOKEN, required = true) token: String
+    ): PersonDTO = doAuthorized(supervisorId, token) { userService.supervisorLeaveOrganization(supervisorId, organizationId) }
+
     private fun <T> doAuthorized(authorId: String, token: String, f: (String) -> T): T {
         val session = sessionService[token]
             ?: throw UnauthorizedException("I don't know who you are")
