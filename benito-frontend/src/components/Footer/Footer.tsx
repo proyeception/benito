@@ -69,7 +69,7 @@ export default function Footer(props: any) {
           </List>
         </div>
         <div className={classes.right}>
-          &copy; {new Date().getFullYear()} , Proyectate
+          &copy; {new Date().getFullYear()}, Proyectate
         </div>
       </div>
     </footer>
