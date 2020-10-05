@@ -59,7 +59,7 @@ class MedusaClientTest : Spec() {
                     displayName = "Proyectate"
                 ),
                 recommendations = emptyList(),
-                keywords = emptyList()
+                project_keywords = emptyList()
             )
 
             "get to /projects returns all projects" {
@@ -329,7 +329,7 @@ class MedusaClientTest : Spec() {
                 ),
                 tags = emptyList(),
                 recommendations = emptyList(),
-                keywords = emptyList()
+                project_keywords = emptyList()
             )
 
             "get to /projects/{id} returns specified project" {

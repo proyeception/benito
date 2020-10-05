@@ -58,7 +58,11 @@ class ProjectController(
 
     @RequestMapping("/benito/projects/{id}", method = [RequestMethod.GET])
     @ResponseBody
-    private fun findProject(@PathVariable id: String): ProjectDTO = projectService.findProject(id)
+    private fun findProject(@PathVariable id: String): ProjectDTO {
+        val project = projectService.findProject(id)
+        recommendationService.recalculateRecommendations(project)
+        return project
+    }
 
     @RequestMapping(
         value = ["/benito/projects/{projectId}/documents"],

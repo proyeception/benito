@@ -34,7 +34,7 @@ data class ProjectDTO(
     val documentation: List<DocumentationDTO>,
     val organization: OrganizationRefDTO,
     val recommendations: List<ProjectRecommendationDTO>,
-    val keywords: List<KeywordDTO>
+    val project_keywords: List<KeywordDTO>
 ) {
     constructor(medusa: MedusaProjectDTO) : this(
         id = medusa.id,
@@ -49,7 +49,7 @@ data class ProjectDTO(
         documentation = medusa.documentation,
         organization = OrganizationRefDTO(medusa.organization) ,
         recommendations = medusa.recommendations,
-        keywords = medusa.keywords
+        project_keywords = medusa.project_keywords
     )
 }
 
@@ -156,5 +156,6 @@ data class PersonRefDTO(
 }
 
 data class ProjectRecommendationDTO(
-        val id: String
+        val id: String,
+        val project_keywords: List<KeywordDTO>
 )
