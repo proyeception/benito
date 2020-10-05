@@ -104,7 +104,7 @@ open class MedusaGraphClient(
                 recommendations {
                   id
                 }
-                keywords {
+                project_keywords {
                   name
                   score
                 }
