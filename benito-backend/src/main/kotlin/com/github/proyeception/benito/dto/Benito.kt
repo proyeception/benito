@@ -58,7 +58,8 @@ data class PersonDTO(
     val projects: List<ProjectRefDTO>,
     val socials: List<SocialDTO>,
     val contact: ContactDTO? = null,
-    val about: String? = null
+    val about: String? = null,
+    val apiKeys: List<Any> = emptyList()
 )
 
 data class OrganizationRefDTO(
