@@ -22,6 +22,12 @@ export type Person = {
   socials: Array<Social>;
   contact?: Contact;
   about?: string;
+  apiKeys: Array<ApiKey>;
+};
+
+export type ApiKey = {
+  name: string;
+  scopes: Array<String>;
 };
 
 export type Category = {

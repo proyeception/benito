@@ -8,6 +8,7 @@ import com.github.proyeception.benito.parser.DocumentParser
 import com.github.proyeception.benito.service.*
 import com.github.proyeception.benito.snapshot.CategorySnapshot
 import com.github.proyeception.benito.snapshot.OrganizationSnapshot
+import com.github.proyeception.benito.storage.SessionStorage
 import com.github.proyeception.benito.utils.FileHelper
 import com.github.proyeception.benito.utils.HashHelper
 import com.typesafe.config.Config
@@ -66,7 +67,9 @@ open class ServiceModule {
     )
 
     @Bean
-    open fun sessionService(): SessionService = SessionService()
+    open fun sessionService(
+        sessionStorage: SessionStorage
+    ): SessionService = SessionService(sessionStorage)
 
     @Bean
     open fun fileService(

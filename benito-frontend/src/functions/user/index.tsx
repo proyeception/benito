@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from "axios";
+import axios, { AxiosPromise, AxiosRequestConfig } from "axios";
 import { benitoHost } from "../../config";
 import { Person, UpdateUser, Role, Social } from "../../types";
 import { signRequest } from "../http";
@@ -63,4 +63,17 @@ export function socialToIcon(s: Social): JSX.Element {
       return <Icon>face</Icon>;
     }
   }
+}
+
+export function leaveOrganization(
+  userId: String,
+  collection: String,
+  organizationId: String
+): AxiosPromise<Person> {
+  let config: AxiosRequestConfig = {
+    method: "DELETE",
+    url: `${benitoHost}/benito/${collection}/${userId}/organizations/${organizationId}`,
+  };
+
+  return axios.request<Person>(signRequest(config));
 }

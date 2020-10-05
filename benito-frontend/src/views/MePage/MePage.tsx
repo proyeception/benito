@@ -22,6 +22,7 @@ import ProfileSection from "./Sections/ProfileSection";
 import OrganizationsSection from "./Sections/OrganizationsSection";
 import SettingsSection from "./Sections/SettingsSection";
 import userEvent from "@testing-library/user-event";
+import Footer from "../../components/Footer/Footer";
 
 const useStyles = makeStyles(styles);
 
@@ -67,19 +68,25 @@ const MePage = (props: MePageProps) => {
     {
       tabButton: "Perfil",
       tabIcon: Face,
-      tabContent: <ProfileSection user={user.value} />,
+      tabContent: (
+        <ProfileSection user={user.value} role={props.session.role} />
+      ),
       key: "profile",
     },
     {
       tabButton: "Organizaciones",
       tabIcon: Business,
-      tabContent: <OrganizationsSection user={user.value} />,
+      tabContent: (
+        <OrganizationsSection user={user.value} role={props.session.role} />
+      ),
       key: "organizations",
     },
     {
       tabButton: "Configuración",
       tabIcon: Build,
-      tabContent: <SettingsSection user={user.value} />,
+      tabContent: (
+        <SettingsSection user={user.value} role={props.session.role} />
+      ),
       key: "settings",
     },
   ];
@@ -89,12 +96,7 @@ const MePage = (props: MePageProps) => {
 
   return (
     <div>
-      <Header
-        color="darkGray"
-        rightLinks={<HeaderLinks />}
-        fixed
-        {...rest}
-      />
+      <Header color="darkGray" rightLinks={<HeaderLinks />} fixed {...rest} />
 
       <Parallax
         small
@@ -133,6 +135,7 @@ const MePage = (props: MePageProps) => {
           </GridContainer>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
