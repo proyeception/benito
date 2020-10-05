@@ -1,9 +1,11 @@
 package com.github.proyeception.benito.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.io.Serializable
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+
 
 data class MedusaProjectDTO(
     val id: String,
@@ -148,8 +150,12 @@ data class CreateMedusaProjectDTO(
 )
 
 data class KeywordDTO(
-        val name: String,
-        val score: BigDecimal
+    val name: String,
+    val score: BigDecimal
+)
+
+data class KeywordsWrapper(
+    val keywords: List<KeywordDTO>
 )
 
 private val dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd")

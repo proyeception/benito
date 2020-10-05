@@ -110,4 +110,9 @@ open class ServiceModule {
     ): RecommendationService = RecommendationService(
             mongoTextSearch = mongoTextSearch
     )
+
+    @Bean
+    open fun keywordService(
+    ): KeywordService = KeywordService(
+    )
 }

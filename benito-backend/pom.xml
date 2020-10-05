@@ -387,6 +387,14 @@
         </dependency>
         <!-- GraphQL -->
 
+        <!-- Requests -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!-- Requests -->
+
+
     </dependencies>
 
     <build>

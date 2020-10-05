@@ -4,10 +4,7 @@ import com.github.proyeception.benito.X_QUI_TOKEN
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.ForbiddenException
 import com.github.proyeception.benito.exception.UnauthorizedException
-import com.github.proyeception.benito.service.ProjectService
-import com.github.proyeception.benito.service.RecommendationService
-import com.github.proyeception.benito.service.SessionService
-import com.github.proyeception.benito.service.UserService
+import com.github.proyeception.benito.service.*
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
@@ -19,7 +16,8 @@ class ProjectController(
     private val projectService: ProjectService,
     private val sessionService: SessionService,
     private val userService: UserService,
-    private val recommendationService: RecommendationService
+    private val recommendationService: RecommendationService,
+    private val keywordService: KeywordService
 ) {
 
     @RequestMapping("/benito/projects", method = [RequestMethod.GET])
