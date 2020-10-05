@@ -1,9 +1,6 @@
 package com.github.proyeception.benito.mongodb
 
-import com.github.proyeception.benito.dto.DocumentationDTO
-import com.github.proyeception.benito.dto.OrganizationRefDTO
-import com.github.proyeception.benito.dto.PersonRefDTO
-import com.github.proyeception.benito.dto.ProjectDTO
+import com.github.proyeception.benito.dto.*
 import com.mongodb.MongoClientURI
 import com.mongodb.client.MongoCursor
 import com.mongodb.client.model.Aggregates
@@ -21,7 +18,8 @@ open class MongoTextSearch(
     private val host: String,
     private val port: Int
 ) {
-    private val collection: String = "documentations"
+    private val documentsCollection: String = "documentations"
+    private val projectsCollection: String = "projects"
 
     private fun startConnection(): com.mongodb.MongoClient {
         val uri = MongoClientURI(
@@ -32,7 +30,7 @@ open class MongoTextSearch(
 
     open fun getDocuments(line: String, from: String?, to: String?, nameContains: String?, category: String?): MutableList<ProjectDTO> {
         val mongoClient = startConnection()
-        val mongoCollection = mongoClient.getDatabase(databaseName).getCollection(collection)
+        val mongoCollection = mongoClient.getDatabase(databaseName).getCollection(documentsCollection)
         val cursor: MongoCursor<Document> = mongoCollection.find(
             Filters.text("\\" + line + "\\"))
             .projection(
@@ -44,7 +42,7 @@ open class MongoTextSearch(
             .cursor()
 
         val projects = mutableSetOf<ProjectDTO>()
-        val mongoCollectionProjects = mongoClient.getDatabase(databaseName).getCollection("projects")
+        val mongoCollectionProjects = mongoClient.getDatabase(databaseName).getCollection(projectsCollection)
 
         val variableFilters: List<Bson> = createVariableFilters(from, to, nameContains, category);
 
@@ -71,6 +69,7 @@ open class MongoTextSearch(
                 var organization: OrganizationRefDTO
                 var project: ProjectDTO
                 var pictureUrl: String?
+                var recommendations: List<ProjectRecommendationDTO>
 
                 authors = projectDocument.getList("authors", Document::class.java).map {
                     PersonRefDTO(
@@ -96,6 +95,11 @@ open class MongoTextSearch(
                     .firstOrNull()
                     ?.get("url")
                     ?.toString()
+                recommendations = projectDocument.getList("recommendations", Document::class.java).map {
+                    ProjectRecommendationDTO(
+                            id = it["_id"].toString()
+                    )
+                }
                 project = ProjectDTO(
                     id = projectDocument["_id"].toString(),
                     title = projectDocument.get("title", String::class.java),
@@ -107,7 +111,9 @@ open class MongoTextSearch(
                     supervisors = supervisors,
                     tags = projectDocument.getList("tags", String::class.java),
                     documentation = documentation,
-                    organization = organization
+                    organization = organization,
+                    recommendations = recommendations,
+                    keywords = projectDocument["keywords"] as List<KeywordDTO>
                 )
 
                 projects.add(project)
@@ -134,5 +140,40 @@ open class MongoTextSearch(
             filters.add(Aggregates.match(Filters.gte("category", category)))
         }
         return filters
+    }
+
+    fun findRecommendedProjects(updatedProject: ProjectDTO): List<ProjectRecommendationDTO>  {
+        val mongoClient = startConnection()
+        val mongoCollectionProjects = mongoClient.getDatabase(databaseName).getCollection(projectsCollection)
+
+        val keywords = updatedProject.keywords
+
+        val keywordsNames = keywords.map { keywordDTO -> keywordDTO.name }
+        val find = mongoCollectionProjects.find()
+        val cursor: MongoCursor<Document> = find.cursor()
+                /*
+                Filters.and(
+                        Filters.elemMatch("keywords", Filters.`in`(
+                                "name",
+                                keywordsNames
+                        ))
+                ))
+                .cursor() */
+
+        val projects = mutableSetOf<ProjectRecommendationDTO>()
+
+        while (cursor.hasNext()) {
+            val projectDocumentToCompare: Document = cursor.next()
+
+            val project = ProjectRecommendationDTO(
+                    id = projectDocumentToCompare["id"] as String
+            )
+
+            projects.add(project)
+        }
+
+        mongoClient.close()
+
+        return projects.toMutableList()
     }
 }

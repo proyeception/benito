@@ -100,4 +100,11 @@ open class ServiceModule {
             host = storageConfig.getString("host")
         )
     }
+
+    @Bean
+    open fun recommendationService(
+            mongoTextSearch: MongoTextSearch
+    ): RecommendationService = RecommendationService(
+            mongoTextSearch = mongoTextSearch
+    )
 }

@@ -101,6 +101,13 @@ open class MedusaGraphClient(
                   file_name
                   drive_id
                 }
+                recommendations {
+                  id
+                }
+                keywords {
+                  name
+                  score
+                }
               }
             }
         """.trimIndent()

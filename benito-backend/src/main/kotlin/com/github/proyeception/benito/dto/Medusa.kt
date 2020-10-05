@@ -1,6 +1,7 @@
 package com.github.proyeception.benito.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -16,7 +17,9 @@ data class MedusaProjectDTO(
     val documentation: List<DocumentationDTO>,
     val category: CategoryDTO,
     val organization: MedusaOrganizationDTO,
-    val tags: List<MedusaTagDTO>
+    val tags: List<MedusaTagDTO>,
+    val recommendations: List<ProjectRecommendationDTO>,
+    val keywords: List<KeywordDTO>
 )
 
 data class MedusaPersonRefDTO(
@@ -142,6 +145,11 @@ data class CreateMedusaProjectDTO(
     val creationDate: String = LocalDate.now().format(dtf),
     val supervisors: List<String>,
     val category: String
+)
+
+data class KeywordDTO(
+        val name: String,
+        val score: BigDecimal
 )
 
 private val dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd")

@@ -5,6 +5,7 @@ import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.ForbiddenException
 import com.github.proyeception.benito.exception.UnauthorizedException
 import com.github.proyeception.benito.service.ProjectService
+import com.github.proyeception.benito.service.RecommendationService
 import com.github.proyeception.benito.service.SessionService
 import com.github.proyeception.benito.service.UserService
 import org.springframework.http.MediaType
@@ -17,7 +18,8 @@ import org.springframework.web.multipart.MultipartFile
 class ProjectController(
     private val projectService: ProjectService,
     private val sessionService: SessionService,
-    private val userService: UserService
+    private val userService: UserService,
+    private val recommendationService: RecommendationService
 ) {
 
     @RequestMapping("/benito/projects", method = [RequestMethod.GET])

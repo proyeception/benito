@@ -82,7 +82,9 @@ class ProjectServiceTest : Spec() {
                     organization = OrganizationRefDTO(
                         id = "123",
                         displayName = "UTN FRBA"
-                    )
+                    ),
+                        recommendations = emptyList(),
+                        keywords = emptyList()
                 )
 
                 val newProject = MedusaProjectDTO(
@@ -111,7 +113,9 @@ class ProjectServiceTest : Spec() {
                         authors = emptyList(),
                         supervisors = emptyList()
                     ),
-                    tags = emptyList()
+                    tags = emptyList(),
+                    recommendations = emptyList(),
+                    keywords = emptyList()
                 )
 
                 val projects = listOf(newProject)
@@ -183,7 +187,9 @@ class ProjectServiceTest : Spec() {
                     organization = OrganizationRefDTO(
                         id = "123",
                         displayName = "UTN FRBA"
-                    )
+                    ),
+                        recommendations = emptyList(),
+                        keywords = emptyList()
                 )
 
                 val newProject = MedusaProjectDTO(
@@ -208,7 +214,9 @@ class ProjectServiceTest : Spec() {
                         authors = emptyList(),
                         supervisors = emptyList()
                     ),
-                    tags = emptyList()
+                    tags = emptyList(),
+                    recommendations = emptyList(),
+                    keywords = emptyList()
                 )
 
                 val projectResult = newProject
@@ -250,7 +258,9 @@ class ProjectServiceTest : Spec() {
                         supervisors = emptyList(),
                         authors = emptyList()
                     ),
-                    tags = emptyList()
+                    tags = emptyList(),
+                    recommendations = emptyList(),
+                    keywords = emptyList()
                 )
 
                 val inputMock: InputStream = getMock()
@@ -305,7 +315,9 @@ class ProjectServiceTest : Spec() {
                         supervisors = emptyList(),
                         authors = emptyList()
                     ),
-                    tags = emptyList()
+                    tags = emptyList(),
+                    recommendations = emptyList(),
+                    keywords = emptyList()
                 )
 
                 val file = MedusaFileDTO(
@@ -356,7 +368,9 @@ class ProjectServiceTest : Spec() {
                         supervisors = emptyList(),
                         authors = emptyList()
                     ),
-                    tags = emptyList()
+                    tags = emptyList(),
+                    recommendations = emptyList(),
+                    keywords = emptyList()
                 )
 
                 val file = MedusaFileDTO(

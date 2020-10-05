@@ -57,7 +57,9 @@ class MedusaClientTest : Spec() {
                 organization = OrganizationRefDTO(
                     id = "123",
                     displayName = "Proyectate"
-                )
+                ),
+                recommendations = emptyList(),
+                keywords = emptyList()
             )
 
             "get to /projects returns all projects" {
@@ -325,7 +327,9 @@ class MedusaClientTest : Spec() {
                     authors = emptyList(),
                     supervisors = emptyList()
                 ),
-                tags = emptyList()
+                tags = emptyList(),
+                recommendations = emptyList(),
+                keywords = emptyList()
             )
 
             "get to /projects/{id} returns specified project" {

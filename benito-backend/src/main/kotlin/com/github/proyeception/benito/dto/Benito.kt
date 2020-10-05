@@ -32,7 +32,9 @@ data class ProjectDTO(
     val supervisors: List<PersonRefDTO>,
     val tags: List<String>,
     val documentation: List<DocumentationDTO>,
-    val organization: OrganizationRefDTO
+    val organization: OrganizationRefDTO,
+    val recommendations: List<ProjectRecommendationDTO>,
+    val keywords: List<KeywordDTO>
 ) {
     constructor(medusa: MedusaProjectDTO) : this(
         id = medusa.id,
@@ -45,7 +47,9 @@ data class ProjectDTO(
         supervisors = medusa.supervisors.map { PersonRefDTO(it) },
         tags = emptyList(),
         documentation = medusa.documentation,
-        organization = OrganizationRefDTO(medusa.organization)
+        organization = OrganizationRefDTO(medusa.organization) ,
+        recommendations = medusa.recommendations,
+        keywords = medusa.keywords
     )
 }
 
@@ -149,3 +153,7 @@ data class PersonRefDTO(
         profilePicUrl = medusa.profilePic?.url
     )
 }
+
+data class ProjectRecommendationDTO(
+        val id: String
+)
