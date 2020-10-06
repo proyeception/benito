@@ -25,7 +25,7 @@ class ProjectServiceTest : Spec() {
         val fileServiceMock: FileService = getMock()
         val mongoMock: MongoTextSearch = getMock()
         val medusaGraphClientMock: MedusaGraphClient = getMock()
-        val keywordService: KeywordService = getMock()
+        val keywordService: KeywordService = KeywordService()
         val projectService = ProjectService(
             medusaClient = medusaClient,
             documentParser = documentParserMock,
