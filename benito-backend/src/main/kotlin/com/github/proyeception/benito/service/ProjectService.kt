@@ -20,7 +20,8 @@ open class ProjectService(
     private val documentService: DocumentService,
     private val documentParser: DocumentParser,
     private val fileService: FileService,
-    private val mongoTextSearch: MongoTextSearch
+    private val mongoTextSearch: MongoTextSearch,
+    private val keywordService: KeywordService
 ) {
     open fun findProjects(
         orderBy: OrderDTO?,
@@ -63,6 +64,9 @@ open class ProjectService(
     fun findProject(id: String): ProjectDTO = mappingFromMedusa { medusaClient.findProject(id) }
 
     fun updateProjectContent(content: UpdateContentDTO, projectId: String) = mappingFromMedusa {
+
+        val project = findProject(projectId)
+        val keywords = keywordService.getKeywords(project)
         medusaClient.updateProjectContent(
             content = content,
             id = projectId
@@ -157,7 +161,12 @@ open class ProjectService(
             title = project.title
         )
         LOGGER.info("{}", medusaProject)
-        medusaClient.createProject(medusaProject)
+        val project = medusaClient.createProject(medusaProject)
+
+        val keywords = keywordService.getKeywords(mappingFromMedusa {project})
+        println(keywords)
+
+        project
     }
 
     fun setAuthors(projectId: String, users: SetUsersDTO) = mappingFromMedusa {

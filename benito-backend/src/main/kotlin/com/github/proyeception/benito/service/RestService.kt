@@ -26,11 +26,11 @@ class RestService(restTemplateBuilder: RestTemplateBuilder) {
         restTemplate = restTemplateBuilder.build()
     }
 
-    open fun postRequest(url: String, body: MutableMap<String, Any>) {
+    open fun postRequest(url: String, body: MutableMap<String, String>): List<KeywordDTO> {
         val headers = HttpHeaders()
         val entity: HttpEntity<Map<String, Any>> = HttpEntity(body, headers)
         val response = this.restTemplate.postForEntity(url, entity, KeywordsWrapper::class.java)
-        println(response.body)
+        return response.body.keywords
     }
 
     inline fun <reified T: Any> typeRef(): ParameterizedTypeReference<T> = object: ParameterizedTypeReference<T>(){}

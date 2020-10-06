@@ -12,12 +12,16 @@ import java.util.*
 public class KeywordService() {
     open fun getKeywords(project: ProjectDTO): String {
         val url = "http://rochychipian.pythonanywhere.com/keywords"
-        val map: MutableMap<String, Any> = HashMap()
-        map["text"] = "La inteligencia artifical es muy interesante. Los elefantes son animales grandes. La ballena es el mamífero más grande del mundo. la jirafa tiene cuello largo. Plutón no es un planeta, Saturno tampoco. Dios es real. Aguante Perón carajo."
+        val map: MutableMap<String, String> = HashMap()
+        val content = project.title + project.description + project.extraContent
+
+        map["text"] = content
 
         val restService = RestService(RestTemplateBuilder());
+        val result = restService.postRequest(url, map)
 
-        restService.postRequest(url, map)
+        println(content)
+        println(result)
 
         return "hola"
     }
