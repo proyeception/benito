@@ -107,9 +107,9 @@ open class MongoTextSearch(
                     .firstOrNull()
                     ?.get("url")
                     ?.toString()
-
+/*
                 recommendations = projectDocument.getList("recommendations", Document::class.java).map {
-                    ProjectRecommendationDTO(
+                    RecommendationDTO(
                             id = it["_id"].toString(),
                             project_keywords = projectToCompareKeywords
                     )
@@ -131,7 +131,7 @@ open class MongoTextSearch(
                 )
 
                 projects.add(project)
-            }
+*/            }
         }
 
         mongoClient.close()
