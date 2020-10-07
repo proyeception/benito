@@ -62,7 +62,7 @@ class ProjectController(
         val project = projectService.findProject(id)
         val kw: List<KeywordDTO> = keywordService.getKeywords(project)
         println(kw)
-        projectService.updateProjectKeywords(kw, id)
+        //projectService.updateProjectKeywords(kw, id)
         //recommendationService.recalculateRecommendations(project)
         return project
     }

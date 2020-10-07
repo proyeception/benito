@@ -158,7 +158,7 @@ data class KeywordsWrapper(
 )
 
 data class ProjectKeywords(
-    val items: List<String?>
+    val project_keywords: List<String>
 )
 
 private val dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd")

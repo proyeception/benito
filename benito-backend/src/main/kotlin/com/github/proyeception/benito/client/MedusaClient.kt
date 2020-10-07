@@ -8,6 +8,7 @@ import com.github.proyeception.benito.exception.FailedDependencyException
 import com.github.proyeception.benito.exception.NotFoundException
 import com.github.proyeception.benito.extension.replaceUrlSpaces
 import org.apache.http.entity.ContentType
+import org.bson.types.ObjectId
 import org.slf4j.LoggerFactory
 import java.io.File
 
@@ -123,17 +124,14 @@ open class MedusaClient(
 
     fun updateProjectKeywords(kw: List<KeywordDTO>, id: String, project: ProjectDTO) {
 
-        val listaKw = kw.map{ create("keywords", it, MEDUSA_KEYWORD_REF).id }
-        //val listOfKwsIds = create("keywords", kw, MEDUSA_KEYWORD_REF)
-        val a: ProjectKeywords = ProjectKeywords(listaKw)
-        println(listaKw)
+        project.project_keywords.map { delete("keywords", it.id.orEmpty(), MEDUSA_KEYWORD_REF) }
 
-        update(
-            "projects",
-            project.id,
-            a,
-            MEDUSA_PROJECT_REF
-        )
+        val keywordsIdList = kw.map{ create("keywords", it, MEDUSA_KEYWORD_REF).id }
+
+        val keywordsIdRef = ProjectKeywords(keywordsIdList.map { ObjectId(it).toHexString() } )
+
+        update("projects", project.id, keywordsIdRef, MEDUSA_PROJECT_REF)
+
     }
 
     open fun updateProjectImage(projectId: String, picture: UpdatePictureDTO): MedusaProjectDTO = update(
