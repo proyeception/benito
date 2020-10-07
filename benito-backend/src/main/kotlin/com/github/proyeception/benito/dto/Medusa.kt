@@ -1,8 +1,6 @@
 package com.github.proyeception.benito.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import java.io.Serializable
-import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -150,9 +148,9 @@ data class CreateMedusaProjectDTO(
 )
 
 data class KeywordDTO(
-    val id: String?,
-    val name: String,
-    val score: BigDecimal
+        val id: String?,
+        val name: String,
+        val score: Double
 )
 
 data class KeywordsWrapper(

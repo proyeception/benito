@@ -215,6 +215,13 @@ open class MedusaClient(
         ref = MEDUSA_PERSON_REF
     )
 
+    fun updateRecommendations(projectId: String, recommendations: SetRecommendationDTO): MedusaProjectDTO = update(
+            collection = PROJECTS,
+            ref = MEDUSA_PROJECT_REF,
+            dto = recommendations,
+            id = projectId
+    )
+
     private fun <T> find(collection: String, params: List<String>, ref: TypeReference<List<T>>): List<T> {
         val response = medusaConnector.get("/$collection?${params.joinToString("&")}")
 

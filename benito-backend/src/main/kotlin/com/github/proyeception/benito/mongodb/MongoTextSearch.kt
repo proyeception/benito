@@ -10,7 +10,6 @@ import com.mongodb.client.model.Projections
 import org.bson.Document
 import org.bson.conversions.Bson
 import java.math.BigDecimal
-import java.time.LocalDate
 
 
 open class MongoTextSearch(
@@ -79,7 +78,7 @@ open class MongoTextSearch(
                 projectToCompareKeywords = projectDocument.getList("keywords", Document::class.java).map {
                     KeywordDTO("",
                             it.get("name", String::class.java),
-                            BigDecimal.valueOf(it.get("score", Integer::class.java).toDouble())
+                            it.get("score", Integer::class.java).toDouble()
                     )
                 }
 
@@ -191,7 +190,7 @@ open class MongoTextSearch(
                 val projectToCompareKeywords = projectDocument.getList("keywords", Document::class.java).map {
                     KeywordDTO("",
                             it.get("name", String::class.java),
-                            BigDecimal.valueOf(it.get("score", Integer::class.java).toDouble())
+                            it.get("score", Integer::class.java).toDouble()
                     )
                 }
 

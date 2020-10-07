@@ -1,7 +1,6 @@
 package com.github.proyeception.benito.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import java.math.BigDecimal
 import java.time.LocalDate
 
 data class ErrorDTO(
@@ -35,7 +34,7 @@ data class ProjectDTO(
     val tags: List<String>,
     val documentation: List<DocumentationDTO>,
     val organization: OrganizationRefDTO,
-    var recommendations: List<RecommendationDTO>,
+    val recommendations: List<RecommendationDTO>,
     val project_keywords: List<KeywordDTO>
 ) {
     constructor(medusa: MedusaProjectDTO) : this(
@@ -158,11 +157,15 @@ data class PersonRefDTO(
 }
 
 data class RecommendationDTO(
-        val score: BigDecimal,
+        val score: Double,
         @JsonProperty("project") val projectId: String
 )
 
 data class ProjectRecommendationDTO(
         val id: String,
         val project_keywords: List<KeywordDTO>
+)
+
+data class SetRecommendationDTO(
+        val recommendations: List<RecommendationDTO>
 )
