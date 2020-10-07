@@ -121,6 +121,21 @@ open class MedusaClient(
         ref = MEDUSA_PROJECT_REF
     )
 
+    fun updateProjectKeywords(kw: List<KeywordDTO>, id: String, project: ProjectDTO) {
+
+        val listaKw = kw.map{ create("keywords", it, MEDUSA_KEYWORD_REF).id }
+        //val listOfKwsIds = create("keywords", kw, MEDUSA_KEYWORD_REF)
+        val a: ProjectKeywords = ProjectKeywords(listaKw)
+        println(listaKw)
+
+        update(
+            "projects",
+            project.id,
+            a,
+            MEDUSA_PROJECT_REF
+        )
+    }
+
     open fun updateProjectImage(projectId: String, picture: UpdatePictureDTO): MedusaProjectDTO = update(
         collection = PROJECTS,
         id = projectId,
@@ -213,7 +228,7 @@ open class MedusaClient(
 
     private fun <T> findOne(collection: String, id: String, ref: TypeReference<T>): T {
         val response = medusaConnector.get("/$collection/$id")
-
+        println(response.body)
         when (response.status) {
             200 -> return response.deserializeAs(ref)
             404 -> throw NotFoundException("$id not found in $collection")
@@ -282,5 +297,6 @@ open class MedusaClient(
         private const val PROJECTS = "projects"
         private val MEDUSA_PROJECT_REF = object : TypeReference<MedusaProjectDTO>() {}
         private val MEDUSA_PERSON_REF = object : TypeReference<MedusaPersonDTO>() {}
+        private val MEDUSA_KEYWORD_REF = object  : TypeReference<KeywordDTO>() {}
     }
 }

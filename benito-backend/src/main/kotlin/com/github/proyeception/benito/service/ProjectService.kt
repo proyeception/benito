@@ -73,6 +73,11 @@ open class ProjectService(
         )
     }
 
+    fun updateProjectKeywords(kw: List<KeywordDTO>, id: String) {
+        val project = findProject(id)
+        medusaClient.updateProjectKeywords(kw, id, project)
+    }
+
     fun saveDocuments(projectId: String, files: List<MultipartFile>): ProjectDTO = mappingFromMedusa {
         val ids = runBlocking {
             files.map { f -> async { documentService.saveFile(projectId = projectId, file = f) } }.awaitAll()

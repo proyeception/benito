@@ -150,12 +150,17 @@ data class CreateMedusaProjectDTO(
 )
 
 data class KeywordDTO(
+    val id: String?,
     val name: String,
     val score: BigDecimal
 )
 
 data class KeywordsWrapper(
     val keywords: List<KeywordDTO>
+)
+
+data class ProjectKeywords(
+    val items: List<String?>
 )
 
 private val dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd")

@@ -77,7 +77,7 @@ open class MongoTextSearch(
                 var projectToCompareKeywords: List<KeywordDTO>
 
                 projectToCompareKeywords = projectDocument.getList("keywords", Document::class.java).map {
-                    KeywordDTO(
+                    KeywordDTO("",
                             it.get("name", String::class.java),
                             BigDecimal.valueOf(it.get("score", Integer::class.java).toDouble())
                     )
@@ -189,7 +189,7 @@ open class MongoTextSearch(
             if (!projectDocument.isNullOrEmpty()) {
 
                 val projectToCompareKeywords = projectDocument.getList("keywords", Document::class.java).map {
-                    KeywordDTO(
+                    KeywordDTO("",
                             it.get("name", String::class.java),
                             BigDecimal.valueOf(it.get("score", Integer::class.java).toDouble())
                     )

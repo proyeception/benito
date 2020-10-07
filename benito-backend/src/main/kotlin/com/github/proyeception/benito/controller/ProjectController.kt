@@ -60,7 +60,10 @@ class ProjectController(
     @ResponseBody
     private fun findProject(@PathVariable id: String): ProjectDTO {
         val project = projectService.findProject(id)
-        recommendationService.recalculateRecommendations(project)
+        val kw: List<KeywordDTO> = keywordService.getKeywords(project)
+        println(kw)
+        projectService.updateProjectKeywords(kw, id)
+        //recommendationService.recalculateRecommendations(project)
         return project
     }
 
@@ -81,7 +84,9 @@ class ProjectController(
         @PathVariable id: String,
         @RequestBody content: UpdateContentDTO,
         @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
-    ): ProjectDTO = doAuthorAuthorized(id, token) { projectService.updateProjectContent(content, id) }
+    ): ProjectDTO = doAuthorAuthorized(id, token) {
+        projectService.updateProjectContent(content, id)
+    }
 
     @RequestMapping(
         value = ["/benito/projects/{id}/picture"],
