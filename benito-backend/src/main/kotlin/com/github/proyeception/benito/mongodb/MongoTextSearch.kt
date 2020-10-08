@@ -188,7 +188,8 @@ open class MongoTextSearch(
             if (!projectDocument.isNullOrEmpty()) {
 
                 val projectToCompareKeywords = projectDocument.getList("keywords", Document::class.java).map {
-                    KeywordDTO("",
+                    KeywordDTO(
+                            it.get("_id", String::class.java),
                             it.get("name", String::class.java),
                             it.get("score", Integer::class.java).toDouble()
                     )

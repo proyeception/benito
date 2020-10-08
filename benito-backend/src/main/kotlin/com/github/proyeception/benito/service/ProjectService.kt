@@ -75,7 +75,7 @@ open class ProjectService(
 
     fun updateProjectKeywords(kw: List<KeywordDTO>, id: String) {
         val project = findProject(id)
-        medusaClient.updateProjectKeywords(kw, id, project)
+        medusaClient.updateProjectKeywords(kw, project)
     }
 
     fun saveDocuments(projectId: String, files: List<MultipartFile>): ProjectDTO = mappingFromMedusa {

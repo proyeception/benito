@@ -13,10 +13,10 @@ open class RecommendationService(
     open fun recalculateRecommendations(project: ProjectDTO) {
 
         val recommendedProjects = mongoTextSearch.findRecommendedProjects(project); //filtrarme a mi mismo
-        updateProjectsRecommendedScore(project, recommendedProjects) //Guarda en la base junto con el score? o ordenarlos
+        updateProjectsRecommendedScore(project, recommendedProjects)
 /*
-        recommendedProjects.forEach(recalculateRecommendations2())
-        */
+        recommendedProjects.forEach(recalculateRecommendations2()) recalcular a 1 nivel de profundidad
+*/
     }
 
     private fun updateProjectsRecommendedScore(updatedProject: ProjectDTO, recommendedProjects: List<ProjectRecommendationDTO>) {
@@ -27,20 +27,16 @@ open class RecommendationService(
         recommendedProjects.forEach {
             val score: Double = calculateScore(it.project_keywords, updatedProjectKeywords)
             val updatedRecommendation = RecommendationDTO(
+                    id = null,
                     score = score,
                     projectId = it.id
             )
             recommendations.add(updatedRecommendation)
         }
 
-        //Este SetRecommendationDTO en realidad lo tengo que mandar a que cree Recommendations individuales
-        //en la collection Recommendations, tener el id y después agregarla al project en si
-        //Ver como se hace en los documents
         medusaClient.updateRecommendations(
-                updatedProject.id,
-                SetRecommendationDTO(
-                        recommendations = recommendations.toList()
-                )
+                recommendations,
+                updatedProject
         )
 
     }

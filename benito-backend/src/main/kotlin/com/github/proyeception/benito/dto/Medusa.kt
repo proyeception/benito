@@ -161,4 +161,9 @@ data class ProjectKeywords(
     val project_keywords: List<String>
 )
 
+data class ProjectRecommendations(
+        val recommendations: List<String>
+)
+
+
 private val dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd")

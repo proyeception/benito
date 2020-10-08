@@ -6,13 +6,14 @@ import com.github.proyeception.benito.exception.ForbiddenException
 import com.github.proyeception.benito.exception.UnauthorizedException
 import com.github.proyeception.benito.service.*
 import org.springframework.http.MediaType
+import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 
 
 @Controller
-class ProjectController(
+open class ProjectController(
     private val projectService: ProjectService,
     private val sessionService: SessionService,
     private val userService: UserService,
@@ -58,14 +59,7 @@ class ProjectController(
 
     @RequestMapping("/benito/projects/{id}", method = [RequestMethod.GET])
     @ResponseBody
-    private fun findProject(@PathVariable id: String): ProjectDTO {
-        val project = projectService.findProject(id)
-        val kw: List<KeywordDTO> = keywordService.getKeywords(project)
-        println(kw)
-        //projectService.updateProjectKeywords(kw, id)
-        //recommendationService.recalculateRecommendations(project)
-        return project
-    }
+    private fun findProject(@PathVariable id: String): ProjectDTO = projectService.findProject(id)
 
     @RequestMapping(
         value = ["/benito/projects/{projectId}/documents"],
@@ -84,8 +78,14 @@ class ProjectController(
         @PathVariable id: String,
         @RequestBody content: UpdateContentDTO,
         @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
-    ): ProjectDTO = doAuthorAuthorized(id, token) {
-        projectService.updateProjectContent(content, id)
+    ): ProjectDTO {
+        val updatedProject = doAuthorAuthorized(id, token) {
+            projectService.updateProjectContent(content, id)
+        }
+
+        updateKeywordsAndRecommendations(updatedProject)
+
+        return updatedProject
     }
 
     @RequestMapping(
@@ -155,13 +155,27 @@ class ProjectController(
     fun createProject(
         @RequestBody project: CreateProjectDTO,
         @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
-    ): ProjectDTO = doAuthorized(
-        token = token,
-        requiredRole = RoleDTO.SUPERVISOR,
-        authorizeCheck = { userService.findSupervisor(it).organizations.any { o -> o.id == project.organizationId } },
-        f = { projectService.createProject(it, project) },
-        forbiddenMessage = "You're not allowed to create a project in this organization"
-    )
+    ): ProjectDTO {
+        val createdProject = doAuthorized(
+                token = token,
+                requiredRole = RoleDTO.SUPERVISOR,
+                authorizeCheck = { userService.findSupervisor(it).organizations.any { o -> o.id == project.organizationId } },
+                f = {
+                    projectService.createProject(it, project)
+                },
+                forbiddenMessage = "You're not allowed to create a project in this organization"
+        )
+
+        updateKeywordsAndRecommendations(createdProject)
+
+        return createdProject
+    }
+
+    @Async
+    open fun updateKeywordsAndRecommendations(project: ProjectDTO) {
+        projectService.updateProjectKeywords(keywordService.getKeywords(project), project.id)
+        recommendationService.recalculateRecommendations(project)
+    }
 
     private fun <T> doSupervisorAuthorized(projectId: String, token: String, f: (String) -> T) = doAuthorized(
         token = token,

@@ -122,18 +122,6 @@ open class MedusaClient(
         ref = MEDUSA_PROJECT_REF
     )
 
-    fun updateProjectKeywords(kw: List<KeywordDTO>, id: String, project: ProjectDTO) {
-
-        project.project_keywords.map { delete("keywords", it.id.orEmpty(), MEDUSA_KEYWORD_REF) }
-
-        val keywordsIdList = kw.map{ create("keywords", it, MEDUSA_KEYWORD_REF).id }
-
-        val keywordsIdRef = ProjectKeywords(keywordsIdList.map { ObjectId(it).toHexString() } )
-
-        update("projects", project.id, keywordsIdRef, MEDUSA_PROJECT_REF)
-
-    }
-
     open fun updateProjectImage(projectId: String, picture: UpdatePictureDTO): MedusaProjectDTO = update(
         collection = PROJECTS,
         id = projectId,
@@ -213,12 +201,23 @@ open class MedusaClient(
         ref = MEDUSA_PERSON_REF
     )
 
-    fun updateRecommendations(projectId: String, recommendations: SetRecommendationDTO): MedusaProjectDTO = update(
-            collection = PROJECTS,
-            ref = MEDUSA_PROJECT_REF,
-            dto = recommendations,
-            id = projectId
-    )
+    fun updateProjectKeywords(kw: List<KeywordDTO>, project: ProjectDTO) {
+
+        project.project_keywords.filter { it.id.isNullOrBlank() }.map { delete("keywords", it.id.orEmpty(), MEDUSA_KEYWORD_REF) }
+        val keywordsIdList = kw.map{ create("keywords", it, MEDUSA_KEYWORD_REF).id }
+        val keywordsIdRef = ProjectKeywords(keywordsIdList.map { ObjectId(it).toHexString() } )
+        update("projects", project.id, keywordsIdRef, MEDUSA_PROJECT_REF)
+
+    }
+
+    fun updateRecommendations(recommendations: List<RecommendationDTO>, project: ProjectDTO) {
+
+        project.recommendations.filter { it.id.isNullOrBlank() }.map { delete("recommendations", it.id.orEmpty(), MEDUSA_KEYWORD_REF) }
+        val recommendationsIdList = recommendations.map{ create("recommendations", it, MEDUSA_KEYWORD_REF).id }
+        val recommendationsIdRef = ProjectRecommendations(recommendationsIdList.map { ObjectId(it).toHexString() } )
+        update("projects", project.id, recommendationsIdRef, MEDUSA_PROJECT_REF)
+
+    }
 
     private fun <T> find(collection: String, params: List<String>, ref: TypeReference<List<T>>): List<T> {
         val response = medusaConnector.get("/$collection?${params.joinToString("&")}")

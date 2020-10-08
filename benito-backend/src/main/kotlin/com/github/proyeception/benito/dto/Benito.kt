@@ -157,6 +157,7 @@ data class PersonRefDTO(
 }
 
 data class RecommendationDTO(
+        val id: String?,
         val score: Double,
         @JsonProperty("project") val projectId: String
 )
