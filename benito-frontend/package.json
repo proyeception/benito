@@ -37,6 +37,7 @@
     "moment": "^2.29.0",
     "node-sass": "^4.14.1",
     "nouislider": "^14.6.1",
+    "nvm": "0.0.4",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "psl": "^1.8.0",
     "qs": "^6.9.4",
@@ -68,7 +69,7 @@
     "start": "webpack-dev-server -w --config webpack.config.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev": "webpack-dev-server --inline --hot --open"
+    "dev": "webpack-dev-server --inline --hot --open --port 8081"
   },
   "eslintConfig": {
     "extends": "react-app"
