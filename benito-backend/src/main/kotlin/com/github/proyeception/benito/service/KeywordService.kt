@@ -24,4 +24,18 @@ public class KeywordService() {
 
         return result
     }
+
+    open fun getKeywordsFromText(text: String): List<KeywordDTO> { //delete. para la demo.
+        val url = "http://rochychipian.pythonanywhere.com/keywords"
+        val map: MutableMap<String, String> = HashMap()
+
+        map["text"] = text
+
+        val restService = RestService(RestTemplateBuilder());
+        val result = restService.postRequest(url, map)
+
+        println(result)
+
+        return result
+    }
 }

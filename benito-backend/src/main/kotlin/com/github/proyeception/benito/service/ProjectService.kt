@@ -12,6 +12,7 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
 import org.apache.http.entity.ContentType
 import org.slf4j.LoggerFactory
+import org.springframework.scheduling.annotation.Async
 import org.springframework.web.multipart.MultipartFile
 
 open class ProjectService(
@@ -21,7 +22,8 @@ open class ProjectService(
     private val documentParser: DocumentParser,
     private val fileService: FileService,
     private val mongoTextSearch: MongoTextSearch,
-    private val keywordService: KeywordService
+    private val keywordService: KeywordService,
+    private val recommendationService: RecommendationService
 ) {
     open fun findProjects(
         orderBy: OrderDTO?,
@@ -64,18 +66,19 @@ open class ProjectService(
     fun findProject(id: String): ProjectDTO = mappingFromMedusa { medusaClient.findProject(id) }
 
     fun updateProjectContent(content: UpdateContentDTO, projectId: String) = mappingFromMedusa {
-
-        val project = findProject(projectId)
-        val keywords = keywordService.getKeywords(project)
+        updateProjectKeywords(projectId)
         medusaClient.updateProjectContent(
             content = content,
             id = projectId
         )
     }
 
-    fun updateProjectKeywords(kw: List<KeywordDTO>, id: String) {
+    @Async
+    open fun updateProjectKeywords(id: String) {
         val project = findProject(id)
-        medusaClient.updateProjectKeywords(kw, project)
+        val keywords = keywordService.getKeywords(project)
+        medusaClient.updateProjectKeywords(keywords, project)
+        recommendationService.recalculateRecommendations(project)
     }
 
     fun saveDocuments(projectId: String, files: List<MultipartFile>): ProjectDTO = mappingFromMedusa {
@@ -167,10 +170,7 @@ open class ProjectService(
         )
         LOGGER.info("{}", medusaProject)
         val project = medusaClient.createProject(medusaProject)
-
-        val keywords = keywordService.getKeywords(mappingFromMedusa {project})
-        println(keywords)
-
+        updateProjectKeywords(project.id)
         project
     }
 

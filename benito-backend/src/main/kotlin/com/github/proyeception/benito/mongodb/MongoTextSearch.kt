@@ -160,19 +160,23 @@ open class MongoTextSearch(
         val mongoCollectionProjects = mongoClient.getDatabase(databaseName).getCollection(projectsCollection)
         val keywords = updatedProject.project_keywords
 
-        //TODO utilizar este parametro
-//        val keywordsNames = keywords.map { k -> k.name }
+        val keywordsNames = keywords.map { k -> k.name }
 
         val projects = mutableSetOf<ProjectRecommendationDTO>()
 
         val pipeline = mutableListOf(
                 Aggregates.lookup("keywords", "project_keywords", "_id", "keywords"),
-                Aggregates.match(Filters.and(
+                Aggregates.match(
+                    Filters.and(
                         Filters.elemMatch("keywords", Filters.`in`(
                                 "name",
-                                listOf("proyecto")
-                        ))
-                )),
+                                keywordsNames
+                        )),
+                        Filters.not(
+                            Filters.eq("_id", updatedProject.id)
+                        )
+                    )
+                ),
                 Aggregates.out("projects")
         )
 

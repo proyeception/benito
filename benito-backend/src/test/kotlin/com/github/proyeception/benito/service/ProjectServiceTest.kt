@@ -26,6 +26,7 @@ class ProjectServiceTest : Spec() {
         val mongoMock: MongoTextSearch = getMock()
         val medusaGraphClientMock: MedusaGraphClient = getMock()
         val keywordService: KeywordService = KeywordService()
+        val recommendationService: RecommendationService = getMock()
         val projectService = ProjectService(
             medusaClient = medusaClient,
             documentParser = documentParserMock,
@@ -33,7 +34,8 @@ class ProjectServiceTest : Spec() {
             fileService = fileServiceMock,
             mongoTextSearch = mongoMock,
             medusaGraphClient = medusaGraphClientMock,
-            keywordService = keywordService
+            keywordService = keywordService,
+            recommendationService = recommendationService
         )
 
         "projects" should {

@@ -61,6 +61,14 @@ open class ProjectController(
     @ResponseBody
     private fun findProject(@PathVariable id: String): ProjectDTO = projectService.findProject(id)
 
+    @RequestMapping("/benito/keywords", method = [RequestMethod.GET])
+    @ResponseBody
+    private fun findTextKeywords(@RequestBody content: String): List<KeywordDTO> {
+        val a = content.replace("\"text\":", "").replace("\"", "")
+        println(a)
+        return keywordService.getKeywordsFromText(a)
+    }
+
     @RequestMapping(
         value = ["/benito/projects/{projectId}/documents"],
         method = [RequestMethod.POST],
@@ -82,11 +90,8 @@ open class ProjectController(
         val updatedProject = doAuthorAuthorized(id, token) {
             projectService.updateProjectContent(content, id)
         }
-
-        updateKeywordsAndRecommendations(updatedProject)
-
         return updatedProject
-    }
+        }
 
     @RequestMapping(
         value = ["/benito/projects/{id}/picture"],
@@ -166,16 +171,8 @@ open class ProjectController(
                 forbiddenMessage = "You're not allowed to create a project in this organization"
         )
 
-        updateKeywordsAndRecommendations(createdProject)
-
-        return createdProject
-    }
-
-    @Async
-    open fun updateKeywordsAndRecommendations(project: ProjectDTO) {
-        projectService.updateProjectKeywords(keywordService.getKeywords(project), project.id)
-        recommendationService.recalculateRecommendations(project)
-    }
+            return createdProject
+        }
 
     private fun <T> doSupervisorAuthorized(projectId: String, token: String, f: (String) -> T) = doAuthorized(
         token = token,

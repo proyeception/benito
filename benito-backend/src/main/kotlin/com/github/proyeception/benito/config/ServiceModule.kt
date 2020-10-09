@@ -23,7 +23,8 @@ open class ServiceModule {
         fileService: FileService,
         mongoTextSearch: MongoTextSearch,
         medusaGraphClient: MedusaGraphClient,
-        keywordService: KeywordService
+        keywordService: KeywordService, //sacar
+        recommendationService: RecommendationService
     ): ProjectService = ProjectService(
         medusaClient = medusaClient,
         documentParser = documentParser,
@@ -31,7 +32,8 @@ open class ServiceModule {
         fileService = fileService,
         mongoTextSearch = mongoTextSearch,
         medusaGraphClient = medusaGraphClient,
-        keywordService = keywordService
+        keywordService = keywordService, //sacar
+        recommendationService = recommendationService
     )
 
     @Bean
