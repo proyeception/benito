@@ -34,7 +34,7 @@ data class ProjectDTO(
     val tags: List<String>,
     val documentation: List<DocumentationDTO>,
     val organization: OrganizationRefDTO,
-    val recommendations: List<RecommendationDTO>,
+    val recommendations: List<MedusaRecommendationDTO>,
     val project_keywords: List<KeywordDTO>
 ) {
     constructor(medusa: MedusaProjectDTO) : this(
@@ -160,6 +160,10 @@ data class RecommendationDTO(
         val id: String?,
         val score: Double,
         @JsonProperty("project") val projectId: ProjectRecommendationDTO
+)
+
+data class CreateRecommendationDTO(
+    val id: String
 )
 
 data class ProjectRecommendationDTO(

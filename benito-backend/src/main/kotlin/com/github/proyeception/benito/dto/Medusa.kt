@@ -18,7 +18,7 @@ data class MedusaProjectDTO(
     val category: CategoryDTO,
     val organization: MedusaOrganizationDTO,
     val tags: List<MedusaTagDTO>,
-    val recommendations: List<RecommendationDTO>,
+    val recommendations: List<MedusaRecommendationDTO>,
     val project_keywords: List<KeywordDTO>
 )
 
