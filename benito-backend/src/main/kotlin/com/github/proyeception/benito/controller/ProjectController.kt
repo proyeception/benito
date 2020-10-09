@@ -53,6 +53,10 @@ open class ProjectController(
     @ResponseBody
     private fun featuredProjects(): List<ProjectDTO> = projectService.featuredProjects()
 
+    @RequestMapping("/benito/projects/{id}/recommendations", method = [RequestMethod.GET])
+    @ResponseBody
+    private fun projectRecommendations(@PathVariable id: String): List<ProjectDTO> = projectService.recommendedProjects(id)
+
     @RequestMapping("/benito/project-count", method = [RequestMethod.GET])
     @ResponseBody
     private fun count(): CountDTO = projectService.count()
