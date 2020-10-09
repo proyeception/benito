@@ -212,8 +212,11 @@ open class MedusaClient(
 
     fun updateRecommendations(recommendations: List<RecommendationDTO>, project: ProjectDTO) {
 
-        project.recommendations.filter { it.id.isNullOrBlank() }.map { delete("recommendations", it.id.orEmpty(), MEDUSA_KEYWORD_REF) }
-        val recommendationsIdList = recommendations.map{ create("recommendations", it, MEDUSA_KEYWORD_REF).id }
+        project.recommendations.filter { it.id.isNullOrBlank() }.map { delete("recommendations", it.id.orEmpty(), MEDUSA_RECOMMENDATION_REF) }
+        val recommendationsIdList = recommendations
+            //.map{ MedusaRecommendationDTO(it)}
+            //crear variante de create con un cuarto parametro que indique con que clase deserealizar la response
+            .map{ create("recommendations", it, MEDUSA_RECOMMENDATION_REF)._id }
         val recommendationsIdRef = ProjectRecommendations(recommendationsIdList.map { ObjectId(it).toHexString() } )
         update("projects", project.id, recommendationsIdRef, MEDUSA_PROJECT_REF)
 
@@ -302,5 +305,6 @@ open class MedusaClient(
         private val MEDUSA_PROJECT_REF = object : TypeReference<MedusaProjectDTO>() {}
         private val MEDUSA_PERSON_REF = object : TypeReference<MedusaPersonDTO>() {}
         private val MEDUSA_KEYWORD_REF = object  : TypeReference<KeywordDTO>() {}
+        private val MEDUSA_RECOMMENDATION_REF = object : TypeReference<MedusaRecommendationDTO>() {}
     }
 }

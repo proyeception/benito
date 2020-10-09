@@ -103,6 +103,14 @@ open class MedusaGraphClient(
                 }
                 recommendations {
                   id
+                  score
+                  project {
+                    id
+                    project_keywords {
+                        name
+                        score
+                    }
+                  }
                 }
                 project_keywords {
                   name

@@ -165,5 +165,17 @@ data class ProjectRecommendations(
         val recommendations: List<String>
 )
 
+data class MedusaRecommendationDTO(
+    val _id: String?,
+    val score: Double,
+    @JsonProperty("project") val projectId: String
+){
+    constructor(recommendation: RecommendationDTO) : this(
+        _id = recommendation.id,
+        score = recommendation.score,
+        projectId = recommendation.projectId.id
+    )
+}
+
 
 private val dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd")

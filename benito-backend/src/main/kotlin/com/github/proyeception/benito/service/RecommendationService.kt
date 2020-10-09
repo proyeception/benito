@@ -29,7 +29,7 @@ open class RecommendationService(
             val updatedRecommendation = RecommendationDTO(
                     id = null,
                     score = score,
-                    projectId = it.id
+                    projectId = ProjectRecommendationDTO(it.id, it.project_keywords)
             )
             recommendations.add(updatedRecommendation)
         }

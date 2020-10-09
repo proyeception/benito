@@ -65,12 +65,15 @@ open class ProjectService(
 
     fun findProject(id: String): ProjectDTO = mappingFromMedusa { medusaClient.findProject(id) }
 
-    fun updateProjectContent(content: UpdateContentDTO, projectId: String) = mappingFromMedusa {
+    fun updateProjectContent(content: UpdateContentDTO, projectId: String): ProjectDTO {
+        val updatedProject = mappingFromMedusa {
+            medusaClient.updateProjectContent(
+                content = content,
+                id = projectId
+            )
+        }
         updateProjectKeywords(projectId)
-        medusaClient.updateProjectContent(
-            content = content,
-            id = projectId
-        )
+        return updatedProject
     }
 
     @Async
