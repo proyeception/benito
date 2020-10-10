@@ -16,6 +16,7 @@ import { Fetch, NOTHING, REFRESH } from "../../../store/search/types";
 import store from "../../../store";
 import { updateFetchStatus } from "../../../actions/search";
 import ProjectLink from "../../../components/Links/ProjectLink";
+import Spinner from "../../../components/Header/Spinner";
 
 interface SearchResultsSectionProps extends RouteChildrenProps<SearchParams> {
   status: Fetch;
@@ -44,7 +45,7 @@ const SearchResultsSection = (props: SearchResultsSectionProps) => {
   }
 
   if (projects.type == PENDING) {
-    return <div>pará flaco, calmate un poco que esto toma un ratito</div>;
+    return <Spinner/>;
   }
 
   if (projects.value.length == 0) {

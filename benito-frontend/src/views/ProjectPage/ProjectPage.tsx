@@ -26,6 +26,7 @@ import withProject from "../../hooks/withProject";
 import { PENDING, ERROR } from "../../hooks/withFetch";
 import { Divider, Hidden } from "@material-ui/core";
 import Recommendations from "./Sections/Recommendations";
+import Spinner from "../../components/Header/Spinner";
 
 const dashboardRoutes: any = [];
 
@@ -46,7 +47,7 @@ const ProjectPage = (props: Props) => {
   const project = withProject(props.match.params.id);
 
   if (project.type == PENDING) {
-    return <div>Cargan2</div>;
+    return <Spinner/>;
   }
 
   if (project.type == ERROR) {

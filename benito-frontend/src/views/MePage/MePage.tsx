@@ -21,8 +21,8 @@ import Build from "@material-ui/icons/Build";
 import ProfileSection from "./Sections/ProfileSection";
 import OrganizationsSection from "./Sections/OrganizationsSection";
 import SettingsSection from "./Sections/SettingsSection";
-import userEvent from "@testing-library/user-event";
 import Footer from "../../components/Footer/Footer";
+import Spinner from "../../components/Header/Spinner";
 
 const useStyles = makeStyles(styles);
 
@@ -57,7 +57,7 @@ const MePage = (props: MePageProps) => {
   const user = withUser(props.session.role, props.session.userId);
 
   if (user.type == PENDING) {
-    return <div>Cargan2</div>;
+    return <Spinner/>;
   }
 
   if (user.type == ERROR) {
