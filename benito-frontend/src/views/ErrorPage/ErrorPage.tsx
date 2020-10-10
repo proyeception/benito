@@ -23,8 +23,10 @@ export default function ErrorPage(props: any) {
                 md={6}
                 id="search-box"
             >
-                <div className={classes.message}> OCURRIÓ UN ERROR</div>
-                <div className={classes.submessage}> Estamos trabajando en arreglarlo!</div>
+                <div className={classes.text}>
+                    <div className={classes.message}> OCURRIÓ UN ERROR</div>
+                    <div className={classes.submessage}> Estamos trabajando en arreglarlo!</div>
+                </div>
             </GridItem>
             <GridItem
                 xs={12}
