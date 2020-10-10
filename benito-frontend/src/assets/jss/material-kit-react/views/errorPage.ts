@@ -10,6 +10,15 @@ const errorPageStyle = (theme: Theme) =>
       position: "relative",
     },
 
+    text: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      flexDirection: "column",
+      verticalAlign: "middle",
+      height:"90%",
+    },
+
     white: {
       background: "#FFFFFF",
       height:"100%",
@@ -21,22 +30,26 @@ const errorPageStyle = (theme: Theme) =>
     },
 
     image: {
-      height: "35%"
+      width: "inherit"
     },
 
     message: {
       ...title,
-      paddingTop: "200px",
       fontSize: "50px",
+      lineHeight: "50px",
       font: '"Roboto", "Helvetica", "Arial", sans-serif',
       textAlign: "center",
+      verticalAlign: "middle",
     },
 
     submessage: {
       ...subtitle,
       fontSize: "30px",
+      lineHeight: "30px",
       font: '"Roboto", "Helvetica", "Arial", sans-serif',
       textAlign: "center",
+      marginTop: "0",
+      verticalAlign: "middle",
     }
   });
 
