@@ -18,7 +18,7 @@ import { updateFetchStatus } from "../../../actions/search";
 import ProjectLink from "../../../components/Links/ProjectLink";
 import { RouteComponentProps } from "react-router-dom";
 import withRecommendations from '../../../hooks/withRecommendations';
-import Spinner from "../../../components/CustomDropdown/Spinner";
+import Spinner from "../../../components/Spinner/Spinner";
 
 type Any = any;
 

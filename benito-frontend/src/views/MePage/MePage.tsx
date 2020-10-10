@@ -22,7 +22,7 @@ import ProfileSection from "./Sections/ProfileSection";
 import OrganizationsSection from "./Sections/OrganizationsSection";
 import SettingsSection from "./Sections/SettingsSection";
 import Footer from "../../components/Footer/Footer";
-import Spinner from "../../components/CustomDropdown/Spinner";
+import Spinner from "../../components/Spinner/Spinner";
 
 const useStyles = makeStyles(styles);
 
@@ -61,7 +61,7 @@ const MePage = (props: MePageProps) => {
   }
 
   if (user.type == ERROR) {
-    return <div>Uh loco rompiste algo eh</div>;
+    return <Redirect to={{pathname: "/error"}}/>
   }
 
   const tabs = [
