@@ -25,6 +25,7 @@ import { Card } from "@material-ui/core";
 import CardBody from "../../components/Card/CardBody";
 import CardFooter from "../../components/Card/CardFooter";
 import { cardTitle, title } from "../../assets/jss/material-kit-react";
+import Spinner from "../../components/Header/Spinner";
 
 const useStyles = makeStyles({
   ...styles,
@@ -61,7 +62,7 @@ const ProfilePage = (props: ProfilePageProps) => {
   const user = withUser(props.role, props.match.params.id);
 
   if (user.type == PENDING) {
-    return <div>Cargan2</div>;
+    return <Spinner/>;
   }
 
   if (user.type == ERROR) {

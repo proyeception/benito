@@ -18,6 +18,7 @@ import { updateFetchStatus } from "../../../actions/search";
 import ProjectLink from "../../../components/Links/ProjectLink";
 import { RouteComponentProps } from "react-router-dom";
 import withRecommendations from '../../../hooks/withRecommendations';
+import Spinner from "../../../components/Header/Spinner";
 
 type Any = any;
 
@@ -53,7 +54,7 @@ const SearchResultsSection = (props: Props) => {
   }
 
   if (recommendations.type == PENDING) {
-    return <div>pará flaco, calmate un poco que esto toma un ratito</div>;
+    return <Spinner/>;
   }
 
   if (recommendations.value.length == 0) {
