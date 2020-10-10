@@ -24,6 +24,8 @@ import { hot } from "react-hot-loader";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import withProject from "../../hooks/withProject";
 import { PENDING, ERROR } from "../../hooks/withFetch";
+import { Divider, Hidden } from "@material-ui/core";
+import Recommendations from "./Sections/Recommendations";
 
 const dashboardRoutes: any = [];
 
@@ -71,11 +73,27 @@ const ProjectPage = (props: Props) => {
         </div>
       </Parallax>
       <div className={classNames(classes.main, classes.mainRaised)}>
-        <div className={classes.container}>
-          <ProductSection project={project.value} />
-          <TeamSection project={project.value} />
-          <DocumentsSection project={project.value} />
-        </div>
+        <GridContainer>
+          <GridItem
+            xs={12}
+            sm={12}
+            md={9}
+            className={classes.container}
+          >
+            <ProductSection project={project.value} />
+            <TeamSection project={project.value} />
+            <DocumentsSection project={project.value} />
+          </GridItem>
+          <Divider orientation="vertical" flexItem />
+          <GridItem
+            xs={12}
+            sm={12}
+            md={2}
+            className={classes.recommendations}
+          >
+            <Recommendations/>
+          </GridItem>
+        </GridContainer>
       </div>
       <Footer />
     </div>

@@ -18,8 +18,25 @@ data class MedusaProjectDTO(
     val category: CategoryDTO,
     val organization: MedusaOrganizationDTO,
     val tags: List<MedusaTagDTO>,
-    val recommendations: List<RecommendationDTO>,
+    val recommendations: List<MedusaRecommendationDTO>,
     val project_keywords: List<KeywordDTO>
+)
+
+data class MedusaGraphQLProjectDTO(
+        val id: String,
+        val title: String,
+        val description: String,
+        val extraContent: String?,
+        val creationDate: LocalDate,
+        val picture: MedusaFileDTO?,
+        val authors: List<MedusaPersonRefDTO>,
+        val supervisors: List<MedusaPersonRefDTO>,
+        val documentation: List<DocumentationDTO>,
+        val category: CategoryDTO,
+        val organization: MedusaOrganizationDTO,
+        val tags: List<MedusaTagDTO>,
+        val recommendations: List<MedusaGraphQLRecommendationDTO>,
+        val project_keywords: List<KeywordDTO>
 )
 
 data class MedusaPersonRefDTO(
@@ -166,14 +183,20 @@ data class ProjectRecommendations(
 )
 
 data class MedusaRecommendationDTO(
-    val _id: String?,
-    val score: Double,
-    @JsonProperty("project") val projectId: String
+        val id: String,
+        val score: Double,
+        @JsonProperty("project") val projectId: String
+)
+
+data class MedusaGraphQLRecommendationDTO(
+        val id: String?,
+        val score: Double,
+        @JsonProperty("project") val projectId: ProjectRecommendationDTO
 ){
-    constructor(recommendation: RecommendationDTO) : this(
-        _id = recommendation.id,
-        score = recommendation.score,
-        projectId = recommendation.projectId.id
+    constructor(recommendation: RecommendationGraphQLDTO) : this(
+            id = recommendation.id,
+            score = recommendation.score,
+            projectId = recommendation.projectId
     )
 }
 
