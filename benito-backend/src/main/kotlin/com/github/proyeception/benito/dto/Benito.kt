@@ -49,8 +49,23 @@ data class ProjectDTO(
         tags = emptyList(),
         documentation = medusa.documentation,
         organization = OrganizationRefDTO(medusa.organization) ,
-        recommendations = emptyList(),
+        recommendations = medusa.recommendations.map { RecommendationDTO(it) },
         project_keywords = medusa.project_keywords
+    )
+    constructor(medusa: MedusaGraphQLProjectDTO) : this(
+            id = medusa.id,
+            title = medusa.title,
+            description = medusa.description,
+            extraContent = medusa.extraContent.orEmpty(),
+            creationDate = medusa.creationDate,
+            pictureUrl = medusa.picture?.url,
+            authors = medusa.authors.map { PersonRefDTO(it) },
+            supervisors = medusa.supervisors.map { PersonRefDTO(it) },
+            tags = emptyList(),
+            documentation = medusa.documentation,
+            organization = OrganizationRefDTO(medusa.organization) ,
+            recommendations = emptyList(),
+            project_keywords = medusa.project_keywords
     )
 }
 
@@ -156,14 +171,43 @@ data class PersonRefDTO(
     )
 }
 
-data class RecommendationDTO(
+data class RecommendationGraphQLDTO(
         val id: String?,
         val score: Double,
         @JsonProperty("project") val projectId: ProjectRecommendationDTO
-)
+){
+    constructor(medusaGraphQLRecommendationDTO: MedusaGraphQLRecommendationDTO) : this(
+            id = medusaGraphQLRecommendationDTO.id,
+            score = medusaGraphQLRecommendationDTO.score,
+            projectId = medusaGraphQLRecommendationDTO.projectId
+    )
+}
+
+data class RecommendationDTO(
+        val id: String?,
+        val score: Double,
+        @JsonProperty("project") val projectId: String
+){
+    constructor(medusaRecommendationDTO: MedusaRecommendationDTO) : this(
+            id = medusaRecommendationDTO.id,
+            score = medusaRecommendationDTO.score,
+            projectId = medusaRecommendationDTO.projectId
+    )
+}
 
 data class CreateRecommendationDTO(
-    val id: String
+    @JsonProperty("project") val projectId: String,
+    val score: Double
+)
+
+data class CreatedRecommendationDTO(
+        val id: String,
+        val score: Double,
+        @JsonProperty("project") val projectId: CreatedProjectRecommendationDTO
+)
+
+data class CreatedProjectRecommendationDTO(
+        val id: String
 )
 
 data class ProjectRecommendationDTO(

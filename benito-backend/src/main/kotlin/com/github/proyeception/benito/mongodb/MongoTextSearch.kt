@@ -168,12 +168,8 @@ open class MongoTextSearch(
                 Aggregates.lookup("keywords", "project_keywords", "_id", "keywords"),
                 Aggregates.match(
                     Filters.and(
-                        Filters.elemMatch("keywords", Filters.`in`(
-                                "name",
-                                keywordsNames
-                        )),
-                        Filters.not(
-                            Filters.eq("_id", updatedProject.id)
+                        Filters.elemMatch("keywords",
+                                Filters.`in`("name", keywordsNames)
                         )
                     )
                 ),

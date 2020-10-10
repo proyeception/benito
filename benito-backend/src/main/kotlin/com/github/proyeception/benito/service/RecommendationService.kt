@@ -22,14 +22,13 @@ open class RecommendationService(
     private fun updateProjectsRecommendedScore(updatedProject: ProjectDTO, recommendedProjects: List<ProjectRecommendationDTO>) {
         val updatedProjectKeywords = updatedProject.project_keywords
 
-        val recommendations: MutableList<RecommendationDTO> = mutableListOf()
+        val recommendations: MutableList<CreateRecommendationDTO> = mutableListOf()
 
         recommendedProjects.forEach {
             val score: Double = calculateScore(it.project_keywords, updatedProjectKeywords)
-            val updatedRecommendation = RecommendationDTO(
-                    id = null,
+            val updatedRecommendation = CreateRecommendationDTO(
                     score = score,
-                    projectId = ProjectRecommendationDTO(it.id, it.project_keywords)
+                    projectId = it.id
             )
             recommendations.add(updatedRecommendation)
         }

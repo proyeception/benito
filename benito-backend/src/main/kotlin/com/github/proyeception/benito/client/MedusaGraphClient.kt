@@ -3,6 +3,7 @@ package com.github.proyeception.benito.client
 import arrow.core.Either
 import com.fasterxml.jackson.core.type.TypeReference
 import com.github.proyeception.benito.connector.GraphConnector
+import com.github.proyeception.benito.dto.MedusaGraphQLProjectDTO
 import com.github.proyeception.benito.dto.MedusaProjectDTO
 import com.github.proyeception.benito.dto.OrderDTO
 import com.github.proyeception.benito.extension.replaceUrlSpaces
@@ -12,7 +13,7 @@ open class MedusaGraphClient(
     private val medusaGraphConnector: GraphConnector
 ) {
     data class Projects(
-        val projects: List<MedusaProjectDTO>
+        val projects: List<MedusaGraphQLProjectDTO>
     )
 
     open fun findProjects(
@@ -27,7 +28,7 @@ open class MedusaGraphClient(
         organizationId: String? = null,
         organizationName: String? = null,
         page: Int = 0
-    ): Either<Throwable, List<MedusaProjectDTO>> {
+    ): Either<Throwable, List<MedusaGraphQLProjectDTO>> {
         val params = formatParams(
             orderBy = orderBy,
             from = from,
