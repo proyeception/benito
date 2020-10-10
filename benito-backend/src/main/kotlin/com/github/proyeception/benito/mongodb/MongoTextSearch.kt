@@ -9,7 +9,6 @@ import com.mongodb.client.model.Filters
 import com.mongodb.client.model.Projections
 import org.bson.Document
 import org.bson.conversions.Bson
-import java.math.BigDecimal
 
 
 open class MongoTextSearch(
