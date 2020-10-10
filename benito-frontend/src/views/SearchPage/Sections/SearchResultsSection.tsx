@@ -1,6 +1,6 @@
 import React from "react";
 import { hot } from "react-hot-loader";
-import { RouteChildrenProps, withRouter } from "react-router-dom";
+import { Redirect, RouteChildrenProps, withRouter } from "react-router-dom";
 import { ERROR, PENDING } from "../../../hooks/withFetch";
 import withProjects from "../../../hooks/withProjects";
 import { SearchParams } from "../../../types";
@@ -16,7 +16,7 @@ import { Fetch, NOTHING, REFRESH } from "../../../store/search/types";
 import store from "../../../store";
 import { updateFetchStatus } from "../../../actions/search";
 import ProjectLink from "../../../components/Links/ProjectLink";
-import Spinner from "../../../components/Header/Spinner";
+import Spinner from "../../../components/Spinner/Spinner";
 
 interface SearchResultsSectionProps extends RouteChildrenProps<SearchParams> {
   status: Fetch;
@@ -41,7 +41,7 @@ const SearchResultsSection = (props: SearchResultsSectionProps) => {
   const classes = useStyles();
 
   if (projects.type == ERROR) {
-    return <div>mmmm rompiste algo kpo</div>;
+    return <Redirect to={{pathname: "/error"}}/>
   }
 
   if (projects.type == PENDING) {

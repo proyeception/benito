@@ -22,7 +22,7 @@ import { RouteComponentProps, withRouter } from "react-router-dom";
 import withProject from "../../hooks/withProject";
 import { PENDING, ERROR } from "../../hooks/withFetch";
 import { Divider } from "@material-ui/core";
-import Spinner from "../../components/Header/Spinner";
+import Spinner from "../../components/Spinner/Spinner";
 import CreateProjectSection from "./Sections/CreateProjectSection";
 
 const dashboardRoutes: any = [];

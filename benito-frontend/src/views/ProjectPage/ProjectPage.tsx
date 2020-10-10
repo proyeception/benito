@@ -21,12 +21,12 @@ import ProductSection from "./Sections/ProductSection";
 import TeamSection from "./Sections/TeamSection";
 import DocumentsSection from "./Sections/DocumentsSection";
 import { hot } from "react-hot-loader";
-import { RouteComponentProps, withRouter } from "react-router-dom";
+import { Redirect, RouteComponentProps, withRouter } from "react-router-dom";
 import withProject from "../../hooks/withProject";
 import { PENDING, ERROR } from "../../hooks/withFetch";
 import { Divider, Hidden } from "@material-ui/core";
 import Recommendations from "./Sections/Recommendations";
-import Spinner from "../../components/Header/Spinner";
+import Spinner from "../../components/Spinner/Spinner";
 
 const dashboardRoutes: any = [];
 
@@ -51,7 +51,7 @@ const ProjectPage = (props: Props) => {
   }
 
   if (project.type == ERROR) {
-    return <div>Bueno, capo, rompiste algo, eh</div>;
+    return <Redirect to={{pathname: "/error"}}/>;
   }
 
   return (
