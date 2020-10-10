@@ -13,7 +13,7 @@ interface SearchButtonProps extends RouteComponentProps {
   organizations: Array<Organization>;
   category?: Category;
   organization?: Organization;
-  sort?: SortMethod;
+  orderBy?: SortMethod;
   title?: string;
   from?: Date;
   to?: Date;
@@ -27,14 +27,12 @@ const SearchButton = (props: SearchButtonProps) => (
     default
     fullWidth={props.fullWidth ? props.fullWidth : true}
     onClick={() => {
-      props.history.push(
-        "/search" +
-          buildQueryParams({
-            ...props,
-            category: props.category?.tagName?.valueOf(),
-            organizationName: props.organization?.name?.valueOf(),
-          })
-      );
+      const params = buildQueryParams({
+        ...props,
+        category: props.category?.tagName?.valueOf(),
+        organizationName: props.organization?.name?.valueOf(),
+      });
+      props.history.push("/search" + params);
       if (props.callback) {
         props.callback();
       }
@@ -50,7 +48,7 @@ const mapStateToProps = (rootState: RootState) => {
     organizations: rootState.common.organizations,
     title: rootState.search.title,
     category: rootState.search.category,
-    sort: rootState.search.orderBy,
+    orderBy: rootState.search.orderBy,
     from: rootState.search.fromDate,
     to: rootState.search.toDate,
     organization: rootState.search.organization,

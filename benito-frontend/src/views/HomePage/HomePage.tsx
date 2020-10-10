@@ -12,6 +12,7 @@ import GridContainer from "../../components/Grid/GridContainer";
 import GridItem from "../../components/Grid/GridItem";
 import Footer from "../../components/Footer/Footer";
 import SearchBoxSection from "./Sections/SearchBoxSection";
+import CategoriesSection from "./Sections/CategoriesSection";
 
 const useStyles = makeStyles(styles);
 
@@ -31,7 +32,7 @@ const HomePage = (props: HomePageProps) => {
         color="transparent"
         {...rest}
       />
-      <Parallax image={image}>
+      <Parallax image={image} filter small>
         <div className={classes.container}>
           <GridContainer>
             <GridItem>
@@ -49,6 +50,7 @@ const HomePage = (props: HomePageProps) => {
         <Hidden smDown>
           <SearchBoxSection />
         </Hidden>
+        <CategoriesSection />
       </div>
       <Footer />
     </div>
