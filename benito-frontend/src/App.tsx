@@ -58,7 +58,8 @@ const App = () => {
           <Route path="/login" component={LoginPage} />
           <Route path="/error" component={ErrorPage} />
           <Route path="/me/:tab" component={MePage} />
-          <Route path="/" component={NotFoundPage} />
+          <Route path="/" exact component={Components} />
+          <Route component={NotFoundPage} />
         </Switch>
       </BrowserRouter>
     </MuiPickersUtilsProvider>
