@@ -6,7 +6,6 @@ import SearchPage from "./views/SearchPage/SearchPage";
 import AuthorPage from "./views/ProfilePage/AuthorPage";
 import SupervisorPage from "./views/ProfilePage/SupervisorPage";
 import LoginPage from "./views/LoginPage/LoginPage";
-import Components from "./views/Components/Components";
 import store from "./store";
 import { updateCategories, updateOrganizations } from "./actions/common";
 import axios from "axios";
@@ -18,6 +17,7 @@ import { benitoHost } from "./config";
 import { Category } from "./types";
 import { fetchOrganizations } from "./functions/organization";
 import MePage from "./views/MePage/MePage";
+import HomePage from "./views/HomePage/HomePage";
 
 const App = () => {
   const [isLoggingIn, setIsLoggingIn] = useState(true);
@@ -55,7 +55,7 @@ const App = () => {
           <Route path="/supervisors/:id" component={SupervisorPage} />
           <Route path="/login" component={LoginPage} />
           <Route path="/me/:tab" component={MePage} />
-          <Route path="/" component={Components} />
+          <Route path="/" component={HomePage} />
         </Switch>
       </BrowserRouter>
     </MuiPickersUtilsProvider>
