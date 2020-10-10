@@ -8,13 +8,15 @@ import store from "../../store";
 
 type FromDateInputProps = {
   from?: Date;
+  variant?: "dialog" | "inline" | "static";
+  inputVariant?: "standard" | "outlined" | "filled";
 };
 
 const FromDateInput = (props: FromDateInputProps) => (
   <KeyboardDatePicker
     clearable={true}
     placeholder="08/04/2016"
-    variant="inline"
+    variant={props.variant}
     format="dd/MM/yyyy"
     label="Comienzo"
     value={props.from || null}
@@ -22,6 +24,9 @@ const FromDateInput = (props: FromDateInputProps) => (
       if (e) {
         store.dispatch(updateFromDate(e));
       }
+    }}
+    inputProps={{
+      variant: props.inputVariant,
     }}
   />
 );

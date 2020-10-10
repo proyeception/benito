@@ -8,6 +8,7 @@ import store from "../../store";
 
 type TitleInputProps = {
   title?: string;
+  variant?: "outlined" | "filled" | "standard";
 };
 
 const TitleInput = (props: TitleInputProps) => (
@@ -16,6 +17,7 @@ const TitleInput = (props: TitleInputProps) => (
     fullWidth
     onChange={(e) => store.dispatch(updateTitle(e.target.value))}
     value={props.title}
+    variant={props.variant}
   />
 );
 

@@ -1,4 +1,4 @@
-import { makeStyles, TextField } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import React from "react";
 import { hot } from "react-hot-loader";
 import { connect } from "react-redux";
@@ -8,13 +8,6 @@ import styles from "../../../assets/jss/material-kit-react/views/homeSections/se
 import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
 import classNames from "classnames";
-import store from "../../../store";
-import {
-  updateFromDate,
-  updateTitle,
-  updateToDate,
-} from "../../../actions/search";
-import { KeyboardDatePicker } from "@material-ui/pickers";
 import TitleInput from "../../../components/SearchBox/TitleInput";
 import FromDateInput from "../../../components/SearchBox/FromDateInput";
 import ToDateInput from "../../../components/SearchBox/ToDateInput";
@@ -39,17 +32,8 @@ const SearchBoxSection = (props: SearchBoxSectionProps) => {
       <GridContainer
         className={classNames(classes.container, classes.searchBox)}
       >
-        <GridItem md={12} className={classes.row}>
+        <GridItem md={12}>
           <h3>Proyectos</h3>
-        </GridItem>
-        <GridItem md={4} className={classes.row}>
-          <h5>Título</h5>
-        </GridItem>
-        <GridItem md={4} className={classes.row}>
-          <h5>Fechas</h5>
-        </GridItem>
-        <GridItem md={4} className={classes.row}>
-          <h5>Categoría</h5>
         </GridItem>
         <GridItem md={4} className={classes.row}>
           <TitleInput />

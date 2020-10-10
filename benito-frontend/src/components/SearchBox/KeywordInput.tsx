@@ -8,6 +8,7 @@ import store from "../../store";
 
 type KeywordInputProps = {
   keyword?: string;
+  variant?: "outlined" | "filled" | "standard";
 };
 
 const KeywordInput = (props: KeywordInputProps) => (
@@ -16,6 +17,7 @@ const KeywordInput = (props: KeywordInputProps) => (
     fullWidth
     onChange={(e) => store.dispatch(updateKeyword(e.target.value))}
     value={props.keyword}
+    variant={props.variant}
   />
 );
 

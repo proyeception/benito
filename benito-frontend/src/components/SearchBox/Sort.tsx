@@ -9,6 +9,7 @@ import { SortMethod } from "../../types";
 
 type SortProps = {
   sort: SortMethod;
+  variant?: "outlined" | "filled" | "standard";
 };
 
 const Sort = (props: SortProps) => (
@@ -23,6 +24,7 @@ const Sort = (props: SortProps) => (
         name: "sort",
         id: "sort",
       }}
+      variant={props.variant}
       value={props.sort}
     >
       <MenuItem aria-label="None" value="" />

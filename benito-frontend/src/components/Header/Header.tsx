@@ -15,19 +15,22 @@ import Menu from "@material-ui/icons/Menu";
 import styles from "../../assets/jss/material-kit-react/components/headerStyle";
 import { hot } from "react-hot-loader";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import logo from '../../assets/img/proyectate/proyectate-logo-transparent.png';
-import utnLogo from '../../assets/img/proyectate/utn-logo-transparent.png';
+import logo from "../../assets/img/proyectate/proyectate-logo-transparent.png";
+import utnLogo from "../../assets/img/proyectate/utn-logo-transparent.png";
+import HeaderSearchBox from "./HeaderSearchBox";
+import { Divider } from "@material-ui/core";
 
 const getKeyValue = <T extends object, U extends keyof T>(obj: T) => (key: U) =>
   obj[key];
 
 const useStyles = makeStyles(styles);
 
-const brand = 
-<div className="brand-logo">
-  <img src={logo} className="brand-logo" />
-  <img src={utnLogo} className="brand-logo" />
-</div>;
+const brand = (
+  <div className="brand-logo">
+    <img src={logo} className="brand-logo" />
+    <img src={utnLogo} className="brand-logo" />
+  </div>
+);
 
 type Any = any;
 
@@ -90,6 +93,10 @@ const Header = (props: HeaderProps) => {
           <div className={classes.appResponsive}>
             {leftLinks}
             {rightLinks}
+          </div>
+          <Divider variant="fullWidth" />
+          <div className={classes.container} style={{ paddingTop: "15px" }}>
+            <HeaderSearchBox />
           </div>
         </Drawer>
       </Hidden>

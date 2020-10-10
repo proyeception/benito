@@ -18,13 +18,14 @@ interface SearchButtonProps extends RouteComponentProps {
   from?: Date;
   to?: Date;
   keyword?: string;
+  fullWidth?: boolean;
 }
 
 const SearchButton = (props: SearchButtonProps) => (
   <Button
     color="primary"
     default
-    fullWidth
+    fullWidth={props.fullWidth ? props.fullWidth : true}
     onClick={() => {
       props.history.push(
         "/search" +

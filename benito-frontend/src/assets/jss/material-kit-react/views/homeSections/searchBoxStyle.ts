@@ -13,10 +13,11 @@ const searchBoxStyle = createStyles({
   searchBox: {
     background: "#FFFFFF",
     borderRadius: "16px",
+    padding: "16px",
   },
   row: {
-    // marginTop: "15px",
-    // marginBottom: "15px",
+    marginTop: "15px",
+    marginBottom: "15px",
   },
 });
 
