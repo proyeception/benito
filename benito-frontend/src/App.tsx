@@ -18,6 +18,7 @@ import { benitoHost } from "./config";
 import { Category } from "./types";
 import { fetchOrganizations } from "./functions/organization";
 import MePage from "./views/MePage/MePage";
+import CreateProjectPage from "./views/CreateProjectPage/CreateProjectPage";
 
 const App = () => {
   const [isLoggingIn, setIsLoggingIn] = useState(true);
@@ -49,6 +50,7 @@ const App = () => {
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <BrowserRouter>
         <Switch>
+          <Route path="/create" component={CreateProjectPage} />
           <Route path="/projects/:id" component={ProjectPage} />
           <Route path="/search" component={SearchPage} />
           <Route path="/authors/:id" component={AuthorPage} />
