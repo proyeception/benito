@@ -18,6 +18,7 @@ import { Category } from "./types";
 import { fetchOrganizations } from "./functions/organization";
 import MePage from "./views/MePage/MePage";
 import HomePage from "./views/HomePage/HomePage";
+import ErrorPage from "./views/ErrorPage/ErrorPage";
 
 const App = () => {
   const [isLoggingIn, setIsLoggingIn] = useState(true);
@@ -54,6 +55,7 @@ const App = () => {
           <Route path="/authors/:id" component={AuthorPage} />
           <Route path="/supervisors/:id" component={SupervisorPage} />
           <Route path="/login" component={LoginPage} />
+          <Route path="/error" component={ErrorPage} />
           <Route path="/me/:tab" component={MePage} />
           <Route path="/" component={HomePage} />
         </Switch>

@@ -90,7 +90,7 @@ class ProjectServiceTest : Spec() {
                         project_keywords = emptyList()
                 )
 
-                val newProject = MedusaProjectDTO(
+                val newProject = MedusaGraphQLProjectDTO(
                     id = "1",
                     title = "project title",
                     description = "project description",

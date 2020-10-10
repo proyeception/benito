@@ -21,9 +21,12 @@ import ProductSection from "./Sections/ProductSection";
 import TeamSection from "./Sections/TeamSection";
 import DocumentsSection from "./Sections/DocumentsSection";
 import { hot } from "react-hot-loader";
-import { RouteComponentProps, withRouter } from "react-router-dom";
+import { Redirect, RouteComponentProps, withRouter } from "react-router-dom";
 import withProject from "../../hooks/withProject";
 import { PENDING, ERROR } from "../../hooks/withFetch";
+import { Divider, Hidden } from "@material-ui/core";
+import Recommendations from "./Sections/Recommendations";
+import Spinner from "../../components/Spinner/Spinner";
 
 const dashboardRoutes: any = [];
 
@@ -44,11 +47,11 @@ const ProjectPage = (props: Props) => {
   const project = withProject(props.match.params.id);
 
   if (project.type == PENDING) {
-    return <div>Cargan2</div>;
+    return <Spinner/>;
   }
 
   if (project.type == ERROR) {
-    return <div>Bueno, capo, rompiste algo, eh</div>;
+    return <Redirect to={{pathname: "/error"}}/>;
   }
 
   return (
@@ -71,11 +74,27 @@ const ProjectPage = (props: Props) => {
         </div>
       </Parallax>
       <div className={classNames(classes.main, classes.mainRaised)}>
-        <div className={classes.container}>
-          <ProductSection project={project.value} />
-          <TeamSection project={project.value} />
-          <DocumentsSection project={project.value} />
-        </div>
+        <GridContainer>
+          <GridItem
+            xs={12}
+            sm={12}
+            md={9}
+            className={classes.container}
+          >
+            <ProductSection project={project.value} />
+            <TeamSection project={project.value} />
+            <DocumentsSection project={project.value} />
+          </GridItem>
+          <Divider orientation="vertical" flexItem />
+          <GridItem
+            xs={12}
+            sm={12}
+            md={2}
+            className={classes.recommendations}
+          >
+            <Recommendations/>
+          </GridItem>
+        </GridContainer>
       </div>
       <Footer />
     </div>

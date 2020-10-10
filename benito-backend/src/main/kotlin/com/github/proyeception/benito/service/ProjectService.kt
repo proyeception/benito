@@ -186,6 +186,11 @@ open class ProjectService(
 
     private fun mappingFromMedusa(f: () -> MedusaProjectDTO): ProjectDTO = ProjectDTO(f())
 
+    fun recommendedProjects(id: String): List<ProjectDTO> {
+        val project = findProject(id)
+        return project.recommendations.map {findProject(it.projectId) }
+    }
+
     companion object {
         private val LOGGER = LoggerFactory.getLogger(ProjectService::class.java)
     }

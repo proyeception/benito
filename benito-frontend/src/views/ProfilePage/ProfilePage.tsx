@@ -17,7 +17,7 @@ import styles from "../../assets/jss/material-kit-react/views/profilePage";
 import { hot } from "react-hot-loader";
 import { Role } from "../../types";
 import withUser from "../../hooks/withUser";
-import { RouteComponentProps } from "react-router-dom";
+import { Redirect, RouteComponentProps } from "react-router-dom";
 import { ERROR, PENDING } from "../../hooks/withFetch";
 import { socialToIcon } from "../../functions/user";
 import { Link } from "react-router-dom";
@@ -25,6 +25,7 @@ import { Card } from "@material-ui/core";
 import CardBody from "../../components/Card/CardBody";
 import CardFooter from "../../components/Card/CardFooter";
 import { cardTitle, title } from "../../assets/jss/material-kit-react";
+import Spinner from "../../components/Spinner/Spinner";
 
 const useStyles = makeStyles({
   ...styles,
@@ -61,11 +62,11 @@ const ProfilePage = (props: ProfilePageProps) => {
   const user = withUser(props.role, props.match.params.id);
 
   if (user.type == PENDING) {
-    return <div>Cargan2</div>;
+    return <Spinner/>;
   }
 
   if (user.type == ERROR) {
-    return <div>Uh loco rompiste algo eh</div>;
+    return <Redirect to={{pathname: "/error"}}/>
   }
 
   return (
