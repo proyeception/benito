@@ -22,6 +22,7 @@ import ErrorPage from "./views/ErrorPage/ErrorPage";
 import NotFoundPage from "./views/NotFoundPage/NotFoundPage";
 import EditProjectPage from "./views/EditProjectPage/EditProjectPage";
 import ComingSoon from './views/ComingSoon/ComingSoon';
+import CreateProjectPage from "./views/CreateProjectPage/CreateProjectPage";
 
 const App = () => {
   const [isLoggingIn, setIsLoggingIn] = useState(true);
@@ -54,6 +55,7 @@ const App = () => {
       <BrowserRouter>
         <Switch>
           <Route path="/projects/:id/edit" component={EditProjectPage} />
+          <Route path="/create" component={CreateProjectPage} />
           <Route path="/projects/:id" component={ProjectPage} />
           <Route path="/search" component={SearchPage} />
           <Route path="/authors/:id" component={AuthorPage} />
