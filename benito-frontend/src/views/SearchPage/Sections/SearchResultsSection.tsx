@@ -16,7 +16,7 @@ import { Fetch, NOTHING, REFRESH } from "../../../store/search/types";
 import store from "../../../store";
 import { updateFetchStatus } from "../../../actions/search";
 import ProjectLink from "../../../components/Links/ProjectLink";
-import Spinner from "../../../components/Header/Spinner";
+import Spinner from "../../../components/CustomDropdown/Spinner";
 
 interface SearchResultsSectionProps extends RouteChildrenProps<SearchParams> {
   status: Fetch;

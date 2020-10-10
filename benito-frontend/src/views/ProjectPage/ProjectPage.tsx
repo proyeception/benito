@@ -26,7 +26,7 @@ import withProject from "../../hooks/withProject";
 import { PENDING, ERROR } from "../../hooks/withFetch";
 import { Divider, Hidden } from "@material-ui/core";
 import Recommendations from "./Sections/Recommendations";
-import Spinner from "../../components/Header/Spinner";
+import Spinner from "../../components/CustomDropdown/Spinner";
 
 const dashboardRoutes: any = [];
 

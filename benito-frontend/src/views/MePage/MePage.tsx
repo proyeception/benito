@@ -22,7 +22,7 @@ import ProfileSection from "./Sections/ProfileSection";
 import OrganizationsSection from "./Sections/OrganizationsSection";
 import SettingsSection from "./Sections/SettingsSection";
 import Footer from "../../components/Footer/Footer";
-import Spinner from "../../components/Header/Spinner";
+import Spinner from "../../components/CustomDropdown/Spinner";
 
 const useStyles = makeStyles(styles);
 

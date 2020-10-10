@@ -25,7 +25,7 @@ import { Card } from "@material-ui/core";
 import CardBody from "../../components/Card/CardBody";
 import CardFooter from "../../components/Card/CardFooter";
 import { cardTitle, title } from "../../assets/jss/material-kit-react";
-import Spinner from "../../components/Header/Spinner";
+import Spinner from "../../components/CustomDropdown/Spinner";
 
 const useStyles = makeStyles({
   ...styles,
