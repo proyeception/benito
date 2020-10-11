@@ -31,17 +31,17 @@ export function updateCategory(category: Category): SearchAction {
   };
 }
 
-export function updateFromDate(fromDate: Date): SearchAction {
+export function updateFromDate(from: string): SearchAction {
   return {
     type: UPDATE_FROM_DATE,
-    payload: fromDate,
+    payload: from,
   };
 }
 
-export function updateToDate(toDate: Date): SearchAction {
+export function updateToDate(to: string): SearchAction {
   return {
     type: UPDATE_TO_DATE,
-    payload: toDate,
+    payload: to,
   };
 }
 

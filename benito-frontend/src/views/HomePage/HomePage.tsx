@@ -30,7 +30,7 @@ const HomePage = (props: HomePageProps) => {
       <Header
         rightLinks={<HeaderLinks />}
         absolute
-        color="transparent"
+        color="darkGray"
         {...rest}
       />
       <Parallax image={image} filter small>

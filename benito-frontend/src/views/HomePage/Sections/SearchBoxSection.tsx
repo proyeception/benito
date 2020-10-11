@@ -17,8 +17,8 @@ import SearchButton from "../../../components/SearchBox/SearchButton";
 type SearchBoxSectionProps = {
   title?: string;
   category?: Category;
-  from?: Date;
-  to?: Date;
+  from?: string;
+  to?: string;
 };
 
 const useStyles = makeStyles(styles);
@@ -59,8 +59,8 @@ const mapStateToProps = (rootState: RootState) => {
   return {
     title: rootState.search.title,
     category: rootState.search.category,
-    from: rootState.search.fromDate,
-    to: rootState.search.toDate,
+    from: rootState.search.from,
+    to: rootState.search.to,
   };
 };
 

@@ -1,9 +1,13 @@
 import React from "react";
 import { hot } from "react-hot-loader";
 import styles from "../../../assets/jss/material-kit-react/views/searchSections/searchBoxStyle";
-import { makeStyles } from "@material-ui/core";
+import {
+  makeStyles,
+} from "@material-ui/core";
 import store from "../../../store";
-import { updateFetchStatus } from "../../../actions/search";
+import {
+  updateFetchStatus,
+} from "../../../actions/search";
 import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
 import { REFRESH } from "../../../store/search/types";
@@ -15,6 +19,7 @@ import OrganizationSelector from "../../../components/SearchBox/OrganizationSele
 import SearchButton from "../../../components/SearchBox/SearchButton";
 import Sort from "../../../components/SearchBox/Sort";
 import KeywordInput from "../../../components/SearchBox/KeywordInput";
+
 
 const useStyles = makeStyles(styles);
 

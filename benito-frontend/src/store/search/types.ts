@@ -26,12 +26,12 @@ interface UpdateTitleAction {
 
 interface UpdateFromDateAction {
   type: typeof UPDATE_FROM_DATE;
-  payload: Date;
+  payload: string;
 }
 
 interface UpdateToDateAction {
   type: typeof UPDATE_TO_DATE;
-  payload: Date;
+  payload: string;
 }
 
 interface UpdateKeywordAction {
@@ -100,8 +100,8 @@ export type SearchAction =
 export type SearchState = {
   title?: string;
   category?: Category;
-  fromDate?: Date;
-  toDate?: Date;
+  from?: string;
+  to?: string;
   keyword?: string;
   documentation?: string;
   orderBy: SortMethod;

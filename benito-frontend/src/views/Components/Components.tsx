@@ -40,7 +40,7 @@ export default function Components(props: any) {
       <Header
         rightLinks={<HeaderLinks />}
         fixed
-        color="darkGray"
+        color="grey"
         {...rest}
       />
       <Parallax image={require("../../assets/img/bg4.jpg")}>

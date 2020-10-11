@@ -56,7 +56,7 @@ const LoginPage = (props: LoginPageProps) => {
     <div>
       <Header
         absolute
-        color="transparent"
+        color="darkGray"
         brand="Material Kit React"
         rightLinks={<HeaderLinks />}
         {...rest}
