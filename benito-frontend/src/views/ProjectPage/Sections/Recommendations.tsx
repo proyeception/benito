@@ -46,9 +46,10 @@ const SearchResultsSection = (props: Props) => {
   const classes = useStyles();
 
   if (recommendations.type == ERROR) {
-    return  <GridContainer spacing={3}>
+    return  <GridContainer>
               <GridItem xs={12} sm={12} md={12}>
-                <div className={classes.title}> No pudimos encontrar proyectos similares a este</div>
+                <div className={classes.subtitle}> Proyectos similares</div>
+                <div className={classes.text}> No pudimos encontrar proyectos similares a este</div>
               </GridItem>
             </GridContainer>
   }
@@ -58,12 +59,17 @@ const SearchResultsSection = (props: Props) => {
   }
 
   if (recommendations.value.length == 0) {
-    return <div>no hay nada capo</div>;
+    return  <GridContainer justify="center">
+              <GridItem xs={12} sm={12} md={12}>
+                <div className={classes.subtitle}> Proyectos similares</div>
+                <div className={classes.text}> No pudimos encontrar proyectos similares a este. Es único!</div>
+              </GridItem>
+            </GridContainer>
   }
 
   return (
     <div className={classes.section}>
-      <GridContainer spacing={3}>
+      <GridContainer>
         <div className={classes.subtitle}> Proyectos similares</div>
         {recommendations.value.map((p, idx) => (
           <GridItem key={idx} xs={12} sm={12} md={12}>

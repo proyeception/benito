@@ -24,7 +24,7 @@ const landingPageStyle = createStyles({
   main: {
     background: "#FFFFFF",
     position: "relative",
-    zIndex: 3
+    zIndex: 3,
   },
   mainRaised: {
     margin: "-60px 30px 0px",
@@ -32,7 +32,15 @@ const landingPageStyle = createStyles({
     boxShadow:
       "0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2)"
   },
-  recommendations: {}
+  project: {
+    paddingLeft: "120px",
+    paddingRight: "90px"
+  },
+  recommendations: {
+    paddingTop: "60px",
+    paddingRight: "0",
+    marginRight: "0"
+  },
 });
 
 export default landingPageStyle;
