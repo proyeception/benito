@@ -40,12 +40,12 @@ function searchReducer(
     case UPDATE_FROM_DATE:
       return {
         ...state,
-        fromDate: action.payload,
+        from: action.payload,
       };
     case UPDATE_TO_DATE:
       return {
         ...state,
-        toDate: action.payload,
+        to: action.payload,
       };
     case UPDATE_KEYWORD:
       return {
@@ -76,12 +76,12 @@ function searchReducer(
         orderBy: action.payload.orderBy || state.orderBy,
         status: state.status,
         documentation: action.payload.documentation || state.documentation,
-        fromDate: action.payload.fromDate
-          ? moment(action.payload.fromDate, "yyyy-MM-DD").toDate()
-          : state.fromDate,
-        toDate: action.payload.toDate
-          ? moment(action.payload.toDate, "yyyy-MM-DD").toDate()
-          : state.toDate,
+        from: action.payload.from
+          ? moment(action.payload.from, "yyyy-MM-DD").toString()
+          : state.from,
+        to: action.payload.to
+          ? moment(action.payload.to, "yyyy-MM-DD").toString()
+          : state.to,
         keyword: action.payload.keyword || state.keyword,
         organization: action.payload.organization || state.organization,
         title: action.payload.title || state.title,

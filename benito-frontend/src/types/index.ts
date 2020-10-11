@@ -105,8 +105,8 @@ export enum SortMethod {
 export type SearchParams = {
   title?: string;
   category?: string;
-  fromDate?: string;
-  toDate?: string;
+  from?: string;
+  to?: string;
   keyword?: string;
   documentation?: string;
   organizationName?: string;

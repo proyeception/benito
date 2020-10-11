@@ -31,14 +31,14 @@ export function updateCategory(category: Category): SearchAction {
   };
 }
 
-export function updateFromDate(fromDate: Date): SearchAction {
+export function updateFromDate(fromDate: string): SearchAction {
   return {
     type: UPDATE_FROM_DATE,
     payload: fromDate,
   };
 }
 
-export function updateToDate(toDate: Date): SearchAction {
+export function updateToDate(toDate: string): SearchAction {
   return {
     type: UPDATE_TO_DATE,
     payload: toDate,

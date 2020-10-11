@@ -10,21 +10,23 @@ import { fromOrganizationName } from "../organization";
 export function buildQueryParams({
   title,
   category,
-  fromDate,
-  toDate,
+  from,
+  to,
   orderBy,
   keyword,
   organizationName: organization,
 }: SearchParams) {
-  return "?"
+  var query = "?"
     .concat(buildQueryParamProperty("title", title))
     .concat(buildQueryParamProperty("category", category))
-    .concat(buildQueryParamProperty("from", fromDate))
-    .concat(buildQueryParamProperty("to", toDate))
+    .concat(buildQueryParamProperty("from", from))
+    .concat(buildQueryParamProperty("to", to))
     .concat(buildQueryParamProperty("orderBy", orderBy))
     .concat(buildQueryParamProperty("keyword", keyword))
     .concat(buildQueryParamProperty("organizationName", organization))
     .slice(0, -1);
+
+    return query;
   //TODO
   //params = params.concat(this.buildQueryParamProperty("keyword", this.state.keyword))
   //params = params.concat(this.buildQueryParamProperty("documentation", this.state.documentation))
@@ -38,11 +40,11 @@ export function syncParamsToState(params: SearchParams) {
   let state: SearchState = {
     title: params.title || "",
     category: fromCategoryName(params.category),
-    fromDate: params.fromDate
-      ? moment(params.fromDate, "yyyy/MM/dd").toDate()
+    from: params.from
+      ? params.from
       : undefined,
-    toDate: params.toDate
-      ? moment(params.toDate, "yyyy/MM/dd").toDate()
+    to: params.to
+      ? params.to
       : undefined,
     documentation: params.documentation || "",
     keyword: params.keyword || "",

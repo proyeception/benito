@@ -36,6 +36,7 @@ import Button from "../../../components/CustomButtons/Button";
 import { buildQueryParams } from "../../../functions/search";
 import { REFRESH } from "../../../store/search/types";
 import AutoComplete from "@material-ui/lab/Autocomplete";
+import moment from "moment";
 
 const useStyles = makeStyles(styles);
 
@@ -46,13 +47,16 @@ interface SearchBoxSectionProps extends RouteChildrenProps<SearchParams> {
   organization?: Organization;
   sort?: SortMethod;
   title?: string;
-  from?: Date;
-  to?: Date;
+  from?:string;
+  to?: string;
   keyword?: string;
 }
 
 const SearchBoxSection = (props: SearchBoxSectionProps) => {
   const classes = useStyles();
+
+  var to;
+  var from;
 
   return (
     <div className={classes.section}>
@@ -101,8 +105,10 @@ const SearchBoxSection = (props: SearchBoxSectionProps) => {
             label="Comienzo"
             value={props.from || null}
             onChange={(e) => {
-              if (e) {
-                store.dispatch(updateFromDate(e));
+              if (e && moment(e).format("yyyy-MM-DD").toString() != 'Invalid date') {
+                store.dispatch(updateFromDate(moment(e).format("yyyy-MM-DD").toString()));
+              } else {
+                store.dispatch(updateFromDate(""));
               }
             }}
           />
@@ -116,8 +122,11 @@ const SearchBoxSection = (props: SearchBoxSectionProps) => {
             label="Fin"
             value={props.to || null}
             onChange={(e) => {
-              if (e) {
-                store.dispatch(updateToDate(e));
+              console.error("-----------")
+              if (e && moment(e).format("yyyy-MM-DD").toString() != 'Invalid date') {
+                store.dispatch(updateToDate(moment(e).format("yyyy-MM-DD").toString()));
+              } else {
+                store.dispatch(updateToDate(""));
               }
             }}
           />
@@ -189,7 +198,6 @@ const SearchBoxSection = (props: SearchBoxSectionProps) => {
                     organizationName: props.organization?.name?.valueOf(),
                   })
               );
-              console.log("aaaaaaaaaaaaa");
               store.dispatch(updateFetchStatus(REFRESH));
             }}
           >
@@ -208,8 +216,8 @@ const mapStateToProps = (rootState: RootState) => {
     title: rootState.search.title,
     category: rootState.search.category,
     sort: rootState.search.orderBy,
-    from: rootState.search.fromDate,
-    to: rootState.search.toDate,
+    from: rootState.search.from,
+    to: rootState.search.to,
     organization: rootState.search.organization,
     keyword: rootState.search.keyword,
   };
