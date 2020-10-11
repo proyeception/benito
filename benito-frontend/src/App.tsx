@@ -21,6 +21,7 @@ import HomePage from "./views/HomePage/HomePage";
 import ErrorPage from "./views/ErrorPage/ErrorPage";
 import NotFoundPage from "./views/NotFoundPage/NotFoundPage";
 import EditProjectPage from "./views/EditProjectPage/EditProjectPage";
+import ComingSoon from './views/ComingSoon/ComingSoon';
 
 const App = () => {
   const [isLoggingIn, setIsLoggingIn] = useState(true);
@@ -59,6 +60,7 @@ const App = () => {
           <Route path="/supervisors/:id" component={SupervisorPage} />
           <Route path="/login" component={LoginPage} />
           <Route path="/error" component={ErrorPage} />
+          <Route path="/comingSoon" component={ComingSoon} />
           <Route path="/me/:tab" component={MePage} />
           <Route path="/" component={HomePage} />
           <Route component={NotFoundPage} />
