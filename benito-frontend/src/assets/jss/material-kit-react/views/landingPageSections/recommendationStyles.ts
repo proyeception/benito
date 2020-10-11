@@ -13,6 +13,14 @@ const recommendationStyle = (theme: Theme) => createStyles({
     marginBottom: "1rem",
     marginTop: "1px",
     textDecoration: "none",
+    textAlign: "center"
+  },
+  text: {
+    ...subtitle,
+    marginBottom: "1rem",
+    marginTop: "1px",
+    textDecoration: "none",
+    textAlign: "center"
   },
   subtitle: {
     ...subtitle,
@@ -20,7 +28,8 @@ const recommendationStyle = (theme: Theme) => createStyles({
     marginTop: "30px",
     minHeight: "32px",
     textDecoration: "none",
-    fontSize: "26px"
+    fontSize: "26px",
+    textAlign: "center"
   },
   description: {
     color: "#999",

@@ -75,13 +75,13 @@ const ProjectPage = (props: Props) => {
       </Parallax>
       <div className={classNames(classes.main, classes.mainRaised)}>
         <GridContainer>
-          <GridItem xs={12} sm={12} md={9} className={classes.container}>
+          <GridItem xs={12} sm={12} md={9} className={classes.project}>
             <ProductSection project={project.value} />
             <TeamSection project={project.value} />
             <DocumentsSection project={project.value} />
           </GridItem>
           <Divider orientation="vertical" flexItem />
-          <GridItem xs={12} sm={12} md={2} className={classes.recommendations}>
+          <GridItem xs={12} sm={12} md={2}  className={classes.recommendations}>
             <Recommendations />
           </GridItem>
         </GridContainer>
