@@ -6,7 +6,6 @@ import com.github.proyeception.benito.exception.ForbiddenException
 import com.github.proyeception.benito.exception.UnauthorizedException
 import com.github.proyeception.benito.service.*
 import org.springframework.http.MediaType
-import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
@@ -103,46 +102,7 @@ open class ProjectController(
 
     @RequestMapping("/benito/projects/{id}", method = [RequestMethod.GET])
     @ResponseBody
-    private fun findProject(@PathVariable id: String): ProjectDTO{
-        if(id == "1") {
-            return ProjectDTO(
-                    id = "1",
-                    title = "project title",
-                    description = "project description",
-                    extraContent = "nicely formatted content",
-                    creationDate = LocalDate.of(2020, 2, 6),
-                    pictureUrl = "https://images.unsplash.com/photo-1541327079290-5127e8c6d7b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1650&q=80",
-                    authors = listOf(
-                            PersonRefDTO(
-                                    id = "123",
-                                    username = "author",
-                                    fullName = "Benito Quinquela"
-                            )
-                    ),
-                    supervisors = listOf(
-                            PersonRefDTO(
-                                    id = "123",
-                                    username = "supervisor",
-                                    fullName = "Jorge Luis Borges"
-                            )
-                    ),
-                    tags = emptyList(),
-                    documentation = listOf(DocumentationDTO(
-                            id = "asd",
-                            fileName = "Acta de proyecto",
-                            driveId = "123"
-                    )),
-                    organization = OrganizationRefDTO(
-                            id = "123",
-                            displayName = "UTN FRBA"
-                    ),
-                    recommendations = emptyList(),
-                    project_keywords = emptyList()
-            )
-        } else {
-            return projectService.findProject(id)
-        }
-    }
+    private fun findProject(@PathVariable id: String): ProjectDTO = projectService.findProject(id)
 
     @RequestMapping("/benito/keywords", method = [RequestMethod.GET])
     @ResponseBody
@@ -169,12 +129,7 @@ open class ProjectController(
         @PathVariable id: String,
         @RequestBody content: UpdateContentDTO,
         @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
-    ): ProjectDTO {
-        val updatedProject = doAuthorAuthorized(id, token) {
-            projectService.updateProjectContent(content, id)
-        }
-        return updatedProject
-    }
+    ): ProjectDTO = doWithMixedAuthorization(id, token) { projectService.updateProjectContent(content, id) }
 
     @RequestMapping(
         value = ["/benito/projects/{id}/picture"],
@@ -186,7 +141,9 @@ open class ProjectController(
         @PathVariable id: String,
         @RequestParam("file") image: MultipartFile,
         @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
-    ): ProjectDTO = doAuthorAuthorized(projectId = id, token = token) { projectService.updateProjectImage(id, image) }
+    ): ProjectDTO = doWithMixedAuthorization(projectId = id, token = token) {
+        projectService.updateProjectImage(id, image)
+    }
 
     @RequestMapping(value = ["/benito/projects/{projectId}/documents/{documentId}"], method = [RequestMethod.DELETE])
     @ResponseBody
@@ -194,7 +151,7 @@ open class ProjectController(
         @PathVariable projectId: String,
         @PathVariable documentId: String,
         @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
-    ): ProjectDTO = doAuthorAuthorized(projectId = projectId, token = token) {
+    ): ProjectDTO = doWithMixedAuthorization(projectId = projectId, token = token) {
         projectService.deleteDocument(projectId, documentId)
     }
 
@@ -243,48 +200,46 @@ open class ProjectController(
     fun createProject(
         @RequestBody project: CreateProjectDTO,
         @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
-    ): ProjectDTO {
-        val createdProject = doAuthorized(
-                token = token,
-                requiredRole = RoleDTO.SUPERVISOR,
-                authorizeCheck = { userService.findSupervisor(it).organizations.any { o -> o.id == project.organizationId } },
-                f = {
-                    projectService.createProject(it, project)
-                },
-                forbiddenMessage = "You're not allowed to create a project in this organization"
-        )
-
-            return createdProject
-        }
-
-    private fun <T> doSupervisorAuthorized(projectId: String, token: String, f: (String) -> T) = doAuthorized(
+    ): ProjectDTO = doAuthorized(
         token = token,
-        requiredRole = RoleDTO.SUPERVISOR,
-        authorizeCheck = { projectService.hasSupervisor(supervisorId = it, projectId = projectId) },
+        allowedRoles = listOf(RoleDTO.SUPERVISOR),
+        authorizeCheck = { userService.findSupervisor(it).organizations.any { o -> o.id == project.organizationId } },
+        f = {
+            projectService.createProject(it, project)
+        },
+        forbiddenMessage = "You're not allowed to create a project in this organization"
+    )
+
+    private fun <T> doWithMixedAuthorization(projectId: String, token: String, f: (String) -> T) = doAuthorized(
+        token = token,
+        allowedRoles = listOf(RoleDTO.SUPERVISOR, RoleDTO.AUTHOR),
+        authorizeCheck = {
+            projectService.hasSupervisor(supervisorId = it, projectId = projectId) ||
+            projectService.hasAuthor(authorId = it, projectId = projectId)
+        },
         f = f
     )
 
-    private fun <T> doAuthorAuthorized(projectId: String, token: String, f: (String) -> T) = doAuthorized(
+    private fun <T> doSupervisorAuthorized(projectId: String, token: String, f: (String) -> T) = doAuthorized(
         token = token,
-        requiredRole = RoleDTO.AUTHOR,
-        authorizeCheck = {true},//{ projectService.hasAuthor(authorId = it, projectId = projectId) },
+        allowedRoles = listOf(RoleDTO.SUPERVISOR),
+        authorizeCheck = { projectService.hasSupervisor(supervisorId = it, projectId = projectId) },
         f = f
     )
 
     private fun <T> doAuthorized(
         token: String,
-        requiredRole: RoleDTO,
+        allowedRoles: List<RoleDTO>,
         f: (String) -> T,
         authorizeCheck: (String) -> Boolean,
         forbiddenMessage: String = "You're not allowed to edit this project"
     ): T {
-        /*val session = sessionService[token] ?: throw UnauthorizedException("I don't know who you are")
+        val session = sessionService[token] ?: throw UnauthorizedException("I don't know who you are")
 
-        return session.takeIf { it.role == requiredRole }
+        return session.takeIf { allowedRoles.contains(it.role) }
             ?.userId
             ?.takeIf(authorizeCheck)
             ?.let(f)
-            ?: throw ForbiddenException(forbiddenMessage)*/
-        return "hola".let(f)
+            ?: throw ForbiddenException(forbiddenMessage)
     }
 }

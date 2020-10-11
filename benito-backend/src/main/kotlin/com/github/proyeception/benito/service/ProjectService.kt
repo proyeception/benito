@@ -4,7 +4,10 @@ import arrow.core.getOrHandle
 import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.client.MedusaGraphClient
 import com.github.proyeception.benito.dto.*
+import com.github.proyeception.benito.exception.AmbiguousReferenceException
 import com.github.proyeception.benito.exception.FailedDependencyException
+import com.github.proyeception.benito.exception.NotFoundException
+import com.github.proyeception.benito.extension.getOrThrow
 import com.github.proyeception.benito.mongodb.MongoTextSearch
 import com.github.proyeception.benito.parser.DocumentParser
 import kotlinx.coroutines.async
@@ -25,6 +28,7 @@ open class ProjectService(
     private val keywordService: KeywordService,
     private val recommendationService: RecommendationService
 ) {
+
     open fun findProjects(
         orderBy: OrderDTO?,
         from: String?,
@@ -67,7 +71,18 @@ open class ProjectService(
 
     fun count(): CountDTO = CountDTO(medusaClient.projectCount())
 
-    fun findProject(id: String): ProjectDTO = mappingFromMedusa { medusaClient.findProject(id) }
+    open fun findProject(id: String): ProjectDTO = medusaGraphClient.findProjects(id = id)
+        .getOrHandle {
+            LOGGER.error("Error getting project $id from Medusa with Graph")
+            throw FailedDependencyException("Error getting $id from Medusa")
+        }
+        .let {
+            when (it.size) {
+                0 -> throw NotFoundException("No project found for ID $id")
+                1 -> ProjectDTO(it.first())
+                else -> throw AmbiguousReferenceException("Ambiguous ID $id")
+            }
+        }
 
     fun updateProjectContent(content: UpdateContentDTO, projectId: String): ProjectDTO {
         val updatedProject = mappingFromMedusa {
@@ -76,16 +91,20 @@ open class ProjectService(
                 id = projectId
             )
         }
-        updateProjectKeywords(projectId)
+        updateProjectKeywords(updatedProject)
         return updatedProject
     }
 
+    // Creo que es mejor usar una corrutina para esto, ya son asincrónicas
     @Async
-    open fun updateProjectKeywords(id: String) {
-        val project = findProject(id)
-        val keywords = keywordService.getKeywords(project)
-        medusaClient.updateProjectKeywords(keywords, project)
-        recommendationService.recalculateRecommendations(project)
+    open fun updateProjectKeywords(project: ProjectDTO) {
+        try {
+            val keywords = keywordService.getKeywords(project)
+            medusaClient.updateProjectKeywords(keywords, project)
+            recommendationService.recalculateRecommendations(project)
+        } catch (e: Exception) {
+            LOGGER.error("There was an error updating keywords for project ${project.id}")
+        }
     }
 
     fun saveDocuments(projectId: String, files: List<MultipartFile>): ProjectDTO = mappingFromMedusa {
@@ -176,10 +195,9 @@ open class ProjectService(
             title = project.title
         )
         LOGGER.info("{}", medusaProject)
-        val project = medusaClient.createProject(medusaProject)
-        updateProjectKeywords(project.id)
-        project
-    }
+        val medusa = medusaClient.createProject(medusaProject)
+        medusa
+    }.also { updateProjectKeywords(it) }
 
     fun setAuthors(projectId: String, users: SetUsersDTO) = mappingFromMedusa {
         medusaClient.modifyProjectUsers(
@@ -192,7 +210,7 @@ open class ProjectService(
 
     fun recommendedProjects(id: String): List<ProjectDTO> {
         val project = findProject(id)
-        return project.recommendations.map {findProject(it.projectId) }
+        return project.recommendations.map { findProject(it.projectId) }
     }
 
     companion object {

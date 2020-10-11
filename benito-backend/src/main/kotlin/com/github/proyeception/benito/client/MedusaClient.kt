@@ -206,7 +206,7 @@ open class MedusaClient(
         project.project_keywords.filter { it.id.isNullOrBlank() }.map { delete("keywords", it.id.orEmpty(), MEDUSA_KEYWORD_REF) }
         val keywordsIdList = kw.map{ create("keywords", it, MEDUSA_KEYWORD_REF).id }
         val keywordsIdRef = ProjectKeywords(keywordsIdList.map { ObjectId(it).toHexString() } )
-        update("projects", project.id, keywordsIdRef, MEDUSA_PROJECT_REF)
+        update("projects", project.id, keywordsIdRef, ANY_REF)
 
     }
 
@@ -236,7 +236,6 @@ open class MedusaClient(
 
     private fun <T> findOne(collection: String, id: String, ref: TypeReference<T>): T {
         val response = medusaConnector.get("/$collection/$id")
-        println(response.body)
         when (response.status) {
             200 -> return response.deserializeAs(ref)
             404 -> throw NotFoundException("$id not found in $collection")
@@ -319,5 +318,6 @@ open class MedusaClient(
         private val MEDUSA_KEYWORD_REF = object  : TypeReference<KeywordDTO>() {}
         private val MEDUSA_RECOMMENDATION_REF = object : TypeReference<CreatedRecommendationDTO>() {}
         private val CREATE_RECOMMENDATION_REF = object : TypeReference<CreateRecommendationDTO>() {}
+        private val ANY_REF = object : TypeReference<Any>() {}
     }
 }

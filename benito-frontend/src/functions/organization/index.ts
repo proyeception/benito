@@ -19,3 +19,17 @@ export function fetchOrganizations(
 export function fromOrganizationName(s?: string): Organization | undefined {
   return store.getState().common.organizations.find((o) => o.name == s);
 }
+
+export function fetchOrganization(
+  id: string,
+  cached?: boolean
+): AxiosPromise<Organization> {
+  let config: AxiosRequestConfig = {
+    method: "GET",
+    url: `${benitoHost}/benito/organizations/${id}?cached=${(
+      cached || true
+    ).toString()}`,
+  };
+
+  return axios.request<Organization>(config);
+}
