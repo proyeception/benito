@@ -164,7 +164,7 @@ data class RecommendationDTO(
     constructor(medusa: MedusaRecommendationDTO) : this(
         id = medusa.id,
         score = medusa.score,
-        projectId = medusa.project.id
+        projectId = medusa.project
     )
 }
 

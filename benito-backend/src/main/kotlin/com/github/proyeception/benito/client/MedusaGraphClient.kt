@@ -108,11 +108,6 @@ open class MedusaGraphClient(
                   score
                   project {
                     id
-                    project_keywords {
-                        id
-                        name
-                        score
-                    }
                   }
                 }
                 project_keywords {
@@ -122,7 +117,34 @@ open class MedusaGraphClient(
               }
             }
         """.trimIndent()
-        ).map { it.deserializeAs(PROJECTS_REF).projects }
+        )
+            .map { res ->
+                res.map { b ->
+                    b.mapValues { (_, p) -> p as List<Map<String, Any>> }
+                        .mapValues { (_, p) ->
+                            p.map {
+                                it.mapValues { (k, v) -> simplifyRecommendations(k, v) }
+                            }
+                        }
+                }
+            }
+            .map { it.deserializeAs(PROJECTS_REF).projects }
+    }
+
+    private fun simplifyRecommendations(k: String, v: Any): Any {
+        fun simplifyRecommendation(rec: Map<String, Any?>): Map<String, Any?> {
+            val projectId = (rec["project"] as Map<*, *>).get("id")
+            return mapOf(
+                "id" to rec["id"],
+                "score" to rec["score"],
+                "project" to projectId
+            )
+        }
+
+        return when (k) {
+            "recommendations" -> (v as List<Map<String, Any>>).map { simplifyRecommendation(it) }
+            else -> v
+        }
     }
 
     open fun formatParams(

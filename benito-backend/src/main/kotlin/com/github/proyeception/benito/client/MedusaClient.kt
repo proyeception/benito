@@ -206,7 +206,7 @@ open class MedusaClient(
         project.project_keywords.filter { it.id.isNullOrBlank() }.map { delete("keywords", it.id.orEmpty(), MEDUSA_KEYWORD_REF) }
         val keywordsIdList = kw.map{ create("keywords", it, MEDUSA_KEYWORD_REF).id }
         val keywordsIdRef = ProjectKeywords(keywordsIdList.map { ObjectId(it).toHexString() } )
-        update("projects", project.id, keywordsIdRef, MEDUSA_PROJECT_REF)
+        update("projects", project.id, keywordsIdRef, ANY_REF)
 
     }
 
@@ -318,5 +318,6 @@ open class MedusaClient(
         private val MEDUSA_KEYWORD_REF = object  : TypeReference<KeywordDTO>() {}
         private val MEDUSA_RECOMMENDATION_REF = object : TypeReference<CreatedRecommendationDTO>() {}
         private val CREATE_RECOMMENDATION_REF = object : TypeReference<CreateRecommendationDTO>() {}
+        private val ANY_REF = object : TypeReference<Any>() {}
     }
 }

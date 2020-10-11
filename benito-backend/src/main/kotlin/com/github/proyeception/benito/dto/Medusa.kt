@@ -168,12 +168,7 @@ data class ProjectRecommendations(
 data class MedusaRecommendationDTO(
     val id: String,
     val score: Double,
-    val project: MedusaRecommendationRefDTO
-)
-
-data class MedusaRecommendationRefDTO(
-    val id: String,
-    val projectKeywords: List<KeywordDTO>
+    val project: String
 )
 
 private val dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd")

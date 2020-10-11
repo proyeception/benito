@@ -218,9 +218,9 @@ const EditProjectPage = (props: EditProjectPageProps) => {
     }
 
     Promise.all(promises)
+      .catch(console.error)
       .then(() => props.history.push(`/projects/${projectId}`))
-      .then(() => props.history.go(0))
-      .catch(console.error);
+      .then(() => props.history.go(0));
   }
 
   return (

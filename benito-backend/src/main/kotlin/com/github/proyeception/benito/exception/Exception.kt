@@ -1,6 +1,10 @@
 package com.github.proyeception.benito.exception
 
-sealed class HttpException(val status: Int, message: String) : RuntimeException(message) {
+sealed class HttpException(
+    val status: Int,
+    message: String,
+    cause: Throwable? = null
+) : RuntimeException(message, cause) {
     companion object {
         fun of(status: Int?, message: String): HttpException = when (status) {
             400 -> BadRequestException(message)
@@ -17,7 +21,7 @@ class BadRequestException(message: String) : HttpException(400, message)
 class UnauthorizedException(message: String) : HttpException(401, message)
 class ForbiddenException(message: String) : HttpException(403, message)
 class NotFoundException(message: String) : HttpException(404, message)
-class FailedDependencyException(message: String) : HttpException(424, message)
+class FailedDependencyException(message: String, cause: Throwable? = null) : HttpException(424, message, cause)
 class InternalServerErrorException(message: String, cause: Throwable?) : HttpException(500, message) {
     constructor(message: String) : this(message, null)
 }
