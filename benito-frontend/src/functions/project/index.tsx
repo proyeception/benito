@@ -36,11 +36,10 @@ export function setProjectEditionRole({
 }
 
 export function updateContent(
-  title: string,
-  description: string,
-  extraContent: string,
-  pictureUrl: string,
-  projectId: string
+  projectId: string,
+  title?: string,
+  description?: string,
+  extraContent?: string
 ) {
   let config: AxiosRequestConfig = {
     url: `${benitoHost}/benito/projects/${projectId}/content`,
@@ -48,12 +47,37 @@ export function updateContent(
       title: title,
       description: description,
       extraContent: extraContent,
-      pictureUrl: pictureUrl,
     },
     method: "PATCH",
   };
 
   return axios.request(signRequest(config));
+}
+
+export function updatePicture(projectId: string, picture: File) {
+  const pictureForm = new FormData();
+  pictureForm.set("file", picture);
+
+  let pictureConfig: AxiosRequestConfig = {
+    url: `${benitoHost}/benito/projects/${projectId}/picture`,
+    method: "POST",
+    data: pictureForm,
+  };
+
+  return axios.request(signRequest(pictureConfig)).then(console.log);
+}
+
+export function uploadDocuments(projectId: string, documents: Array<File>) {
+  const form = new FormData();
+  documents.forEach((f: File) => form.append("file", f, f.name));
+
+  let documentsConfig: AxiosRequestConfig = {
+    url: `${benitoHost}/benito/projects/${projectId}/documents`,
+    method: "POST",
+    data: form,
+  };
+
+  return axios.request(signRequest(documentsConfig)).then(console.log);
 }
 
 export function addUsersToProject(

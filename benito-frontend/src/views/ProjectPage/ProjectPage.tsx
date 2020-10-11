@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // @material-ui/core components
@@ -27,6 +27,7 @@ import { PENDING, ERROR } from "../../hooks/withFetch";
 import { Divider, Hidden } from "@material-ui/core";
 import Recommendations from "./Sections/Recommendations";
 import Spinner from "../../components/Spinner/Spinner";
+import { ProjectEditionRole } from "../../types";
 
 const dashboardRoutes: any = [];
 

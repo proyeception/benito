@@ -26,6 +26,7 @@ open class MedusaGraphClient(
         keyword: String? = null,
         organizationId: String? = null,
         organizationName: String? = null,
+        id: String? = null,
         page: Int = 0
     ): Either<Throwable, List<MedusaProjectDTO>> {
         val params = formatParams(
@@ -39,7 +40,8 @@ open class MedusaGraphClient(
             keyword = keyword,
             organizationId = organizationId,
             organizationName = organizationName,
-            page = page
+            page = page,
+            id = id
         )
 
         LOGGER.info("Search params: $params")
@@ -134,6 +136,7 @@ open class MedusaGraphClient(
         keyword: String? = null,
         organizationId: String? = null,
         organizationName: String? = null,
+        id: String? = null,
         page: Int = 0
     ): String {
         val where = mutableListOf<String>()
@@ -146,6 +149,7 @@ open class MedusaGraphClient(
         authorName?.let { where.add("""authors: { full_name_contains: "${it.replaceUrlSpaces()}" }""") }
         organizationId?.let { where.add("""organization: { id: "$it" }""") }
         organizationName?.let { where.add("""organization: { name: "$it" }""") }
+        id?.let { where.add("""id: "$it"""") }
 
         val sort = orderBy?.let { """sort: "${it.sortMethod}"""" }
 
@@ -166,6 +170,7 @@ open class MedusaGraphClient(
 
     private companion object {
         private val PROJECTS_REF = object : TypeReference<Projects>() {}
+        private val SINGLE_PROJECT_REF = object : TypeReference<MedusaProjectDTO>() {}
         private const val PAGE_SIZE = 10
         private val LOGGER = LoggerFactory.getLogger(MedusaGraphClient::class.java)
     }

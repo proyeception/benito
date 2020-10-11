@@ -26,7 +26,7 @@ export default function CustomTabs(props: any) {
   const { headerColor, plainTabs, tabs, title, rtlActive } = props;
   const cardTitle = classNames({
     [classes.cardTitle]: true,
-    [classes.cardTitleRTL]: rtlActive
+    [classes.cardTitleRTL]: rtlActive,
   });
   return (
     <Card plain={plainTabs}>
@@ -37,7 +37,7 @@ export default function CustomTabs(props: any) {
           onChange={handleChange}
           classes={{
             root: classes.tabsRoot,
-            indicator: classes.displayNone
+            indicator: classes.displayNone,
           }}
         >
           {tabs.map((prop: any, key: any) => {
@@ -49,7 +49,7 @@ export default function CustomTabs(props: any) {
                     <Icon>{prop.tabIcon}</Icon>
                   ) : (
                     <prop.tabIcon />
-                  )
+                  ),
               };
             }
             return (
@@ -58,7 +58,7 @@ export default function CustomTabs(props: any) {
                   root: classes.tabRootButton,
                   //label: classes.tabLabel,
                   selected: classes.tabSelected,
-                  wrapper: classes.tabWrapper
+                  wrapper: classes.tabWrapper,
                 }}
                 key={key}
                 label={prop.tabName}
@@ -68,7 +68,7 @@ export default function CustomTabs(props: any) {
           })}
         </Tabs>
       </CardHeader>
-      <CardBody>
+      <CardBody className={props.className}>
         {tabs.map((prop: any, key: any) => {
           if (key === value) {
             return <div key={key}>{prop.tabContent}</div>;

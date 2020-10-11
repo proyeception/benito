@@ -20,6 +20,7 @@ import MePage from "./views/MePage/MePage";
 import HomePage from "./views/HomePage/HomePage";
 import ErrorPage from "./views/ErrorPage/ErrorPage";
 import NotFoundPage from "./views/NotFoundPage/NotFoundPage";
+import EditProjectPage from "./views/EditProjectPage/EditProjectPage";
 
 const App = () => {
   const [isLoggingIn, setIsLoggingIn] = useState(true);
@@ -51,6 +52,7 @@ const App = () => {
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <BrowserRouter>
         <Switch>
+          <Route path="/projects/:id/edit" component={EditProjectPage} />
           <Route path="/projects/:id" component={ProjectPage} />
           <Route path="/search" component={SearchPage} />
           <Route path="/authors/:id" component={AuthorPage} />

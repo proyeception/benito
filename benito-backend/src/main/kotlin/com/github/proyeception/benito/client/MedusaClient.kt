@@ -236,7 +236,6 @@ open class MedusaClient(
 
     private fun <T> findOne(collection: String, id: String, ref: TypeReference<T>): T {
         val response = medusaConnector.get("/$collection/$id")
-        println(response.body)
         when (response.status) {
             200 -> return response.deserializeAs(ref)
             404 -> throw NotFoundException("$id not found in $collection")
