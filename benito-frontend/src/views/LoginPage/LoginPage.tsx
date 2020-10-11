@@ -110,19 +110,19 @@ const LoginPage = (props: LoginPageProps) => {
 
                       <Button
                         justIcon
-                        href="#pablo"
+                        href=""
                         target="_blank"
                         color="transparent"
-                        onClick={(e: any) => e.preventDefault()}
+                        onClick={(e: any) => props.history.push("/comingSoon")}
                       >
                         <i className={"fab fa-twitter"} />
                       </Button>
                       <Button
                         justIcon
-                        href="#pablo"
+                        href="/comingSoon"
                         target="_blank"
                         color="transparent"
-                        onClick={(e: any) => e.preventDefault()}
+                        onClick={(e: any) => props.history.push("/comingSoon")}
                       >
                         <i className={"fab fa-facebook"} />
                       </Button>
