@@ -124,7 +124,8 @@ data class LoginDTO(
 data class UpdateContentDTO(
     val title: String?,
     val description: String?,
-    val extraContent: String?
+    val extraContent: String?,
+    val documentation: List<String>
 )
 
 data class AddUsersDTO(

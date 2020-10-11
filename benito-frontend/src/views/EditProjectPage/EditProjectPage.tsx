@@ -184,8 +184,19 @@ const EditProjectPage = (props: EditProjectPageProps) => {
     let promises = [];
     const projectId = project.id;
 
-    //content
-    const contentPromise = updateContent(projectId, title, description, readme)
+    //content, documents
+    const contentPromise = updateContent(
+      projectId,
+      project.documentation
+        .filter((d) => !documentsToRemove.includes(d))
+        .map((d) => d.id),
+      title,
+      description,
+      readme
+    )
+      .then(console.log)
+      .catch(console.error)
+      .then(() => uploadDocuments(projectId, documentsToUpload))
       .then(console.log)
       .catch(console.error);
 
@@ -194,11 +205,6 @@ const EditProjectPage = (props: EditProjectPageProps) => {
     //picture
     if (picture != undefined) {
       promises.push(updatePicture(projectId, picture));
-    }
-
-    //documents
-    if (documentsToUpload.length > 0) {
-      promises.push(uploadDocuments(projectId, documentsToUpload));
     }
 
     //users
