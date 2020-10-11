@@ -34,7 +34,7 @@ const CategoriesSection = (props: CategoriesSectionProps) => {
 
   return (
     <div className={classes.container}>
-      <h2 style={{ textAlign: "center" }}>
+      <h2 className={classes.title} style={{ textAlign: "center" }}>
         O empezá explorando por estas categorías
       </h2>
       <Carousel {...settings}>

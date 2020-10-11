@@ -1,5 +1,5 @@
 import { createStyles, Theme } from "@material-ui/core";
-import { container } from "../../../material-kit-react";
+import { container, title } from "../../../material-kit-react";
 
 const categoriesStyle = (theme: Theme) =>
   createStyles({
@@ -16,6 +16,12 @@ const categoriesStyle = (theme: Theme) =>
       [theme.breakpoints.up("md")]: {
         width: "640px",
         height: "480px",
+      },
+    },
+    title: {
+      ...title,
+      [theme.breakpoints.down("sm")]: {
+        fontSize: "24px",
       },
     },
   });

@@ -13,6 +13,7 @@ import GridItem from "../../components/Grid/GridItem";
 import Footer from "../../components/Footer/Footer";
 import SearchBoxSection from "./Sections/SearchBoxSection";
 import CategoriesSection from "./Sections/CategoriesSection";
+import FeaturedSection from "./Sections/FeaturedSection";
 
 const useStyles = makeStyles(styles);
 
@@ -50,6 +51,7 @@ const HomePage = (props: HomePageProps) => {
         <Hidden smDown>
           <SearchBoxSection />
         </Hidden>
+        <FeaturedSection />
         <CategoriesSection />
       </div>
       <Footer />
