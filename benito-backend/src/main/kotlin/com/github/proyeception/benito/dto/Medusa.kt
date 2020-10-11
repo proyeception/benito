@@ -22,23 +22,6 @@ data class MedusaProjectDTO(
     val project_keywords: List<KeywordDTO>
 )
 
-data class MedusaGraphQLProjectDTO(
-        val id: String,
-        val title: String,
-        val description: String,
-        val extraContent: String?,
-        val creationDate: LocalDate,
-        val picture: MedusaFileDTO?,
-        val authors: List<MedusaPersonRefDTO>,
-        val supervisors: List<MedusaPersonRefDTO>,
-        val documentation: List<DocumentationDTO>,
-        val category: CategoryDTO,
-        val organization: MedusaOrganizationDTO,
-        val tags: List<MedusaTagDTO>,
-        val recommendations: List<MedusaGraphQLRecommendationDTO>,
-        val project_keywords: List<KeywordDTO>
-)
-
 data class MedusaPersonRefDTO(
     val id: String,
     val username: String?,
@@ -165,9 +148,9 @@ data class CreateMedusaProjectDTO(
 )
 
 data class KeywordDTO(
-        val id: String?,
-        val name: String,
-        val score: Double
+    val id: String?,
+    val name: String,
+    val score: Double
 )
 
 data class KeywordsWrapper(
@@ -179,26 +162,18 @@ data class ProjectKeywords(
 )
 
 data class ProjectRecommendations(
-        val recommendations: List<String>
+    val recommendations: List<String>
 )
 
 data class MedusaRecommendationDTO(
-        val id: String,
-        val score: Double,
-        @JsonProperty("project") val projectId: String
+    val id: String,
+    val score: Double,
+    val project: MedusaRecommendationRefDTO
 )
 
-data class MedusaGraphQLRecommendationDTO(
-        val id: String?,
-        val score: Double,
-        @JsonProperty("project") val projectId: ProjectRecommendationDTO
-){
-    constructor(recommendation: RecommendationGraphQLDTO) : this(
-            id = recommendation.id,
-            score = recommendation.score,
-            projectId = recommendation.projectId
-    )
-}
-
+data class MedusaRecommendationRefDTO(
+    val id: String,
+    val projectKeywords: List<KeywordDTO>
+)
 
 private val dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd")

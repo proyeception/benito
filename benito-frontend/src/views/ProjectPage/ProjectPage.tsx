@@ -47,11 +47,11 @@ const ProjectPage = (props: Props) => {
   const project = withProject(props.match.params.id);
 
   if (project.type == PENDING) {
-    return <Spinner/>;
+    return <Spinner />;
   }
 
   if (project.type == ERROR) {
-    return <Redirect to={{pathname: "/error"}}/>;
+    return <Redirect to={{ pathname: "/error" }} />;
   }
 
   return (
@@ -75,24 +75,14 @@ const ProjectPage = (props: Props) => {
       </Parallax>
       <div className={classNames(classes.main, classes.mainRaised)}>
         <GridContainer>
-          <GridItem
-            xs={12}
-            sm={12}
-            md={9}
-            className={classes.container}
-          >
+          <GridItem xs={12} sm={12} md={9} className={classes.container}>
             <ProductSection project={project.value} />
             <TeamSection project={project.value} />
             <DocumentsSection project={project.value} />
           </GridItem>
           <Divider orientation="vertical" flexItem />
-          <GridItem
-            xs={12}
-            sm={12}
-            md={2}
-            className={classes.recommendations}
-          >
-            <Recommendations/>
+          <GridItem xs={12} sm={12} md={2} className={classes.recommendations}>
+            <Recommendations />
           </GridItem>
         </GridContainer>
       </div>

@@ -3,7 +3,6 @@ package com.github.proyeception.benito.service
 import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.mongodb.MongoTextSearch
-import java.math.BigDecimal
 
 open class RecommendationService(
         private val medusaClient: MedusaClient,

@@ -48,6 +48,7 @@
     "react-hot-loader": "^4.13.0",
     "react-markdown": "^4.3.1",
     "react-moment": "^0.9.7",
+    "react-multi-carousel": "^2.5.5",
     "react-redux": "^7.2.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
@@ -69,7 +70,7 @@
     "start": "webpack-dev-server -w --config webpack.config.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev": "webpack-dev-server --inline --hot --open --port 8081"
+    "dev": "webpack-dev-server --inline --hot --open --port 8080"
   },
   "eslintConfig": {
     "extends": "react-app"

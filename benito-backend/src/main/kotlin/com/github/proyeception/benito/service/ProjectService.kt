@@ -56,10 +56,14 @@ open class ProjectService(
         }
         .map { ProjectDTO(it) }
 
-    fun featuredProjects(): List<ProjectDTO> = medusaClient.findProjects(
-        orderBy = OrderDTO.VIEWS_DESC,
-        limit = 10
-    ).map { ProjectDTO(it) }
+    fun featuredProjects(): List<ProjectDTO> = medusaGraphClient.findProjects(
+        orderBy = OrderDTO.VIEWS_DESC
+    )
+        .getOrHandle {
+            LOGGER.error("Error getting projects from Medusa with Graph")
+            throw FailedDependencyException("Error getting projects from Medusa")
+        }
+        .map { ProjectDTO(it) }
 
     fun count(): CountDTO = CountDTO(medusaClient.projectCount())
 
