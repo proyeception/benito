@@ -17,6 +17,7 @@ import store from "../../../store";
 import { updateFetchStatus } from "../../../actions/search";
 import ProjectLink from "../../../components/Links/ProjectLink";
 import Spinner from "../../../components/Spinner/Spinner";
+import image from "../../../assets/img/proyectate/nothing.jpg"
 
 interface SearchResultsSectionProps extends RouteChildrenProps<SearchParams> {
   status: Fetch;
@@ -49,7 +50,25 @@ const SearchResultsSection = (props: SearchResultsSectionProps) => {
   }
 
   if (projects.value.length == 0) {
-    return <div>no hay nada capo</div>;
+    return  <GridContainer>
+              <GridItem
+                  xs={12}
+                  sm={12}
+                  md={12}
+              >
+                  <div className={classes.text}>
+                      <div className={classes.message}> NO SE ENCONTRARON PROYECTOS</div>
+                      <div className={classes.submessage}> Probá con otros criterios de búsqueda!</div>
+                  </div>
+              </GridItem>
+              <GridItem
+                  xs={12}
+                  sm={12}
+                  md={12}
+              >
+                  <img src={image} className={classes.image}/>
+              </GridItem>
+          </GridContainer>
   }
 
   return (
