@@ -29,11 +29,11 @@ const Sort = (props: SortProps) => (
     >
       <MenuItem aria-label="None" value="" />
       <ListSubheader>Fecha de creación</ListSubheader>
-      <MenuItem value={SortMethod.DateDesc}>Más recientes</MenuItem>
-      <MenuItem value={SortMethod.DateAsc}>Más antiguos</MenuItem>
+      <MenuItem value={SortMethod.DateAsc}>Más recientes</MenuItem>
+      <MenuItem value={SortMethod.DateDesc}>Más antiguos</MenuItem>
       <ListSubheader>Alfabético</ListSubheader>
-      <MenuItem value={SortMethod.AlphaDesc}>A-Z</MenuItem>
-      <MenuItem value={SortMethod.AlphaAsc}>Z-A</MenuItem>
+      <MenuItem value={SortMethod.AlphaAsc}>A-Z</MenuItem>
+      <MenuItem value={SortMethod.AlphaDesc}>Z-A</MenuItem>
       <ListSubheader>Visitas</ListSubheader>
       <MenuItem value={SortMethod.ViewsDesc}>Más visitas</MenuItem>
       <MenuItem value={SortMethod.ViewsAsc}>Menos visitas</MenuItem>
