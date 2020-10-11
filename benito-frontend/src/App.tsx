@@ -19,6 +19,7 @@ import { fetchOrganizations } from "./functions/organization";
 import MePage from "./views/MePage/MePage";
 import HomePage from "./views/HomePage/HomePage";
 import ErrorPage from "./views/ErrorPage/ErrorPage";
+import NotFoundPage from "./views/NotFoundPage/NotFoundPage";
 
 const App = () => {
   const [isLoggingIn, setIsLoggingIn] = useState(true);
@@ -58,6 +59,7 @@ const App = () => {
           <Route path="/error" component={ErrorPage} />
           <Route path="/me/:tab" component={MePage} />
           <Route path="/" component={HomePage} />
+          <Route component={NotFoundPage} />
         </Switch>
       </BrowserRouter>
     </MuiPickersUtilsProvider>
