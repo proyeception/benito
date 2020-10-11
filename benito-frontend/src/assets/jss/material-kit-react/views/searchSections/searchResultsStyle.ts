@@ -7,6 +7,9 @@ const searchResultsStyle = (theme: Theme) =>
       [theme.breakpoints.up("md")]: {
         padding: "70px 0",
       },
+      [theme.breakpoints.down("md")]: {
+        paddingRight: "30px",
+      },
       textAlign: "left",
     },
     title: {
@@ -18,21 +21,38 @@ const searchResultsStyle = (theme: Theme) =>
     },
     description: {
       color: "#999",
+      textOverflow: "ellipsis",
+      lineClamp: 5,
+      display: "-webkit-box",
+      boxOrient: "vertical",
+      overflow: "hidden"
     },
     picture: {
       display: "block",
-      maxWidth: "100%",
-      maxHeight: "100%",
+      width: "100%",
+      height: "-webkit-fill-available",
+      objectFit: "cover",
+    },
+    pictureMobile: {
+      display: "block",
+      width: "-webkit-fill-available",
+      height: "auto",
     },
     authors: {
       color: "#999",
       textAlign: "right",
       fontSize: "13px",
+      verticalAlign: "bottom",
+      position: "absolute",
+      bottom: 0,
+      right: 0,
     },
     result: {
       [theme.breakpoints.up("md")]: {
         height: "240px",
       },
+      display: "flex",
+      flexGrow: 1,
     },
     text: {
       display: "flex",

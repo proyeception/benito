@@ -86,11 +86,12 @@ const SearchResultsSection = (props: SearchResultsSectionProps) => {
                     <img
                       src={p.pictureUrl?.valueOf()}
                       alt={p.title.valueOf()}
-                      className={classes.picture}
+                      className={classes.pictureMobile}
                     />
                   </Hidden>
                 </ProjectLink>
                 <div className={classes.description}>{p.description}</div>
+                <br/>
                 <div className={classes.authors}>
                   {p.authors.map((a) => a.fullName).join(", ")}{" "}
                 </div>
