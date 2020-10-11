@@ -9,12 +9,14 @@ import {
 } from "../../../types";
 import styles from "../../../assets/jss/material-kit-react/views/searchSections/searchBoxStyle";
 import {
+  createMuiTheme,
   InputLabel,
   ListSubheader,
   makeStyles,
   MenuItem,
   Select,
   TextField,
+  ThemeProvider,
 } from "@material-ui/core";
 import { RootState } from "../../../reducers";
 import { connect } from "react-redux";
@@ -37,6 +39,7 @@ import { buildQueryParams } from "../../../functions/search";
 import { REFRESH } from "../../../store/search/types";
 import AutoComplete from "@material-ui/lab/Autocomplete";
 import moment from "moment";
+import { red, grey } from "@material-ui/core/colors";
 
 const useStyles = makeStyles(styles);
 
@@ -55,8 +58,12 @@ interface SearchBoxSectionProps extends RouteChildrenProps<SearchParams> {
 const SearchBoxSection = (props: SearchBoxSectionProps) => {
   const classes = useStyles();
 
-  var to;
-  var from;
+  const theme = createMuiTheme({
+    palette: {
+      primary: grey,
+    },
+  });
+
 
   return (
     <div className={classes.section}>
@@ -97,6 +104,7 @@ const SearchBoxSection = (props: SearchBoxSectionProps) => {
           </Select>
         </GridItem>
         <GridItem md={6}>
+        <ThemeProvider theme={theme}>
           <KeyboardDatePicker
             clearable={true}
             placeholder="08/04/2016"
@@ -112,8 +120,10 @@ const SearchBoxSection = (props: SearchBoxSectionProps) => {
               }
             }}
           />
+          </ThemeProvider>
         </GridItem>
         <GridItem md={6}>
+        <ThemeProvider theme={theme}>
           <KeyboardDatePicker
             clearable={true}
             placeholder="08/04/2016"
@@ -122,7 +132,6 @@ const SearchBoxSection = (props: SearchBoxSectionProps) => {
             label="Fin"
             value={props.to || null}
             onChange={(e) => {
-              console.error("-----------")
               if (e && moment(e).format("yyyy-MM-DD").toString() != 'Invalid date') {
                 store.dispatch(updateToDate(moment(e).format("yyyy-MM-DD").toString()));
               } else {
@@ -130,6 +139,7 @@ const SearchBoxSection = (props: SearchBoxSectionProps) => {
               }
             }}
           />
+          </ThemeProvider>
         </GridItem>
         <GridItem>
           <TextField
