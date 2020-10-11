@@ -65,7 +65,7 @@ export default function SectionLogin() {
                     </Button>
                   </div>
                 </CardHeader>
-                <p className={classes.divider}>Or Be Classical</p>
+                <p className={classes.divider}>O podés ir por la opción tradicional</p>
                 <CardBody>
                   <CustomInput
                     labelText="First Name..."
@@ -118,7 +118,7 @@ export default function SectionLogin() {
                 </CardBody>
                 <CardFooter className={classes.cardFooter}>
                   <Button simple color="primary" size="lg">
-                    Get started
+                    Entrar
                   </Button>
                 </CardFooter>
               </form>

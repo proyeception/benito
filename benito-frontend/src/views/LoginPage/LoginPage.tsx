@@ -31,6 +31,8 @@ import { startLogin } from "../../functions/session";
 import { RootState } from "../../reducers";
 import { connect } from "react-redux";
 import { Redirect, RouteComponentProps, withRouter } from "react-router-dom";
+import Primary from "../../components/Typography/Primary";
+import { primaryColor } from "../../assets/jss/material-kit-react";
 
 const getKeyValue = <T extends object, U extends keyof T>(obj: T) => (key: U) =>
   obj[key];
@@ -78,8 +80,8 @@ const LoginPage = (props: LoginPageProps) => {
                 )}
               >
                 <form className={classes.form}>
-                  <CardHeader color="primary" className={classes.cardHeader}>
-                    <h4>Login</h4>
+                  <CardHeader className={classes.cardHeader}>
+                    <h4><b>Login</b></h4>
                     <div className={classes.socialLine}>
                       <GoogleLogin
                         clientId={googleClientId}
@@ -126,10 +128,10 @@ const LoginPage = (props: LoginPageProps) => {
                       </Button>
                     </div>
                   </CardHeader>
-                  <p className={classes.divider}>Or Be Classical</p>
+                  <p className={classes.divider}>O podés ir por la opción tradicional</p>
                   <CardBody>
                     <CustomInput
-                      labelText="First Name..."
+                      labelText="Nombre..."
                       id="first"
                       formControlProps={{
                         fullWidth: true,
@@ -159,7 +161,7 @@ const LoginPage = (props: LoginPageProps) => {
                       }}
                     />
                     <CustomInput
-                      labelText="Password"
+                      labelText="Contraseña"
                       id="pass"
                       formControlProps={{
                         fullWidth: true,
@@ -179,7 +181,7 @@ const LoginPage = (props: LoginPageProps) => {
                   </CardBody>
                   <CardFooter className={classes.cardFooter}>
                     <Button simple color="primary" size="lg">
-                      Get started
+                      Entrar
                     </Button>
                   </CardFooter>
                 </form>

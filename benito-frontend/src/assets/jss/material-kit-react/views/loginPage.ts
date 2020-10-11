@@ -55,7 +55,8 @@ const signupPageStyle = createStyles({
     marginRight: "20px",
     marginTop: "-40px",
     padding: "20px 0",
-    marginBottom: "15px"
+    marginBottom: "15px",
+    backgroundColor: "#c41234"
   },
   socialIcons: {
     maxWidth: "24px",
