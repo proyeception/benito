@@ -33,7 +33,7 @@ data class CreateMedusaPersonDTO(
     val username: String?,
     val fullName: String,
     val mail: String,
-    val profilePic: MedusaFileDTO?,
+    val profilePic: String?,
     val googleUserId: String,
     val googleToken: String
 )

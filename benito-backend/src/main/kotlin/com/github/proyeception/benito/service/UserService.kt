@@ -40,7 +40,7 @@ open class UserService(
             username = username,
             mail = mail,
             googleUserId = googleUserId,
-            profilePic = image,
+            profilePic = image?.id,
             googleToken = googleToken
         )
 

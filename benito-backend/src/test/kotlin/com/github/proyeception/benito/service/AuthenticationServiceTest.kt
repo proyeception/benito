@@ -53,7 +53,7 @@ class AuthenticationServiceTest : Spec() {
                         token = "456",
                         fullName = "Benito Quinquela",
                         mail = "benito@quinquela.com",
-                        profilePicUrl = null
+                        profilePictureUrl = null
                     )
                 )
 
@@ -92,7 +92,7 @@ class AuthenticationServiceTest : Spec() {
                         token = "456",
                         fullName = "Benito Quiqnuela",
                         mail = "benito@quinquela.com",
-                        profilePicUrl = null
+                        profilePictureUrl = null
                     )
                 )
 
@@ -131,7 +131,7 @@ class AuthenticationServiceTest : Spec() {
                         token = "456",
                         fullName = "Benito Quinquela",
                         mail = "benito@quinquela.com",
-                        profilePicUrl = null
+                        profilePictureUrl = null
                     )
                 )
 
@@ -155,7 +155,7 @@ class AuthenticationServiceTest : Spec() {
                             token = "456",
                             fullName = "Benito Quinquela",
                             mail = "benito@quinquela.com",
-                            profilePicUrl = null
+                            profilePictureUrl = null
                         )
                     )
                 }

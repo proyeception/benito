@@ -114,11 +114,11 @@ enum class RoleDTO {
 }
 
 data class LoginDTO(
-    val googleUserId: String,
-    val fullName: String,
-    val mail: String,
-    val profilePicUrl: String?,
-    val token: String
+        val googleUserId: String,
+        val fullName: String,
+        val mail: String,
+        val profilePictureUrl: String?,
+        val token: String
 )
 
 data class UpdateContentDTO(
