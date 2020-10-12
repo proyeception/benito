@@ -20,7 +20,7 @@ const searchResultsStyle = (theme: Theme) =>
       textDecoration: "none",
     },
     description: {
-      color: "#999",
+      color: "#3c4858",
       textOverflow: "ellipsis",
       lineClamp: 5,
       display: "-webkit-box",
@@ -39,7 +39,7 @@ const searchResultsStyle = (theme: Theme) =>
       height: "auto",
     },
     authors: {
-      color: "#999",
+      color: "#3c4858",
       textAlign: "right",
       fontSize: "13px",
       verticalAlign: "bottom",

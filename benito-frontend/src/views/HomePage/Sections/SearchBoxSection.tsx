@@ -33,7 +33,7 @@ const SearchBoxSection = (props: SearchBoxSectionProps) => {
         className={classNames(classes.container, classes.searchBox)}
       >
         <GridItem md={12}>
-          <h3>Proyectos</h3>
+          <h3><b>Proyectos</b></h3>
         </GridItem>
         <GridItem md={4} className={classes.row}>
           <TitleInput />

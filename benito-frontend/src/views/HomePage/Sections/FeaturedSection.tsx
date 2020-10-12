@@ -12,6 +12,7 @@ import { cardTitle, container } from "../../../assets/jss/material-kit-react";
 import Button from "../../../components/CustomButtons/Button";
 import { Link } from "react-router-dom";
 import featuredStyle from "../../../assets/jss/material-kit-react/views/homeSections/featuredSection";
+import { Height } from "@material-ui/icons";
 
 type FeaturedSectionProps = {};
 
@@ -66,7 +67,7 @@ const FeaturedSection = (props: FeaturedSectionProps) => {
         dotListClass="custom-dot-list-style"
       >
         {featured.value.map((project, index) => (
-          <Card key={index} style={{ width: "20rem" }}>
+          <Card key={index} style={{ width: "20rem", height:"400px"}}>
             <img
               style={{ height: "180px", width: "100%", display: "block" }}
               className={classes.imgCardTop}
