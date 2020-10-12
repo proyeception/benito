@@ -475,7 +475,7 @@
                     <processTypes>
                         <!-- Tell Heroku how to launch your application -->
                         <!-- You might have to remove the ./ in front   -->
-                        <web>java -jar target/benito-${project.version}.jar</web>
+                        <web>java -jar target/benito.jar</web>
                     </processTypes>
                 </configuration>
             </plugin>
