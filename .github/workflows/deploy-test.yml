@@ -1,9 +1,9 @@
-name: Tests
+name: Deploy test
 
 on:
   push:
     branches:
-      - master
+      - test
 
 jobs:
   build:
@@ -16,5 +16,6 @@ jobs:
         with:
           java-version: 1.8
       - name: Build with Maven
+        run: ./build staging
         run: mvn --batch-mode clean test -f benito-backend/pom.xml
-
+        run: HEROKU_API_KEY="${{secrets.BENITO_API_KEY}}" mvn heroku:deploy
