@@ -5,6 +5,7 @@ const searchBoxStyle = createStyles({
   section: {
     background: "#EEEEEE",
     padding: "70px 0",
+    borderRadius: "6px",
   },
   container,
   textCenter: {
