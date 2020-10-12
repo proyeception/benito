@@ -36,7 +36,6 @@ cp $BACKEND_ENVIRONMENTS/$ENVIRONMENT/logback.xml $BACKEND_RESOURCES/logback.xml
 cp $BACKEND_ENVIRONMENTS/$ENVIRONMENT/application.conf $BACKEND_RESOURCES/application.conf
 
 mvn -f $BACKEND/pom.xml -Dmaven.test.skip=true clean package
-mv $BACKEND/target/$ARTIFACT.jar $BACKEND/target/$FINAL_ARTIFACT_NAME.jar
 
 mv logback.xml.original $BACKEND_RESOURCES/logback.xml
 mv application.conf.original $BACKEND_RESOURCES/application.conf
