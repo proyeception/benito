@@ -18,7 +18,6 @@ import { Category } from "./types";
 import { fetchOrganizations } from "./functions/organization";
 import MePage from "./views/MePage/MePage";
 import HomePage from "./views/HomePage/HomePage";
-import CreateProjectPage from "./views/CreateProjectPage/CreateProjectPage";
 import ErrorPage from "./views/ErrorPage/ErrorPage";
 import NotFoundPage from "./views/NotFoundPage/NotFoundPage";
 import EditProjectPage from "./views/EditProjectPage/EditProjectPage";
