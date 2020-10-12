@@ -13,17 +13,22 @@ import GridContainer from "../../components/Grid/GridContainer";
 import GridItem from "../../components/Grid/GridItem";
 import HeaderLinks from "../../components/Header/HeaderLinks";
 import Parallax from "../../components/Parallax/Parallax";
+import { Project } from "../../types";
 
 import styles from "../../assets/jss/material-kit-react/views/landingPage";
 
 // Sections for this page
 import { hot } from "react-hot-loader";
-import { RouteComponentProps, withRouter } from "react-router-dom";
+import { RouteComponentProps, withRouter, Redirect } from "react-router-dom";
 import withProject from "../../hooks/withProject";
 import { PENDING, ERROR } from "../../hooks/withFetch";
 import { Divider } from "@material-ui/core";
 import Spinner from "../../components/Spinner/Spinner";
 import CreateProjectSection from "./Sections/CreateProjectSection";
+import { SessionState } from "../../store/session/types";
+import withUser from "../../hooks/withUser";
+import { RootState } from "../../reducers";
+import { connect } from "react-redux";
 
 const dashboardRoutes: any = [];
 
@@ -35,21 +40,48 @@ type MatchParams = {
   id: string;
 };
 
-interface Props extends RouteComponentProps<MatchParams>, Any {}
+interface Props extends RouteComponentProps<MatchParams>, Any {
+  session: SessionState;
+}
 
 const ProjectPage = (props: Props) => {
   const classes = useStyles();
   const { ...rest } = props;
 
-  const project = withProject("1");
+  console.log(props.session);
+  if (!props.session.isLoggedIn) {
+    return <Redirect to="/login" />;
+  }
 
-  if (project.type == PENDING) {
+  const user = withUser(props.session.role, props.session.userId);
+
+  console.log(user);
+
+  if (user.type == PENDING) {
     return <Spinner/>;
   }
 
-  if (project.type == ERROR) {
-    return <div>Bueno, capo, rompiste algo, eh</div>;
+  if (user.type == ERROR) {
+    return <Redirect to={{pathname: "/error"}}/>
   }
+
+  //TODO ver que el back devuelva al menos una lista vacía
+  if (user.value.organizations[0] == undefined) {
+    // error, no puede crear proyectos si no pertenece a al menos una organización
+  }
+
+  const emptyProject: Project = {
+    id: "",
+    title: "",
+    description: "",
+    authors: [],
+    supervisors: [],
+    creationDate: new Date(),
+    documentation: [],
+    tags: [],
+    extraContent: "",
+    organization: user.value.organizations[0]
+  };
 
   return (
     <div>
@@ -60,11 +92,11 @@ const ProjectPage = (props: Props) => {
         fixed
         {...rest}
       />
-      <Parallax filter image={project.value.pictureUrl}>
+      <Parallax filter image={emptyProject.pictureUrl}>
         <div className={classes.container}>
           <GridContainer>
             <GridItem xs={12} sm={12} md={6}>
-              <h1 className={classes.title}>{project.value.title}</h1>
+              <h1 className={classes.title}>{emptyProject.title}</h1>
               <br />
             </GridItem>
           </GridContainer>
@@ -78,16 +110,9 @@ const ProjectPage = (props: Props) => {
             md={9}
             className={classes.container}
           >
-              <CreateProjectSection project={project.value} />
+          <CreateProjectSection project={emptyProject} />
           </GridItem>
           <Divider orientation="vertical" flexItem />
-          <GridItem
-            xs={12}
-            sm={12}
-            md={2}
-            className={classes.recommendations}
-          >
-          </GridItem>
         </GridContainer>
       </div>
       <Footer />
@@ -95,4 +120,10 @@ const ProjectPage = (props: Props) => {
   );
 };
 
-export default hot(module)(withRouter(ProjectPage));
+const mapStateToProps = (rootState: RootState) => {
+  return {
+    session: rootState.session,
+  };
+};
+
+export default hot(module)(connect(mapStateToProps)(withRouter(ProjectPage)));
