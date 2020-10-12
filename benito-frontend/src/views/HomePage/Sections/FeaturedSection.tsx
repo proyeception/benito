@@ -10,7 +10,7 @@ import Card from "../../../components/Card/Card";
 import imagesStyles from "../../../assets/jss/material-kit-react/imagesStyles";
 import { cardTitle, container } from "../../../assets/jss/material-kit-react";
 import Button from "../../../components/CustomButtons/Button";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import featuredStyle from "../../../assets/jss/material-kit-react/views/homeSections/featuredSection";
 import { Height } from "@material-ui/icons";
 import classNames from "classnames";
@@ -44,7 +44,7 @@ const FeaturedSection = (props: FeaturedSectionProps) => {
   const classes = useStyles();
 
   if (featured.type == "ERROR") {
-    return <div>Pará loco rompiste algo!!</div>;
+    return <Redirect to={{ pathname: "/error" }} />;
   }
 
   if (featured.type == "PENDING") {

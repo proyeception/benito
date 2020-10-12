@@ -51,7 +51,10 @@ const OrganizationsSection = (props: OrganizationsSectionProps) => {
   const handleClose = () => setIsModalOpen(false);
   const handleOpen = () => setIsModalOpen(true);
 
+  console.log(organizations)
+
   if (organizations.length == 0) {
+    
     return (
       <GridContainer justify="center" className={classes.container}>
         <h4>Parece que no pertenecés a ninguna organización :(</h4>
@@ -61,6 +64,7 @@ const OrganizationsSection = (props: OrganizationsSectionProps) => {
 
   return (
     <div>
+      HOli
       <GridContainer justify="left" className={classes.container}>
         {organizations.map((o, idx) => (
           <GridItem
