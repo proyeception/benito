@@ -18,11 +18,11 @@ import CardBody from "../../components/Card/CardBody";
 import CardHeader from "../../components/Card/CardHeader";
 import CardFooter from "../../components/Card/CardFooter";
 import CustomInput from "../../components/CustomInput/CustomInput";
+import image from "../../assets/img/proyectate/login.svg"
 
 import styles from "../../assets/jss/material-kit-react/views/loginPage";
 
-const image =
-  "https://res.cloudinary.com/proyectate/image/upload/v1600383533/proyectate_90e388a10b.jpg";
+
 import { hot } from "react-hot-loader";
 import GoogleLogin, { GoogleLoginResponse } from "react-google-login";
 import { googleClientId } from "../../config";

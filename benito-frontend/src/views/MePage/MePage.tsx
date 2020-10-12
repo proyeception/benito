@@ -23,6 +23,7 @@ import OrganizationsSection from "./Sections/OrganizationsSection";
 import SettingsSection from "./Sections/SettingsSection";
 import Footer from "../../components/Footer/Footer";
 import Spinner from "../../components/Spinner/Spinner";
+import image from "../../assets/img/proyectate/pattern.jpg"
 
 const useStyles = makeStyles(styles);
 
@@ -103,7 +104,7 @@ const MePage = (props: MePageProps) => {
       <Parallax
         small
         filter
-        image={require("../../assets/img/profile-bg.jpg")}
+        image={image}
       />
       <div className={classNames(classes.main, classes.mainRaised)}>
         <div>

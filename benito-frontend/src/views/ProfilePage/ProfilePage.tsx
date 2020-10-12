@@ -26,6 +26,7 @@ import CardBody from "../../components/Card/CardBody";
 import CardFooter from "../../components/Card/CardFooter";
 import { cardTitle, title } from "../../assets/jss/material-kit-react";
 import Spinner from "../../components/Spinner/Spinner";
+import image from "../../assets/img/proyectate/pattern.jpg"
 
 const useStyles = makeStyles({
   ...styles,
@@ -81,7 +82,7 @@ const ProfilePage = (props: ProfilePageProps) => {
       <Parallax
         small
         filter
-        image={require("../../assets/img/profile-bg.jpg")}
+        image={image}
       />
       <div className={classNames(classes.main, classes.mainRaised)}>
         <div>
