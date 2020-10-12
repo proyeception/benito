@@ -74,6 +74,7 @@
   "scripts": {
     "build-prod": "cp environments/prod/config.ts src/config.ts && rimraf build && NODE_ENV=production webpack",
     "build-test": "cp environments/test/config.ts src/config.ts && rimraf build && NODE_ENV=production webpack",
+    "build-staging": "cp environments/staging/config.ts src/config.ts && rimraf build && NODE_ENV=production webpack",
     "build-local": "cp environments/local/config.ts src/config.ts && rimraf build && NODE_ENV=production webpack",
     "start": "webpack-dev-server -w --config webpack.config.js",
     "test": "react-scripts test",
