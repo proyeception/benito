@@ -59,12 +59,12 @@ const FeaturedSection = (props: FeaturedSectionProps) => {
       <Carousel
         responsive={responsive}
         infinite={true}
-        autoPlay={true}
+        autoPlay={false}
         autoPlaySpeed={5000}
         transitionDuration={500}
         containerClass="carousel-container"
         removeArrowOnDeviceType={["tablet", "mobile"]}
-        itemClass="carousel-item-padding-40-px"
+        itemClass="carousel-item"
         dotListClass="custom-dot-list-style"
       >
         {featured.value.map((project, index) => (
@@ -77,12 +77,12 @@ const FeaturedSection = (props: FeaturedSectionProps) => {
             />
             <CardBody className="read-more-container">
             <div className="organization">{project.organization.displayName}</div>
-              <h4 className={classes.cardTitle}>{project.title}</h4>
+              <p className={classes.cardTitle}>{project.title}</p>
               <div className="read-more-container">
                 <p className="featured-card-text">{project.description}</p>
                 <p className="read-more"></p>
               </div>
-              <div className="carrousel-button">
+              <div className="carrousel-button-project">
               <Link to={`/projects/${project.id}`} className="normalize-link">
                 <Button color="primary">Ver más</Button>
               </Link>

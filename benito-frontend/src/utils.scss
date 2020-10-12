@@ -45,6 +45,7 @@
   position: relative;
   overflow: hidden;
   padding: 10px 10px !important;
+  text-align: left;
 }
 .read-more-container .read-more {
   position: absolute;
@@ -94,6 +95,16 @@
   text-transform: capitalize;
 } 
 
-.carrousel-button {
+.carrousel-button-project {
   text-align: right;
+}
+
+.carousel-item {
+  text-align: -webkit-center;
+  width: 20rem !important;
+  margin: 0 96px;
+}
+
+.react-multi-carousel-list {
+  position: inherit !important;
 }
