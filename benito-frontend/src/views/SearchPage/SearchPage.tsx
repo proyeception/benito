@@ -18,6 +18,7 @@ import GridContainer from "../../components/Grid/GridContainer";
 import GridItem from "../../components/Grid/GridItem";
 import HeaderLinks from "../../components/Header/HeaderLinks";
 import Parallax from "../../components/Parallax/Parallax";
+import image from "../../assets/img/proyectate/pattern.jpg"
 
 import styles from "../../assets/jss/material-kit-react/views/searchPage";
 
@@ -47,9 +48,7 @@ const SearchPage = (props: any) => {
       <Parallax
         filter
         small
-        image={
-          "https://res.cloudinary.com/proyectate/image/upload/v1600383533/proyectate_90e388a10b.jpg"
-        }
+        image={image}
       ></Parallax>
       <div className={classNames(classes.main, classes.mainRaised)}>
         <div>

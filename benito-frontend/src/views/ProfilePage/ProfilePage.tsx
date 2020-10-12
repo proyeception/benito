@@ -26,6 +26,7 @@ import CardBody from "../../components/Card/CardBody";
 import CardFooter from "../../components/Card/CardFooter";
 import { cardTitle, title } from "../../assets/jss/material-kit-react";
 import Spinner from "../../components/Spinner/Spinner";
+import image from "../../assets/img/proyectate/pattern.jpg"
 
 const useStyles = makeStyles({
   ...styles,
@@ -60,6 +61,7 @@ const ProfilePage = (props: ProfilePageProps) => {
   );
 
   const user = withUser(props.role, props.match.params.id);
+  const noProfilePic = "https://image.flaticon.com/icons/png/512/16/16363.png";
 
   if (user.type == PENDING) {
     return <Spinner/>;
@@ -80,7 +82,7 @@ const ProfilePage = (props: ProfilePageProps) => {
       <Parallax
         small
         filter
-        image={require("../../assets/img/profile-bg.jpg")}
+        image={image}
       />
       <div className={classNames(classes.main, classes.mainRaised)}>
         <div>
@@ -90,7 +92,7 @@ const ProfilePage = (props: ProfilePageProps) => {
                 <div className={classes.profile}>
                   <div>
                     <img
-                      src={user.value.profilePicUrl?.valueOf()}
+                      src={user.value.profilePicUrl?.valueOf() || noProfilePic}
                       alt={user.value.fullName.valueOf()}
                       className={imageClasses}
                     />

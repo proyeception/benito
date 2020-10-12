@@ -65,6 +65,27 @@ export function socialToIcon(s: Social): JSX.Element {
   }
 }
 
+export function createGhostUser(
+  name: string,
+  projects: Array<string>,
+  organizations: Array<string>,
+  role: Role,
+  mail?: string
+): AxiosPromise<Person> {
+  let config: AxiosRequestConfig = {
+    method: "POST",
+    url: `${benitoHost}/benito/${mapRoleToCollection(role)}`,
+    data: {
+      fullName: name,
+      projects: projects,
+      organizations: organizations,
+      mail: mail,
+    },
+  };
+
+  return axios.request<Person>(signRequest(config));
+}
+
 export function leaveOrganization(
   userId: String,
   collection: String,

@@ -1,4 +1,5 @@
 /*!
+import { Height } from '@material-ui/icons';
 
  =========================================================
  * Material Kit React - v1.9.0 based on Material Kit - v2.0.2
@@ -174,7 +175,12 @@ const subtitle = {
 
 const cardTitle = {
   ...title,
-  marginTop: ".625rem"
+  paddingTop: "5px",
+  marginTop: ".625rem",
+  color: darkGrayColor,
+  marginBottom: "15px",
+  height: "30px",
+  fontSize: "15px"
 };
 
 const cardLink = {

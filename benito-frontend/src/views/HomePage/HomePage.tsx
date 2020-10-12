@@ -14,13 +14,11 @@ import Footer from "../../components/Footer/Footer";
 import SearchBoxSection from "./Sections/SearchBoxSection";
 import CategoriesSection from "./Sections/CategoriesSection";
 import FeaturedSection from "./Sections/FeaturedSection";
+import image from "../../assets/img/proyectate/pattern.jpg"
 
 const useStyles = makeStyles(styles);
 
 type HomePageProps = {};
-
-const image =
-  "https://res.cloudinary.com/proyectate/image/upload/v1600383533/proyectate_90e388a10b.jpg";
 
 const HomePage = (props: HomePageProps) => {
   const classes = useStyles();
@@ -29,7 +27,7 @@ const HomePage = (props: HomePageProps) => {
     <div>
       <Header
         rightLinks={<HeaderLinks />}
-        absolute
+        fixed
         color="darkGray"
         {...rest}
       />
