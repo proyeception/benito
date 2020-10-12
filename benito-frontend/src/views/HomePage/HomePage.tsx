@@ -27,7 +27,7 @@ const HomePage = (props: HomePageProps) => {
     <div>
       <Header
         rightLinks={<HeaderLinks />}
-        absolute
+        fixed
         color="darkGray"
         {...rest}
       />

@@ -59,7 +59,7 @@ const FeaturedSection = (props: FeaturedSectionProps) => {
       <Carousel
         responsive={responsive}
         infinite={true}
-        autoPlay={false}
+        autoPlay={true}
         autoPlaySpeed={5000}
         transitionDuration={500}
         containerClass="carousel-container"

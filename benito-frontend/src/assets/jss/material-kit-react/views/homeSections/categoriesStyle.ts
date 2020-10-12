@@ -8,7 +8,7 @@ const categoriesStyle = (theme: Theme) =>
       padding: "30px",
     },
     img: {
-      filter: "blur(8px)",
+      filter: "blur(8px) grayscale(80%)",
       [theme.breakpoints.down("sm")]: {
         width: "240px",
         height: "160px",

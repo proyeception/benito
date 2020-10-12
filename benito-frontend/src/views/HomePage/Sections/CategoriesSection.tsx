@@ -47,7 +47,7 @@ const CategoriesSection = (props: CategoriesSectionProps) => {
                 alt={c.name}
               />
               <div className="slick-caption" style={{ display: "inline" }}>
-                <h4>{c.name}</h4>
+                <h4 style={{color: "#2f3336", fontWeight: 400, fontSize: "40px", opacity: 1 }}>{c.name}</h4>
               </div>
             </div>
           </Link>
