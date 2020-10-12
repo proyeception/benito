@@ -53,8 +53,8 @@ const FeaturedSection = (props: FeaturedSectionProps) => {
 
   return (
     <div style={{ marginLeft: "10%", marginRight: "10%" }}>
-      <h2 className={classes.title} style={{ textAlign: "center" }}>
-        Los más destacados
+      <h2 className={classes.title} style={{ textAlign: "center", paddingTop: "20px" }}>
+        Proyectos destacados
       </h2>
       <Carousel
         responsive={responsive}
