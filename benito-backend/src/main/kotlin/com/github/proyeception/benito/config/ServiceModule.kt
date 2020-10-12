@@ -8,6 +8,7 @@ import com.github.proyeception.benito.parser.DocumentParser
 import com.github.proyeception.benito.service.*
 import com.github.proyeception.benito.snapshot.CategorySnapshot
 import com.github.proyeception.benito.snapshot.OrganizationSnapshot
+import com.github.proyeception.benito.storage.SessionStorage
 import com.github.proyeception.benito.utils.FileHelper
 import com.github.proyeception.benito.utils.HashHelper
 import com.typesafe.config.Config
@@ -21,14 +22,18 @@ open class ServiceModule {
         documentService: DocumentService,
         fileService: FileService,
         mongoTextSearch: MongoTextSearch,
-        medusaGraphClient: MedusaGraphClient
+        medusaGraphClient: MedusaGraphClient,
+        keywordService: KeywordService, //sacar
+        recommendationService: RecommendationService
     ): ProjectService = ProjectService(
         medusaClient = medusaClient,
         documentParser = documentParser,
         documentService = documentService,
         fileService = fileService,
         mongoTextSearch = mongoTextSearch,
-        medusaGraphClient = medusaGraphClient
+        medusaGraphClient = medusaGraphClient,
+        keywordService = keywordService, //sacar
+        recommendationService = recommendationService
     )
 
     @Bean
@@ -66,7 +71,9 @@ open class ServiceModule {
     )
 
     @Bean
-    open fun sessionService(): SessionService = SessionService()
+    open fun sessionService(
+        sessionStorage: SessionStorage
+    ): SessionService = SessionService(sessionStorage)
 
     @Bean
     open fun fileService(
@@ -100,4 +107,18 @@ open class ServiceModule {
             host = storageConfig.getString("host")
         )
     }
+
+    @Bean
+    open fun recommendationService(
+            medusaClient: MedusaClient,
+            mongoTextSearch: MongoTextSearch
+    ): RecommendationService = RecommendationService(
+            medusaClient = medusaClient,
+            mongoTextSearch = mongoTextSearch
+    )
+
+    @Bean
+    open fun keywordService(
+    ): KeywordService = KeywordService(
+    )
 }

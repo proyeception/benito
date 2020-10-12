@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+
 data class MedusaProjectDTO(
     val id: String,
     val title: String,
@@ -16,7 +17,9 @@ data class MedusaProjectDTO(
     val documentation: List<DocumentationDTO>,
     val category: CategoryDTO,
     val organization: MedusaOrganizationDTO,
-    val tags: List<MedusaTagDTO>
+    val tags: List<MedusaTagDTO>,
+    val recommendations: List<MedusaRecommendationDTO>,
+    val project_keywords: List<KeywordDTO>
 )
 
 data class MedusaPersonRefDTO(
@@ -40,11 +43,12 @@ data class MedusaPersonDTO(
     val username: String?,
     val fullName: String,
     val organizations: List<MedusaOrganizationDTO>,
-    val profilePic: MedusaFileDTO?,
+    val profilePic: MedusaFileDTO? = null,
     val projects: List<MedusaProjectRefDTO>,
     val socials: List<SocialDTO>,
-    val mail: String?,
-    val phone: String?
+    val mail: String? = null,
+    val phone: String? = null,
+    val about: String? = null
 )
 
 data class MedusaProjectRefDTO(
@@ -141,6 +145,30 @@ data class CreateMedusaProjectDTO(
     val creationDate: String = LocalDate.now().format(dtf),
     val supervisors: List<String>,
     val category: String
+)
+
+data class KeywordDTO(
+    val id: String?,
+    val name: String,
+    val score: Double
+)
+
+data class KeywordsWrapper(
+    val keywords: List<KeywordDTO>
+)
+
+data class ProjectKeywords(
+    val project_keywords: List<String>
+)
+
+data class ProjectRecommendations(
+    val recommendations: List<String>
+)
+
+data class MedusaRecommendationDTO(
+    val id: String,
+    val score: Double,
+    val project: String
 )
 
 private val dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd")

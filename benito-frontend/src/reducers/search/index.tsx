@@ -1,29 +1,25 @@
 import {
   SearchAction,
   SearchState,
-  UPDATE_NAME,
+  UPDATE_TITLE,
   UPDATE_CATEGORY,
-  UPDATE_PROJECTS,
   UPDATE_FROM_DATE,
   UPDATE_TO_DATE,
   UPDATE_KEYWORD,
   UPDATE_DOCUMENTATION,
-  SortMethod,
   UPDATE_SORT_METHOD,
   RESET_SEARCH_PARAMETERS,
   UPDATE_ORGANIZATION,
+  UPDATE_SEARCH_PARAMS,
+  NOTHING,
+  UPDATE_FETCH_STATUS,
 } from "../../store/search/types";
+import { SortMethod } from "../../types";
+import moment from "moment";
 
 const defaultSearchState: SearchState = {
-  name: "",
-  category: "",
-  projects: [],
-  fromDate: "",
-  toDate: "",
-  keyword: "",
-  documentation: "",
   orderBy: SortMethod.DateDesc,
-  organization: "",
+  status: NOTHING,
 };
 
 function searchReducer(
@@ -31,15 +27,10 @@ function searchReducer(
   action: SearchAction
 ): SearchState {
   switch (action.type) {
-    case UPDATE_NAME:
+    case UPDATE_TITLE:
       return {
         ...state,
-        name: action.payload,
-      };
-    case UPDATE_PROJECTS:
-      return {
-        ...state,
-        projects: action.payload,
+        title: action.payload,
       };
     case UPDATE_CATEGORY:
       return {
@@ -49,12 +40,12 @@ function searchReducer(
     case UPDATE_FROM_DATE:
       return {
         ...state,
-        fromDate: action.payload,
+        from: action.payload,
       };
     case UPDATE_TO_DATE:
       return {
         ...state,
-        toDate: action.payload,
+        to: action.payload,
       };
     case UPDATE_KEYWORD:
       return {
@@ -80,6 +71,28 @@ function searchReducer(
         ...state,
         organization: action.payload,
       };
+    case UPDATE_SEARCH_PARAMS:
+      return {
+        orderBy: action.payload.orderBy || state.orderBy,
+        status: state.status,
+        documentation: action.payload.documentation || state.documentation,
+        from: action.payload.from
+          ? moment(action.payload.from, "yyyy-MM-DD").toString()
+          : state.from,
+        to: action.payload.to
+          ? moment(action.payload.to, "yyyy-MM-DD").toString()
+          : state.to,
+        keyword: action.payload.keyword || state.keyword,
+        organization: action.payload.organization || state.organization,
+        title: action.payload.title || state.title,
+        category: action.payload.category || state.category,
+      };
+    case UPDATE_FETCH_STATUS: {
+      return {
+        ...state,
+        status: action.payload,
+      };
+    }
     default:
       return state;
   }

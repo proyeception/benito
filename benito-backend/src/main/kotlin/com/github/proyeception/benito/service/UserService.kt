@@ -71,6 +71,18 @@ open class UserService(
         userType = UserType.SUPERVISOR
     )
 
+    fun authorLeaveOrganization(authorId: String, organizationId: String) = leaveOrganization(
+        userId = authorId,
+        organizationId = organizationId,
+        userType = UserType.AUTHOR
+    )
+
+    fun supervisorLeaveOrganization(supervisorId: String, organizationId: String) = leaveOrganization(
+        userId = supervisorId,
+        organizationId = organizationId,
+        userType = UserType.SUPERVISOR
+    )
+
     private fun findOneUserBy(userType: UserType, vararg filters: Pair<String, String>): PersonDTO? = medusaClient
         .findUsersBy(
             userType,
@@ -131,8 +143,9 @@ open class UserService(
             socials = medusa.socials,
             contact = ContactDTO(
                 mail = medusa.mail,
-                phone = medusa.mail
-            )
+                phone = medusa.phone
+            ),
+            about = medusa.about
         )
     }
 
@@ -157,6 +170,18 @@ open class UserService(
         medusaClient.updateUser(
             userId = id,
             user = user,
+            userType = userType
+        )
+    }
+
+    private fun leaveOrganization(
+        userId: String,
+        organizationId: String,
+        userType: UserType
+    ) = mapMedusaToDomain {
+        medusaClient.leaveOrganization(
+            userId = userId,
+            organizationId = organizationId,
             userType = userType
         )
     }

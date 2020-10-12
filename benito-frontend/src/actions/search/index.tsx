@@ -1,6 +1,6 @@
 import {
   SearchAction,
-  UPDATE_NAME,
+  UPDATE_TITLE,
   UPDATE_CATEGORY,
   UPDATE_PROJECTS,
   UPDATE_FROM_DATE,
@@ -8,54 +8,51 @@ import {
   UPDATE_KEYWORD,
   UPDATE_DOCUMENTATION,
   UPDATE_SORT_METHOD,
-  SortMethod,
   RESET_SEARCH_PARAMETERS,
+  UPDATE_SEARCH_PARAMS,
+  SearchState,
+  Fetch,
+  UPDATE_FETCH_STATUS,
+  UPDATE_ORGANIZATION,
 } from "../../store/search/types";
-import { Project } from "../../types";
+import { Category, Organization, SortMethod } from "../../types";
 
-export function updateName(name: String): SearchAction {
+export function updateTitle(name: string): SearchAction {
   return {
-    type: UPDATE_NAME,
+    type: UPDATE_TITLE,
     payload: name,
   };
 }
 
-export function updateCategory(category: String): SearchAction {
+export function updateCategory(category: Category): SearchAction {
   return {
     type: UPDATE_CATEGORY,
     payload: category,
   };
 }
 
-export function updateProjects(projects: Array<Project>): SearchAction {
-  return {
-    type: UPDATE_PROJECTS,
-    payload: projects,
-  };
-}
-
-export function updateFromDate(fromDate: String): SearchAction {
+export function updateFromDate(from: string): SearchAction {
   return {
     type: UPDATE_FROM_DATE,
-    payload: fromDate,
+    payload: from,
   };
 }
 
-export function updateToDate(toDate: String): SearchAction {
+export function updateToDate(to: string): SearchAction {
   return {
     type: UPDATE_TO_DATE,
-    payload: toDate,
+    payload: to,
   };
 }
 
-export function updateKeyword(keyword: String): SearchAction {
+export function updateKeyword(keyword: string): SearchAction {
   return {
     type: UPDATE_KEYWORD,
     payload: keyword,
   };
 }
 
-export function updateDocumentation(documentation: String): SearchAction {
+export function updateDocumentation(documentation: string): SearchAction {
   return {
     type: UPDATE_DOCUMENTATION,
     payload: documentation,
@@ -76,8 +73,29 @@ export function emptyProjects(): SearchAction {
   };
 }
 
+export function updateSearchParams(searchParams: SearchState): SearchAction {
+  return {
+    type: UPDATE_SEARCH_PARAMS,
+    payload: searchParams,
+  };
+}
+
 export function resetSearchParameters(): SearchAction {
   return {
     type: RESET_SEARCH_PARAMETERS,
+  };
+}
+
+export function updateFetchStatus(fetch: Fetch): SearchAction {
+  return {
+    type: UPDATE_FETCH_STATUS,
+    payload: fetch,
+  };
+}
+
+export function updateOrganization(o: Organization): SearchAction {
+  return {
+    type: UPDATE_ORGANIZATION,
+    payload: o,
   };
 }

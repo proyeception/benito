@@ -1,17 +1,14 @@
 package com.github.proyeception.benito.mongodb
 
-import com.github.proyeception.benito.dto.DocumentationDTO
-import com.github.proyeception.benito.dto.OrganizationRefDTO
-import com.github.proyeception.benito.dto.PersonRefDTO
-import com.github.proyeception.benito.dto.ProjectDTO
+import com.github.proyeception.benito.dto.*
 import com.mongodb.MongoClientURI
+import com.mongodb.client.AggregateIterable
 import com.mongodb.client.MongoCursor
 import com.mongodb.client.model.Aggregates
 import com.mongodb.client.model.Filters
 import com.mongodb.client.model.Projections
 import org.bson.Document
 import org.bson.conversions.Bson
-import java.time.LocalDate
 
 
 open class MongoTextSearch(
@@ -21,7 +18,8 @@ open class MongoTextSearch(
     private val host: String,
     private val port: Int
 ) {
-    private val collection: String = "documentations"
+    private val documentsCollection: String = "documentations"
+    private val projectsCollection: String = "projects"
 
     private fun startConnection(): com.mongodb.MongoClient {
         val uri = MongoClientURI(
@@ -30,9 +28,10 @@ open class MongoTextSearch(
         return com.mongodb.MongoClient(uri)
     }
 
+
     open fun getDocuments(line: String, from: String?, to: String?, nameContains: String?, category: String?): MutableList<ProjectDTO> {
         val mongoClient = startConnection()
-        val mongoCollection = mongoClient.getDatabase(databaseName).getCollection(collection)
+        val mongoCollection = mongoClient.getDatabase(databaseName).getCollection(documentsCollection)
         val cursor: MongoCursor<Document> = mongoCollection.find(
             Filters.text("\\" + line + "\\"))
             .projection(
@@ -44,12 +43,13 @@ open class MongoTextSearch(
             .cursor()
 
         val projects = mutableSetOf<ProjectDTO>()
-        val mongoCollectionProjects = mongoClient.getDatabase(databaseName).getCollection("projects")
+        val mongoCollectionProjects = mongoClient.getDatabase(databaseName).getCollection(projectsCollection)
 
         val variableFilters: List<Bson> = createVariableFilters(from, to, nameContains, category);
 
         //el match siempre tiene que ser primero para mejorar performace
-        val pipeline = mutableListOf(Aggregates.match(Filters.eq("documentation", "")),
+        val pipeline = mutableListOf(
+            Aggregates.match(Filters.eq("documentation", "")),
             Aggregates.lookup("authors", "authors", "_id", "authors"),
             Aggregates.lookup("organizations", "organization", "_id", "organization"),
             Aggregates.lookup("supervisors", "supervisors", "_id", "supervisors"),
@@ -71,6 +71,15 @@ open class MongoTextSearch(
                 var organization: OrganizationRefDTO
                 var project: ProjectDTO
                 var pictureUrl: String?
+                var recommendations: List<ProjectRecommendationDTO>
+                var projectToCompareKeywords: List<KeywordDTO>
+
+                projectToCompareKeywords = projectDocument.getList("keywords", Document::class.java).map {
+                    KeywordDTO("",
+                            it.get("name", String::class.java),
+                            it.get("score", Integer::class.java).toDouble()
+                    )
+                }
 
                 authors = projectDocument.getList("authors", Document::class.java).map {
                     PersonRefDTO(
@@ -96,6 +105,13 @@ open class MongoTextSearch(
                     .firstOrNull()
                     ?.get("url")
                     ?.toString()
+/*
+                recommendations = projectDocument.getList("recommendations", Document::class.java).map {
+                    RecommendationDTO(
+                            id = it["_id"].toString(),
+                            project_keywords = projectToCompareKeywords
+                    )
+                }
                 project = ProjectDTO(
                     id = projectDocument["_id"].toString(),
                     title = projectDocument.get("title", String::class.java),
@@ -107,11 +123,13 @@ open class MongoTextSearch(
                     supervisors = supervisors,
                     tags = projectDocument.getList("tags", String::class.java),
                     documentation = documentation,
-                    organization = organization
+                    organization = organization,
+                    recommendations = recommendations,
+                    project_keywords = projectDocument["keywords"] as List<KeywordDTO>
                 )
 
                 projects.add(project)
-            }
+*/            }
         }
 
         mongoClient.close()
@@ -134,5 +152,59 @@ open class MongoTextSearch(
             filters.add(Aggregates.match(Filters.gte("category", category)))
         }
         return filters
+    }
+
+    fun findRecommendedProjects(updatedProject: ProjectDTO): List<ProjectRecommendationDTO>  {
+        val mongoClient = startConnection()
+        val mongoCollectionProjects = mongoClient.getDatabase(databaseName).getCollection(projectsCollection)
+        val keywords = updatedProject.project_keywords
+
+        val keywordsNames = keywords.map { k -> k.name }
+
+        val projects = mutableSetOf<ProjectRecommendationDTO>()
+
+        val pipeline = mutableListOf(
+                Aggregates.lookup("keywords", "project_keywords", "_id", "keywords"),
+                Aggregates.match(
+                    Filters.and(
+                        Filters.elemMatch("keywords",
+                                Filters.`in`("name", keywordsNames)
+                        )
+                    )
+                ),
+                Aggregates.out("projects")
+        )
+
+        val aggregate: AggregateIterable<Document> = mongoCollectionProjects.aggregate(pipeline)
+
+        val cursor = aggregate.cursor()
+
+        while (cursor.hasNext()) {
+            val projectDocumentToCompare: Document = cursor.next()
+
+            val aggregate: AggregateIterable<Document> = mongoCollectionProjects.aggregate(pipeline)
+            val projectDocument: Document? = aggregate.first()
+            if (!projectDocument.isNullOrEmpty()) {
+
+                val projectToCompareKeywords = projectDocument.getList("keywords", Document::class.java).map {
+                    KeywordDTO(
+                            it.get("id", String::class.java),
+                            it.get("name", String::class.java),
+                            it.get("score", Integer::class.java).toDouble()
+                    )
+                }
+
+                val project = ProjectRecommendationDTO(
+                        id = projectDocumentToCompare["_id"].toString(),
+                        project_keywords = projectToCompareKeywords
+                )
+
+                projects.add(project)
+            }
+        }
+
+        mongoClient.close()
+
+        return projects.toMutableList()
     }
 }

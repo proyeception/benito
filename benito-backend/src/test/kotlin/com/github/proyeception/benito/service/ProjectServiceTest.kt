@@ -12,7 +12,6 @@ import com.github.proyeception.benito.mongodb.MongoTextSearch
 import com.github.proyeception.benito.parser.DocumentParser
 import com.nhaarman.mockito_kotlin.any
 import io.kotlintest.matchers.shouldBe
-import org.mockito.Mockito
 import org.mockito.Mockito.verify
 import org.springframework.web.multipart.MultipartFile
 import java.io.InputStream
@@ -26,13 +25,17 @@ class ProjectServiceTest : Spec() {
         val fileServiceMock: FileService = getMock()
         val mongoMock: MongoTextSearch = getMock()
         val medusaGraphClientMock: MedusaGraphClient = getMock()
+        val keywordService: KeywordService = KeywordService()
+        val recommendationService: RecommendationService = getMock()
         val projectService = ProjectService(
             medusaClient = medusaClient,
             documentParser = documentParserMock,
             documentService = documentService,
             fileService = fileServiceMock,
             mongoTextSearch = mongoMock,
-            medusaGraphClient = medusaGraphClientMock
+            medusaGraphClient = medusaGraphClientMock,
+            keywordService = keywordService,
+            recommendationService = recommendationService
         )
 
         "projects" should {
@@ -82,7 +85,9 @@ class ProjectServiceTest : Spec() {
                     organization = OrganizationRefDTO(
                         id = "123",
                         displayName = "UTN FRBA"
-                    )
+                    ),
+                        recommendations = emptyList(),
+                        project_keywords = emptyList()
                 )
 
                 val newProject = MedusaProjectDTO(
@@ -111,7 +116,9 @@ class ProjectServiceTest : Spec() {
                         authors = emptyList(),
                         supervisors = emptyList()
                     ),
-                    tags = emptyList()
+                    tags = emptyList(),
+                    recommendations = emptyList(),
+                    project_keywords = emptyList()
                 )
 
                 val projects = listOf(newProject)
@@ -183,7 +190,9 @@ class ProjectServiceTest : Spec() {
                     organization = OrganizationRefDTO(
                         id = "123",
                         displayName = "UTN FRBA"
-                    )
+                    ),
+                        recommendations = emptyList(),
+                        project_keywords = emptyList()
                 )
 
                 val newProject = MedusaProjectDTO(
@@ -208,7 +217,9 @@ class ProjectServiceTest : Spec() {
                         authors = emptyList(),
                         supervisors = emptyList()
                     ),
-                    tags = emptyList()
+                    tags = emptyList(),
+                    recommendations = emptyList(),
+                    project_keywords = emptyList()
                 )
 
                 val projectResult = newProject
@@ -250,7 +261,9 @@ class ProjectServiceTest : Spec() {
                         supervisors = emptyList(),
                         authors = emptyList()
                     ),
-                    tags = emptyList()
+                    tags = emptyList(),
+                    recommendations = emptyList(),
+                    project_keywords = emptyList()
                 )
 
                 val inputMock: InputStream = getMock()
@@ -305,7 +318,9 @@ class ProjectServiceTest : Spec() {
                         supervisors = emptyList(),
                         authors = emptyList()
                     ),
-                    tags = emptyList()
+                    tags = emptyList(),
+                    recommendations = emptyList(),
+                    project_keywords = emptyList()
                 )
 
                 val file = MedusaFileDTO(
@@ -356,7 +371,9 @@ class ProjectServiceTest : Spec() {
                         supervisors = emptyList(),
                         authors = emptyList()
                     ),
-                    tags = emptyList()
+                    tags = emptyList(),
+                    recommendations = emptyList(),
+                    project_keywords = emptyList()
                 )
 
                 val file = MedusaFileDTO(

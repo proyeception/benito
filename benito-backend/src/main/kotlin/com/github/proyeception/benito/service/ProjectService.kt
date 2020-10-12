@@ -4,7 +4,10 @@ import arrow.core.getOrHandle
 import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.client.MedusaGraphClient
 import com.github.proyeception.benito.dto.*
+import com.github.proyeception.benito.exception.AmbiguousReferenceException
 import com.github.proyeception.benito.exception.FailedDependencyException
+import com.github.proyeception.benito.exception.NotFoundException
+import com.github.proyeception.benito.extension.getOrThrow
 import com.github.proyeception.benito.mongodb.MongoTextSearch
 import com.github.proyeception.benito.parser.DocumentParser
 import kotlinx.coroutines.async
@@ -12,6 +15,7 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
 import org.apache.http.entity.ContentType
 import org.slf4j.LoggerFactory
+import org.springframework.scheduling.annotation.Async
 import org.springframework.web.multipart.MultipartFile
 
 open class ProjectService(
@@ -20,8 +24,11 @@ open class ProjectService(
     private val documentService: DocumentService,
     private val documentParser: DocumentParser,
     private val fileService: FileService,
-    private val mongoTextSearch: MongoTextSearch
+    private val mongoTextSearch: MongoTextSearch,
+    private val keywordService: KeywordService,
+    private val recommendationService: RecommendationService
 ) {
+
     open fun findProjects(
         orderBy: OrderDTO?,
         from: String?,
@@ -53,20 +60,42 @@ open class ProjectService(
         }
         .map { ProjectDTO(it) }
 
-    fun featuredProjects(): List<ProjectDTO> = medusaClient.findProjects(
-        orderBy = OrderDTO.VIEWS_DESC,
-        limit = 10
-    ).map { ProjectDTO(it) }
+    fun featuredProjects(): List<ProjectDTO> = medusaGraphClient.findProjects(
+        orderBy = OrderDTO.VIEWS_DESC
+    )
+        .getOrHandle {
+            LOGGER.error("Error getting projects from Medusa with Graph")
+            throw FailedDependencyException("Error getting projects from Medusa")
+        }
+        .map { ProjectDTO(it) }
 
     fun count(): CountDTO = CountDTO(medusaClient.projectCount())
 
-    fun findProject(id: String): ProjectDTO = mappingFromMedusa { medusaClient.findProject(id) }
+    open fun findProject(id: String): ProjectDTO = mappingFromMedusa {
+        medusaClient.findProject(projectId = id)
+    }
 
-    fun updateProjectContent(content: UpdateContentDTO, projectId: String) = mappingFromMedusa {
-        medusaClient.updateProjectContent(
-            content = content,
-            id = projectId
-        )
+    fun updateProjectContent(content: UpdateContentDTO, projectId: String): ProjectDTO {
+        val updatedProject = mappingFromMedusa {
+            medusaClient.updateProjectContent(
+                content = content,
+                id = projectId
+            )
+        }
+        updateProjectKeywords(updatedProject)
+        return updatedProject
+    }
+
+    // Creo que es mejor usar una corrutina para esto, ya son asincrónicas
+    @Async
+    open fun updateProjectKeywords(project: ProjectDTO) {
+        try {
+            val keywords = keywordService.getKeywords(project)
+            medusaClient.updateProjectKeywords(keywords, project)
+            recommendationService.recalculateRecommendations(project)
+        } catch (e: Exception) {
+            LOGGER.error("There was an error updating keywords for project ${project.id}")
+        }
     }
 
     fun saveDocuments(projectId: String, files: List<MultipartFile>): ProjectDTO = mappingFromMedusa {
@@ -157,8 +186,9 @@ open class ProjectService(
             title = project.title
         )
         LOGGER.info("{}", medusaProject)
-        medusaClient.createProject(medusaProject)
-    }
+        val medusa = medusaClient.createProject(medusaProject)
+        medusa
+    }.also { updateProjectKeywords(it) }
 
     fun setAuthors(projectId: String, users: SetUsersDTO) = mappingFromMedusa {
         medusaClient.modifyProjectUsers(
@@ -168,6 +198,11 @@ open class ProjectService(
     }
 
     private fun mappingFromMedusa(f: () -> MedusaProjectDTO): ProjectDTO = ProjectDTO(f())
+
+    fun recommendedProjects(id: String): List<ProjectDTO> {
+        val project = findProject(id)
+        return project.recommendations.map { findProject(it.projectId) }
+    }
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(ProjectService::class.java)

@@ -140,6 +140,7 @@ thumb
 sketch
 
 ### VisualStudioCode ###
+.vscode
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
@@ -271,3 +272,4 @@ environments/local/config.ts
 
 # End of https://www.toptal.com/developers/gitignore/api/react,windows,linux,visualstudiocode,webstorm+all,node
 build/
+

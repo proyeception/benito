@@ -8,6 +8,7 @@ import com.github.proyeception.benito.exception.FailedDependencyException
 import com.github.proyeception.benito.exception.NotFoundException
 import com.github.proyeception.benito.extension.replaceUrlSpaces
 import org.apache.http.entity.ContentType
+import org.bson.types.ObjectId
 import org.slf4j.LoggerFactory
 import java.io.File
 
@@ -55,16 +56,18 @@ open class MedusaClient(
 
     open fun categoriesCount() = count("categories")
 
+    private val typeReference = MEDUSA_PROJECT_REF
+
     open fun findProject(projectId: String): MedusaProjectDTO = findOne(
         collection = PROJECTS,
         id = projectId,
-        ref = object : TypeReference<MedusaProjectDTO>() {}
+        ref = MEDUSA_PROJECT_REF
     )
 
     open fun saveDocuments(docs: CreateDocumentsDTO, projectId: String): MedusaProjectDTO = create(
         collection = "projects/$projectId/documents",
         dto = docs,
-        ref = object : TypeReference<MedusaProjectDTO>() {}
+        ref = MEDUSA_PROJECT_REF
     )
 
     open fun saveDocument(projectId: String, name: String, driveId: String, content: String): MedusaProjectDTO = create(
@@ -74,19 +77,19 @@ open class MedusaClient(
             driveId = driveId,
             content = content
         ),
-        ref = object : TypeReference<MedusaProjectDTO>() {}
+        ref = MEDUSA_PROJECT_REF
     )
 
     open fun findUser(userId: String, userType: UserType): MedusaPersonDTO = findOne(
         collection = userType.collection,
         id = userId,
-        ref = object : TypeReference<MedusaPersonDTO>() {}
+        ref = MEDUSA_PERSON_REF
     )
 
     open fun createUser(person: CreateMedusaPersonDTO, userType: UserType): MedusaPersonDTO = create(
         collection = userType.collection,
         dto = person,
-        ref = object : TypeReference<MedusaPersonDTO>() {}
+        ref = MEDUSA_PERSON_REF
     )
 
     open fun findUsersBy(userType: UserType, vararg params: Pair<String, String>): List<MedusaPersonDTO> = find(
@@ -116,14 +119,14 @@ open class MedusaClient(
         collection = PROJECTS,
         id = id,
         dto = content,
-        ref = object : TypeReference<MedusaProjectDTO>() {}
+        ref = MEDUSA_PROJECT_REF
     )
 
     open fun updateProjectImage(projectId: String, picture: UpdatePictureDTO): MedusaProjectDTO = update(
         collection = PROJECTS,
         id = projectId,
         dto = picture,
-        ref = object : TypeReference<MedusaProjectDTO>() {}
+        ref = MEDUSA_PROJECT_REF
     )
 
     open fun updateUserProfilePicture(
@@ -134,26 +137,26 @@ open class MedusaClient(
         collection = userType.collection,
         id = userId,
         dto = profilePic,
-        ref = object : TypeReference<MedusaPersonDTO>() {}
+        ref = MEDUSA_PERSON_REF
     )
 
     open fun updateUser(userId: String, user: UpdateUserDTO, userType: UserType): MedusaPersonDTO = update(
         collection = userType.collection,
         id = userId,
         dto = user,
-        ref = object : TypeReference<MedusaPersonDTO>() {}
+        ref = MEDUSA_PERSON_REF
     )
 
     open fun deleteDocumentFromProject(projectId: String, documentId: String): MedusaProjectDTO = delete(
         collection = "projects/$projectId",
         id = documentId,
-        ref = object : TypeReference<MedusaProjectDTO>() {}
+        ref = MEDUSA_PROJECT_REF
     )
 
     fun addUsersToProject(projectId: String, users: AddUsersDTO, userType: UserType): MedusaProjectDTO = create(
         collection = "projects/$projectId/${userType.collection}",
         dto = users,
-        ref = object : TypeReference<MedusaProjectDTO>() {}
+        ref = MEDUSA_PROJECT_REF
     )
 
     fun deleteUsersFromProject(projectId: String, items: String, userType: UserType): MedusaProjectDTO {
@@ -164,12 +167,12 @@ open class MedusaClient(
             throw FailedDependencyException("Error deleting ${userType.collection} from $projectId on Medusa")
         }
 
-        return response.deserializeAs(object : TypeReference<MedusaProjectDTO>() {})
+        return response.deserializeAs(MEDUSA_PROJECT_REF)
     }
 
     fun createProject(project: CreateMedusaProjectDTO) = create(
         collection = PROJECTS,
-        ref = object : TypeReference<MedusaProjectDTO>() {},
+        ref = MEDUSA_PROJECT_REF,
         dto = project
     )
 
@@ -187,10 +190,38 @@ open class MedusaClient(
 
     fun modifyProjectUsers(projectId: String, users: SetUsersDTO): MedusaProjectDTO = update(
         collection = PROJECTS,
-        ref = object : TypeReference<MedusaProjectDTO>() {},
+        ref = MEDUSA_PROJECT_REF,
         dto = users,
         id = projectId
     )
+
+    fun leaveOrganization(userId: String, organizationId: String, userType: UserType): MedusaPersonDTO = delete(
+        collection = "${userType.collection}/$userId/organizations",
+        id = organizationId,
+        ref = MEDUSA_PERSON_REF
+    )
+
+    fun updateProjectKeywords(kw: List<KeywordDTO>, project: ProjectDTO) {
+
+        project.project_keywords.filter { it.id.isNullOrBlank() }.map { delete("keywords", it.id.orEmpty(), MEDUSA_KEYWORD_REF) }
+        val keywordsIdList = kw.map{ create("keywords", it, MEDUSA_KEYWORD_REF).id }
+        val keywordsIdRef = ProjectKeywords(keywordsIdList.map { ObjectId(it).toHexString() } )
+        update("projects", project.id, keywordsIdRef, ANY_REF)
+
+    }
+
+    fun updateRecommendations(recommendations: List<CreateRecommendationDTO>, project: ProjectDTO) {
+
+        project.recommendations
+                .map { it.id.orEmpty() }
+                .filter { it.isNotBlank() }.map { delete("recommendations", it, MEDUSA_RECOMMENDATION_REF) }
+        val recommendationsIdList = recommendations
+            //crear variante de create con un cuarto parametro que indique con que clase deserealizar la response
+            .map{ create("recommendations", it, CREATE_RECOMMENDATION_REF, MEDUSA_RECOMMENDATION_REF).id }
+        val recommendationsIdRef = ProjectRecommendations(recommendationsIdList.map { it } )
+        update("projects", project.id, recommendationsIdRef, MEDUSA_PROJECT_REF)
+
+    }
 
     private fun <T> find(collection: String, params: List<String>, ref: TypeReference<List<T>>): List<T> {
         val response = medusaConnector.get("/$collection?${params.joinToString("&")}")
@@ -205,7 +236,6 @@ open class MedusaClient(
 
     private fun <T> findOne(collection: String, id: String, ref: TypeReference<T>): T {
         val response = medusaConnector.get("/$collection/$id")
-
         when (response.status) {
             200 -> return response.deserializeAs(ref)
             404 -> throw NotFoundException("$id not found in $collection")
@@ -225,6 +255,17 @@ open class MedusaClient(
         }
 
         return response.deserializeAs(ref)
+    }
+
+    private fun <T, U> create(collection: String, dto: Any, refOrigin: TypeReference<T>, refDestiny: TypeReference<U>): U {
+        val response = medusaConnector.post("/$collection", dto)
+
+        if (response.isError()) {
+            LOGGER.error("Error creating a new item in $collection on Medusa", response.body)
+            throw FailedDependencyException("Error when creating a new item in $collection on Medusa")
+        }
+
+        return response.deserializeAs(refDestiny)
     }
 
     private fun <T> update(collection: String, id: String, dto: Any, ref: TypeReference<T>): T {
@@ -263,12 +304,20 @@ open class MedusaClient(
     private fun String.appendOrder(orderBy: OrderDTO?): String = orderBy?.sortMethod
         ?.let { "${this}_sort=${it}&" }
         ?: this
+
     private fun String.appendParam(param: String, value: String?, filter: MedusaFilter): String =
         value?.let { "${this}${param}_${filter.filterName}=$it&" } ?: this
+
     private fun String.appendParam(param: String, value: String?) = value?.let { "$this${param}=$it&" } ?: this
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(MedusaClient::class.java)
         private const val PROJECTS = "projects"
+        private val MEDUSA_PROJECT_REF = object : TypeReference<MedusaProjectDTO>() {}
+        private val MEDUSA_PERSON_REF = object : TypeReference<MedusaPersonDTO>() {}
+        private val MEDUSA_KEYWORD_REF = object  : TypeReference<KeywordDTO>() {}
+        private val MEDUSA_RECOMMENDATION_REF = object : TypeReference<CreatedRecommendationDTO>() {}
+        private val CREATE_RECOMMENDATION_REF = object : TypeReference<CreateRecommendationDTO>() {}
+        private val ANY_REF = object : TypeReference<Any>() {}
     }
 }

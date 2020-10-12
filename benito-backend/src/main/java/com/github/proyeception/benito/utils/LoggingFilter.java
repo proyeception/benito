@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 public class LoggingFilter implements Filter {
     private static final String AUTHORIZATION_HEADER = "authorization";
     private static final String COOKIE_HEADER = "cookie";
+    private static final String SET_COOKIE_HEADER = "set-cookie";
 
     private static final List<String> EXCLUDED_URIS = ImmutableList.of(
         ".*[.]js",
@@ -53,7 +54,8 @@ public class LoggingFilter implements Filter {
     private static final List<String> EXCLUDED_HEADERS = ImmutableList.of(
         AUTHORIZATION_HEADER,
         "x-qui-token",
-        COOKIE_HEADER
+        COOKIE_HEADER,
+        SET_COOKIE_HEADER
     );
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LoggingFilter.class);

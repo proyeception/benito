@@ -1,5 +1,6 @@
 package com.github.proyeception.benito.dto
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDate
 
 data class ErrorDTO(
@@ -32,7 +33,9 @@ data class ProjectDTO(
     val supervisors: List<PersonRefDTO>,
     val tags: List<String>,
     val documentation: List<DocumentationDTO>,
-    val organization: OrganizationRefDTO
+    val organization: OrganizationRefDTO,
+    val recommendations: List<RecommendationDTO>,
+    val project_keywords: List<KeywordDTO>
 ) {
     constructor(medusa: MedusaProjectDTO) : this(
         id = medusa.id,
@@ -45,19 +48,23 @@ data class ProjectDTO(
         supervisors = medusa.supervisors.map { PersonRefDTO(it) },
         tags = emptyList(),
         documentation = medusa.documentation,
-        organization = OrganizationRefDTO(medusa.organization)
+        organization = OrganizationRefDTO(medusa.organization) ,
+        recommendations = medusa.recommendations.map { RecommendationDTO(it) },
+        project_keywords = medusa.project_keywords
     )
 }
 
 data class PersonDTO(
     val id: String,
-    val username: String?,
+    val username: String? = null,
     val fullName: String,
     val organizations: List<OrganizationDTO>,
-    val profilePicUrl: String?,
+    val profilePicUrl: String? = null,
     val projects: List<ProjectRefDTO>,
     val socials: List<SocialDTO>,
-    val contact: ContactDTO?
+    val contact: ContactDTO? = null,
+    val about: String? = null,
+    val apiKeys: List<Any> = emptyList()
 )
 
 data class OrganizationRefDTO(
@@ -117,7 +124,8 @@ data class LoginDTO(
 data class UpdateContentDTO(
     val title: String?,
     val description: String?,
-    val extraContent: String?
+    val extraContent: String?,
+    val documentation: List<String>
 )
 
 data class AddUsersDTO(
@@ -148,3 +156,39 @@ data class PersonRefDTO(
         profilePicUrl = medusa.profilePic?.url
     )
 }
+
+data class RecommendationDTO(
+    val id: String?,
+    val score: Double,
+    @JsonProperty("project") val projectId: String
+){
+    constructor(medusa: MedusaRecommendationDTO) : this(
+        id = medusa.id,
+        score = medusa.score,
+        projectId = medusa.project
+    )
+}
+
+data class CreateRecommendationDTO(
+    @JsonProperty("project") val projectId: String,
+    val score: Double
+)
+
+data class CreatedRecommendationDTO(
+    val id: String,
+    val score: Double,
+    @JsonProperty("project") val projectId: CreatedProjectRecommendationDTO
+)
+
+data class CreatedProjectRecommendationDTO(
+    val id: String
+)
+
+data class ProjectRecommendationDTO(
+    val id: String,
+    val project_keywords: List<KeywordDTO>
+)
+
+data class SetRecommendationDTO(
+    val recommendations: List<RecommendationDTO>
+)

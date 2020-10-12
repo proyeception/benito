@@ -26,6 +26,7 @@ open class MedusaGraphClient(
         keyword: String? = null,
         organizationId: String? = null,
         organizationName: String? = null,
+        id: String? = null,
         page: Int = 0
     ): Either<Throwable, List<MedusaProjectDTO>> {
         val params = formatParams(
@@ -39,7 +40,8 @@ open class MedusaGraphClient(
             keyword = keyword,
             organizationId = organizationId,
             organizationName = organizationName,
-            page = page
+            page = page,
+            id = id
         )
 
         LOGGER.info("Search params: $params")
@@ -84,6 +86,7 @@ open class MedusaGraphClient(
                     id
                     url
                   }
+                  about
                 }
                 supervisors {
                   id
@@ -93,16 +96,55 @@ open class MedusaGraphClient(
                     id
                     url
                   }
+                  about
                 }
                 documentation {
                   id
                   file_name
                   drive_id
                 }
+                recommendations {
+                  id
+                  score
+                  project {
+                    id
+                  }
+                }
+                project_keywords {
+                  name
+                  score
+                }
               }
             }
         """.trimIndent()
-        ).map { it.deserializeAs(PROJECTS_REF).projects }
+        )
+            .map { res ->
+                res.map { b ->
+                    b.mapValues { (_, p) -> p as List<Map<String, Any>> }
+                        .mapValues { (_, p) ->
+                            p.map {
+                                it.mapValues { (k, v) -> simplifyRecommendations(k, v) }
+                            }
+                        }
+                }
+            }
+            .map { it.deserializeAs(PROJECTS_REF).projects }
+    }
+
+    private fun simplifyRecommendations(k: String, v: Any): Any {
+        fun simplifyRecommendation(rec: Map<String, Any?>): Map<String, Any?> {
+            val projectId = (rec["project"] as Map<*, *>).get("id")
+            return mapOf(
+                "id" to rec["id"],
+                "score" to rec["score"],
+                "project" to projectId
+            )
+        }
+
+        return when (k) {
+            "recommendations" -> (v as List<Map<String, Any>>).map { simplifyRecommendation(it) }
+            else -> v
+        }
     }
 
     open fun formatParams(
@@ -116,6 +158,7 @@ open class MedusaGraphClient(
         keyword: String? = null,
         organizationId: String? = null,
         organizationName: String? = null,
+        id: String? = null,
         page: Int = 0
     ): String {
         val where = mutableListOf<String>()
@@ -123,11 +166,12 @@ open class MedusaGraphClient(
         keyword?.let { where.add("""documentation: { content_contains: "${it.replaceUrlSpaces()}" }""") }
         from?.let { where.add("""creation_date_gte: "$it"""") }
         to?.let { where.add("""creation_date_lte: "$it"""") }
-        category?.let { where.add("""category: { name: "$it" }""") }
+        category?.let { where.add("""category: { tag_name: "$it" }""") }
         authorId?.let { where.add("""authors: { id: "$it" }""") }
         authorName?.let { where.add("""authors: { full_name_contains: "${it.replaceUrlSpaces()}" }""") }
         organizationId?.let { where.add("""organization: { id: "$it" }""") }
-        organizationName?.let { where.add(""""organization: { name_contains: "$it" }""") }
+        organizationName?.let { where.add("""organization: { name: "$it" }""") }
+        id?.let { where.add("""id: "$it"""") }
 
         val sort = orderBy?.let { """sort: "${it.sortMethod}"""" }
 
@@ -148,6 +192,7 @@ open class MedusaGraphClient(
 
     private companion object {
         private val PROJECTS_REF = object : TypeReference<Projects>() {}
+        private val SINGLE_PROJECT_REF = object : TypeReference<MedusaProjectDTO>() {}
         private const val PAGE_SIZE = 10
         private val LOGGER = LoggerFactory.getLogger(MedusaGraphClient::class.java)
     }

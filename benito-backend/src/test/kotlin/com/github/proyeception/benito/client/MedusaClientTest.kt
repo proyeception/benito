@@ -57,7 +57,9 @@ class MedusaClientTest : Spec() {
                 organization = OrganizationRefDTO(
                     id = "123",
                     displayName = "Proyectate"
-                )
+                ),
+                recommendations = emptyList(),
+                project_keywords = emptyList()
             )
 
             "get to /projects returns all projects" {
@@ -325,7 +327,9 @@ class MedusaClientTest : Spec() {
                     authors = emptyList(),
                     supervisors = emptyList()
                 ),
-                tags = emptyList()
+                tags = emptyList(),
+                recommendations = emptyList(),
+                project_keywords = emptyList()
             )
 
             "get to /projects/{id} returns specified project" {
@@ -362,11 +366,8 @@ class MedusaClientTest : Spec() {
                     username = null,
                     fullName = "Benito Quinquela",
                     organizations = emptyList(),
-                    profilePic = null,
                     projects = emptyList(),
-                    socials = emptyList(),
-                    mail = null,
-                    phone = null
+                    socials = emptyList()
                 )
                 on(responseMock.deserializeAs(any(TypeReference::class.java))).thenReturn(person)
 

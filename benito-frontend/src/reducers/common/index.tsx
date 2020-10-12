@@ -4,12 +4,14 @@ import {
   UPDATE_CATEGORIES,
   TOGGLE_HAMBURGER_BUTTON,
   TOGGLE_LOADING,
+  UPDATE_ORGANIZATIONS,
 } from "../../store/common/types";
 
 const defaultCommonState: CommonState = {
   categories: [],
   isMenuOpen: false,
   loading: false,
+  organizations: [],
 };
 
 function commonReducer(state = defaultCommonState, action: CommonAction) {
@@ -28,6 +30,12 @@ function commonReducer(state = defaultCommonState, action: CommonAction) {
       return {
         ...state,
         loading: action.payload,
+      };
+    }
+    case UPDATE_ORGANIZATIONS: {
+      return {
+        ...state,
+        organizations: action.payload,
       };
     }
     default:
