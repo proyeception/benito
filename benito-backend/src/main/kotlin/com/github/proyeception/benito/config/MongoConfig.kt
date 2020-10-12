@@ -18,7 +18,7 @@ open class MongoConfig {
         val mongoConfig = config.getConfig("storage")
 
         val user = mongoConfig.getString("user")
-        val password = mongoConfig.getString("password")
+        val password = System.getenv("STORAGE_PASSWORD") ?: mongoConfig.getString("password")
         val host = mongoConfig.getString("host")
         val databaseName = mongoConfig.getString("db.name")
 

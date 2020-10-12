@@ -71,18 +71,9 @@ open class ProjectService(
 
     fun count(): CountDTO = CountDTO(medusaClient.projectCount())
 
-    open fun findProject(id: String): ProjectDTO = medusaGraphClient.findProjects(id = id)
-        .getOrHandle {
-            LOGGER.error("Error getting project $id from Medusa with Graph")
-            throw FailedDependencyException("Error getting $id from Medusa")
-        }
-        .let {
-            when (it.size) {
-                0 -> throw NotFoundException("No project found for ID $id")
-                1 -> ProjectDTO(it.first())
-                else -> throw AmbiguousReferenceException("Ambiguous ID $id")
-            }
-        }
+    open fun findProject(id: String): ProjectDTO = mappingFromMedusa {
+        medusaClient.findProject(projectId = id)
+    }
 
     fun updateProjectContent(content: UpdateContentDTO, projectId: String): ProjectDTO {
         val updatedProject = mappingFromMedusa {

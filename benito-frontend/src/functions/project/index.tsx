@@ -37,6 +37,7 @@ export function setProjectEditionRole({
 
 export function updateContent(
   projectId: string,
+  documents: Array<String>,
   title?: string,
   description?: string,
   extraContent?: string
@@ -47,6 +48,7 @@ export function updateContent(
       title: title,
       description: description,
       extraContent: extraContent,
+      documentation: documents,
     },
     method: "PATCH",
   };
@@ -77,7 +79,7 @@ export function uploadDocuments(projectId: string, documents: Array<File>) {
     data: form,
   };
 
-  return axios.request(signRequest(documentsConfig)).then(console.log);
+  return axios.request(signRequest(documentsConfig));
 }
 
 export function addUsersToProject(

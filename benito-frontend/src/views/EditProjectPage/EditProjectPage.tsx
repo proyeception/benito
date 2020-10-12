@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Divider,
   makeStyles,
   TextField,
 } from "@material-ui/core";
@@ -53,6 +54,11 @@ const useStyles = makeStyles(styles);
 type MatchParams = {
   id: string;
 };
+
+interface Change {
+  undo: () => void;
+  render: () => React.ReactNode;
+}
 
 interface EditProjectPageProps extends RouteComponentProps<MatchParams> {
   session: SessionState;
@@ -124,49 +130,75 @@ const EditProjectPage = (props: EditProjectPageProps) => {
   }
 
   function Changes() {
-    const changes: Array<React.ReactNode> = [];
+    const changes: Array<Change> = [];
 
     if (initialTitle != title)
-      changes.push(
-        <li>
-          Renombrar el proyecto de {initialTitle} a {title}
-        </li>
-      );
+      changes.push({
+        undo: () => setTitle(initialTitle),
+        render: () => (
+          <p>
+            Renombrar el proyecto de {initialTitle} a {title}
+          </p>
+        ),
+      });
     if (initialDescription != description)
-      changes.push(<li>Actualizar la descripción del proyecto</li>);
+      changes.push({
+        undo: () => setDescription(initialDescription),
+        render: () => <p> Actualizar la descripción del proyecto</p>,
+      });
     if (initialReadme != readme)
-      changes.push(<li>Actualizar la descripción extendida del proyecto</li>);
-    if (picture) changes.push(<li>Actualizar la image del proyecto</li>);
+      changes.push({
+        undo: () => setReadme(initialReadme),
+        render: () => <p>Actualizar la descripción extendida del proyecto</p>,
+      });
+    if (picture)
+      changes.push({
+        undo: () => setPicture(undefined),
+        render: () => <p>Actualizar la image del proyecto</p>,
+      });
     documentsToUpload.forEach((d) =>
-      changes.push(<li>Subir el documento {d.name}</li>)
+      changes.push({
+        undo: () =>
+          setDocumentsToUpload(documentsToUpload.filter((dtu) => dtu != d)),
+        render: () => <p>Subir el documento {d.name}</p>,
+      })
     );
     documentsToRemove.forEach((d) =>
-      changes.push(<li>Borrar el documento {d.fileName}</li>)
+      changes.push({
+        undo: () =>
+          setDocumentsToRemove(documentsToRemove.filter((dtr) => (dtr! = d))),
+        render: () => <p>Borrar el documento {d.fileName}</p>,
+      })
     );
     authorsToAdd.forEach((a) =>
-      changes.push(<li>Agregar a {a.fullName} como autor</li>)
+      changes.push({
+        undo: () => setAuthorsToAdd(authorsToAdd.filter((ata) => ata != a)),
+        render: () => <p>Agregar a {a.fullName} como autor</p>,
+      })
     );
     supervisorsToAdd.forEach((s) =>
-      changes.push(<li>Agregar a {s.fullName} como supervisor</li>)
+      changes.push({
+        undo: () =>
+          setSupervisorsToAdd(supervisorsToAdd.filter((sta) => sta != s)),
+        render: () => <p>Agregar a {s.fullName} como supervisor</p>,
+      })
     );
     authorsToRemove.forEach((a) =>
-      changes.push(<li>Eliminar a {a.fullName} como autor</li>)
+      changes.push({
+        undo: () =>
+          setAuthorsToRemove(authorsToRemove.filter((atr) => atr != a)),
+        render: () => <p>Eliminar a {a.fullName} como autor</p>,
+      })
     );
     supervisorsToRemove.forEach((s) =>
-      changes.push(<li>Eliminar a {s.fullName} como supervisor</li>)
+      changes.push({
+        undo: () =>
+          setSupervisorsToRemove(supervisorsToRemove.filter((str) => str != s)),
+        render: () => <p>Eliminar a {s.fullName} como supervisor</p>,
+      })
     );
 
-    if (changes.length == 0) {
-      return <h3>¡Uy! Parece que no hiciste ningún cambio todavía</h3>;
-    }
-
-    return (
-      <div>
-        <h4>Vas a aplicar los siguientes cambios</h4>
-        <ul>{changes}</ul>
-        <h5>¿Estás seguro de aplicar estos cambios?</h5>
-      </div>
-    );
+    return changes;
   }
 
   if (props.session.isLoggedIn) {
@@ -184,8 +216,19 @@ const EditProjectPage = (props: EditProjectPageProps) => {
     let promises = [];
     const projectId = project.id;
 
-    //content
-    const contentPromise = updateContent(projectId, title, description, readme)
+    //content, documents
+    const contentPromise = updateContent(
+      projectId,
+      project.documentation
+        .filter((d) => !documentsToRemove.includes(d))
+        .map((d) => d.id),
+      title,
+      description,
+      readme
+    )
+      .then(console.log)
+      .catch(console.error)
+      .then(() => uploadDocuments(projectId, documentsToUpload))
       .then(console.log)
       .catch(console.error);
 
@@ -194,11 +237,6 @@ const EditProjectPage = (props: EditProjectPageProps) => {
     //picture
     if (picture != undefined) {
       promises.push(updatePicture(projectId, picture));
-    }
-
-    //documents
-    if (documentsToUpload.length > 0) {
-      promises.push(uploadDocuments(projectId, documentsToUpload));
     }
 
     //users
@@ -410,6 +448,23 @@ const EditProjectPage = (props: EditProjectPageProps) => {
           <div></div>
         )}
         <GridContainer align="center" className={classes.container}>
+          <GridItem xs={12}>
+            <Divider variant="fullWidth" />
+          </GridItem>
+          <GridItem xs={12} align="left">
+            <h3>Cambios</h3>
+            <ul>
+              {Changes().map((c, idx) => (
+                <li
+                  className="cursor-pointer underline-hover"
+                  onClick={() => c.undo()}
+                  key={idx}
+                >
+                  {c.render()}
+                </li>
+              ))}
+            </ul>
+          </GridItem>
           <GridItem xs={6}>
             <CustomButton
               type="button"
@@ -451,8 +506,14 @@ const EditProjectPage = (props: EditProjectPageProps) => {
               <div style={{ display: "flex", justifyContent: "center" }}>
                 <CircularProgress />
               </div>
+            ) : Changes().length == 0 ? (
+              <h4>¡Uy! Parece que no hiciste ningún cambio aún</h4>
             ) : (
-              <Changes />
+              <ul>
+                {Changes().map((c, idx) => (
+                  <li key={idx}>{c.render()}</li>
+                ))}
+              </ul>
             )}
           </DialogContentText>
         </DialogContent>
