@@ -1,4 +1,4 @@
-import { Card, CircularProgress, makeStyles } from "@material-ui/core";
+import { Card, CircularProgress, createMuiTheme, makeStyles, ThemeProvider } from "@material-ui/core";
 import React, { useState } from "react";
 import { hot } from "react-hot-loader";
 import GridContainer from "../../../components/Grid/GridContainer";
@@ -11,6 +11,7 @@ import {
   cardSubtitle,
 } from "../../../assets/jss/material-kit-react";
 import CardBody from "../../../components/Card/CardBody";
+import CustomButton from "../../../components/CustomButtons/Button";
 import classNames from "classnames";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -22,6 +23,7 @@ import {
   leaveOrganization,
   mapRoleToCollection,
 } from "../../../functions/user";
+import { grey } from "@material-ui/core/colors";
 
 const styles = {
   ...organizationsStyle,
@@ -34,6 +36,12 @@ interface OrganizationsSectionProps {
   user: Person;
   role: Role;
 }
+
+const theme = createMuiTheme({
+  palette: {
+    primary: grey,
+  },
+});
 
 const useStyles = makeStyles(styles);
 
@@ -64,7 +72,6 @@ const OrganizationsSection = (props: OrganizationsSectionProps) => {
 
   return (
     <div>
-      HOli
       <GridContainer justify="left" className={classes.container}>
         {organizations.map((o, idx) => (
           <GridItem
@@ -74,7 +81,7 @@ const OrganizationsSection = (props: OrganizationsSectionProps) => {
             md={6}
             className={classes.rowItem}
           >
-            <Card style={{ width: "13rem" }}>
+            <Card style={{ width: "13rem", backgroundColor: "lightgrey" }}>
               <CardBody>
                 <div
                   className={classNames(classes.cardTitle, classes.orgHeader)}
@@ -83,7 +90,9 @@ const OrganizationsSection = (props: OrganizationsSectionProps) => {
                   <h4 className={classes.cardTitle}>{o.displayName}</h4>
                 </div>
 
-                <Button
+                <CustomButton
+                  type="button"
+                  color="primary"
                   className={classes.cardLink}
                   onClick={() => {
                     handleOpen();
@@ -91,12 +100,13 @@ const OrganizationsSection = (props: OrganizationsSectionProps) => {
                   }}
                 >
                   Abandonar
-                </Button>
+                </CustomButton>
               </CardBody>
             </Card>
           </GridItem>
         ))}
       </GridContainer>
+      <ThemeProvider theme={theme}>
       <Dialog
         open={isModalOpen}
         onClose={handleClose}
@@ -145,6 +155,7 @@ const OrganizationsSection = (props: OrganizationsSectionProps) => {
           </Button>
         </DialogActions>
       </Dialog>
+      </ThemeProvider>
     </div>
   );
 };
