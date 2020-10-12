@@ -2,20 +2,19 @@
 
 if [ $# -eq 0 ]
 then
-  echo "Usage: ./build <env> <version>"
+  echo "Usage: ./build <env>"
   exit -1
 fi
 
 set -e
 
 ENVIRONMENT=$1
-VERSION=$2
 FRONTEND="benito-frontend"
 BACKEND="benito-backend"
 BACKEND_RESOURCES=$BACKEND/src/main/resources
 BACKEND_ENVIRONMENTS=$BACKEND/environments
 ARTIFACT="benito"
-FINAL_ARTIFACT_NAME="benito-$VERSION"
+FINAL_ARTIFACT_NAME="benito"
 
 npm install --prefix $FRONTEND
 npm run "build-$ENVIRONMENT" --prefix $FRONTEND
