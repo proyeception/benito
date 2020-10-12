@@ -37,6 +37,7 @@ import CustomButton from "../../components/CustomButtons/Button";
 import { fetchOrganization } from "../../functions/organization";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import withUser from "../../hooks/withUser";
+import { createProject } from "../../functions/project";
 
 const useStyles = makeStyles(styles);
 
@@ -135,6 +136,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
 
   function Changes() {
     const changes: Array<Change> = [];
+
     documentsToUpload.forEach((d) =>
       changes.push({
         undo: () =>
@@ -169,6 +171,9 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
     console.log(documentsToUpload)
     console.log(readme)
     console.log(category)
+
+    const response = createProject(title!, category!.id, project.organization.id);
+    //response.then
 
   }
 

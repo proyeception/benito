@@ -101,6 +101,7 @@ class ProjectServiceTest : Spec() {
                     supervisors = listOf(supervisor),
                     documentation = listOf(documentation),
                     category = CategoryDTO(
+                        id = "1",
                         name = "Systems",
                         tagName = "systems",
                         imageUrl = ""
@@ -205,7 +206,7 @@ class ProjectServiceTest : Spec() {
                     authors = listOf(author),
                     supervisors = listOf(supervisor),
                     documentation = listOf(documentation),
-                    category = CategoryDTO("Systems", "systems", ""),
+                    category = CategoryDTO("1","Systems", "systems", ""),
                     organization = MedusaOrganizationDTO(
                         displayName = "UTN FRBA",
                         name = "utnfrba",
@@ -249,7 +250,7 @@ class ProjectServiceTest : Spec() {
                     authors = emptyList(),
                     supervisors = emptyList(),
                     documentation = emptyList(),
-                    category = CategoryDTO(name = "utn", tagName = "UTN", imageUrl = "https://image.com"),
+                    category = CategoryDTO(id = "1", name = "utn", tagName = "UTN", imageUrl = "https://image.com"),
                     organization = MedusaOrganizationDTO(
                         id = "123",
                         displayName = "Some org",
@@ -306,7 +307,7 @@ class ProjectServiceTest : Spec() {
                     authors = emptyList(),
                     supervisors = emptyList(),
                     documentation = emptyList(),
-                    category = CategoryDTO(name = "utn", tagName = "UTN", imageUrl = "https://image.com"),
+                    category = CategoryDTO(id = "1", name = "utn", tagName = "UTN", imageUrl = "https://image.com"),
                     organization = MedusaOrganizationDTO(
                         id = "123",
                         displayName = "Some org",
@@ -359,7 +360,7 @@ class ProjectServiceTest : Spec() {
                     authors = emptyList(),
                     supervisors = emptyList(),
                     documentation = emptyList(),
-                    category = CategoryDTO(name = "utn", tagName = "UTN", imageUrl = "https://image.com"),
+                    category = CategoryDTO(id = "1", name = "utn", tagName = "UTN", imageUrl = "https://image.com"),
                     organization = MedusaOrganizationDTO(
                         id = "123",
                         displayName = "Some org",
