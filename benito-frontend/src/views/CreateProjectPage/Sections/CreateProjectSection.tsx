@@ -1,9 +1,14 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from "react";
+=======
+import React from "react";
+>>>>>>> f5f3851... Agrega página boba para /create para creación de proyectos simple
 import { makeStyles } from "@material-ui/core/styles";
 
 import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
 
+<<<<<<< HEAD
 import styles from "../../../assets/jss/material-kit-react/views/createProject";
 import { Project, Person, Organization } from "../../../types";
 import CustomInput from "../../../components/CustomInput/CustomInput";
@@ -76,6 +81,21 @@ function CreateProjectSection(props: Props) {
     );
   }
 
+=======
+import styles from "../../../assets/jss/material-kit-react/views/landingPageSections/productStyle";
+import { Project } from "../../../types";
+import MarkdownCompiler from "../../../components/MarkdownCompiler/MarkdownCompiler";
+import CustomInput from "../../../components/CustomInput/CustomInput";
+
+const useStyles = makeStyles(styles);
+
+type CreateProjectSectionProps = {
+  project: Project;
+};
+
+export default function CreateProjectSection({ project }: CreateProjectSectionProps) {
+  const classes = useStyles();
+>>>>>>> f5f3851... Agrega página boba para /create para creación de proyectos simple
   return (
     <div className={classes.section}>
       <GridContainer justify="left">
@@ -100,6 +120,7 @@ function CreateProjectSection(props: Props) {
                     variant: "outlined"
                 }}
             />
+<<<<<<< HEAD
         
         <div className="col-12 mt-3">
             <div className={"font-size-18 font-size-24-md font-weight-bolder " + classes.supervisorsAuthors}>
@@ -212,11 +233,24 @@ function CreateProjectSection(props: Props) {
                 </button>
               </div>
             </div>
+=======
+        </GridItem>
+        <GridItem xs={12} sm={12} md={12}>
+          <h2 className={classes.title} style={{ textAlign: "center" }}>
+            Acerca de {project.title}
+          </h2>
+          <h5 className={classes.description}>{project.description}</h5>
+        </GridItem>
+        <GridItem xs={12} sm={12} md={12}>
+          <div className={classes.description}>
+            <MarkdownCompiler source={project.extraContent.valueOf()} />
+>>>>>>> f5f3851... Agrega página boba para /create para creación de proyectos simple
           </div>
         </GridItem>
       </GridContainer>
     </div>
   );
+<<<<<<< HEAD
 }
 
 const mapStateToProps = (rootState: RootState) => {
@@ -231,3 +265,6 @@ const mapStateToProps = (rootState: RootState) => {
 export default hot(module)(
   withRouter(connect(mapStateToProps)(CreateProjectSection))
 );
+=======
+}
+>>>>>>> f5f3851... Agrega página boba para /create para creación de proyectos simple
