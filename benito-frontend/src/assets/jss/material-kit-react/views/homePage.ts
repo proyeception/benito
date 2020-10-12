@@ -21,7 +21,8 @@ const homePage = (theme: Theme) => createStyles({
   main: {
     background: "#FFFFFF",
     position: "relative",
-    zIndex: 3
+    zIndex: 3,
+    paddingBottom: "170px",
   },
   mainRaised: {
     margin: "-60px 30px 0px",

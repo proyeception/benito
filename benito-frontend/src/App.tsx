@@ -62,7 +62,7 @@ const App = () => {
           <Route path="/error" component={ErrorPage} />
           <Route path="/comingSoon" component={ComingSoon} />
           <Route path="/me/:tab" component={MePage} />
-          <Route path="/" component={HomePage} />
+          <Route path="/" exact component={HomePage} />
           <Route component={NotFoundPage} />
         </Switch>
       </BrowserRouter>

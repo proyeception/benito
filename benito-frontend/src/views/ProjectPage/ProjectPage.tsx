@@ -75,7 +75,7 @@ const ProjectPage = (props: Props) => {
         </div>
       </Parallax>
       <div className={classNames(classes.main, classes.mainRaised)}>
-        <GridContainer>
+        <GridContainer justify="center">
           <GridItem xs={12} sm={12} md={9} className={classes.project}>
             <ProductSection project={project.value} />
             <TeamSection project={project.value} />

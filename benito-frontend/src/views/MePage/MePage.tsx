@@ -23,6 +23,7 @@ import OrganizationsSection from "./Sections/OrganizationsSection";
 import SettingsSection from "./Sections/SettingsSection";
 import Footer from "../../components/Footer/Footer";
 import Spinner from "../../components/Spinner/Spinner";
+import image from "../../assets/img/proyectate/pattern.jpg"
 
 const useStyles = makeStyles(styles);
 
@@ -94,6 +95,8 @@ const MePage = (props: MePageProps) => {
   const activeTab =
     tabs.findIndex((t) => t.key === props.match.params.tab) || 0;
 
+    const noProfilePic = "https://image.flaticon.com/icons/png/512/16/16363.png";
+
   return (
     <div>
       <Header color="darkGray" rightLinks={<HeaderLinks />} fixed {...rest} />
@@ -101,7 +104,7 @@ const MePage = (props: MePageProps) => {
       <Parallax
         small
         filter
-        image={require("../../assets/img/profile-bg.jpg")}
+        image={image}
       />
       <div className={classNames(classes.main, classes.mainRaised)}>
         <div>
@@ -111,7 +114,7 @@ const MePage = (props: MePageProps) => {
                 <div className={classes.profile}>
                   <div>
                     <img
-                      src={user.value.profilePicUrl?.valueOf()}
+                      src={user.value.profilePicUrl?.valueOf()  || noProfilePic}
                       alt={user.value.fullName.valueOf()}
                       className={imageClasses + " cursor-pointer"}
                     />

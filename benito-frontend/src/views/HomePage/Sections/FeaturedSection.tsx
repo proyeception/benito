@@ -13,6 +13,7 @@ import Button from "../../../components/CustomButtons/Button";
 import { Link } from "react-router-dom";
 import featuredStyle from "../../../assets/jss/material-kit-react/views/homeSections/featuredSection";
 import { Height } from "@material-ui/icons";
+import classNames from "classnames";
 
 type FeaturedSectionProps = {};
 
@@ -52,8 +53,8 @@ const FeaturedSection = (props: FeaturedSectionProps) => {
 
   return (
     <div style={{ marginLeft: "10%", marginRight: "10%" }}>
-      <h2 className={classes.title} style={{ textAlign: "center" }}>
-        Los más destacados
+      <h2 className={classes.title} style={{ textAlign: "center", paddingTop: "20px" }}>
+        Proyectos destacados
       </h2>
       <Carousel
         responsive={responsive}
@@ -63,26 +64,29 @@ const FeaturedSection = (props: FeaturedSectionProps) => {
         transitionDuration={500}
         containerClass="carousel-container"
         removeArrowOnDeviceType={["tablet", "mobile"]}
-        itemClass="carousel-item-padding-40-px"
+        itemClass="carousel-item"
         dotListClass="custom-dot-list-style"
       >
         {featured.value.map((project, index) => (
-          <Card key={index} style={{ width: "20rem", height:"400px"}}>
+          <Card key={index} style={{ width: "20rem", height:"420px", boxShadow: "none"}}>
             <img
               style={{ height: "180px", width: "100%", display: "block" }}
-              className={classes.imgCardTop}
+              className={classNames(classes.imgCard, classes.imgRaised, classes.imgFit)}
               src={project.pictureUrl}
               alt={project.title}
             />
             <CardBody className="read-more-container">
-              <h4 className={classes.cardTitle}>{project.title}</h4>
+            <div className="organization">{project.organization.displayName}</div>
+              <p className={classes.cardTitle}>{project.title}</p>
               <div className="read-more-container">
                 <p className="featured-card-text">{project.description}</p>
                 <p className="read-more"></p>
               </div>
+              <div className="carrousel-button-project">
               <Link to={`/projects/${project.id}`} className="normalize-link">
                 <Button color="primary">Ver más</Button>
               </Link>
+              </div>
             </CardBody>
           </Card>
         ))}
