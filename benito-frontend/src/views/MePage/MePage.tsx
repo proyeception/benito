@@ -94,6 +94,8 @@ const MePage = (props: MePageProps) => {
   const activeTab =
     tabs.findIndex((t) => t.key === props.match.params.tab) || 0;
 
+    const noProfilePic = "https://image.flaticon.com/icons/png/512/16/16363.png";
+
   return (
     <div>
       <Header color="darkGray" rightLinks={<HeaderLinks />} fixed {...rest} />
@@ -111,7 +113,7 @@ const MePage = (props: MePageProps) => {
                 <div className={classes.profile}>
                   <div>
                     <img
-                      src={user.value.profilePicUrl?.valueOf()}
+                      src={user.value.profilePicUrl?.valueOf()  || noProfilePic}
                       alt={user.value.fullName.valueOf()}
                       className={imageClasses + " cursor-pointer"}
                     />

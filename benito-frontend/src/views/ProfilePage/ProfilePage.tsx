@@ -60,6 +60,7 @@ const ProfilePage = (props: ProfilePageProps) => {
   );
 
   const user = withUser(props.role, props.match.params.id);
+  const noProfilePic = "https://image.flaticon.com/icons/png/512/16/16363.png";
 
   if (user.type == PENDING) {
     return <Spinner/>;
@@ -90,7 +91,7 @@ const ProfilePage = (props: ProfilePageProps) => {
                 <div className={classes.profile}>
                   <div>
                     <img
-                      src={user.value.profilePicUrl?.valueOf()}
+                      src={user.value.profilePicUrl?.valueOf() || noProfilePic}
                       alt={user.value.fullName.valueOf()}
                       className={imageClasses}
                     />
