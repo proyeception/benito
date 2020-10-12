@@ -92,6 +92,12 @@ open class MedusaClient(
         ref = MEDUSA_PERSON_REF
     )
 
+    open fun createGhostUser(ghost: CreateGhostUserDTO, userType: UserType): MedusaPersonDTO = create(
+        collection = userType.collection,
+        dto = ghost,
+        ref = MEDUSA_PERSON_REF
+    )
+
     open fun findUsersBy(userType: UserType, vararg params: Pair<String, String>): List<MedusaPersonDTO> = find(
         collection = userType.collection,
         params = params.takeIf { it.isNotEmpty() }?.map { (field, value) -> "$field=$value" }
