@@ -18,7 +18,7 @@ import { updateFetchStatus } from "../../../actions/search";
 import ProjectLink from "../../../components/Links/ProjectLink";
 import Spinner from "../../../components/Spinner/Spinner";
 import image from "../../../assets/img/proyectate/nothing.jpg"
-import pictureNotFound from "../../assets/img/proyectate/picture.svg"
+import pictureNotFound from "../../../assets/img/proyectate/picture.svg"
 
 interface SearchResultsSectionProps extends RouteChildrenProps<SearchParams> {
   status: Fetch;

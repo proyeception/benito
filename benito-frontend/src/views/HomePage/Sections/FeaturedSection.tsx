@@ -14,7 +14,7 @@ import { Link, Redirect } from "react-router-dom";
 import featuredStyle from "../../../assets/jss/material-kit-react/views/homeSections/featuredSection";
 import { Height } from "@material-ui/icons";
 import classNames from "classnames";
-import pictureNotFound from "../../assets/img/proyectate/picture.svg"
+import pictureNotFound from "../../../assets/img/proyectate/picture.svg"
 import ProjectLink from "../../../components/Links/ProjectLink";
 
 type FeaturedSectionProps = {};
