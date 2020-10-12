@@ -14,6 +14,7 @@ import { Link, Redirect } from "react-router-dom";
 import featuredStyle from "../../../assets/jss/material-kit-react/views/homeSections/featuredSection";
 import { Height } from "@material-ui/icons";
 import classNames from "classnames";
+import pictureNotFound from "../../assets/img/proyectate/picture.svg"
 
 type FeaturedSectionProps = {};
 
@@ -72,7 +73,7 @@ const FeaturedSection = (props: FeaturedSectionProps) => {
             <img
               style={{ height: "180px", width: "100%", display: "block" }}
               className={classNames(classes.imgCard, classes.imgRaised, classes.imgFit)}
-              src={project.pictureUrl}
+              src={project.pictureUrl || pictureNotFound}
               alt={project.title}
             />
             <CardBody className="read-more-container">

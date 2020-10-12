@@ -18,6 +18,7 @@ import { updateFetchStatus } from "../../../actions/search";
 import ProjectLink from "../../../components/Links/ProjectLink";
 import Spinner from "../../../components/Spinner/Spinner";
 import image from "../../../assets/img/proyectate/nothing.jpg"
+import pictureNotFound from "../../assets/img/proyectate/picture.svg"
 
 interface SearchResultsSectionProps extends RouteChildrenProps<SearchParams> {
   status: Fetch;
@@ -84,7 +85,7 @@ const SearchResultsSection = (props: SearchResultsSectionProps) => {
                   </div>
                   <Hidden mdUp>
                     <img
-                      src={p.pictureUrl?.valueOf()}
+                      src={p.pictureUrl?.valueOf() || pictureNotFound}
                       alt={p.title.valueOf()}
                       className={classes.pictureMobile}
                     />
@@ -100,7 +101,7 @@ const SearchResultsSection = (props: SearchResultsSectionProps) => {
                 <ProjectLink id={p.id}>
                   <Hidden only={["xs", "sm"]}>
                     <img
-                      src={p.pictureUrl?.valueOf()}
+                      src={p.pictureUrl?.valueOf() || pictureNotFound}
                       alt={p.title.valueOf()}
                       className={classes.picture}
                     />
