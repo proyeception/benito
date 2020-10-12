@@ -31,6 +31,7 @@ export type ApiKey = {
 };
 
 export type Category = {
+  id: string;
   name: string;
   imageUrl: string;
   tagName: string;

@@ -10,10 +10,11 @@ import Card from "../../../components/Card/Card";
 import imagesStyles from "../../../assets/jss/material-kit-react/imagesStyles";
 import { cardTitle, container } from "../../../assets/jss/material-kit-react";
 import Button from "../../../components/CustomButtons/Button";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import featuredStyle from "../../../assets/jss/material-kit-react/views/homeSections/featuredSection";
 import { Height } from "@material-ui/icons";
 import classNames from "classnames";
+import pictureNotFound from "../../../assets/img/proyectate/picture.svg"
 
 type FeaturedSectionProps = {};
 
@@ -44,7 +45,7 @@ const FeaturedSection = (props: FeaturedSectionProps) => {
   const classes = useStyles();
 
   if (featured.type == "ERROR") {
-    return <div>Pará loco rompiste algo!!</div>;
+    return <Redirect to={{ pathname: "/error" }} />;
   }
 
   if (featured.type == "PENDING") {
@@ -72,7 +73,7 @@ const FeaturedSection = (props: FeaturedSectionProps) => {
             <img
               style={{ height: "180px", width: "100%", display: "block" }}
               className={classNames(classes.imgCard, classes.imgRaised, classes.imgFit)}
-              src={project.pictureUrl}
+              src={project.pictureUrl || pictureNotFound}
               alt={project.title}
             />
             <CardBody className="read-more-container">
