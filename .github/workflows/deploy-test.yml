@@ -23,6 +23,8 @@ jobs:
         run: mvn --batch-mode clean test -f benito-backend/pom.xml
       - name: Build
         run: ./build test
+      - name: Install
+        run: mvn --batch-mode install -f benito-backend/pom.xml -Dmaven.test.skip=true
       - name: Deploy to heroku
-        run: HEROKU_API_KEY="${{secrets.BENITO_API_KEY}}" && mvn heroku:deploy -f benito-backend/pom.xml -Dmaven.test.skip=true -Dheroku.appName=benito-test
+        run: HEROKU_API_KEY="${{secrets.BENITO_API_KEY}}" && mvn --batch-mode heroku:deploy -f benito-backend/pom.xml -Dmaven.test.skip=true -Dheroku.appName=benito-test
 
