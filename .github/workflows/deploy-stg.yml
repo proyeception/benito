@@ -20,5 +20,5 @@ jobs:
       - name: Build
         run: ./build staging
       - name: Deploy to heroku
-        run: HEROKU_API_KEY="${{secrets.BENITO_API_KEY}}" && mvn heroku:deploy -f benito-backend/pom.xml -Dmaven.test.skip=true -DappName=benito-stg
+        run: HEROKU_API_KEY="${{secrets.BENITO_API_KEY}}" && mvn heroku:deploy -f benito-backend/pom.xml -Dmaven.test.skip=true -Dheroku.appName=benito-stg
 
