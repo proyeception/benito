@@ -39,16 +39,16 @@ data class CreateMedusaPersonDTO(
 )
 
 data class MedusaPersonDTO(
-    val id: String,
-    val username: String?,
-    val fullName: String,
-    val organizations: List<MedusaOrganizationDTO>,
-    val profilePic: MedusaFileDTO? = null,
-    val projects: List<MedusaProjectRefDTO>,
-    val socials: List<SocialDTO>,
-    val mail: String? = null,
-    val phone: String? = null,
-    val about: String? = null
+        val id: String,
+        val username: String?,
+        val fullName: String,
+        val organizations: List<MedusaOrganizationDTO>,
+        val profilePic: MedusaFileDTO? = null,
+        val projects: List<MedusaProjectRefDTO>,
+        var socials: List<SocialDTO>,
+        val mail: String? = null,
+        val phone: String? = null,
+        val about: String? = null
 )
 
 data class MedusaProjectRefDTO(

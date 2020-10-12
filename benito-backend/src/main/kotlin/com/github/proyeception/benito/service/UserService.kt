@@ -54,7 +54,17 @@ open class UserService(
             googleToken = googleToken
         )
 
-        medusaClient.createUser(person, UserType.AUTHOR)
+        val createUser = medusaClient.createUser(person, UserType.AUTHOR)
+        val copy = createUser.copy()
+
+        val twitter = SocialDTO("Twitter", "https://twitter.com/")
+        val linkedin = SocialDTO("Linkedin", "https://www.linkedin.com/")
+        val facebook = SocialDTO("Facebook", "https://www.facebook.com/")
+        copy.socials = mutableListOf(twitter, linkedin, facebook)
+
+        medusaClient.updateUser(copy.id, UpdateUserDTO(copy.mail, copy.phone, copy.fullName, copy.username, copy.socials), UserType.AUTHOR)
+
+        createUser
     }
 
     fun updateAuthorProfilePicture(id: String, image: MultipartFile): PersonDTO = updateUserProfilePicture(
