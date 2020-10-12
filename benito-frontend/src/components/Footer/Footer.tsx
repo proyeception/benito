@@ -32,7 +32,7 @@ export default function Footer(props: any) {
           <List className={classes.list}>
             <ListItem className={classes.inlineBlock}>
               <a
-                href="https://www.twitter.com/proyectate"
+                href="https://twitter.com/proyeception"
                 className={classes.block}
                 target="_blank"
               >
@@ -59,7 +59,7 @@ export default function Footer(props: any) {
             </ListItem>
             <ListItem className={classes.inlineBlock}>
               <a
-                href="https://www.instagram.com/proyectate"
+                href="https://www.instagram.com/proyeception/"
                 className={classes.block}
                 target="_blank"
               >
