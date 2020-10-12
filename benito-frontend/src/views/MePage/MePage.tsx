@@ -83,14 +83,6 @@ const MePage = (props: MePageProps) => {
       ),
       key: "organizations",
     },
-    {
-      tabButton: "Configuración",
-      tabIcon: Build,
-      tabContent: (
-        <SettingsSection user={user.value} role={props.session.role} />
-      ),
-      key: "settings",
-    },
   ];
 
   const activeTab =
