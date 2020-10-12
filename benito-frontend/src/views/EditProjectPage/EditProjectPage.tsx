@@ -7,6 +7,7 @@ import {
   DialogContentText,
   DialogTitle,
   Divider,
+  Hidden,
   makeStyles,
   TextField,
 } from "@material-ui/core";
@@ -24,7 +25,7 @@ import Spinner from "../../components/Spinner/Spinner";
 import { ERROR, PENDING } from "../../hooks/withFetch";
 import withProject from "../../hooks/withProject";
 import CustomTabs from "../../components/CustomTabs/CustomTabs";
-import { Edit, Description, RemoveCircle } from "@material-ui/icons";
+import { Edit, Description, RemoveCircle, AddCircle } from "@material-ui/icons";
 import MarkdownCompiler from "../../components/MarkdownCompiler/MarkdownCompiler";
 import {
   Documentation,
@@ -48,6 +49,7 @@ import {
   updatePicture,
   uploadDocuments,
 } from "../../functions/project";
+import useCreateGhostUser from "../../components/CreateGhostUser/CreateGhostUser";
 
 const useStyles = makeStyles(styles);
 
@@ -95,6 +97,21 @@ const EditProjectPage = (props: EditProjectPageProps) => {
   const [organization, setOrganization] = useState<
     Organization | undefined | "ERROR"
   >();
+  const [justCreatedSupervisors, setJustCreatedSupervisors] = useState<
+    Array<Person>
+  >([]);
+  const [justCreatedAuthors, setJustCreatedAuthors] = useState<Array<Person>>(
+    []
+  );
+  const [
+    openGhostSupervisorForm,
+    GhostSupervisorForm,
+  ] = useCreateGhostUser((p) =>
+    setJustCreatedSupervisors(justCreatedSupervisors.concat(p))
+  );
+  const [openGhostAuthorForm, GhostAuthorForm] = useCreateGhostUser((p) =>
+    setJustCreatedAuthors(justCreatedAuthors.concat(p))
+  );
 
   const project = withProject(props.match.params.id, (p) => {
     setTitle(p.title);
@@ -376,6 +393,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
             <GridItem>
               <h3>Autores</h3>
               {project.value.authors
+                .concat(justCreatedAuthors)
                 .filter((a) => !authorsToRemove.some((atr) => atr == a))
                 .map((a, idx) => (
                   <div
@@ -392,21 +410,40 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                     <RemoveCircle /> {a.fullName}
                   </div>
                 ))}
-              <Autocomplete
-                fullWidth
-                options={organization.authors.filter(
-                  (a) => !authorsToAdd.includes(a)
-                )}
-                getOptionLabel={(option) => option.fullName}
-                onChange={(e, a) => {
-                  if (a) setAuthorsToAdd(authorsToAdd.concat(a!));
-                }}
-                renderInput={(params) => <TextField {...params} fullWidth />}
-              />
+              <GridContainer>
+                <GridItem xs={9}>
+                  <Autocomplete
+                    fullWidth
+                    options={organization.authors.filter(
+                      (a) => !authorsToAdd.includes(a)
+                    )}
+                    getOptionLabel={(option) => option.fullName}
+                    onChange={(e, a) => {
+                      if (a) setAuthorsToAdd(authorsToAdd.concat(a!));
+                    }}
+                    renderInput={(params) => (
+                      <TextField {...params} fullWidth />
+                    )}
+                  />
+                </GridItem>
+
+                <GridItem xs={3}>
+                  <CustomButton
+                    fullWidth
+                    type="button"
+                    color="info"
+                    onClick={openGhostAuthorForm}
+                  >
+                    <AddCircle />
+                    <Hidden smDown>Crear nuevo autor</Hidden>
+                  </CustomButton>
+                </GridItem>
+              </GridContainer>
             </GridItem>
             <GridItem>
               <h3>Supervisores</h3>
               {project.value.supervisors
+                .concat(justCreatedSupervisors)
                 .filter(
                   (s) =>
                     !supervisorsToRemove.some((str) => str == s) ||
@@ -427,21 +464,39 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                     <RemoveCircle /> {s.fullName}
                   </div>
                 ))}
-              <Autocomplete
-                fullWidth
-                options={organization.supervisors.filter(
-                  (s) =>
-                    !(
-                      supervisorsToAdd.includes(s) ||
-                      project.value.supervisors.some((ps) => ps.id == s.id)
-                    )
-                )}
-                getOptionLabel={(option) => option.fullName}
-                onChange={(e, s) => {
-                  if (s) setSupervisorsToAdd(supervisorsToAdd.concat(s!));
-                }}
-                renderInput={(params) => <TextField {...params} fullWidth />}
-              />
+              <GridContainer style={{ display: "flex", alignItems: "center" }}>
+                <GridItem xs={9}>
+                  <Autocomplete
+                    fullWidth
+                    clearOnBlur
+                    options={organization.supervisors.filter(
+                      (s) =>
+                        !(
+                          supervisorsToAdd.includes(s) ||
+                          project.value.supervisors.some((ps) => ps.id == s.id)
+                        )
+                    )}
+                    getOptionLabel={(option) => option.fullName}
+                    onChange={(e, s) => {
+                      if (s) setSupervisorsToAdd(supervisorsToAdd.concat(s!));
+                    }}
+                    renderInput={(params) => (
+                      <TextField {...params} fullWidth />
+                    )}
+                  />
+                </GridItem>
+                <GridItem xs={3}>
+                  <CustomButton
+                    fullWidth
+                    type="button"
+                    color="info"
+                    onClick={openGhostSupervisorForm}
+                  >
+                    <AddCircle />
+                    <Hidden smDown>Crear nuevo supervisor</Hidden>
+                  </CustomButton>
+                </GridItem>
+              </GridContainer>
             </GridItem>
           </GridContainer>
         ) : (
@@ -533,6 +588,20 @@ const EditProjectPage = (props: EditProjectPageProps) => {
           </Button>
         </DialogActions>
       </Dialog>
+      <GhostSupervisorForm
+        role={"SUPERVISOR"}
+        organization={organization}
+        project={project.value}
+        projects={[]}
+        session={props.session}
+      />
+      <GhostAuthorForm
+        role={"AUTHOR"}
+        organization={organization}
+        project={project.value}
+        projects={[]}
+        session={props.session}
+      />
     </div>
   );
 };

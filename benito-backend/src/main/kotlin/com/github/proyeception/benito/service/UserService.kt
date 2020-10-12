@@ -25,6 +25,16 @@ open class UserService(
         Pair("mail", mail)
     )
 
+    open fun createGhostAuthor(ghost: CreateGhostUserDTO) = createGhostUser(
+        ghost,
+        UserType.AUTHOR
+    )
+
+    open fun createGhostSupervisor(ghost: CreateGhostUserDTO) = createGhostUser(
+        ghost,
+        UserType.SUPERVISOR
+    )
+
     open fun createAuthor(
         username: String?,
         fullName: String,
@@ -82,6 +92,10 @@ open class UserService(
         organizationId = organizationId,
         userType = UserType.SUPERVISOR
     )
+
+    private fun createGhostUser(ghost: CreateGhostUserDTO, userType: UserType) = mapMedusaToDomain {
+        medusaClient.createGhostUser(ghost, userType)
+    }
 
     private fun findOneUserBy(userType: UserType, vararg filters: Pair<String, String>): PersonDTO? = medusaClient
         .findUsersBy(

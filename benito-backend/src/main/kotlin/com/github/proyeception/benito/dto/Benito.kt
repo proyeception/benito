@@ -192,3 +192,10 @@ data class ProjectRecommendationDTO(
 data class SetRecommendationDTO(
     val recommendations: List<RecommendationDTO>
 )
+
+data class CreateGhostUserDTO(
+    val fullName: String,
+    val organizations: List<String>,
+    val projects: List<String>,
+    val mail: String?
+)

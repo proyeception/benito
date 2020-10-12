@@ -1,7 +1,9 @@
 package com.github.proyeception.benito.controller
 
 import com.github.proyeception.benito.X_QUI_TOKEN
+import com.github.proyeception.benito.dto.CreateGhostUserDTO
 import com.github.proyeception.benito.dto.PersonDTO
+import com.github.proyeception.benito.dto.RoleDTO
 import com.github.proyeception.benito.dto.UpdateUserDTO
 import com.github.proyeception.benito.exception.UnauthorizedException
 import com.github.proyeception.benito.service.SessionService
@@ -24,6 +26,20 @@ class UserController(
     @RequestMapping(value = ["/benito/supervisors/{id}"], method = [RequestMethod.GET])
     @ResponseBody
     fun findSupervisor(@PathVariable id: String) = userService.findSupervisor(id)
+
+    @RequestMapping(value = ["/benito/authors"], method = [RequestMethod.POST])
+    @ResponseBody
+    fun createGhostAuthor(
+        @RequestHeader(value = X_QUI_TOKEN, required = true) token: String,
+        @RequestBody ghost: CreateGhostUserDTO
+    ): PersonDTO = doSupervisorAuthorized(token) { userService.createGhostAuthor(ghost) }
+
+    @RequestMapping(value = ["/benito/supervisors"], method = [RequestMethod.POST])
+    @ResponseBody
+    fun createGhostSupervisor(
+        @RequestHeader(value = X_QUI_TOKEN, required = true) token: String,
+        @RequestBody ghost: CreateGhostUserDTO
+    ): PersonDTO = doSupervisorAuthorized(token) { userService.createGhostSupervisor(ghost) }
 
     @RequestMapping(
         value = ["/benito/authors/{id}/picture"],
@@ -87,13 +103,21 @@ class UserController(
         @RequestHeader(X_QUI_TOKEN, required = true) token: String
     ): PersonDTO = doAuthorized(supervisorId, token) { userService.supervisorLeaveOrganization(supervisorId, organizationId) }
 
-    private fun <T> doAuthorized(authorId: String, token: String, f: (String) -> T): T {
-        /*val session = sessionService[token]
+    private fun <T> doSupervisorAuthorized(token: String, f: () -> T): T {
+        val session = sessionService[token]
             ?: throw UnauthorizedException("I don't know who you are")
 
-        return session.userId.takeIf { true }//it == authorId }
+        return session.takeIf { it.role == RoleDTO.SUPERVISOR }
+            ?.let { f() }
+            ?: throw ForbiddenException("You're not allowed to edit this user")
+    }
+
+    private fun <T> doAuthorized(userId: String, token: String, f: (String) -> T): T {
+        val session = sessionService[token]
+            ?: throw UnauthorizedException("I don't know who you are")
+
+        return session.userId.takeIf { it == userId }
             ?.let(f)
-            ?: throw ForbiddenException("You're not allowed to edit this user")*/
-        return "hola".let(f)
+            ?: throw ForbiddenException("You're not allowed to edit this user")
     }
 }
