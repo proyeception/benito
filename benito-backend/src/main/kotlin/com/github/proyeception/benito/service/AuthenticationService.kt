@@ -31,7 +31,7 @@ open class AuthenticationService(
             LOGGER.info("User does not exist. Creating...")
             val person = userService.createAuthor(
                 fullName = login.fullName,
-                profilePicUrl = login.profilePicUrl,
+                profilePicUrl = login.profilePictureUrl,
                 googleUserId = login.googleUserId,
                 username = login.fullName.fromCamelToKebab(),
                 mail = login.mail,

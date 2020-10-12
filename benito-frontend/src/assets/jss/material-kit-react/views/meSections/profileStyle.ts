@@ -31,6 +31,7 @@ const profileStyle = createStyles({
   rowItem: {
     paddingTop: "15px",
     paddingBottom: "15px",
+    borderColor: "999",
   },
 });
 

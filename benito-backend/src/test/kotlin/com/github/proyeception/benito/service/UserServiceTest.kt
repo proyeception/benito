@@ -218,7 +218,7 @@ class UserServiceTest : Spec() {
                         mail = "benito@quinquela.com.ar",
                         googleUserId = "g-123",
                         googleToken = "123",
-                        profilePic = profilePicFile
+                        profilePic = profilePicFile.id
                     ),
                     UserType.AUTHOR
                 )).thenReturn(MedusaPersonDTO(

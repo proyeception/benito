@@ -317,7 +317,7 @@ class MedusaClientTest : Spec() {
                 picture = MedusaFileDTO("picture", "picture"),
                 authors = listOf(author),
                 supervisors = listOf(supervisor),
-                category = CategoryDTO(name = "Systems", tagName = "systems", imageUrl = ""),
+                category = CategoryDTO(id = "1", name = "Systems", tagName = "systems", imageUrl = ""),
                 documentation = listOf(documentation),
                 organization = MedusaOrganizationDTO(
                     displayName = "UTN FRBA",

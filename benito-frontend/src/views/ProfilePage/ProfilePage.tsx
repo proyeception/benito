@@ -71,6 +71,9 @@ const ProfilePage = (props: ProfilePageProps) => {
     return <Redirect to={{pathname: "/error"}}/>
   }
 
+  console.error("~~~~~~~~~~~~~~~~~~~~~~~~~~~444")
+  console.error(user.value.organizations.length)
+
   return (
     <div>
       <Header
@@ -122,6 +125,7 @@ const ProfilePage = (props: ProfilePageProps) => {
               <GridItem xs={12} sm={12} md={12}>
                 <h3>Miembro de estas organizaciones</h3>
               </GridItem>
+              {user.value.organizations.length == 0 && <h4 style={{color: "#3c4858"}}>Parece que este usuario no pertenece a ninguna organización :(</h4>}
               {user.value.organizations.map((o, idx) => (
                 <GridItem key={idx}>
                   <Link
@@ -144,6 +148,7 @@ const ProfilePage = (props: ProfilePageProps) => {
                   Autor de estos proyectos
                 </h3>
               </GridItem>
+              {user.value.projects.length == 0 && <h4 style={{color: "#3c4858"}}>Parece que este usuario no participó en ningún proyecto :(</h4>}
               {user.value.projects.map((p, idx) => (
                 <GridItem
                   xs={12}

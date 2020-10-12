@@ -1,4 +1,4 @@
-import { Button, InputLabel, makeStyles, TextField } from "@material-ui/core";
+import { Button, createMuiTheme, InputLabel, makeStyles, TextField, ThemeProvider } from "@material-ui/core";
 import React, { useState } from "react";
 import { hot } from "react-hot-loader";
 import GridContainer from "../../../components/Grid/GridContainer";
@@ -9,6 +9,7 @@ import { AddCircle } from "@material-ui/icons";
 import CustomButton from "../../../components/CustomButtons/Button";
 import { mapRoleToCollection, updateUser } from "../../../functions/user";
 import { RouteComponentProps, withRouter } from "react-router-dom";
+import { grey } from "@material-ui/core/colors";
 
 const useStyles = makeStyles(styles);
 
@@ -26,9 +27,19 @@ const ProfileSection = (props: ProfileSectionProps) => {
   const [phone, setPhone] = useState(props.user.contact?.phone);
   const [mail, setMail] = useState(props.user.contact?.mail);
 
+  const theme = createMuiTheme({
+    palette: {
+      primary: grey,
+    },
+  });
+
+
+  
   return (
+    
     <GridContainer justify="left" className={classes.container}>
       <GridItem xs={12} sm={12} md={6} className={classes.rowItem}>
+      <ThemeProvider theme={theme}>
         <TextField
           variant="outlined"
           label="Nombre"
@@ -36,8 +47,10 @@ const ProfileSection = (props: ProfileSectionProps) => {
           value={fullName}
           onChange={(e) => setFullName(e.currentTarget.value)}
         />
+        </ThemeProvider>
       </GridItem>
       <GridItem xs={12} sm={12} md={6} className={classes.rowItem}>
+      <ThemeProvider theme={theme}>
         <TextField
           variant="outlined"
           label="Nombre de usuario"
@@ -45,8 +58,10 @@ const ProfileSection = (props: ProfileSectionProps) => {
           value={username}
           onChange={(e) => setUsername(e.currentTarget.value)}
         />
+        </ThemeProvider>
       </GridItem>
       <GridItem xs={12} sm={12} md={6} className={classes.rowItem}>
+      <ThemeProvider theme={theme}>
         <TextField
           variant="outlined"
           label="Mail"
@@ -54,6 +69,7 @@ const ProfileSection = (props: ProfileSectionProps) => {
           value={mail}
           onChange={(e) => setMail(e.currentTarget.value)}
         />
+        </ThemeProvider>
       </GridItem>
       <GridItem xs={12} sm={12} md={6} className={classes.rowItem}>
         <TextField
@@ -123,6 +139,7 @@ const ProfileSection = (props: ProfileSectionProps) => {
         </CustomButton>
       </GridItem>
     </GridContainer>
+    
   );
 };
 

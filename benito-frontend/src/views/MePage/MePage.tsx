@@ -1,4 +1,4 @@
-import { Button, makeStyles } from "@material-ui/core";
+import { Button, createMuiTheme, makeStyles } from "@material-ui/core";
 import React, { useState } from "react";
 import { hot } from "react-hot-loader";
 import { connect } from "react-redux";
@@ -24,6 +24,7 @@ import SettingsSection from "./Sections/SettingsSection";
 import Footer from "../../components/Footer/Footer";
 import Spinner from "../../components/Spinner/Spinner";
 import image from "../../assets/img/proyectate/pattern.jpg"
+import { grey } from "@material-ui/core/colors";
 
 const useStyles = makeStyles(styles);
 
@@ -81,14 +82,6 @@ const MePage = (props: MePageProps) => {
         <OrganizationsSection user={user.value} role={props.session.role} />
       ),
       key: "organizations",
-    },
-    {
-      tabButton: "Configuración",
-      tabIcon: Build,
-      tabContent: (
-        <SettingsSection user={user.value} role={props.session.role} />
-      ),
-      key: "settings",
     },
   ];
 
