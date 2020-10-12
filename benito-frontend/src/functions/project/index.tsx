@@ -56,6 +56,20 @@ export function updateContent(
   return axios.request(signRequest(config));
 }
 
+export function createProject(title: string, category: string, organization: string) {
+  
+  let newProject: AxiosRequestConfig = {
+    url: `${benitoHost}/benito/projects`,
+    method: "POST",
+    data: {
+      title: title,
+      category: category,
+      organization: organization
+    }
+  };
+  return axios.request(signRequest(newProject)).then(console.log);
+}
+
 export function updatePicture(projectId: string, picture: File) {
   const pictureForm = new FormData();
   pictureForm.set("file", picture);

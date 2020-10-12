@@ -472,12 +472,10 @@
                 <artifactId>heroku-maven-plugin</artifactId>
                 <configuration>
                     <jdkVersion>1.8</jdkVersion>
-                    <!-- Use your own application name -->
-                    <appName>benito-test</appName>
                     <processTypes>
                         <!-- Tell Heroku how to launch your application -->
                         <!-- You might have to remove the ./ in front   -->
-                        <web>java -jar target/benito-${project.version}.jar</web>
+                        <web>java -jar target/benito.jar</web>
                     </processTypes>
                 </configuration>
             </plugin>

@@ -71,27 +71,25 @@ const FeaturedSection = (props: FeaturedSectionProps) => {
       >
         {featured.value.map((project, index) => (
           <Card key={index} style={{ width: "20rem", height:"420px", boxShadow: "none"}}>
-            <ProjectLink id={project.id}>
-              <img
-                style={{ height: "180px", width: "100%", display: "block" }}
-                className={classNames(classes.imgCard, classes.imgRaised, classes.imgFit)}
-                src={project.pictureUrl || pictureNotFound}
-                alt={project.title}
-              />
-              <CardBody className="read-more-container">
-              <div className="organization">{project.organization.displayName}</div>
-                <p className={classes.cardTitle}>{project.title}</p>
-                <div className="read-more-container">
-                  <p className="featured-card-text">{project.description}</p>
-                  <p className="read-more"></p>
-                </div>
-                <div className="carrousel-button-project">
-                <Link to={`/projects/${project.id}`} className="normalize-link">
-                  <Button color="primary">Ver más</Button>
-                </Link>
-                </div>
-              </CardBody>
-            </ProjectLink>
+            <img
+              style={{ height: "180px", width: "100%", display: "block" }}
+              className={classNames(classes.imgCard, classes.imgRaised, classes.imgFit)}
+              src={project.pictureUrl || pictureNotFound}
+              alt={project.title}
+            />
+            <CardBody className="read-more-container">
+            <div className="organization">{project.organization.displayName}</div>
+              <p className={classes.cardTitle}>{project.title}</p>
+              <div className="read-more-container">
+                <p className="featured-card-text">{project.description}</p>
+                <p className="read-more"></p>
+              </div>
+              <div className="carrousel-button-project">
+              <Link to={`/projects/${project.id}`} className="normalize-link">
+                <Button color="primary">Ver más</Button>
+              </Link>
+              </div>
+            </CardBody>
           </Card>
         ))}
       </Carousel>

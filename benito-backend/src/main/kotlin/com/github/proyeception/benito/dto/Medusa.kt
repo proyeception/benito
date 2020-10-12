@@ -81,6 +81,7 @@ data class CreateDocumentsDTO(
 )
 
 data class CategoryDTO(
+    val id: String,
     val name: String,
     val tagName: String,
     val imageUrl: String

@@ -4,6 +4,9 @@
   "private": true,
   "dependencies": {
     "@date-io/date-fns": "^1.3.13",
+    "@fortawesome/fontawesome-svg-core": "^1.2.32",
+    "@fortawesome/free-solid-svg-icons": "^5.15.1",
+    "@fortawesome/react-fontawesome": "^0.1.11",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
@@ -21,6 +24,7 @@
     "@types/psl": "^1.1.0",
     "@types/qs": "^6.9.5",
     "@types/react": "^16.9.48",
+    "@types/react-autosuggest": "^10.0.0",
     "@types/react-dom": "^16.9.8",
     "@types/react-router-dom": "^5.1.5",
     "@types/react-slick": "^0.23.4",
@@ -42,9 +46,11 @@
     "psl": "^1.8.0",
     "qs": "^6.9.4",
     "react": "^16.13.1",
+    "react-chips": "^0.8.0",
     "react-datetime": "^2.16.3",
     "react-dom": "^16.13.1",
     "react-dropzone": "^11.2.0",
+    "react-fuse": "^0.3.7",
     "react-google-login": "^5.1.21",
     "react-hot-loader": "^4.13.0",
     "react-images-upload": "^1.2.8",
@@ -68,6 +74,7 @@
   "scripts": {
     "build-prod": "cp environments/prod/config.ts src/config.ts && rimraf build && NODE_ENV=production webpack",
     "build-test": "cp environments/test/config.ts src/config.ts && rimraf build && NODE_ENV=production webpack",
+    "build-staging": "cp environments/staging/config.ts src/config.ts && rimraf build && NODE_ENV=production webpack",
     "build-local": "cp environments/local/config.ts src/config.ts && rimraf build && NODE_ENV=production webpack",
     "start": "webpack-dev-server -w --config webpack.config.js",
     "test": "react-scripts test",
@@ -90,6 +97,7 @@
     ]
   },
   "devDependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.1",
     "@types/js-cookie": "^2.2.6",
     "@types/react-redux": "^7.1.9"
   }
