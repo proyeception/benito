@@ -174,7 +174,9 @@ const subtitle = {
 
 const cardTitle = {
   ...title,
-  marginTop: ".625rem"
+  paddingTop: "10px",
+  marginTop: ".625rem",
+  color: darkGrayColor,
 };
 
 const cardLink = {

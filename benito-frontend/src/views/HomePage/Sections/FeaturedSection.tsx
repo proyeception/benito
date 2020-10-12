@@ -13,6 +13,7 @@ import Button from "../../../components/CustomButtons/Button";
 import { Link } from "react-router-dom";
 import featuredStyle from "../../../assets/jss/material-kit-react/views/homeSections/featuredSection";
 import { Height } from "@material-ui/icons";
+import classNames from "classnames";
 
 type FeaturedSectionProps = {};
 
@@ -67,22 +68,25 @@ const FeaturedSection = (props: FeaturedSectionProps) => {
         dotListClass="custom-dot-list-style"
       >
         {featured.value.map((project, index) => (
-          <Card key={index} style={{ width: "20rem", height:"400px"}}>
+          <Card key={index} style={{ width: "20rem", height:"420px", boxShadow: "none"}}>
             <img
               style={{ height: "180px", width: "100%", display: "block" }}
-              className={classes.imgCardTop}
+              className={classNames(classes.imgCard, classes.imgRaised, classes.imgFit)}
               src={project.pictureUrl}
               alt={project.title}
             />
             <CardBody className="read-more-container">
+            <div className="organization">{project.organization.displayName}</div>
               <h4 className={classes.cardTitle}>{project.title}</h4>
               <div className="read-more-container">
                 <p className="featured-card-text">{project.description}</p>
                 <p className="read-more"></p>
               </div>
+              <div className="carrousel-button">
               <Link to={`/projects/${project.id}`} className="normalize-link">
                 <Button color="primary">Ver más</Button>
               </Link>
+              </div>
             </CardBody>
           </Card>
         ))}

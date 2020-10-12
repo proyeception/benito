@@ -47,6 +47,12 @@ const imagesStyles = createStyles({
   imgWhiteBackground: {
     background: "#ffffff",
   },
+  imgFit: {
+    display: "block",
+    width: "100%",
+    height: "-webkit-fill-available",
+    objectFit: "cover",
+  }
 });
 
 export default imagesStyles;

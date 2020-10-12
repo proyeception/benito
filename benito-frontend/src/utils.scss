@@ -44,6 +44,7 @@
 .read-more-container {
   position: relative;
   overflow: hidden;
+  padding: 10px 10px !important;
 }
 .read-more-container .read-more {
   position: absolute;
@@ -83,4 +84,16 @@
   color: #bdbdbd;
   outline: none;
   transition: border 0.24s ease-in-out;
+}
+
+.organization {
+  color: #c41234;
+  font-family: "oswald", "helvetica", "arial", "verdana", sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: capitalize;
+} 
+
+.carrousel-button {
+  text-align: right;
 }
