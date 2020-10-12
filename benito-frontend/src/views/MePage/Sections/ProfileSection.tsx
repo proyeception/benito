@@ -3,13 +3,14 @@ import React, { useState } from "react";
 import { hot } from "react-hot-loader";
 import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
-import { Person, Role } from "../../../types";
+import { Person, Role, Social } from "../../../types";
 import styles from "../../../assets/jss/material-kit-react/views/meSections/profileStyle";
-import { AddCircle } from "@material-ui/icons";
 import CustomButton from "../../../components/CustomButtons/Button";
 import { mapRoleToCollection, updateUser } from "../../../functions/user";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { grey } from "@material-ui/core/colors";
+import MaskedInput from 'react-text-mask'
+import Spinner from "../../../components/Spinner/Spinner";
 
 const useStyles = makeStyles(styles);
 
@@ -33,10 +34,9 @@ const ProfileSection = (props: ProfileSectionProps) => {
     },
   });
 
-
+  console.error(socials)
   
   return (
-    
     <GridContainer justify="left" className={classes.container}>
       <GridItem xs={12} sm={12} md={6} className={classes.rowItem}>
       <ThemeProvider theme={theme}>
@@ -89,41 +89,52 @@ const ProfileSection = (props: ProfileSectionProps) => {
       >
         <InputLabel>Sociales</InputLabel>
       </GridItem>
-      {socials.map((s, idx) => (
+      <GridItem xs={12} sm={12} md={12} className={classes.rowItem}>
+          <TextField
+            variant="outlined"
+            fullWidth
+            value={socials[0].socialProfileUrl}
+            onChange={(e) => {
+              if(e.currentTarget.value.startsWith("https://twitter.com/")){
+                setSocials([{ socialName: "Twitter", socialProfileUrl: e.currentTarget.value}, socials[1], socials[2]])
+              }
+              }}
+          />
+        </GridItem>
         <GridItem xs={12} sm={12} md={12} className={classes.rowItem}>
           <TextField
             variant="outlined"
             fullWidth
-            value={s.socialProfileUrl}
-            key={idx}
+            value={socials[1].socialProfileUrl}
+            onChange={(e) => {
+              if(e.currentTarget.value.startsWith("https://www.linkedin.com/")){
+                setSocials([socials[0], { socialName: "Linkedin", socialProfileUrl: e.currentTarget.value},  socials[2]])
+              }
+              }}
           />
         </GridItem>
-      ))}
-      <Button
-        startIcon
-        fullWidth
-        onClick={() =>
-          setSocials(
-            socials.concat({
-              socialName: "",
-              socialProfileUrl: "",
-            })
-          )
-        }
-      >
-        <AddCircle /> Agregar social
-      </Button>
+        <GridItem xs={12} sm={12} md={12} className={classes.rowItem}>
+          <TextField
+            variant="outlined"
+            fullWidth
+            value={socials[2].socialProfileUrl}
+            onChange={(e) => {
+              if(e.currentTarget.value.startsWith("https://www.facebook.com/")){
+              setSocials([socials[0], socials[1], { socialName: "Facebook", socialProfileUrl: e.currentTarget.value}])
+              }}}
+          />
+        </GridItem>
       <GridItem
         xs={12}
         sm={12}
         md={12}
         className={classes.rowItem}
-        style={{ textAlign: "left" }}
+        style={{ textAlign: "right" }}
       >
         <CustomButton
           type="button"
-          color="success"
-          onClick={() =>
+          color="primary"
+          onClick={() => {
             updateUser(mapRoleToCollection(props.role), props.user.id, {
               socials: socials.filter((s) => s.socialProfileUrl != ""),
               username: username,
@@ -132,14 +143,14 @@ const ProfileSection = (props: ProfileSectionProps) => {
               mail: mail,
             })
               .catch(console.error)
-              .then(() => props.history.go(0))
-          }
+              .then(() => {
+                props.history.go(0)})
+          }}
         >
           Guardar cambios
         </CustomButton>
       </GridItem>
     </GridContainer>
-    
   );
 };
 
