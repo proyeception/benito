@@ -1,18 +1,32 @@
 package com.github.proyeception.benito.service
 
+import arrow.core.Either
+import arrow.core.getOrHandle
+import arrow.core.right
 import com.github.proyeception.benito.client.MedusaClient
+import com.github.proyeception.benito.client.MedusaGraphClient
 import com.github.proyeception.benito.dto.*
+import com.github.proyeception.benito.exception.FailedDependencyException
 import com.github.proyeception.benito.mongodb.MongoTextSearch
 
 open class RecommendationService(
         private val medusaClient: MedusaClient,
-        private val mongoTextSearch: MongoTextSearch
+        private val medusaGraphClient: MedusaGraphClient
 ) {
 
     open fun recalculateRecommendations(project: ProjectDTO) {
 
-        val recommendedProjects = mongoTextSearch.findRecommendedProjects(project); //filtrarme a mi mismo
+        val recommendedProjects = medusaGraphClient.findProjects(projectKeywords = project.project_keywords.map { it.name })
+                .getOrHandle { throw FailedDependencyException("Error getting projects from Medusa") }
+                .map {
+                    ProjectRecommendationDTO(
+                            id = it.id,
+                            project_keywords = it.project_keywords
+                    )
+                }
+
         updateProjectsRecommendedScore(project, recommendedProjects)
+
 /*
         recommendedProjects.forEach(recalculateRecommendations2()) recalcular a 1 nivel de profundidad
 */

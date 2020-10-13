@@ -63,8 +63,8 @@ export function createProject(title: string, category: string, organization: str
     method: "POST",
     data: {
       title: title,
-      category: category,
-      organization: organization
+      categoryId: category,
+      organizationId: organization
     }
   };
   return axios.request(signRequest(newProject)).then(console.log);
