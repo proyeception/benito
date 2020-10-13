@@ -1,6 +1,7 @@
 import {
   Button,
   CircularProgress,
+  createMuiTheme,
   Dialog,
   DialogActions,
   DialogContent,
@@ -9,7 +10,9 @@ import {
   Divider,
   makeStyles,
   TextField,
+  ThemeProvider,
 } from "@material-ui/core";
+import { grey } from "@material-ui/core/colors";
 import React, { useState } from "react";
 import { hot } from "react-hot-loader";
 import { connect } from "react-redux";
@@ -36,6 +39,12 @@ function entryOf(role: Role) {
   }
 }
 
+const theme = createMuiTheme({
+  palette: {
+    primary: grey,
+  },
+});
+
 function useCreateGhostUser(
   afterCreate: (p: Person) => void
 ): [() => void, (props: CreateGhostUserProps) => JSX.Element] {
@@ -57,6 +66,7 @@ function useCreateGhostUser(
 
   const render = (props: CreateGhostUserProps) => (
     <div>
+      <ThemeProvider theme={theme}>
       <Dialog
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -74,6 +84,7 @@ function useCreateGhostUser(
               </div>
             ) : (
               <div>
+                <ThemeProvider theme={theme}>
                 <TextField
                   autoFocus
                   fullWidth
@@ -81,12 +92,15 @@ function useCreateGhostUser(
                   defaultValue={name}
                   onBlur={(e) => setName(e.currentTarget.value)}
                 />
+                </ThemeProvider>
+                <ThemeProvider theme={theme}>
                 <TextField
                   fullWidth
                   label="Email"
                   defaultValue={mail}
                   onBlur={(e) => setMail(e.currentTarget.value)}
                 />
+                </ThemeProvider>
                 <TextField
                   fullWidth
                   label="Proyecto"
@@ -104,9 +118,12 @@ function useCreateGhostUser(
           </DialogContentText>
         </DialogContent>
         <DialogActions>
+        <ThemeProvider theme={theme}>
           <Button onClick={handleClose} color="primary">
             Cancelar
           </Button>
+          </ThemeProvider>
+          <ThemeProvider theme={theme}>
           <Button
             onClick={() => {
               setLoading(true);
@@ -132,8 +149,10 @@ function useCreateGhostUser(
           >
             Crear
           </Button>
+          </ThemeProvider>
         </DialogActions>
       </Dialog>
+      </ThemeProvider>
     </div>
   );
 

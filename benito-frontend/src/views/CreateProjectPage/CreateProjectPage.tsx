@@ -325,9 +325,9 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
               <div {...getRootProps({ className: "dropzone font-size-18-md" })}>
                 <input {...getInputProps()} />
                 {isDragActive ? (
-                  <p>Arrastrá la imagen acá...</p>
+                  <p>Arrastrá los documentos acá...</p>
                 ) : (
-                  <p>Arrastrá la imagen acá, o hacé click para seleccionar documentos</p>
+                  <p>Arrastrá los documentos acá, o hacé click para seleccionar documentos</p>
                 )}
               </div>
             </section>
