@@ -248,7 +248,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
               En esta página vas a poder crear un nuevo proyecto, no te olvides de asignarselo a tus alumnos para que ellos lo puedan editar.
             </h4>
           </GridItem>
-          <GridItem xs={12} sm={12} md={6}>
+          <GridItem xs={12} sm={12} md={12}>
             <TextField
               fullWidth
               placeholder="Título"
@@ -256,11 +256,12 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
               onChange={(e) => setTitle(e.currentTarget.value)}
             />
           </GridItem>
-          <GridItem xs={12} sm={12} md={6}>
+          <GridItem xs={12} sm={12} md={12}>
             <TextField
               fullWidth
               multiline
               placeholder="Descripción"
+              rows="3"
               rowsMax={15}
               value={description}
               onChange={(e) => setDescription(e.currentTarget.value)}
@@ -309,7 +310,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
               buttonText="Elegí una imagen para el proyecto"
               onChange={onPictureDrop}
               label={"Te recomendamos que sea de buena calidad para que el proyecto se vea mejor"}
-              imgExtension={[".jpg", ".png"]}
+              imgExtension={[".jpg",".jpeg", ".png"]}
               maxFileSize={5242880}
               singleImage={true}
               withPreview={true}
