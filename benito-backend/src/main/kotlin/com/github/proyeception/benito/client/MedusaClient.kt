@@ -218,16 +218,18 @@ open class MedusaClient(
 
     }
 
-    fun updateRecommendations(recommendations: List<CreateRecommendationDTO>, project: ProjectDTO) {
+    fun updateRecommendations(recommendations: List<CreateRecommendationDTO>,
+                              projectId: String,
+                              originalRecommendations: List<RecommendationDTO>) {
 
-        project.recommendations
+        val deletedRecommendations = originalRecommendations
                 .map { it.id.orEmpty() }
-                .filter { it.isNotBlank() }.map { delete("recommendations", it, MEDUSA_RECOMMENDATION_REF) }
+                .filter { it.isNotBlank() }
+                .map { delete("recommendations", it, MEDUSA_RECOMMENDATION_REF) }
         val recommendationsIdList = recommendations
-            //crear variante de create con un cuarto parametro que indique con que clase deserealizar la response
             .map{ create("recommendations", it, CREATE_RECOMMENDATION_REF, MEDUSA_RECOMMENDATION_REF).id }
         val recommendationsIdRef = ProjectRecommendations(recommendationsIdList.map { it } )
-        update("projects", project.id, recommendationsIdRef, MEDUSA_PROJECT_REF)
+        update("projects", projectId, recommendationsIdRef, MEDUSA_PROJECT_REF)
 
     }
 
