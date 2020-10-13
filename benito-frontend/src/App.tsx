@@ -54,8 +54,8 @@ const App = () => {
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <BrowserRouter>
         <Switch>
+          <Route path="/projects/create" component={CreateProjectPage} />
           <Route path="/projects/:id/edit" component={EditProjectPage} />
-          <Route path="/create" component={CreateProjectPage} />
           <Route path="/projects/:id" component={ProjectPage} />
           <Route path="/search" component={SearchPage} />
           <Route path="/authors/:id" component={AuthorPage} />
