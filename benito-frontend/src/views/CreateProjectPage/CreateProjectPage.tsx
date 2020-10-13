@@ -394,7 +394,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
           </GridItem>
 
           <GridItem xs={12} align="left">
-          <h4 className={classes.subtitle}>Cambios</h4>
+          <h4 className={classes.subtitle}>Cambios, podés hacerles click para deshacerlos</h4>
             <ul>
               {Changes().map((c, idx) => (
                 <li

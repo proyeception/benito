@@ -1,6 +1,7 @@
 import {
   Button,
   CircularProgress,
+  createMuiTheme,
   Dialog,
   DialogActions,
   DialogContent,
@@ -10,6 +11,7 @@ import {
   Hidden,
   makeStyles,
   TextField,
+  ThemeProvider,
 } from "@material-ui/core";
 import React, { useCallback, useState } from "react";
 import { hot } from "react-hot-loader";
@@ -50,6 +52,7 @@ import {
   uploadDocuments,
 } from "../../functions/project";
 import useCreateGhostUser from "../../components/CreateGhostUser/CreateGhostUser";
+import { grey } from "@material-ui/core/colors";
 
 const useStyles = makeStyles(styles);
 
@@ -136,6 +139,12 @@ const EditProjectPage = (props: EditProjectPageProps) => {
         console.error(e);
         setOrganization("ERROR");
       });
+  });
+
+  const theme = createMuiTheme({
+    palette: {
+      primary: grey,
+    },
   });
 
   if (project.type == PENDING || organization == undefined) {
@@ -323,12 +332,13 @@ const EditProjectPage = (props: EditProjectPageProps) => {
             <CustomTabs
               headerColor="primary"
               className={classes.readme}
-              style={{ overflow: "auto" }}
+              style={{ overflow: "auto", boxShadow: "none !important" }}
               tabs={[
                 {
                   tabName: "Editar",
                   tabIcon: Edit,
                   tabContent: (
+                    <ThemeProvider theme={theme}>
                     <TextField
                     fullWidth
                     multiline
@@ -337,6 +347,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                     placeholder="Acá podés agregar más contenido que represente el proyecto, como texto con distintos formatos o imágenes"
                     onChange={(e) => setReadme(e.currentTarget.value)}
                     />
+                    </ThemeProvider>
                   ),
                 },
                 {
@@ -391,9 +402,9 @@ const EditProjectPage = (props: EditProjectPageProps) => {
               <div {...getRootProps({ className: "dropzone font-size-18-md" })}>
                 <input {...getInputProps()} />
                 {isDragActive ? (
-                  <p>Arrastrá la imagen acá...</p>
+                  <p>Arrastrá los documentos acá...</p>
                 ) : (
-                  <p>Arrastrá la imagen acá, o hacé click para seleccionar documentos</p>
+                  <p>Arrastrá los documentos acá, o hacé click para seleccionar documentos</p>
                 )}
               </div>
             </section>
@@ -442,8 +453,11 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                   <CustomButton
                     fullWidth
                     type="button"
-                    color="info"
-                    onClick={openGhostAuthorForm}
+                    color="primary"
+                    onClick={
+                      openGhostAuthorForm
+
+                    }
                   >
                     <AddCircle />
                     <Hidden smDown>Crear nuevo autor</Hidden>
@@ -500,7 +514,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                   <CustomButton
                     fullWidth
                     type="button"
-                    color="info"
+                    color="primary"
                     onClick={openGhostSupervisorForm}
                   >
                     <AddCircle />
@@ -518,7 +532,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
             <Divider variant="fullWidth" />
           </GridItem>
           <GridItem xs={12} align="left">
-          <h4 className={classes.subtitle}>Cambios</h4>
+          <h4 className={classes.subtitle}>Cambios, podés hacerles click para deshacerlos</h4>
             <ul>
               {Changes().map((c, idx) => (
                 <li
