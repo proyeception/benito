@@ -410,7 +410,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
             </section>
           </GridItem>
         </GridContainer>
-        {role == "SUPERVISOR" ? (
+        {role == "AUTHOR" ? (
           <GridContainer className={classes.container}>
             <GridItem>
             <h4 className={classes.subtitle}>Autores</h4>

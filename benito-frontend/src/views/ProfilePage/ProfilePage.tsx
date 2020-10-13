@@ -102,7 +102,7 @@ const ProfilePage = (props: ProfilePageProps) => {
                   </div>
                   <div className={classes.name}>
                     <h3 className={classes.title}>{user.value.fullName}</h3>
-                    <h6>{user.value.username}</h6>
+                    <br/>
                     {user.value.socials.map((s, idx) => (
                       <a
                         target="_blank"
