@@ -176,7 +176,7 @@ open class MedusaGraphClient(
         organizationName?.let { where.add("""organization: { name: "$it" }""") }
         id?.let { where.add("""id: "$it"""") }
         projectKeywords?.let {
-            ks -> where.add("""project_keywords: { name_in: [${ks.joinToString(",") { "\"it\"" } }] }""")
+            ks -> where.add("""project_keywords: { name_in: [${ks.joinToString(",") { "\"$it\"" } }] }""")
         }
 
         val sort = orderBy?.let { """sort: "${it.sortMethod}"""" }

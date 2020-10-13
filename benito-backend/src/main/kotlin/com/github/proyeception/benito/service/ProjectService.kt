@@ -4,10 +4,7 @@ import arrow.core.getOrHandle
 import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.client.MedusaGraphClient
 import com.github.proyeception.benito.dto.*
-import com.github.proyeception.benito.exception.AmbiguousReferenceException
 import com.github.proyeception.benito.exception.FailedDependencyException
-import com.github.proyeception.benito.exception.NotFoundException
-import com.github.proyeception.benito.extension.getOrThrow
 import com.github.proyeception.benito.mongodb.MongoTextSearch
 import com.github.proyeception.benito.parser.DocumentParser
 import kotlinx.coroutines.async
@@ -91,8 +88,8 @@ open class ProjectService(
     open fun updateProjectKeywords(project: ProjectDTO) {
         try {
             val keywords = keywordService.getKeywords(project)
-            medusaClient.updateProjectKeywords(keywords, project)
-            recommendationService.recalculateRecommendations(project)
+            val updatedKeywords = medusaClient.updateProjectKeywords(keywords, project)
+            recommendationService.recalculateRecommendations(project, updatedKeywords)
         } catch (e: Exception) {
             LOGGER.error("There was an error updating keywords for project ${project.id}")
         }

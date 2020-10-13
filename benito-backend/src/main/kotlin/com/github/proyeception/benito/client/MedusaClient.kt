@@ -207,12 +207,14 @@ open class MedusaClient(
         ref = MEDUSA_PERSON_REF
     )
 
-    fun updateProjectKeywords(kw: List<KeywordDTO>, project: ProjectDTO) {
+    fun updateProjectKeywords(kw: List<KeywordDTO>, project: ProjectDTO): List<KeywordDTO> {
 
         project.project_keywords.filter { it.id.isNullOrBlank() }.map { delete("keywords", it.id.orEmpty(), MEDUSA_KEYWORD_REF) }
-        val keywordsIdList = kw.map{ create("keywords", it, MEDUSA_KEYWORD_REF).id }
+        val updatedKeywords = kw.map{ create("keywords", it, MEDUSA_KEYWORD_REF) }
+        val keywordsIdList = updatedKeywords.map{ it.id }
         val keywordsIdRef = ProjectKeywords(keywordsIdList.map { ObjectId(it).toHexString() } )
         update("projects", project.id, keywordsIdRef, ANY_REF)
+        return updatedKeywords
 
     }
 

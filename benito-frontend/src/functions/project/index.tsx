@@ -1,6 +1,6 @@
 import { Project, Role, Person } from "../../types";
 import { benitoHost } from "../../config";
-import axios, { AxiosRequestConfig } from "axios";
+import axios, { AxiosRequestConfig, AxiosPromise } from "axios";
 import { signRequest } from "../http";
 import store from "../../store";
 import {
@@ -56,7 +56,7 @@ export function updateContent(
   return axios.request(signRequest(config));
 }
 
-export function createProject(title: string, category: string, organization: string) {
+export function createProject(title: string, category: string, organization: string): AxiosPromise<Project> {
   
   let newProject: AxiosRequestConfig = {
     url: `${benitoHost}/benito/projects`,
@@ -67,7 +67,7 @@ export function createProject(title: string, category: string, organization: str
       organizationId: organization
     }
   };
-  return axios.request(signRequest(newProject)).then(console.log);
+  return axios.request<Project>(signRequest(newProject));
 }
 
 export function updatePicture(projectId: string, picture: File) {

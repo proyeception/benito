@@ -37,7 +37,7 @@ import CustomButton from "../../components/CustomButtons/Button";
 import { fetchOrganization } from "../../functions/organization";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import withUser from "../../hooks/withUser";
-import { createProject } from "../../functions/project";
+import { createProject, updateContent, uploadDocuments, updatePicture, setProjectUsers } from "../../functions/project";
 
 const useStyles = makeStyles(styles);
 
@@ -172,8 +172,48 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
     console.log(readme)
     console.log(category)
 
-    const response = createProject(title!, category!.id, project.organization.id);
-    //response.then
+    
+    
+    const response = createProject(title!, category!.id, project.organization.id)
+      .then((res) => {
+        
+        let promises = [];
+        const projectId = res.data.id;
+    
+        //content, documents
+        const contentPromise = updateContent(
+          projectId,
+          [],
+          title,
+          description,
+          readme
+        )
+          .then(console.log)
+          .catch(console.error)
+          .then(() => uploadDocuments(projectId, documentsToUpload))
+          .then(console.log)
+          .catch(console.error);
+    
+        promises.push(contentPromise);
+    
+        //picture
+        if (picture != undefined) {
+          promises.push(updatePicture(projectId, picture));
+        }
+    
+        //users
+        const usersPromise = setProjectUsers(authorsToAdd, supervisorsToAdd, projectId)
+          .then(console.log)
+          .catch(console.error);
+
+        promises.push(usersPromise);
+    
+        Promise.all(promises)
+          .catch(console.error)
+          .then(() => props.history.push(`/projects/${projectId}`))
+          .then(() => props.history.go(0));
+
+      }).catch((error) => {return <Redirect to={{ pathname: "/error" }} />;});
 
   }
 
