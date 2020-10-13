@@ -10,6 +10,7 @@ import ListItem from "@material-ui/core/ListItem";
 
 // @material-ui/icons
 import { ExitToApp, MeetingRoom, Person, Settings } from "@material-ui/icons";
+import CreateIcon from '@material-ui/icons/Create';
 
 // core components
 import Button from "../CustomButtons/Button";
@@ -23,6 +24,7 @@ import CustomDropdown from "../CustomDropdown/CustomDropdown";
 import { clearSession } from "../../functions/session";
 import { LoggedInState, SessionState } from "../../store/session/types";
 import classNames from "classnames";
+import { Hidden } from "@material-ui/core";
 
 const useStyles = makeStyles(styles);
 
@@ -58,6 +60,16 @@ const HeaderLinks = (props: Props) => {
                 <Settings />{" "}
                 <span style={{ paddingLeft: "15px" }}>Configuración</span>
               </Link>,
+              props.session.role == 'SUPERVISOR' ? (
+                <Link
+                  to="/create"
+                  className={classNames("normalize-link", classes.alignCenter)}
+                >
+                  <CreateIcon />{" "}
+                  <span style={{ paddingLeft: "15px" }}>Crear proyecto</span>
+                </Link>) : (<Hidden>
+                            <div></div>
+                            </Hidden>),
               { divider: true },
               <div
                 className={classes.alignCenter}
