@@ -9,7 +9,6 @@ import CustomButton from "../../../components/CustomButtons/Button";
 import { mapRoleToCollection, updateUser } from "../../../functions/user";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { grey } from "@material-ui/core/colors";
-import MaskedInput from 'react-text-mask'
 import Spinner from "../../../components/Spinner/Spinner";
 
 const useStyles = makeStyles(styles);
