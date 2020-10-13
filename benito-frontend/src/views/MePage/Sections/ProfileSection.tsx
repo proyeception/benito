@@ -51,33 +51,16 @@ const ProfileSection = (props: ProfileSectionProps) => {
       <GridItem xs={12} sm={12} md={6} className={classes.rowItem}>
       <ThemeProvider theme={theme}>
         <TextField
-          variant="outlined"
-          label="Nombre de usuario"
-          fullWidth
-          value={username}
-          onChange={(e) => setUsername(e.currentTarget.value)}
-        />
-        </ThemeProvider>
-      </GridItem>
-      <GridItem xs={12} sm={12} md={6} className={classes.rowItem}>
-      <ThemeProvider theme={theme}>
-        <TextField
+          InputProps={{
+            readOnly: true,
+          }}
+          disabled
           variant="outlined"
           label="Mail"
           fullWidth
           value={mail}
-          onChange={(e) => setMail(e.currentTarget.value)}
         />
         </ThemeProvider>
-      </GridItem>
-      <GridItem xs={12} sm={12} md={6} className={classes.rowItem}>
-        <TextField
-          variant="outlined"
-          label="Teléfono"
-          fullWidth
-          value={phone}
-          onChange={(e) => setPhone(e.currentTarget.value)}
-        />
       </GridItem>
       <GridItem
         xs={12}
