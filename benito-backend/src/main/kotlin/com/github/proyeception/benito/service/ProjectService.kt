@@ -198,7 +198,7 @@ open class ProjectService(
 
     fun recommendedProjects(id: String): List<ProjectDTO> {
         val project = findProject(id)
-        return project.recommendations.map { findProject(it.projectId) }
+        return project.recommendations.map { findProject(it.projectId) }.take(4)
     }
 
     companion object {
