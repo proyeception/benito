@@ -8,7 +8,10 @@ type ProjectLinkProps = {
 };
 
 const ProjectLink = (props: ProjectLinkProps) => (
-  <Link to={`/projects/${props.id}`} className="normalize-link">
+  <Link to={`/projects/${props.id}`} onClick={() => {
+        setTimeout(() => {  window.location.reload(false) }, 500)
+
+        }} className="normalize-link">
     {props.children}
   </Link>
 );
