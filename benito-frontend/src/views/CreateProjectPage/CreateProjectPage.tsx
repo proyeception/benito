@@ -242,14 +242,6 @@ const themeDate = createMuiTheme({
       }).catch((error) => {return <Redirect to={{ pathname: "/error" }} />;});
 
   }
-  
-  const theme = createMuiTheme({
-    palette: {
-      primary: grey,
-    },
-  });
-
-
 
   return (
     <div>
