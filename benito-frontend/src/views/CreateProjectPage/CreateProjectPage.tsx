@@ -89,6 +89,8 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
   >();
   const [titleIncompleted, setTitleIncompleted] = React.useState(true);
   const [descriptionIncompleted, setDescriptionIncompleted] = React.useState(true);
+  const [dateIncompleted, setDateIncompleted] = React.useState(true);
+  const [categoryIncompleted, setCategoryIncompleted] = React.useState(true);
 
   console.log(props.session);
   if (!props.session.isLoggedIn) {
@@ -242,12 +244,6 @@ const themeDate = createMuiTheme({
       }).catch((error) => {return <Redirect to={{ pathname: "/error" }} />;});
 
   }
-  
-  const theme = createMuiTheme({
-    palette: {
-      primary: grey,
-    },
-  });
 
 
 
@@ -288,20 +284,23 @@ const themeDate = createMuiTheme({
                 setTitle(e.currentTarget.value)}}
             />
           </GridItem>
-<GridItem xs={12} sm={12} md={6}>
+          <GridItem xs={12} sm={12} md={6}>
             <ThemeProvider theme={themeDate}>
             <KeyboardDatePicker className={classes.datePicker}
               clearable={true}
               placeholder="08/04/2016" 
               format="dd/MM/yyyy"
+              error={dateIncompleted}
               fullWidth
               label="Fecha de publicacion"
               value={creationDate || null}
               onChange={(e) => {
                 if (e && moment(e).format("yyyy-MM-DD").toString() != 'Invalid date') {
                   setCreationDate(moment(e).add(1, 'days').format("yyyy-MM-DD").toString());
+                  setDateIncompleted(false)
                 } else {
                   store.dispatch(updateFromDate(""));
+                  setDateIncompleted(true)
                 }
               }}
             />
@@ -373,12 +372,18 @@ const themeDate = createMuiTheme({
                   getOptionLabel={(option) => option.name}
                   defaultValue={category}
                   onChange={(e, c) => {
+                    if(c?.name.trim() == ""){
+                      setCategoryIncompleted(true)
+                    } else {
+                      setCategoryIncompleted(false)
+                    }
                     setCategory(c!);
                   }}
                   renderInput={(params) => (
                     <TextField
                       {...params}
                       fullWidth
+                      error={categoryIncompleted}
                       placeholder="Categoría"
                     />
                   )}
@@ -453,7 +458,7 @@ const themeDate = createMuiTheme({
             <CustomButton
               type="button"
               color="primary"
-              disabled={titleIncompleted || descriptionIncompleted}
+              disabled={titleIncompleted || descriptionIncompleted || dateIncompleted || categoryIncompleted}
               style={{ width: "15%", textAlign: "right" }}
               onClick={() => setIsModalOpen(true)}
             >
