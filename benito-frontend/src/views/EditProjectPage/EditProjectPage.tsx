@@ -120,6 +120,8 @@ const EditProjectPage = (props: EditProjectPageProps) => {
   const [openGhostAuthorForm, GhostAuthorForm] = useCreateGhostUser((p) =>
     setJustCreatedAuthors(justCreatedAuthors.concat(p))
   );
+  const [titleIncompleted, setTitleIncompleted] = React.useState(false);
+  const [descriptionIncompleted, setDescriptionIncompleted] = React.useState(false);
 
   const project = withProject(props.match.params.id, (p) => {
     setTitle(p.title);
@@ -148,7 +150,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
 
   const theme = createMuiTheme({
     palette: {
-      primary: red,
+      primary: grey,
     },
   });
 
@@ -313,23 +315,40 @@ const EditProjectPage = (props: EditProjectPageProps) => {
             </h4>
           </GridItem>
           <GridItem xs={12} sm={12} md={12}>
+          <ThemeProvider theme={theme}>
             <TextField
               fullWidth
+              required
+              error={titleIncompleted}
               className={classes.autocomplete}
               placeholder="Título"
               value={title}
-              onChange={(e) => setTitle(e.currentTarget.value)}
+              onChange={(e) => {
+                if(e.currentTarget.value.trim() == ""){
+                  setTitleIncompleted(true)
+                } else {
+                  setTitleIncompleted(false)
+                }
+                setTitle(e.currentTarget.value)}}
             />
+            </ThemeProvider>
           </GridItem>
           <GridItem xs={12} sm={12} md={12}>
             <TextField
               fullWidth
               multiline
               placeholder="Descripción"
+              error={descriptionIncompleted}
               rowsMax={15}
               rows="3"
               value={description}
-              onChange={(e) => setDescription(e.currentTarget.value)}
+              onChange={(e) => {
+                if(e.currentTarget.value.trim() == ""){
+                  setDescriptionIncompleted(true)
+                } else {
+                  setDescriptionIncompleted(false)
+                }
+                setDescription(e.currentTarget.value)}}
             />
           </GridItem>
           <GridItem>
@@ -387,7 +406,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
             </section>
           </GridItem>
         </GridContainer>
-        {role == "AUTHOR" ? (
+        {role == "SUPERVISOR" ? (
           <GridContainer className={classes.container}>
             <GridItem>
             <h4 className={classes.subtitle}>Autores</h4>
@@ -539,6 +558,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
             <CustomButton
               type="button"
               color="primary"
+              disabled={titleIncompleted || descriptionIncompleted}
               style={{ width: "15%", textAlign: "right" }}
               onClick={() => setIsModalOpen(true)}
             >
