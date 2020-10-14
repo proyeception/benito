@@ -27,6 +27,7 @@ import CardFooter from "../../components/Card/CardFooter";
 import { cardTitle, title } from "../../assets/jss/material-kit-react";
 import Spinner from "../../components/Spinner/Spinner";
 import image from "../../assets/img/proyectate/pattern.jpg"
+import pictureNotFound from "../../assets/img/proyectate/picture.svg"
 
 const useStyles = makeStyles({
   ...styles,
@@ -158,7 +159,7 @@ const ProfilePage = (props: ProfilePageProps) => {
                   <Card style={{ textAlign: "left" }}>
                     <Link to={`/projects/${p.id}`} className="normalize-link">
                       <img
-                        src={p.pictureUrl?.valueOf()}
+                        src={p.pictureUrl?.valueOf() || pictureNotFound}
                         alt={p.title.valueOf()}
                         className={classNames(
                           classes.imgCardTop,

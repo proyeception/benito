@@ -19,6 +19,7 @@ import ProjectLink from "../../../components/Links/ProjectLink";
 import { RouteComponentProps } from "react-router-dom";
 import withRecommendations from '../../../hooks/withRecommendations';
 import Spinner from "../../../components/Spinner/Spinner";
+import pictureNotFound from "../../../assets/img/proyectate/picture.svg"
 
 type Any = any;
 
@@ -46,7 +47,7 @@ const SearchResultsSection = (props: Props) => {
   const classes = useStyles();
 
   if (recommendations.type == ERROR) {
-    return  <GridContainer>
+    return  <GridContainer justify="center">
               <GridItem xs={12} sm={12} md={12}>
                 <div className={classes.subtitle}> Proyectos similares</div>
                 <div className={classes.text}> No pudimos encontrar proyectos similares a este</div>
@@ -69,7 +70,7 @@ const SearchResultsSection = (props: Props) => {
 
   return (
     <div className={classes.section}>
-      <GridContainer>
+      <GridContainer justify="center">
         <div className={classes.subtitle}> Proyectos similares</div>
         {recommendations.value.map((p, idx) => (
           <GridItem key={idx} xs={12} sm={12} md={12}>
@@ -78,7 +79,7 @@ const SearchResultsSection = (props: Props) => {
                   <Hidden only={["xs", "sm"]}>
                     <div>
                       <img
-                        src={p.pictureUrl?.valueOf()}
+                        src={p.pictureUrl?.valueOf() || pictureNotFound}
                         alt={p.title.valueOf()}
                         className={classes.picture}
                       />

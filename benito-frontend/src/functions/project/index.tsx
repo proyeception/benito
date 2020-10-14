@@ -56,7 +56,7 @@ export function updateContent(
   return axios.request(signRequest(config));
 }
 
-export function createProject(title: string, category: string, organization: string): AxiosPromise<Project> {
+export function createProject(title: string, category: string, organization: string, creationDate: string): AxiosPromise<Project> {
   
   let newProject: AxiosRequestConfig = {
     url: `${benitoHost}/benito/projects`,
@@ -64,7 +64,8 @@ export function createProject(title: string, category: string, organization: str
     data: {
       title: title,
       categoryId: category,
-      organizationId: organization
+      organizationId: organization,
+      creationDate: creationDate
     }
   };
   return axios.request<Project>(signRequest(newProject));

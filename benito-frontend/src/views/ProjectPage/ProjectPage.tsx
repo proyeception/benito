@@ -28,6 +28,7 @@ import { Divider, Hidden } from "@material-ui/core";
 import Recommendations from "./Sections/Recommendations";
 import Spinner from "../../components/Spinner/Spinner";
 import { ProjectEditionRole } from "../../types";
+import image from "../../assets/img/proyectate/pattern-big.jpg"
 
 const dashboardRoutes: any = [];
 
@@ -64,7 +65,7 @@ const ProjectPage = (props: Props) => {
         fixed
         {...rest}
       />
-      <Parallax filter image={project.value.pictureUrl}>
+      <Parallax filter image={project.value.pictureUrl || image}>
         <div className={classes.container}>
           <GridContainer>
             <GridItem xs={12} sm={12} md={6}>
