@@ -28,7 +28,7 @@ import { Divider, Hidden } from "@material-ui/core";
 import Recommendations from "./Sections/Recommendations";
 import Spinner from "../../components/Spinner/Spinner";
 import { ProjectEditionRole } from "../../types";
-import image from "../../assets/img/proyectate/pattern.jpg"
+import image from "../../assets/img/proyectate/pattern-big.jpg"
 
 const dashboardRoutes: any = [];
 

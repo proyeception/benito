@@ -43,6 +43,7 @@ import { createProject, updateContent, uploadDocuments, updatePicture, setProjec
 import image from "../../assets/img/proyectate/pattern.jpg"
 import { SET_LOGIN_TRUE } from '../../store/login/types';
 import { grey } from "@material-ui/core/colors";
+import MEDitor from "@uiw/react-md-editor";
 
 const useStyles = makeStyles(styles);
 
@@ -228,6 +229,8 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
 
   }
 
+
+
   return (
     <div>
       <Header
@@ -268,39 +271,11 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
             />
           </GridItem>
           <GridItem>
-            <h4 className={classes.subtitle}>Contenido extra</h4>
-            <CustomTabs
-              headerColor="primary"
-              className={classes.readme}
-              style={{ overflow: "auto", boxShadow: "none !important"}}
-              tabs={[
-                {
-                  tabName: "Editar",
-                  tabIcon: Edit,
-                  tabContent: (
-                    <ThemeProvider theme={theme}>
-                    <TextField
-                      fullWidth
-                      multiline
-                      rows="23"
-                      value={readme}
-                      placeholder="Acá podés agregar más contenido que represente el proyecto, como texto con distintos formatos o imágenes"
-                      onChange={(e) => setReadme(e.currentTarget.value)}
-                    />
-                    </ThemeProvider>
-                  ),
-                },
-                {
-                  tabName: "Vista previa",
-                  tabicon: Description,
-                  tabContent: (
-                    <div>
-                      <MarkdownCompiler source={readme || ""} />,
-                    </div>
-                  ),
-                },
-              ]}
-            />
+            <h4 className={classes.subtitle}>Contenido extra - podés agregar más contenido que represente el proyecto, como texto con distintos formatos o imágenes</h4>
+              <MEDitor
+                value={readme}
+                onChange={(e) => setReadme(e)}
+              />
           </GridItem>
           <GridItem>
           <h4 className={classes.subtitle}>Imagen</h4>
