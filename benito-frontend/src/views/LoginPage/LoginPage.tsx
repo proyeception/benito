@@ -103,7 +103,7 @@ const LoginPage = (props: LoginPageProps) => {
                             mail: googleInfo.profileObj.email,
                             token: googleInfo.tokenId,
                           };
-                          startLogin(loginData, props.history, "author");
+                          startLogin(loginData, props.history, "supervisor");
                         }}
                         onFailure={console.warn}
                       />

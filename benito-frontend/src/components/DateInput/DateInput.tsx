@@ -9,7 +9,7 @@ import store from "../../store";
 import { grey } from "@material-ui/core/colors";
 import moment from "moment";
 
-type FromDateInputProps = {
+type DateInputProps = {
   from?: string;
   variant?: "dialog" | "inline" | "static";
   inputVariant?: "standard" | "outlined" | "filled";
@@ -22,7 +22,7 @@ const theme = createMuiTheme({
 });
 
 
-const FromDateInput = (props: FromDateInputProps) => (
+const DateInput = (props: DateInputProps) => (
   <ThemeProvider theme={theme}>
   <KeyboardDatePicker
     clearable={true}
@@ -33,7 +33,7 @@ const FromDateInput = (props: FromDateInputProps) => (
     value={props.from || null}
     onChange={(e) => {
       if (e && moment(e).format("yyyy-MM-DD").toString() != 'Invalid date') {
-        store.dispatch(updateFromDate(moment(e).add(1, 'days').format("yyyy-MM-DD").toString()));
+        store.dispatch(updateFromDate(moment(e).format("yyyy-MM-DD").toString()));
       } else {
         store.dispatch(updateFromDate(""));
       }
@@ -51,4 +51,4 @@ const mapStateToProps = (rootState: RootState) => {
   };
 };
 
-export default hot(module)(connect(mapStateToProps)(FromDateInput));
+export default hot(module)(connect(mapStateToProps)(DateInput));
