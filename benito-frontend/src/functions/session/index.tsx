@@ -54,7 +54,7 @@ export async function openLocalStoredSession(cb: () => void) {
 export function startLogin(
   login: LoginData,
   history: History,
-  loginPath: string
+  loginPath: "author" | "supervisor"
 ) {
   let config: AxiosRequestConfig = {
     method: "POST",

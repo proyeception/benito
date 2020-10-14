@@ -1,13 +1,11 @@
 package com.github.proyeception.benito.controller
 
 import com.github.proyeception.benito.X_QUI_TOKEN
-import com.github.proyeception.benito.dto.CreateGhostUserDTO
-import com.github.proyeception.benito.dto.PersonDTO
-import com.github.proyeception.benito.dto.RoleDTO
-import com.github.proyeception.benito.dto.UpdateUserDTO
+import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.UnauthorizedException
 import com.github.proyeception.benito.service.SessionService
 import com.github.proyeception.benito.service.UserService
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
@@ -19,6 +17,7 @@ class UserController(
     private val userService: UserService,
     private val sessionService: SessionService
 ) {
+
     @RequestMapping(value = ["/benito/authors/{id}"], method = [RequestMethod.GET])
     @ResponseBody
     fun findAuthor(@PathVariable id: String) = userService.findAuthor(id)

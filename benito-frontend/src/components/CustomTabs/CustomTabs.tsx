@@ -39,6 +39,7 @@ export default function CustomTabs(props: any) {
             root: classes.tabsRoot,
             indicator: classes.displayNone,
           }}
+          centered={props.centered}
         >
           {tabs.map((prop: any, key: any) => {
             var icon = {};

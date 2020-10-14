@@ -14,7 +14,7 @@ open class BenitoController {
         "/authors/*",
         "/supervisors/*",
         "/me/*",
-        "/supervisor/login"
+        "/login"
     ])
     open fun index(): ModelAndView = ModelAndView("index")
 }

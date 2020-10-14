@@ -110,15 +110,19 @@ open class ServiceModule {
 
     @Bean
     open fun recommendationService(
-            medusaClient: MedusaClient,
-            medusaGraphClient: MedusaGraphClient
+        medusaClient: MedusaClient,
+        medusaGraphClient: MedusaGraphClient
     ): RecommendationService = RecommendationService(
-            medusaClient = medusaClient,
-            medusaGraphClient = medusaGraphClient
+        medusaClient = medusaClient,
+        medusaGraphClient = medusaGraphClient
     )
 
     @Bean
-    open fun keywordService(
-    ): KeywordService = KeywordService(
-    )
+    open fun keywordService(): KeywordService = KeywordService()
+
+    @Bean
+    open fun signUpService(
+        medusaClient: MedusaClient,
+        fileService: FileService
+    ): SignUpService = SignUpService(medusaClient, fileService)
 }

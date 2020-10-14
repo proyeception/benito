@@ -46,32 +46,32 @@ export async function updateUser(
 
 export function socialToIcon(s: Social): JSX.Element {
   let hostname = new URL(s.socialProfileUrl.valueOf()).hostname;
-  if(new URL(s.socialProfileUrl.valueOf()).pathname == "/"){
-    return <div style={{display: "none"}}></div>;
+  if (new URL(s.socialProfileUrl.valueOf()).pathname == "/") {
+    return <div style={{ display: "none" }}></div>;
   }
   let parse: ParsedDomain | ParseError = psl.parse(hostname);
 
   if (parse.error) {
-    return <div style={{display: "none"}}></div>;
+    return <div style={{ display: "none" }}></div>;
   }
 
   let success = parse as ParsedDomain;
 
   switch (success.sld) {
     case "github": {
-      return <GithubIcon style={{marginRight: "5px", marginLeft:"5px"}} />;
+      return <GithubIcon style={{ marginRight: "5px", marginLeft: "5px" }} />;
     }
     case "twitter": {
-      return <TwitterIcon style={{marginRight: "5px", marginLeft:"5px"}} />;
+      return <TwitterIcon style={{ marginRight: "5px", marginLeft: "5px" }} />;
     }
     case "facebook": {
-      return <FacebookIcon style={{marginRight: "5px", marginLeft:"5px"}}/>;
+      return <FacebookIcon style={{ marginRight: "5px", marginLeft: "5px" }} />;
     }
     case "linkedin": {
-      return <LinkedinIcon style={{marginRight: "5px", marginLeft:"5px"}}/>;
+      return <LinkedinIcon style={{ marginRight: "5px", marginLeft: "5px" }} />;
     }
     default: {
-      return <div style={{display: "none"}}></div>;
+      return <div style={{ display: "none" }}></div>;
     }
   }
 }
@@ -108,4 +108,26 @@ export function leaveOrganization(
   };
 
   return axios.request<Person>(signRequest(config));
+}
+
+export function requestSupervisorAccount(
+  organization: string,
+  googleUserId: string,
+  fullName: string,
+  mail: string,
+  profilePic: string
+) {
+  let config: AxiosRequestConfig = {
+    method: "POST",
+    url: `${benitoHost}/benito/supervisors/sign-up`,
+    data: {
+      googleUserId: googleUserId,
+      fullName: fullName,
+      mail: mail,
+      organization: organization,
+      profilePic: profilePic,
+    },
+  };
+
+  return axios.request(config);
 }
