@@ -263,7 +263,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
               En esta página vas a poder crear un nuevo proyecto, no te olvides de asignarselo a tus alumnos para que ellos lo puedan editar.
             </h4>
           </GridItem>
-          <GridItem xs={12} sm={12} md={6}>
+          <GridItem xs={12} sm={12} md={6} className={classes.title}>
             <TextField
               fullWidth
               placeholder="Título"
@@ -273,10 +273,11 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
           </GridItem>
           <GridItem xs={12} sm={12} md={6}>
             <ThemeProvider theme={themeDate}>
-            <KeyboardDatePicker
+            <KeyboardDatePicker className={classes.datePicker}
               clearable={true}
               placeholder="08/04/2016" 
               format="dd/MM/yyyy"
+              fullWidth
               label="Fecha de publicacion"
               value={creationDate || null}
               onChange={(e) => {
