@@ -27,6 +27,7 @@ open class MedusaGraphClient(
         organizationId: String? = null,
         organizationName: String? = null,
         id: String? = null,
+        projectKeywords: List<String>? = null,
         page: Int = 0
     ): Either<Throwable, List<MedusaProjectDTO>> {
         val params = formatParams(
@@ -41,7 +42,8 @@ open class MedusaGraphClient(
             organizationId = organizationId,
             organizationName = organizationName,
             page = page,
-            id = id
+            id = id,
+            projectKeywords = projectKeywords
         )
 
         LOGGER.info("Search params: $params")
@@ -159,6 +161,7 @@ open class MedusaGraphClient(
         organizationId: String? = null,
         organizationName: String? = null,
         id: String? = null,
+        projectKeywords: List<String>? = null,
         page: Int = 0
     ): String {
         val where = mutableListOf<String>()
@@ -172,6 +175,9 @@ open class MedusaGraphClient(
         organizationId?.let { where.add("""organization: { id: "$it" }""") }
         organizationName?.let { where.add("""organization: { name: "$it" }""") }
         id?.let { where.add("""id: "$it"""") }
+        projectKeywords?.let {
+            ks -> where.add("""project_keywords: { name_in: [${ks.joinToString(",") { "\"$it\"" } }] }""")
+        }
 
         val sort = orderBy?.let { """sort: "${it.sortMethod}"""" }
 

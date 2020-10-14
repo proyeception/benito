@@ -207,25 +207,29 @@ open class MedusaClient(
         ref = MEDUSA_PERSON_REF
     )
 
-    fun updateProjectKeywords(kw: List<KeywordDTO>, project: ProjectDTO) {
+    open fun createPendingSupervisor(supervisor: CreatePendingSupervisorDTO): Any {
+        return create("pending-supervisors", supervisor, ANY_REF)
+    }
+
+    fun updateProjectKeywords(kw: List<KeywordDTO>, project: ProjectDTO): List<KeywordDTO> {
 
         project.project_keywords.filter { it.id.isNullOrBlank() }.map { delete("keywords", it.id.orEmpty(), MEDUSA_KEYWORD_REF) }
-        val keywordsIdList = kw.map{ create("keywords", it, MEDUSA_KEYWORD_REF).id }
+        val updatedKeywords = kw.map{ create("keywords", it, MEDUSA_KEYWORD_REF) }
+        val keywordsIdList = updatedKeywords.map{ it.id }
         val keywordsIdRef = ProjectKeywords(keywordsIdList.map { ObjectId(it).toHexString() } )
         update("projects", project.id, keywordsIdRef, ANY_REF)
+        return updatedKeywords
 
     }
 
-    fun updateRecommendations(recommendations: List<CreateRecommendationDTO>, project: ProjectDTO) {
+    fun updateRecommendations(recommendations: List<CreateRecommendationDTO>,
+                              projectId: String,
+                              originalRecommendations: List<RecommendationDTO>) {
 
-        project.recommendations
-                .map { it.id.orEmpty() }
-                .filter { it.isNotBlank() }.map { delete("recommendations", it, MEDUSA_RECOMMENDATION_REF) }
         val recommendationsIdList = recommendations
-            //crear variante de create con un cuarto parametro que indique con que clase deserealizar la response
-            .map{ create("recommendations", it, CREATE_RECOMMENDATION_REF, MEDUSA_RECOMMENDATION_REF).id }
+            .map{ create("recommendations", it, MEDUSA_RECOMMENDATION_REF).id }
         val recommendationsIdRef = ProjectRecommendations(recommendationsIdList.map { it } )
-        update("projects", project.id, recommendationsIdRef, MEDUSA_PROJECT_REF)
+        update("projects", projectId, recommendationsIdRef, MEDUSA_PROJECT_REF)
 
     }
 
@@ -261,17 +265,6 @@ open class MedusaClient(
         }
 
         return response.deserializeAs(ref)
-    }
-
-    private fun <T, U> create(collection: String, dto: Any, refOrigin: TypeReference<T>, refDestiny: TypeReference<U>): U {
-        val response = medusaConnector.post("/$collection", dto)
-
-        if (response.isError()) {
-            LOGGER.error("Error creating a new item in $collection on Medusa", response.body)
-            throw FailedDependencyException("Error when creating a new item in $collection on Medusa")
-        }
-
-        return response.deserializeAs(refDestiny)
     }
 
     private fun <T> update(collection: String, id: String, dto: Any, ref: TypeReference<T>): T {
@@ -325,5 +318,6 @@ open class MedusaClient(
         private val MEDUSA_RECOMMENDATION_REF = object : TypeReference<CreatedRecommendationDTO>() {}
         private val CREATE_RECOMMENDATION_REF = object : TypeReference<CreateRecommendationDTO>() {}
         private val ANY_REF = object : TypeReference<Any>() {}
+        private val PENDING_SUPERVISOR_REF = object : TypeReference<CreatePendingSupervisorDTO>() {}
     }
 }

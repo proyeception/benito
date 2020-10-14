@@ -1,11 +1,13 @@
 import {
   Button,
+  createMuiTheme,
   Dialog,
   DialogActions,
   DialogTitle,
   Divider,
   makeStyles,
   TextField,
+  ThemeProvider,
 } from "@material-ui/core";
 import React, { useCallback, useState } from "react";
 import { hot } from "react-hot-loader";
@@ -37,7 +39,10 @@ import CustomButton from "../../components/CustomButtons/Button";
 import { fetchOrganization } from "../../functions/organization";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import withUser from "../../hooks/withUser";
-import { createProject } from "../../functions/project";
+import { createProject, updateContent, uploadDocuments, updatePicture, setProjectUsers } from "../../functions/project";
+import image from "../../assets/img/proyectate/pattern.jpg"
+import { SET_LOGIN_TRUE } from '../../store/login/types';
+import { grey } from "@material-ui/core/colors";
 
 const useStyles = makeStyles(styles);
 
@@ -112,6 +117,12 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
     return <Redirect to={{pathname: "/error"}}/>
   }
 
+  const theme = createMuiTheme({
+    palette: {
+      primary: grey,
+    },
+  });
+
   const project: Project = {
     id: "",
     title: "",
@@ -172,8 +183,48 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
     console.log(readme)
     console.log(category)
 
-    const response = createProject(title!, category!.id, project.organization.id);
-    //response.then
+    
+    
+    const response = createProject(title!, category!.id, project.organization.id)
+      .then((res) => {
+        
+        let promises = [];
+        const projectId = res.data.id;
+    
+        //content, documents
+        const contentPromise = updateContent(
+          projectId,
+          [],
+          title,
+          description,
+          readme
+        )
+          .then(console.log)
+          .catch(console.error)
+          .then(() => uploadDocuments(projectId, documentsToUpload))
+          .then(console.log)
+          .catch(console.error);
+    
+        promises.push(contentPromise);
+    
+        //picture
+        if (picture != undefined) {
+          promises.push(updatePicture(projectId, picture));
+        }
+    
+        //users
+        const usersPromise = setProjectUsers(authorsToAdd, supervisorsToAdd, projectId)
+          .then(console.log)
+          .catch(console.error);
+
+        promises.push(usersPromise);
+    
+        Promise.all(promises)
+          .catch(console.error)
+          .then(() => props.history.push(`/projects/${projectId}`))
+          .then(() => props.history.go(0));
+
+      }).catch((error) => {return <Redirect to={{ pathname: "/error" }} />;});
 
   }
 
@@ -186,45 +237,57 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
         fixed
         {...rest}
       />
-      <Parallax filter image={"https://res.cloudinary.com/proyectate/image/upload/v1602530643/tres_claves_infalibles_para_crear_y_desarrollar_un_proyecto_principal_f27c7d41bb.jpg"} small />
+      <Parallax filter image={image} small />
       <div className={classes.main}>
         <GridContainer className={classes.container}>
-          <GridItem xs={12} sm={12} md={6}>
-            <h3>Título</h3>
+          <GridItem xs={12} sm={12} md={12}>
+            <h2 className={classes.title} style={{ textAlign: "center" }}>
+              CREAR UN PROYECTO
+            </h2>
+            <h4 className={classes.subtitle} style={{ textAlign: "left", paddingBottom: "20px" }}>
+              En esta página vas a poder crear un nuevo proyecto, no te olvides de asignarselo a tus alumnos para que ellos lo puedan editar.
+            </h4>
+          </GridItem>
+          <GridItem xs={12} sm={12} md={12}>
             <TextField
               fullWidth
+              placeholder="Título"
               value={title}
               onChange={(e) => setTitle(e.currentTarget.value)}
             />
           </GridItem>
-          <GridItem xs={12} sm={12} md={6}>
-            <h3>Descripción</h3>
+          <GridItem xs={12} sm={12} md={12}>
             <TextField
               fullWidth
               multiline
+              placeholder="Descripción"
+              rows="3"
               rowsMax={15}
               value={description}
               onChange={(e) => setDescription(e.currentTarget.value)}
             />
           </GridItem>
           <GridItem>
-            <h3>Contenido extra</h3>
+            <h4 className={classes.subtitle}>Contenido extra</h4>
             <CustomTabs
-              headerColor="info"
+              headerColor="primary"
               className={classes.readme}
-              style={{ overflow: "auto" }}
+              style={{ overflow: "auto", boxShadow: "none !important"}}
               tabs={[
                 {
                   tabName: "Editar",
                   tabIcon: Edit,
                   tabContent: (
+                    <ThemeProvider theme={theme}>
                     <TextField
                       fullWidth
                       multiline
+                      rows="23"
                       value={readme}
+                      placeholder="Acá podés agregar más contenido que represente el proyecto, como texto con distintos formatos o imágenes"
                       onChange={(e) => setReadme(e.currentTarget.value)}
-                      variant="outlined"
                     />
+                    </ThemeProvider>
                   ),
                 },
                 {
@@ -240,21 +303,21 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
             />
           </GridItem>
           <GridItem>
-            <h3>Imagen</h3>
+          <h4 className={classes.subtitle}>Imagen</h4>
             <ImageUploader
               withIcon={true}
               name="pictureUrl"
-              buttonText="Elija la foto de Portada desde su ordenador"
+              buttonText="Elegí una imagen para el proyecto"
               onChange={onPictureDrop}
-              label={"Max file size: 5mb, accepted: jpg, png"}
-              imgExtension={[".jpg", ".png"]}
+              label={"Te recomendamos que sea de buena calidad para que el proyecto se vea mejor"}
+              imgExtension={[".jpg",".jpeg", ".png"]}
               maxFileSize={5242880}
               singleImage={true}
               withPreview={true}
             />
           </GridItem>
           <GridItem>
-            <h3>Documentos</h3>
+          <h4 className={classes.subtitle}>Documentos</h4>
             <section
               className="dropzone-container"
               style={{ marginTop: "15px" }}
@@ -262,9 +325,9 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
               <div {...getRootProps({ className: "dropzone font-size-18-md" })}>
                 <input {...getInputProps()} />
                 {isDragActive ? (
-                  <p>Drop the files here...</p>
+                  <p>Arrastrá los documentos acá...</p>
                 ) : (
-                  <p>Drag 'n' drop some files here, or click to select files</p>
+                  <p>Arrastrá los documentos acá, o hacé click para seleccionar documentos</p>
                 )}
               </div>
             </section>
@@ -272,10 +335,10 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
         </GridContainer>
           <GridContainer className={classes.container}>
             <GridItem>
-              <h3>Categoría</h3>
               <div>
                 <Autocomplete
                   fullWidth
+                  className={classes.autocomplete}
                   options={props.categories}
                   getOptionLabel={(option) => option.name}
                   defaultValue={category}
@@ -286,15 +349,16 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                     <TextField
                       {...params}
                       fullWidth
+                      placeholder="Categoría"
                     />
                   )}
                 />
               </div>
             </GridItem>
             <GridItem>
-              <h3>Autores</h3>
               <Autocomplete
                 fullWidth
+                className={classes.autocomplete}
                 options={organization.authors.filter(
                   (a) => !authorsToAdd.includes(a)
                 )}
@@ -302,13 +366,13 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                 onChange={(e, a) => {
                   if (a) setAuthorsToAdd(authorsToAdd.concat(a!));
                 }}
-                renderInput={(params) => <TextField {...params} fullWidth />}
+                renderInput={(params) => <TextField {...params} fullWidth placeholder="Autores" />}
               />
             </GridItem>
             <GridItem>
-              <h3>Supervisores</h3>
               <Autocomplete
                 fullWidth
+                className={classes.autocomplete}
                 options={organization.supervisors.filter(
                   (s) =>
                     !(
@@ -319,7 +383,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                 onChange={(e, s) => {
                   if (s) setSupervisorsToAdd(supervisorsToAdd.concat(s!));
                 }}
-                renderInput={(params) => <TextField {...params} fullWidth />}
+                renderInput={(params) => <TextField {...params} fullWidth placeholder="Supervisores"/>}
               />
             </GridItem>
           </GridContainer>
@@ -330,7 +394,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
           </GridItem>
 
           <GridItem xs={12} align="left">
-            <h3>Cambios</h3>
+          <h4 className={classes.subtitle}>Cambios, podés hacerles click para deshacerlos</h4>
             <ul>
               {Changes().map((c, idx) => (
                 <li
@@ -344,27 +408,25 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
             </ul>
           </GridItem>
 
-          <GridItem xs={6}>
-            <CustomButton
+          <GridItem xs={12} align="right">
+          <CustomButton
               type="button"
-              color="info"
-              style={{ width: "100%" }}
-              onClick={() => setIsModalOpen(true)}
-            >
-              Guardar cambios
-            </CustomButton>
-          </GridItem>
-          <GridItem xs={6}>
-            <CustomButton
-              type="button"
-              color="danger"
-              style={{ width: "100%" }}
+              color="secondary"
+              style={{ width: "15%", textAlign: "right" }}
               onClick={() =>
                 {}
                 //props.history.push(`/projects/${project.id}`)
               }
             >
               Descartar y volver
+            </CustomButton>
+            <CustomButton
+              type="button"
+              color="primary"
+              style={{ width: "15%", textAlign: "right" }}
+              onClick={() => setIsModalOpen(true)}
+            >
+              Guardar cambios
             </CustomButton>
           </GridItem>
         </GridContainer>

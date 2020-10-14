@@ -1,13 +1,18 @@
 import { createStyles, Theme } from "@material-ui/core";
-import { container } from "../../material-kit-react";
+import { container, title } from "../../material-kit-react";
 
 const editProjectStyle = (theme: Theme) =>
   createStyles({
     container,
+    title: {
+      ...title,
+      paddingBottom: "10px",
+    },
     main: {
       background: "#FFFFFF",
       position: "relative",
       zIndex: 3,
+      paddingBottom: "70px",
     },
     mainRaised: {
       margin: "-60px 30px 0px",
@@ -35,6 +40,15 @@ const editProjectStyle = (theme: Theme) =>
     bullet: {
       display: "flex",
     },
+    subtitle: {
+      paddingTop: "5px",
+      paddingBottom: "5px",
+      color: "##3c4858"
+    },
+    autocomplete: {
+      paddingBottom: "10px",
+      paddingTop: "10px"
+    }
   });
 
 export default editProjectStyle;

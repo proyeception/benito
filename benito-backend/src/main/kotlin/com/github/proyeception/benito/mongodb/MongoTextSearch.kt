@@ -195,8 +195,9 @@ open class MongoTextSearch(
                 }
 
                 val project = ProjectRecommendationDTO(
-                        id = projectDocumentToCompare["_id"].toString(),
-                        project_keywords = projectToCompareKeywords
+                    id = projectDocumentToCompare["_id"].toString(),
+                    project_keywords = projectToCompareKeywords,
+                    original_recommendations = emptyList()
                 )
 
                 projects.add(project)

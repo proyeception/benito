@@ -1,6 +1,7 @@
 import {
   Button,
   CircularProgress,
+  createMuiTheme,
   Dialog,
   DialogActions,
   DialogContent,
@@ -10,6 +11,7 @@ import {
   Hidden,
   makeStyles,
   TextField,
+  ThemeProvider,
 } from "@material-ui/core";
 import React, { useCallback, useState } from "react";
 import { hot } from "react-hot-loader";
@@ -50,6 +52,7 @@ import {
   uploadDocuments,
 } from "../../functions/project";
 import useCreateGhostUser from "../../components/CreateGhostUser/CreateGhostUser";
+import { grey } from "@material-ui/core/colors";
 
 const useStyles = makeStyles(styles);
 
@@ -136,6 +139,12 @@ const EditProjectPage = (props: EditProjectPageProps) => {
         console.error(e);
         setOrganization("ERROR");
       });
+  });
+
+  const theme = createMuiTheme({
+    palette: {
+      primary: grey,
+    },
   });
 
   if (project.type == PENDING || organization == undefined) {
@@ -290,20 +299,30 @@ const EditProjectPage = (props: EditProjectPageProps) => {
       <Parallax filter image={project.value.pictureUrl} small />
       <div className={classes.main}>
         <GridContainer className={classes.container}>
-          <GridItem xs={12} sm={12} md={6}>
-            <h3>Título</h3>
+        <GridItem xs={12} sm={12} md={12}>
+            <h2 className={classes.title} style={{ textAlign: "center" }}>
+              EDITAR UN PROYECTO
+            </h2>
+            <h4 className={classes.subtitle} style={{ textAlign: "left", paddingBottom: "20px" }}>
+              En esta página vas a poder editar tu proyecto.
+            </h4>
+          </GridItem>
+          <GridItem xs={12} sm={12} md={12}>
             <TextField
               fullWidth
+              className={classes.autocomplete}
+              placeholder="Título"
               value={title}
               onChange={(e) => setTitle(e.currentTarget.value)}
             />
           </GridItem>
-          <GridItem xs={12} sm={12} md={6}>
-            <h3>Descripción</h3>
+          <GridItem xs={12} sm={12} md={12}>
             <TextField
               fullWidth
               multiline
+              placeholder="Descripción"
               rowsMax={15}
+              rows="3"
               value={description}
               onChange={(e) => setDescription(e.currentTarget.value)}
             />
@@ -311,21 +330,24 @@ const EditProjectPage = (props: EditProjectPageProps) => {
           <GridItem>
             <h3>Contenido extra</h3>
             <CustomTabs
-              headerColor="info"
+              headerColor="primary"
               className={classes.readme}
-              style={{ overflow: "auto" }}
+              style={{ overflow: "auto", boxShadow: "none !important" }}
               tabs={[
                 {
                   tabName: "Editar",
                   tabIcon: Edit,
                   tabContent: (
+                    <ThemeProvider theme={theme}>
                     <TextField
-                      fullWidth
-                      multiline
-                      value={readme}
-                      onChange={(e) => setReadme(e.currentTarget.value)}
-                      variant="outlined"
+                    fullWidth
+                    multiline
+                    rows="23"
+                    value={readme}
+                    placeholder="Acá podés agregar más contenido que represente el proyecto, como texto con distintos formatos o imágenes"
+                    onChange={(e) => setReadme(e.currentTarget.value)}
                     />
+                    </ThemeProvider>
                   ),
                 },
                 {
@@ -341,21 +363,21 @@ const EditProjectPage = (props: EditProjectPageProps) => {
             />
           </GridItem>
           <GridItem>
-            <h3>Imagen</h3>
+          <h4 className={classes.subtitle}>Imagen</h4>
             <ImageUploader
               withIcon={true}
               name="pictureUrl"
-              buttonText="Elija la foto de Portada desde su ordenador"
+              buttonText="Elegí una imagen para el proyecto"
               onChange={onPictureDrop}
-              label={"Max file size: 5mb, accepted: jpg, png"}
-              imgExtension={[".jpg", ".png"]}
+              label={"Te recomendamos que sea de buena calidad para que el proyecto se vea mejor"}
+              imgExtension={[".jpg",".jpeg", ".png"]}
               maxFileSize={5242880}
               singleImage={true}
               withPreview={true}
             />
           </GridItem>
           <GridItem>
-            <h3>Documentos</h3>
+          <h4 className={classes.subtitle}>Documentos</h4>
             {project.value.documentation
               .filter((d) => !documentsToRemove.some((dtr) => dtr == d))
               .map((d, idx) => (
@@ -380,18 +402,18 @@ const EditProjectPage = (props: EditProjectPageProps) => {
               <div {...getRootProps({ className: "dropzone font-size-18-md" })}>
                 <input {...getInputProps()} />
                 {isDragActive ? (
-                  <p>Drop the files here...</p>
+                  <p>Arrastrá los documentos acá...</p>
                 ) : (
-                  <p>Drag 'n' drop some files here, or click to select files</p>
+                  <p>Arrastrá los documentos acá, o hacé click para seleccionar documentos</p>
                 )}
               </div>
             </section>
           </GridItem>
         </GridContainer>
-        {role == "SUPERVISOR" ? (
+        {role == "AUTHOR" ? (
           <GridContainer className={classes.container}>
             <GridItem>
-              <h3>Autores</h3>
+            <h4 className={classes.subtitle}>Autores</h4>
               {project.value.authors
                 .concat(justCreatedAuthors)
                 .filter((a) => !authorsToRemove.some((atr) => atr == a))
@@ -431,8 +453,11 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                   <CustomButton
                     fullWidth
                     type="button"
-                    color="info"
-                    onClick={openGhostAuthorForm}
+                    color="primary"
+                    onClick={
+                      openGhostAuthorForm
+
+                    }
                   >
                     <AddCircle />
                     <Hidden smDown>Crear nuevo autor</Hidden>
@@ -441,7 +466,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
               </GridContainer>
             </GridItem>
             <GridItem>
-              <h3>Supervisores</h3>
+            <h4 className={classes.subtitle}>Supervisores</h4>
               {project.value.supervisors
                 .concat(justCreatedSupervisors)
                 .filter(
@@ -489,7 +514,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                   <CustomButton
                     fullWidth
                     type="button"
-                    color="info"
+                    color="primary"
                     onClick={openGhostSupervisorForm}
                   >
                     <AddCircle />
@@ -507,7 +532,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
             <Divider variant="fullWidth" />
           </GridItem>
           <GridItem xs={12} align="left">
-            <h3>Cambios</h3>
+          <h4 className={classes.subtitle}>Cambios, podés hacerles click para deshacerlos</h4>
             <ul>
               {Changes().map((c, idx) => (
                 <li
@@ -521,25 +546,26 @@ const EditProjectPage = (props: EditProjectPageProps) => {
             </ul>
           </GridItem>
           <GridItem xs={6}>
-            <CustomButton
-              type="button"
-              color="info"
-              style={{ width: "100%" }}
-              onClick={() => setIsModalOpen(true)}
-            >
-              Guardar cambios
-            </CustomButton>
+            
           </GridItem>
-          <GridItem xs={6}>
-            <CustomButton
+          <GridItem xs={12} align="right">
+          <CustomButton
               type="button"
-              color="danger"
-              style={{ width: "100%" }}
+              color="secondary"
+              style={{ width: "15%", textAlign: "right" }}
               onClick={() =>
                 props.history.push(`/projects/${project.value.id}`)
               }
             >
               Descartar y volver
+            </CustomButton>
+            <CustomButton
+              type="button"
+              color="primary"
+              style={{ width: "15%", textAlign: "right" }}
+              onClick={() => setIsModalOpen(true)}
+            >
+              Guardar cambios
             </CustomButton>
           </GridItem>
         </GridContainer>
