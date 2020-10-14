@@ -29,6 +29,7 @@
     "@types/react-router-dom": "^5.1.5",
     "@types/react-slick": "^0.23.4",
     "@types/react-swipeable-views": "^0.13.0",
+    "@uiw/react-md-editor": "^1.14.4",
     "awesome-typescript-loader": "^5.2.1",
     "axios": "^0.20.0",
     "classnames": "^2.2.6",
