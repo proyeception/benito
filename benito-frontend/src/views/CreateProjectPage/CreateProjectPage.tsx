@@ -24,12 +24,7 @@ import { ERROR, PENDING } from "../../hooks/withFetch";
 import CustomTabs from "../../components/CustomTabs/CustomTabs";
 import { Edit, Description } from "@material-ui/icons";
 import MarkdownCompiler from "../../components/MarkdownCompiler/MarkdownCompiler";
-import {
-  Organization,
-  Person,
-  Project,
-  Category,
-} from "../../types";
+import { Organization, Person, Project, Category } from "../../types";
 import { SessionState } from "../../store/session/types";
 import { RootState } from "../../reducers";
 import { connect } from "react-redux";
@@ -39,11 +34,17 @@ import CustomButton from "../../components/CustomButtons/Button";
 import { fetchOrganization } from "../../functions/organization";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import withUser from "../../hooks/withUser";
-import { createProject, updateContent, uploadDocuments, updatePicture, setProjectUsers } from "../../functions/project";
-import image from "../../assets/img/proyectate/pattern.jpg"
-import { SET_LOGIN_TRUE } from '../../store/login/types';
+import {
+  createProject,
+  updateContent,
+  uploadDocuments,
+  updatePicture,
+  setProjectUsers,
+} from "../../functions/project";
+import image from "../../assets/img/proyectate/pattern.jpg";
+import { SET_LOGIN_TRUE } from "../../store/login/types";
 import DateInput from "../../components/DateInput/DateInput";
-import { KeyboardDatePicker } from "@material-ui/pickers";;
+import { KeyboardDatePicker } from "@material-ui/pickers";
 import { updateFromDate } from "../../actions/search";
 import store from "../../store";
 import { grey } from "@material-ui/core/colors";
@@ -88,42 +89,44 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
     Organization | undefined | "ERROR"
   >();
   const [titleIncompleted, setTitleIncompleted] = React.useState(true);
-  const [descriptionIncompleted, setDescriptionIncompleted] = React.useState(true);
+  const [descriptionIncompleted, setDescriptionIncompleted] = React.useState(
+    true
+  );
 
   console.log(props.session);
   if (!props.session.isLoggedIn) {
     return <Redirect to="/login" />;
   }
 
-/*
+  /*
   if (!(props.session.role == "SUPERVISOR")) {
     console.log("Usuario sin permisos de supervisor")
     return <Redirect to={{pathname: "/error"}}/>
   }
 */
 
-  const user = withUser(props.session.role, props.session.userId, (p) => {    
+  const user = withUser(props.session.role, props.session.userId, (p) => {
     if (p.organizations[0] == undefined) {
-      console.log("Usuario sin organizaciones")
+      console.log("Usuario sin organizaciones");
       return <Redirect to={{ pathname: "/error" }} />;
     }
-    console.log("fetch org: " + p.organizations[0].id) 
+    console.log("fetch org: " + p.organizations[0].id);
     fetchOrganization(p.organizations[0].id)
       .then((res) => res.data)
       .then((o) => setOrganization(o))
       .catch((e) => {
         console.error(e);
         setOrganization("ERROR");
-    });
+      });
   });
 
   if (user.type == PENDING) {
-    return <Spinner/>;
+    return <Spinner />;
   }
 
   if (user.type == ERROR) {
-    console.log("Usuario con error")
-    return <Redirect to={{pathname: "/error"}}/>
+    console.log("Usuario con error");
+    return <Redirect to={{ pathname: "/error" }} />;
   }
 
   const theme = createMuiTheme({
@@ -132,7 +135,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
     },
   });
 
-const themeDate = createMuiTheme({
+  const themeDate = createMuiTheme({
     palette: {
       primary: grey,
     },
@@ -148,15 +151,15 @@ const themeDate = createMuiTheme({
     documentation: [],
     tags: [],
     extraContent: "",
-    organization: user.value.organizations[0]
+    organization: user.value.organizations[0],
   };
 
   if (organization == undefined) {
-    return <Spinner/>;
+    return <Spinner />;
   }
 
   if (organization == "ERROR") {
-    console.log("Organizacion con error")
+    console.log("Organizacion con error");
     return <Redirect to={{ pathname: "/error" }} />;
   }
 
@@ -188,24 +191,26 @@ const themeDate = createMuiTheme({
   }
 
   function updateProject(project: Project) {
+    console.log(supervisorsToAdd);
+    console.log(authorsToAdd);
+    console.log(title);
+    console.log(description);
+    console.log(picture);
+    console.log(documentsToUpload);
+    console.log(readme);
+    console.log(category);
+    console.log(creationDate);
 
-    console.log(supervisorsToAdd)
-    console.log(authorsToAdd)
-    console.log(title)
-    console.log(description)
-    console.log(picture)
-    console.log(documentsToUpload)
-    console.log(readme)
-    console.log(category)
-    console.log(creationDate)
-
-    
-    const response = createProject(title!, category!.id, project.organization.id, creationDate!)
+    const response = createProject(
+      title!,
+      category!.id,
+      project.organization.id,
+      creationDate!
+    )
       .then((res) => {
-        
         let promises = [];
         const projectId = res.data.id;
-    
+
         //content, documents
         const contentPromise = updateContent(
           projectId,
@@ -219,37 +224,34 @@ const themeDate = createMuiTheme({
           .then(() => uploadDocuments(projectId, documentsToUpload))
           .then(console.log)
           .catch(console.error);
-    
+
         promises.push(contentPromise);
-    
+
         //picture
         if (picture != undefined) {
           promises.push(updatePicture(projectId, picture));
         }
-    
+
         //users
-        const usersPromise = setProjectUsers(authorsToAdd, supervisorsToAdd, projectId)
+        const usersPromise = setProjectUsers(
+          authorsToAdd,
+          supervisorsToAdd,
+          projectId
+        )
           .then(console.log)
           .catch(console.error);
 
         promises.push(usersPromise);
-    
+
         Promise.all(promises)
           .catch(console.error)
           .then(() => props.history.push(`/projects/${projectId}`))
           .then(() => props.history.go(0));
-
-      }).catch((error) => {return <Redirect to={{ pathname: "/error" }} />;});
-
+      })
+      .catch((error) => {
+        return <Redirect to={{ pathname: "/error" }} />;
+      });
   }
-  
-  const theme = createMuiTheme({
-    palette: {
-      primary: grey,
-    },
-  });
-
-
 
   return (
     <div>
@@ -267,12 +269,16 @@ const themeDate = createMuiTheme({
             <h2 className={classes.title} style={{ textAlign: "center" }}>
               CREAR UN PROYECTO
             </h2>
-            <h4 className={classes.subtitle} style={{ textAlign: "left", paddingBottom: "20px" }}>
-              En esta página vas a poder crear un nuevo proyecto, no te olvides de asignarselo a tus alumnos para que ellos lo puedan editar.
+            <h4
+              className={classes.subtitle}
+              style={{ textAlign: "left", paddingBottom: "20px" }}
+            >
+              En esta página vas a poder crear un nuevo proyecto, no te olvides
+              de asignarselo a tus alumnos para que ellos lo puedan editar.
             </h4>
           </GridItem>
           <GridItem xs={12} sm={12} md={6}>
-          <TextField
+            <TextField
               fullWidth
               required
               error={titleIncompleted}
@@ -280,35 +286,42 @@ const themeDate = createMuiTheme({
               placeholder="Título"
               value={title}
               onChange={(e) => {
-                if(e.currentTarget.value.trim() == ""){
-                  setTitleIncompleted(true)
+                if (e.currentTarget.value.trim() == "") {
+                  setTitleIncompleted(true);
                 } else {
-                  setTitleIncompleted(false)
+                  setTitleIncompleted(false);
                 }
-                setTitle(e.currentTarget.value)}}
-            />
-          </GridItem>
-<GridItem xs={12} sm={12} md={6}>
-            <ThemeProvider theme={themeDate}>
-            <KeyboardDatePicker className={classes.datePicker}
-              clearable={true}
-              placeholder="08/04/2016" 
-              format="dd/MM/yyyy"
-              fullWidth
-              label="Fecha de publicacion"
-              value={creationDate || null}
-              onChange={(e) => {
-                if (e && moment(e).format("yyyy-MM-DD").toString() != 'Invalid date') {
-                  setCreationDate(moment(e).add(1, 'days').format("yyyy-MM-DD").toString());
-                } else {
-                  store.dispatch(updateFromDate(""));
-                }
+                setTitle(e.currentTarget.value);
               }}
             />
+          </GridItem>
+          <GridItem xs={12} sm={12} md={6}>
+            <ThemeProvider theme={themeDate}>
+              <KeyboardDatePicker
+                className={classes.datePicker}
+                clearable={true}
+                placeholder="08/04/2016"
+                format="dd/MM/yyyy"
+                fullWidth
+                label="Fecha de publicacion"
+                value={creationDate || null}
+                onChange={(e) => {
+                  if (
+                    e &&
+                    moment(e).format("yyyy-MM-DD").toString() != "Invalid date"
+                  ) {
+                    setCreationDate(
+                      moment(e).add(1, "days").format("yyyy-MM-DD").toString()
+                    );
+                  } else {
+                    store.dispatch(updateFromDate(""));
+                  }
+                }}
+              />
             </ThemeProvider>
           </GridItem>
           <GridItem xs={12} sm={12} md={12}>
-          <TextField
+            <TextField
               fullWidth
               multiline
               placeholder="Descripción"
@@ -317,37 +330,40 @@ const themeDate = createMuiTheme({
               rows="3"
               value={description}
               onChange={(e) => {
-                if(e.currentTarget.value.trim() == ""){
-                  setDescriptionIncompleted(true)
+                if (e.currentTarget.value.trim() == "") {
+                  setDescriptionIncompleted(true);
                 } else {
-                  setDescriptionIncompleted(false)
+                  setDescriptionIncompleted(false);
                 }
-                setDescription(e.currentTarget.value)}}
+                setDescription(e.currentTarget.value);
+              }}
             />
           </GridItem>
           <GridItem>
-            <h4 className={classes.subtitle}>Contenido extra - podés agregar más contenido que represente el proyecto, como texto con distintos formatos o imágenes</h4>
-              <MEDitor
-                value={readme}
-                onChange={(e) => setReadme(e)}
-              />
+            <h4 className={classes.subtitle}>
+              Contenido extra - podés agregar más contenido que represente el
+              proyecto, como texto con distintos formatos o imágenes
+            </h4>
+            <MEDitor value={readme} onChange={(e) => setReadme(e)} />
           </GridItem>
           <GridItem>
-          <h4 className={classes.subtitle}>Imagen</h4>
+            <h4 className={classes.subtitle}>Imagen</h4>
             <ImageUploader
               withIcon={true}
               name="pictureUrl"
               buttonText="Elegí una imagen para el proyecto"
               onChange={onPictureDrop}
-              label={"Te recomendamos que sea de buena calidad para que el proyecto se vea mejor"}
-              imgExtension={[".jpg",".jpeg", ".png"]}
+              label={
+                "Te recomendamos que sea de buena calidad para que el proyecto se vea mejor"
+              }
+              imgExtension={[".jpg", ".jpeg", ".png"]}
               maxFileSize={5242880}
               singleImage={true}
               withPreview={true}
             />
           </GridItem>
           <GridItem>
-          <h4 className={classes.subtitle}>Documentos</h4>
+            <h4 className={classes.subtitle}>Documentos</h4>
             <section
               className="dropzone-container"
               style={{ marginTop: "15px" }}
@@ -357,66 +373,66 @@ const themeDate = createMuiTheme({
                 {isDragActive ? (
                   <p>Arrastrá los documentos acá...</p>
                 ) : (
-                  <p>Arrastrá los documentos acá, o hacé click para seleccionar documentos</p>
+                  <p>
+                    Arrastrá los documentos acá, o hacé click para seleccionar
+                    documentos
+                  </p>
                 )}
               </div>
             </section>
           </GridItem>
         </GridContainer>
-          <GridContainer className={classes.container}>
-            <GridItem>
-              <div>
-                <Autocomplete
-                  fullWidth
-                  className={classes.autocomplete}
-                  options={props.categories}
-                  getOptionLabel={(option) => option.name}
-                  defaultValue={category}
-                  onChange={(e, c) => {
-                    setCategory(c!);
-                  }}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      fullWidth
-                      placeholder="Categoría"
-                    />
-                  )}
-                />
-              </div>
-            </GridItem>
-            <GridItem>
+        <GridContainer className={classes.container}>
+          <GridItem>
+            <div>
               <Autocomplete
                 fullWidth
                 className={classes.autocomplete}
-                options={organization.authors.filter(
-                  (a) => !authorsToAdd.includes(a)
-                )}
-                getOptionLabel={(option) => option.fullName}
-                onChange={(e, a) => {
-                  if (a) setAuthorsToAdd(authorsToAdd.concat(a!));
+                options={props.categories}
+                getOptionLabel={(option) => option.name}
+                defaultValue={category}
+                onChange={(e, c) => {
+                  setCategory(c!);
                 }}
-                renderInput={(params) => <TextField {...params} fullWidth placeholder="Autores" />}
-              />
-            </GridItem>
-            <GridItem>
-              <Autocomplete
-                fullWidth
-                className={classes.autocomplete}
-                options={organization.supervisors.filter(
-                  (s) =>
-                    !(
-                      supervisorsToAdd.includes(s)
-                    )
+                renderInput={(params) => (
+                  <TextField {...params} fullWidth placeholder="Categoría" />
                 )}
-                getOptionLabel={(option) => option.fullName}
-                onChange={(e, s) => {
-                  if (s) setSupervisorsToAdd(supervisorsToAdd.concat(s!));
-                }}
-                renderInput={(params) => <TextField {...params} fullWidth placeholder="Supervisores"/>}
               />
-            </GridItem>
-          </GridContainer>
+            </div>
+          </GridItem>
+          <GridItem>
+            <Autocomplete
+              fullWidth
+              className={classes.autocomplete}
+              options={organization.authors.filter(
+                (a) => !authorsToAdd.includes(a)
+              )}
+              getOptionLabel={(option) => option.fullName}
+              onChange={(e, a) => {
+                if (a) setAuthorsToAdd(authorsToAdd.concat(a!));
+              }}
+              renderInput={(params) => (
+                <TextField {...params} fullWidth placeholder="Autores" />
+              )}
+            />
+          </GridItem>
+          <GridItem>
+            <Autocomplete
+              fullWidth
+              className={classes.autocomplete}
+              options={organization.supervisors.filter(
+                (s) => !supervisorsToAdd.includes(s)
+              )}
+              getOptionLabel={(option) => option.fullName}
+              onChange={(e, s) => {
+                if (s) setSupervisorsToAdd(supervisorsToAdd.concat(s!));
+              }}
+              renderInput={(params) => (
+                <TextField {...params} fullWidth placeholder="Supervisores" />
+              )}
+            />
+          </GridItem>
+        </GridContainer>
 
         <GridContainer align="center" className={classes.container}>
           <GridItem xs={12}>
@@ -424,7 +440,9 @@ const themeDate = createMuiTheme({
           </GridItem>
 
           <GridItem xs={12} align="left">
-          <h4 className={classes.subtitle}>Cambios, podés hacerles click para deshacerlos</h4>
+            <h4 className={classes.subtitle}>
+              Cambios, podés hacerles click para deshacerlos
+            </h4>
             <ul>
               {Changes().map((c, idx) => (
                 <li
@@ -439,12 +457,12 @@ const themeDate = createMuiTheme({
           </GridItem>
 
           <GridItem xs={12} align="right">
-          <CustomButton
+            <CustomButton
               type="button"
               color="secondary"
               style={{ width: "15%", textAlign: "right" }}
-              onClick={() =>
-                {}
+              onClick={
+                () => {}
                 //props.history.push(`/projects/${project.id}`)
               }
             >
@@ -461,7 +479,6 @@ const themeDate = createMuiTheme({
             </CustomButton>
           </GridItem>
         </GridContainer>
-        
       </div>
       <Footer />
 
@@ -471,9 +488,7 @@ const themeDate = createMuiTheme({
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          Crear {title}
-        </DialogTitle>
+        <DialogTitle id="alert-dialog-title">Crear {title}</DialogTitle>
 
         <DialogActions>
           <Button onClick={() => setIsModalOpen(false)} color="primary">
