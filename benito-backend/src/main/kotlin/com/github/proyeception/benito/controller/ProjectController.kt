@@ -35,7 +35,7 @@ open class ProjectController(
         @RequestParam(required = false, name = "organization") organizationId: String?,
         @RequestParam(required = false) organizationName: String?,
         @RequestParam(required = false) page: Int?
-    ): List<ProjectDTO> = projectService.findProjects(
+    ): SearchProjectDTO = projectService.findProjects(
         orderBy = orderBy,
         from = from,
         to = to,

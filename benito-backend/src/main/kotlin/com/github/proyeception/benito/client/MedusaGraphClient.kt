@@ -3,6 +3,7 @@ package com.github.proyeception.benito.client
 import arrow.core.Either
 import com.fasterxml.jackson.core.type.TypeReference
 import com.github.proyeception.benito.connector.GraphConnector
+import com.github.proyeception.benito.connector.GraphResponse
 import com.github.proyeception.benito.dto.MedusaProjectDTO
 import com.github.proyeception.benito.dto.OrderDTO
 import com.github.proyeception.benito.extension.replaceUrlSpaces
@@ -131,6 +132,51 @@ open class MedusaGraphClient(
                 }
             }
             .map { it.deserializeAs(PROJECTS_REF).projects }
+    }
+
+    open fun countProjects(
+        from: String? = null,
+        to: String? = null,
+        title: String? = null,
+        category: String? = null,
+        authorId: String? = null,
+        authorName: String? = null,
+        keyword: String? = null,
+        organizationId: String? = null,
+        organizationName: String? = null,
+        id: String? = null,
+        projectKeywords: List<String>? = null
+    ): Either<Throwable, Int> {
+        val params = formatParams(
+            from = from,
+            to = to,
+            title = title,
+            category = category,
+            authorId = authorId,
+            authorName = authorName,
+            keyword = keyword,
+            organizationId = organizationId,
+            organizationName = organizationName,
+            id = id,
+            projectKeywords = projectKeywords
+        )
+
+        LOGGER.info("Search params: $params")
+
+        val execute: Either<Throwable, GraphResponse> = medusaGraphConnector.execute(
+            """
+            query {
+              projectsConnection($params) {
+                aggregate {
+                  count
+                }
+              }
+            }
+        """.trimIndent()
+        )
+
+        return execute.map { it.body!!["projectsConnection"] as LinkedHashMap<String, LinkedHashMap<String, Int>> }
+                        .map { it["aggregate"]!!["count"]!! }
     }
 
     private fun simplifyRecommendations(k: String, v: Any): Any {

@@ -19,6 +19,7 @@ import ProjectLink from "../../../components/Links/ProjectLink";
 import Spinner from "../../../components/Spinner/Spinner";
 import image from "../../../assets/img/proyectate/nothing.jpg"
 import pictureNotFound from "../../../assets/img/proyectate/picture.svg"
+import Pagination from '@material-ui/lab/Pagination';
 
 interface SearchResultsSectionProps extends RouteChildrenProps<SearchParams> {
   status: Fetch;
@@ -27,30 +28,57 @@ interface SearchResultsSectionProps extends RouteChildrenProps<SearchParams> {
 const useStyles = makeStyles(styles);
 
 const SearchResultsSection = (props: SearchResultsSectionProps) => {
-  let queryParams: SearchParams = qs.parse(props.location.search, {
-    ignoreQueryPrefix: true,
-  });
+  const itemsPerPage = 10;
+  const [page, setPage] = React.useState(1);
+  
+  const [noOfPages, setNoOfPages] = React.useState(1);      
+
+  let queryParams: SearchParams = {
+    ...qs.parse(props.location.search, {
+      ignoreQueryPrefix: true,
+    }),
+    page: "0",
+  }
 
   syncParamsToState(queryParams);
 
-  const [projects, refresh] = withProjects(queryParams);
+  const [search, refresh] = withProjects(queryParams, (s) => {
+    setNoOfPages(Math.ceil(s.count / itemsPerPage))
+    if(queryParams.page != undefined){
+      setPage(parseInt(queryParams.page) + 1)
+    }
+  });
+
+  const handleChange = (_event: any, value: React.SetStateAction<number>) => {
+    console.log(value.valueOf())
+    queryParams = {
+      ...queryParams,
+      page: (value.valueOf() as number - 1).toString()
+    }
+    refresh(queryParams);
+  };
+
 
   if (props.status == REFRESH) {
     store.dispatch(updateFetchStatus(NOTHING));
+    queryParams = {
+      ...queryParams,
+      page: "0"
+    }
     refresh(queryParams);
   }
 
   const classes = useStyles();
 
-  if (projects.type == ERROR) {
+  if (search.type == ERROR) {
     return <Redirect to={{pathname: "/error"}}/>
   }
 
-  if (projects.type == PENDING) {
+  if (search.type == PENDING) {
     return <Spinner/>;
   }
 
-  if (projects.value.length == 0) {
+  if (search.value.projects.length == 0) {
     return  <GridContainer>
               <GridItem
                   xs={12}
@@ -75,7 +103,7 @@ const SearchResultsSection = (props: SearchResultsSectionProps) => {
   return (
     <div className={classes.section}>
       <GridContainer spacing={3}>
-        {projects.value.map((p, idx) => (
+        {search.value.projects.map((p, idx) => (
           <GridItem key={idx} xs={12} sm={12} md={12}>
             <GridContainer className={classes.result}>
               <GridItem xs={12} sm={12} md={9}>
@@ -111,7 +139,21 @@ const SearchResultsSection = (props: SearchResultsSectionProps) => {
             </GridContainer>
           </GridItem>
         ))}
+    <div className="container">
+    <Pagination
+          count={noOfPages}
+          page={page}
+          onChange={handleChange}
+          defaultPage={1}
+          color="primary"
+          size="large"
+          showFirstButton
+          showLastButton
+          classes={{ ul: classes.paginator }}
+        />
+    </div>      
       </GridContainer>
+
     </div>
   );
 };
