@@ -207,8 +207,8 @@ open class MedusaClient(
         ref = MEDUSA_PERSON_REF
     )
 
-    open fun createPendingSupervisor(supervisor: PendingSupervisorDTO): PendingSupervisorDTO {
-        return create("pending-supervisors", supervisor, PENDING_SUPERVISOR_REF)
+    open fun createPendingSupervisor(supervisor: CreatePendingSupervisorDTO): Any {
+        return create("pending-supervisors", supervisor, ANY_REF)
     }
 
     fun updateProjectKeywords(kw: List<KeywordDTO>, project: ProjectDTO): List<KeywordDTO> {
@@ -318,6 +318,6 @@ open class MedusaClient(
         private val MEDUSA_RECOMMENDATION_REF = object : TypeReference<CreatedRecommendationDTO>() {}
         private val CREATE_RECOMMENDATION_REF = object : TypeReference<CreateRecommendationDTO>() {}
         private val ANY_REF = object : TypeReference<Any>() {}
-        private val PENDING_SUPERVISOR_REF = object : TypeReference<PendingSupervisorDTO>() {}
+        private val PENDING_SUPERVISOR_REF = object : TypeReference<CreatePendingSupervisorDTO>() {}
     }
 }

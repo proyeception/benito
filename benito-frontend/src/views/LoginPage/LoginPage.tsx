@@ -1,11 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import Icon from "@material-ui/core/Icon";
 // @material-ui/icons
-import Email from "@material-ui/icons/Email";
-import People from "@material-ui/icons/People";
 // core components
 import Header from "../../components/Header/Header";
 import HeaderLinks from "../../components/Header/HeaderLinks";
@@ -13,26 +9,24 @@ import Footer from "../../components/Footer/Footer";
 import GridContainer from "../../components/Grid/GridContainer";
 import GridItem from "../../components/Grid/GridItem";
 import Button from "../../components/CustomButtons/Button";
-import Card from "../../components/Card/Card";
-import CardBody from "../../components/Card/CardBody";
-import CardHeader from "../../components/Card/CardHeader";
-import CardFooter from "../../components/Card/CardFooter";
-import CustomInput from "../../components/CustomInput/CustomInput";
-import image from "../../assets/img/proyectate/login.svg"
+import image from "../../assets/img/proyectate/login.svg";
 
 import styles from "../../assets/jss/material-kit-react/views/loginPage";
-
 
 import { hot } from "react-hot-loader";
 import GoogleLogin, { GoogleLoginResponse } from "react-google-login";
 import { googleClientId } from "../../config";
-import { LoginData } from "../../types";
+import { LoginData, Organization } from "../../types";
 import { startLogin } from "../../functions/session";
 import { RootState } from "../../reducers";
 import { connect } from "react-redux";
 import { Redirect, RouteComponentProps, withRouter } from "react-router-dom";
-import Primary from "../../components/Typography/Primary";
-import { primaryColor } from "../../assets/jss/material-kit-react";
+import CustomTabs from "../../components/CustomTabs/CustomTabs";
+import { Book, Close, SupervisorAccount } from "@material-ui/icons";
+import { Snackbar, Divider, IconButton, TextField } from "@material-ui/core";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import { requestSupervisorAccount } from "../../functions/user";
+import { Alert } from "@material-ui/lab";
 
 const getKeyValue = <T extends object, U extends keyof T>(obj: T) => (key: U) =>
   obj[key];
@@ -41,6 +35,7 @@ const useStyles = makeStyles(styles);
 
 interface LoginPageProps extends RouteComponentProps {
   isLoggedIn: boolean;
+  organizations: Array<Organization>;
 }
 
 const LoginPage = (props: LoginPageProps) => {
@@ -54,6 +49,15 @@ const LoginPage = (props: LoginPageProps) => {
   }, 700);
   const classes = useStyles();
   const { ...rest } = props;
+
+  const [organization, setOrganization] = useState<Organization | null>(null);
+  const [hasError, setHasError] = useState(false);
+  const [disabled, setDisabled] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
+
+  const [activeTab, setActiveTab] = useState(0);
+
   return (
     <div>
       <Header
@@ -74,118 +78,253 @@ const LoginPage = (props: LoginPageProps) => {
         <div className={classes.container}>
           <GridContainer justify="center">
             <GridItem xs={12} sm={12} md={4}>
-              <Card
+              <div
+                id="123"
                 className={getKeyValue(classes)(
                   cardAnimaton as keyof typeof styles
                 )}
               >
                 <form className={classes.form}>
-                  <CardHeader className={classes.cardHeader}>
-                    <h4><b>Login</b></h4>
-                    <div className={classes.socialLine}>
-                      <GoogleLogin
-                        clientId={googleClientId}
-                        render={(renderProps) => (
-                          <Button
-                            onClick={renderProps.onClick}
-                            justIcon
-                            color="transparent"
-                          >
-                            <i className={"fab fa-google-plus-g"} />
-                          </Button>
-                        )}
-                        onSuccess={(res) => {
-                          let googleInfo = res as GoogleLoginResponse;
-                          let loginData: LoginData = {
-                            googleUserId: googleInfo.googleId,
-                            fullName: googleInfo.profileObj.name,
-                            profilePictureUrl: googleInfo.profileObj.imageUrl,
-                            mail: googleInfo.profileObj.email,
-                            token: googleInfo.tokenId,
-                          };
-                          startLogin(loginData, props.history, "author");
-                        }}
-                        onFailure={console.warn}
-                      />
+                  <CustomTabs
+                    headerColor="primary"
+                    onChange={(_: any, a: any) => setActiveTab(a)}
+                    activeTab={activeTab}
+                    tabs={[
+                      {
+                        tabName: "Autor",
+                        tabIcon: Book,
+                        tabContent: (
+                          <GridContainer align="center">
+                            <GridItem>
+                              Iniciá sesión con alguna de estas opciones
+                            </GridItem>
+                            <GridItem>
+                              <GoogleLogin
+                                clientId={googleClientId}
+                                render={(renderProps) => (
+                                  <Button
+                                    onClick={renderProps.onClick}
+                                    justIcon
+                                    color="transparent"
+                                  >
+                                    <i className={"fab fa-google-plus-g"} />
+                                  </Button>
+                                )}
+                                onSuccess={(res) => {
+                                  let googleInfo = res as GoogleLoginResponse;
+                                  let loginData: LoginData = {
+                                    googleUserId: googleInfo.googleId,
+                                    fullName: googleInfo.profileObj.name,
+                                    profilePictureUrl:
+                                      googleInfo.profileObj.imageUrl,
+                                    mail: googleInfo.profileObj.email,
+                                    token: googleInfo.tokenId,
+                                  };
+                                  startLogin(
+                                    loginData,
+                                    props.history,
+                                    "author"
+                                  );
+                                }}
+                                onFailure={console.warn}
+                              />
 
-                      <Button
-                        justIcon
-                        href=""
-                        target="_blank"
-                        color="transparent"
-                        onClick={(e: any) => props.history.push("/comingSoon")}
-                      >
-                        <i className={"fab fa-twitter"} />
-                      </Button>
-                      <Button
-                        justIcon
-                        href="/comingSoon"
-                        target="_blank"
-                        color="transparent"
-                        onClick={(e: any) => props.history.push("/comingSoon")}
-                      >
-                        <i className={"fab fa-facebook"} />
-                      </Button>
-                    </div>
-                  </CardHeader>
-                  <p className={classes.divider}>O podés ir por la opción tradicional</p>
-                  <CardBody>
-                    <CustomInput
-                      labelText="Nombre..."
-                      id="first"
-                      formControlProps={{
-                        fullWidth: true,
-                      }}
-                      inputProps={{
-                        type: "text",
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <People className={classes.inputIconsColor} />
-                          </InputAdornment>
+                              <Button
+                                justIcon
+                                href=""
+                                target="_blank"
+                                color="transparent"
+                                onClick={(e: any) =>
+                                  props.history.push("/comingSoon")
+                                }
+                              >
+                                <i className={"fab fa-twitter"} />
+                              </Button>
+                              <Button
+                                justIcon
+                                href="/comingSoon"
+                                target="_blank"
+                                color="transparent"
+                                onClick={(e: any) =>
+                                  props.history.push("/comingSoon")
+                                }
+                              >
+                                <i className={"fab fa-facebook"} />
+                              </Button>
+                            </GridItem>
+                          </GridContainer>
                         ),
-                      }}
-                    />
-                    <CustomInput
-                      labelText="Email..."
-                      id="email"
-                      formControlProps={{
-                        fullWidth: true,
-                      }}
-                      inputProps={{
-                        type: "email",
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <Email className={classes.inputIconsColor} />
-                          </InputAdornment>
+                      },
+                      {
+                        tabName: "Supervisor",
+                        tabIcon: SupervisorAccount,
+                        tabContent: (
+                          <GridContainer align="center">
+                            <GridItem>
+                              Iniciá sesión con alguna de estas opciones
+                            </GridItem>
+                            <GridItem>
+                              <GoogleLogin
+                                clientId={googleClientId}
+                                render={(renderProps) => (
+                                  <Button
+                                    onClick={renderProps.onClick}
+                                    justIcon
+                                    color="transparent"
+                                  >
+                                    <i className={"fab fa-google-plus-g"} />
+                                  </Button>
+                                )}
+                                onSuccess={(res) => {
+                                  let googleInfo = res as GoogleLoginResponse;
+                                  let loginData: LoginData = {
+                                    googleUserId: googleInfo.googleId,
+                                    fullName: googleInfo.profileObj.name,
+                                    profilePictureUrl:
+                                      googleInfo.profileObj.imageUrl,
+                                    mail: googleInfo.profileObj.email,
+                                    token: googleInfo.tokenId,
+                                  };
+                                  startLogin(
+                                    loginData,
+                                    props.history,
+                                    "supervisor"
+                                  );
+                                }}
+                                onFailure={console.warn}
+                              />
+                              <Button
+                                justIcon
+                                href=""
+                                target="_blank"
+                                color="transparent"
+                                onClick={(e: any) =>
+                                  props.history.push("/comingSoon")
+                                }
+                              >
+                                <i className={"fab fa-twitter"} />
+                              </Button>
+                              <Button
+                                justIcon
+                                href="/comingSoon"
+                                target="_blank"
+                                color="transparent"
+                                onClick={(e: any) =>
+                                  props.history.push("/comingSoon")
+                                }
+                              >
+                                <i className={"fab fa-facebook"} />
+                              </Button>
+                            </GridItem>
+                            <GridItem>
+                              <Divider variant="fullWidth" />
+                            </GridItem>
+                            <GridItem style={{ paddingTop: "15px" }}>
+                              <div>
+                                O solicitá una cuenta de supervisor para tu
+                                organización
+                              </div>
+                              <Autocomplete
+                                fullWidth
+                                options={props.organizations}
+                                getOptionLabel={(option) => option.displayName}
+                                onChange={(e, o) => setOrganization(o)}
+                                renderInput={(params) => (
+                                  <TextField
+                                    error={hasError}
+                                    label="Organización"
+                                    {...params}
+                                    fullWidth
+                                    helperText={
+                                      hasError
+                                        ? "Por favor, elegí una organización"
+                                        : undefined
+                                    }
+                                    onBlur={() => setHasError(false)}
+                                  />
+                                )}
+                              />
+                              <GoogleLogin
+                                clientId={googleClientId}
+                                render={(renderProps) => (
+                                  <Button
+                                    style={{ marginTop: "15px" }}
+                                    disabled={disabled}
+                                    onClick={() => {
+                                      if (organization == null) {
+                                        setHasError(true);
+                                      } else {
+                                        renderProps.onClick();
+                                        setDisabled(true);
+                                      }
+                                    }}
+                                    fullWidth
+                                    color="primary"
+                                  >
+                                    Solicitar
+                                  </Button>
+                                )}
+                                onSuccess={(res) => {
+                                  let googleInfo = res as GoogleLoginResponse;
+                                  if (organization == null) {
+                                    setDisabled(false);
+                                  } else {
+                                    requestSupervisorAccount(
+                                      organization.id,
+                                      googleInfo.googleId,
+                                      googleInfo.profileObj.name,
+                                      googleInfo.profileObj.email
+                                    )
+                                      .then(() => setDisabled(false))
+                                      .then(() => setSuccess(true))
+                                      .catch(() => setError(true));
+                                  }
+                                }}
+                                onFailure={console.warn}
+                              />
+                              <Snackbar
+                                open={success}
+                                autoHideDuration={6000}
+                                onClose={() => setSuccess(false)}
+                              >
+                                <Alert
+                                  onClose={() => setSuccess(false)}
+                                  severity="success"
+                                >
+                                  ¡Listo! Un administrador revisará tu solicitud
+                                  y te llegará un mail a la casilla con la que
+                                  te registraste.
+                                </Alert>
+                              </Snackbar>
+                              <Snackbar
+                                open={error}
+                                autoHideDuration={6000}
+                                onClose={() => {
+                                  setError(false);
+                                  setDisabled(false);
+                                }}
+                              >
+                                <Alert
+                                  onClose={() => {
+                                    setError(false);
+                                    setDisabled(false);
+                                  }}
+                                  severity="error"
+                                >
+                                  ¡Lo sentimos! Salió algo mal procesando tu
+                                  solicitud y nuestros ingenieros ya están
+                                  resolviéndolo.
+                                </Alert>
+                              </Snackbar>
+                            </GridItem>
+                          </GridContainer>
                         ),
-                      }}
-                    />
-                    <CustomInput
-                      labelText="Contraseña"
-                      id="pass"
-                      formControlProps={{
-                        fullWidth: true,
-                      }}
-                      inputProps={{
-                        type: "password",
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <Icon className={classes.inputIconsColor}>
-                              lock_outline
-                            </Icon>
-                          </InputAdornment>
-                        ),
-                        autoComplete: "off",
-                      }}
-                    />
-                  </CardBody>
-                  <CardFooter className={classes.cardFooter}>
-                    <Button simple color="primary" size="lg">
-                      Entrar
-                    </Button>
-                  </CardFooter>
+                      },
+                    ]}
+                    centered
+                  />
                 </form>
-              </Card>
+              </div>
             </GridItem>
           </GridContainer>
         </div>
@@ -198,6 +337,7 @@ const LoginPage = (props: LoginPageProps) => {
 const mapStateToProps = (rootState: RootState) => {
   return {
     isLoggedIn: rootState.session.isLoggedIn,
+    organizations: rootState.common.organizations,
   };
 };
 

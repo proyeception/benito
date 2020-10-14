@@ -98,3 +98,23 @@ export function leaveOrganization(
 
   return axios.request<Person>(signRequest(config));
 }
+
+export function requestSupervisorAccount(
+  organization: string,
+  googleUserId: string,
+  fullName: string,
+  mail: string
+) {
+  let config: AxiosRequestConfig = {
+    method: "POST",
+    url: `${benitoHost}/benito/supervisors/sign-up`,
+    data: {
+      googleUserId: googleUserId,
+      fullName: fullName,
+      mail: mail,
+      organization: organization,
+    },
+  };
+
+  return axios.request(config);
+}
