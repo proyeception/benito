@@ -220,9 +220,12 @@ const ProfilePage = (props: ProfilePageProps) => {
                   </Card>
                 </GridItem>
               ))}
-            <GridContainer justify="center" xs={12} sm={12} md={12}>
-              <ThemeProvider theme={theme}>
-              <Pagination
+            {user.value.projects.length == 0 ? (
+              <GridContainer></GridContainer>
+            ) : (
+              <GridContainer justify="center" xs={12} sm={12} md={12}>
+                <ThemeProvider theme={theme}>
+                  <Pagination
                     count={noOfPages}
                     page={page}
                     onChange={handleChange}
@@ -234,7 +237,8 @@ const ProfilePage = (props: ProfilePageProps) => {
                     classes={{ ul: classes.paginator }}
                   />
                 </ThemeProvider>
-            </GridContainer>  
+              </GridContainer>  
+            )}
             </GridContainer>
           </div>
         </div>
