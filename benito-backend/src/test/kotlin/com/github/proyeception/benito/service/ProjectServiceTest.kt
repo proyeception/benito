@@ -130,6 +130,7 @@ class ProjectServiceTest : Spec() {
                 val expected = listOf(project)
 
                 on(medusaGraphClientMock.findProjects()).thenReturn(projects.right())
+                on(medusaGraphClientMock.countProjects()).thenReturn(1.right())
 
                 val actual = projectService.findProjects(
                     null,
@@ -145,7 +146,7 @@ class ProjectServiceTest : Spec() {
                     null
                 )
 
-                expected shouldBe actual
+                expected shouldBe actual.projects
             }
         }
 
