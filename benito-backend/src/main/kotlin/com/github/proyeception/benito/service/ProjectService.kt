@@ -14,6 +14,7 @@ import org.apache.http.entity.ContentType
 import org.slf4j.LoggerFactory
 import org.springframework.scheduling.annotation.Async
 import org.springframework.web.multipart.MultipartFile
+import java.time.format.DateTimeFormatter
 
 open class ProjectService(
     private val medusaClient: MedusaClient,
@@ -180,7 +181,8 @@ open class ProjectService(
             organization = project.organizationId,
             category = project.categoryId,
             supervisors = listOf(supervisorId),
-            title = project.title
+            title = project.title,
+            creationDate = project.creationDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
         )
         LOGGER.info("{}", medusaProject)
         val medusa = medusaClient.createProject(medusaProject)

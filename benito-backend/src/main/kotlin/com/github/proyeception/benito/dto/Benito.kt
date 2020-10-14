@@ -139,6 +139,7 @@ data class SetUsersDTO(
 
 data class CreateProjectDTO(
     val title: String,
+    val creationDate: LocalDate,
     val organizationId: String,
     val categoryId: String
 )
