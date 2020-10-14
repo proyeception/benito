@@ -207,6 +207,10 @@ open class MedusaClient(
         ref = MEDUSA_PERSON_REF
     )
 
+    open fun createPendingSupervisor(supervisor: PendingSupervisorDTO): PendingSupervisorDTO {
+        return create("pending-supervisors", supervisor, PENDING_SUPERVISOR_REF)
+    }
+
     fun updateProjectKeywords(kw: List<KeywordDTO>, project: ProjectDTO): List<KeywordDTO> {
 
         project.project_keywords.filter { it.id.isNullOrBlank() }.map { delete("keywords", it.id.orEmpty(), MEDUSA_KEYWORD_REF) }
@@ -222,12 +226,8 @@ open class MedusaClient(
                               projectId: String,
                               originalRecommendations: List<RecommendationDTO>) {
 
-        val deletedRecommendations = originalRecommendations
-                .map { it.id.orEmpty() }
-                .filter { it.isNotBlank() }
-                .map { delete("recommendations", it, MEDUSA_RECOMMENDATION_REF) }
         val recommendationsIdList = recommendations
-            .map{ create("recommendations", it, CREATE_RECOMMENDATION_REF, MEDUSA_RECOMMENDATION_REF).id }
+            .map{ create("recommendations", it, MEDUSA_RECOMMENDATION_REF).id }
         val recommendationsIdRef = ProjectRecommendations(recommendationsIdList.map { it } )
         update("projects", projectId, recommendationsIdRef, MEDUSA_PROJECT_REF)
 
@@ -265,17 +265,6 @@ open class MedusaClient(
         }
 
         return response.deserializeAs(ref)
-    }
-
-    private fun <T, U> create(collection: String, dto: Any, refOrigin: TypeReference<T>, refDestiny: TypeReference<U>): U {
-        val response = medusaConnector.post("/$collection", dto)
-
-        if (response.isError()) {
-            LOGGER.error("Error creating a new item in $collection on Medusa", response.body)
-            throw FailedDependencyException("Error when creating a new item in $collection on Medusa")
-        }
-
-        return response.deserializeAs(refDestiny)
     }
 
     private fun <T> update(collection: String, id: String, dto: Any, ref: TypeReference<T>): T {
@@ -329,5 +318,6 @@ open class MedusaClient(
         private val MEDUSA_RECOMMENDATION_REF = object : TypeReference<CreatedRecommendationDTO>() {}
         private val CREATE_RECOMMENDATION_REF = object : TypeReference<CreateRecommendationDTO>() {}
         private val ANY_REF = object : TypeReference<Any>() {}
+        private val PENDING_SUPERVISOR_REF = object : TypeReference<PendingSupervisorDTO>() {}
     }
 }

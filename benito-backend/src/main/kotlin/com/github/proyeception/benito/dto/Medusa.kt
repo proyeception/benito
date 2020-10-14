@@ -172,4 +172,12 @@ data class MedusaRecommendationDTO(
     val project: String
 )
 
+data class PendingSupervisorDTO(
+    val googleUserId: String?,
+    val fullName: String?,
+    val mail: String?,
+    @JsonProperty("organization") val organizationId: String?,
+    val approved: Boolean?
+)
+
 private val dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd")
