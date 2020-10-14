@@ -50,7 +50,6 @@ const editProjectStyle = (theme: Theme) =>
       paddingTop: "10px"
     },
     datePicker: {
-      paddingTop: "11px"
     }
 
   });
