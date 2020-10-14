@@ -97,6 +97,11 @@ const searchResultsStyle = (theme: Theme) =>
       textAlign: "center",
       marginTop: "0",
       verticalAlign: "middle",
+    },
+
+    paginator: {
+      justifyContent: "center",
+      padding: "10px"
     }
   });
 

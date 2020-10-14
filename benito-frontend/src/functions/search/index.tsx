@@ -15,6 +15,7 @@ export function buildQueryParams({
   orderBy,
   keyword,
   organizationName: organization,
+  page: page,
 }: SearchParams) {
   var query = "?"
     .concat(buildQueryParamProperty("title", title))
@@ -24,12 +25,10 @@ export function buildQueryParams({
     .concat(buildQueryParamProperty("orderBy", orderBy))
     .concat(buildQueryParamProperty("keyword", keyword))
     .concat(buildQueryParamProperty("organizationName", organization))
+    .concat(buildQueryParamProperty("page", page))
     .slice(0, -1);
 
     return query;
-  //TODO
-  //params = params.concat(this.buildQueryParamProperty("keyword", this.state.keyword))
-  //params = params.concat(this.buildQueryParamProperty("documentation", this.state.documentation))
 }
 
 function buildQueryParamProperty(key: string, value?: string) {

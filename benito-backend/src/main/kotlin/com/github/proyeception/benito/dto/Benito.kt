@@ -203,3 +203,8 @@ data class CreateGhostUserDTO(
     val projects: List<String>,
     val mail: String?
 )
+
+data class SearchProjectDTO(
+    val projects: List<ProjectDTO>,
+    val count: Int
+)

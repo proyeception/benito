@@ -39,24 +39,43 @@ open class ProjectService(
         organizationId: String?,
         organizationName: String?,
         page: Int?
-    ): List<ProjectDTO> = medusaGraphClient.findProjects(
-        orderBy = orderBy,
-        from = from,
-        to = to,
-        title = title,
-        category = category,
-        authorId = authorId,
-        authorName = authorName,
-        keyword = keyword,
-        organizationId = organizationId,
-        organizationName = organizationName,
-        page = page ?: 0
-    )
-        .getOrHandle {
-            LOGGER.error("Error getting projects from Medusa with Graph")
-            throw FailedDependencyException("Error getting projects from Medusa")
+    ): SearchProjectDTO {
+        val projects = medusaGraphClient.findProjects(
+            orderBy = orderBy,
+            from = from,
+            to = to,
+            title = title,
+            category = category,
+            authorId = authorId,
+            authorName = authorName,
+            keyword = keyword,
+            organizationId = organizationId,
+            organizationName = organizationName,
+            page = page ?: 0
+        )
+            .getOrHandle {
+                LOGGER.error("Error getting projects from Medusa with Graph")
+                throw FailedDependencyException("Error getting projects from Medusa")
+            }
+            .map { ProjectDTO(it) }
+
+        val count: Int = medusaGraphClient.countProjects(
+            from = from,
+            to = to,
+            title = title,
+            category = category,
+            authorId = authorId,
+            authorName = authorName,
+            keyword = keyword,
+            organizationId = organizationId,
+            organizationName = organizationName
+        ).getOrHandle {
+            LOGGER.error("Error counting projects from Medusa with Graph")
+            throw FailedDependencyException("Error counting projects from Medusa")
         }
-        .map { ProjectDTO(it) }
+
+        return SearchProjectDTO(projects, count)
+    }
 
     fun featuredProjects(): List<ProjectDTO> = medusaGraphClient.findProjects(
         orderBy = OrderDTO.VIEWS_DESC
