@@ -81,6 +81,8 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
   const [organization, setOrganization] = useState<
     Organization | undefined | "ERROR"
   >();
+  const [titleIncompleted, setTitleIncompleted] = React.useState(true);
+  const [descriptionIncompleted, setDescriptionIncompleted] = React.useState(true);
 
   console.log(props.session);
   if (!props.session.isLoggedIn) {
@@ -252,22 +254,38 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
             </h4>
           </GridItem>
           <GridItem xs={12} sm={12} md={12}>
-            <TextField
+          <TextField
               fullWidth
+              required
+              error={titleIncompleted}
+              className={classes.autocomplete}
               placeholder="Título"
               value={title}
-              onChange={(e) => setTitle(e.currentTarget.value)}
+              onChange={(e) => {
+                if(e.currentTarget.value.trim() == ""){
+                  setTitleIncompleted(true)
+                } else {
+                  setTitleIncompleted(false)
+                }
+                setTitle(e.currentTarget.value)}}
             />
           </GridItem>
           <GridItem xs={12} sm={12} md={12}>
-            <TextField
+          <TextField
               fullWidth
               multiline
               placeholder="Descripción"
-              rows="3"
+              error={descriptionIncompleted}
               rowsMax={15}
+              rows="3"
               value={description}
-              onChange={(e) => setDescription(e.currentTarget.value)}
+              onChange={(e) => {
+                if(e.currentTarget.value.trim() == ""){
+                  setDescriptionIncompleted(true)
+                } else {
+                  setDescriptionIncompleted(false)
+                }
+                setDescription(e.currentTarget.value)}}
             />
           </GridItem>
           <GridItem>
@@ -398,6 +416,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
             <CustomButton
               type="button"
               color="primary"
+              disabled={titleIncompleted || descriptionIncompleted}
               style={{ width: "15%", textAlign: "right" }}
               onClick={() => setIsModalOpen(true)}
             >
