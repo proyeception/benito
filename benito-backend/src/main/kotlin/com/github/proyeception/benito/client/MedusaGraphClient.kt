@@ -182,11 +182,7 @@ open class MedusaGraphClient(
     private fun simplifyRecommendations(k: String, v: Any): Any {
         fun simplifyRecommendation(rec: Map<String, Any?>): Map<String, Any?> {
 
-            var projectId = ""
-
-            if(rec["project"] != null) {
-                projectId = (rec["project"] as Map<*, *>)["id"] as String
-            }
+            val projectId = (rec["project"] as Map<String, String?>?)?.get("id") ?: ""
 
             return mapOf(
                 "id" to rec["id"],
