@@ -128,29 +128,6 @@ const LoginPage = (props: LoginPageProps) => {
                                 }}
                                 onFailure={console.warn}
                               />
-
-                              <Button
-                                justIcon
-                                href=""
-                                target="_blank"
-                                color="transparent"
-                                onClick={(e: any) =>
-                                  props.history.push("/comingSoon")
-                                }
-                              >
-                                <i className={"fab fa-twitter"} />
-                              </Button>
-                              <Button
-                                justIcon
-                                href="/comingSoon"
-                                target="_blank"
-                                color="transparent"
-                                onClick={(e: any) =>
-                                  props.history.push("/comingSoon")
-                                }
-                              >
-                                <i className={"fab fa-facebook"} />
-                              </Button>
                             </GridItem>
                           </GridContainer>
                         ),
@@ -193,28 +170,6 @@ const LoginPage = (props: LoginPageProps) => {
                                 }}
                                 onFailure={console.warn}
                               />
-                              <Button
-                                justIcon
-                                href=""
-                                target="_blank"
-                                color="transparent"
-                                onClick={(e: any) =>
-                                  props.history.push("/comingSoon")
-                                }
-                              >
-                                <i className={"fab fa-twitter"} />
-                              </Button>
-                              <Button
-                                justIcon
-                                href="/comingSoon"
-                                target="_blank"
-                                color="transparent"
-                                onClick={(e: any) =>
-                                  props.history.push("/comingSoon")
-                                }
-                              >
-                                <i className={"fab fa-facebook"} />
-                              </Button>
                             </GridItem>
                             <GridItem>
                               <Divider variant="fullWidth" />
@@ -273,7 +228,8 @@ const LoginPage = (props: LoginPageProps) => {
                                       organization.id,
                                       googleInfo.googleId,
                                       googleInfo.profileObj.name,
-                                      googleInfo.profileObj.email
+                                      googleInfo.profileObj.email,
+                                      googleInfo.profileObj.imageUrl
                                     )
                                       .then(() => setDisabled(false))
                                       .then(() => setSuccess(true))

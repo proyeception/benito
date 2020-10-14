@@ -26,7 +26,8 @@ data class MedusaPersonRefDTO(
     val id: String,
     val username: String?,
     val fullName: String,
-    val profilePic: MedusaFileDTO? = null
+    val profilePic: MedusaFileDTO? = null,
+    val socials: List<SocialDTO>?
 )
 
 data class CreateMedusaPersonDTO(
@@ -176,7 +177,8 @@ data class CreatePendingSupervisorDTO(
     val googleUserId: String?,
     val fullName: String?,
     val mail: String?,
-    @JsonProperty("organization") val organizationId: String?
+    @JsonProperty("organization") val organizationId: String?,
+    val profilePic: String?
 )
 
 private val dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd")

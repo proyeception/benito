@@ -7,6 +7,8 @@ import { Icon } from "@material-ui/core";
 import React from "react";
 import GithubIcon from "@material-ui/icons/GitHub";
 import TwitterIcon from "@material-ui/icons/Twitter";
+import FacebookIcon from "@material-ui/icons/Facebook";
+import LinkedinIcon from "@material-ui/icons/LinkedIn";
 
 export async function fetchUser(collection: string, userId: string) {
   let config: AxiosRequestConfig = {
@@ -44,23 +46,32 @@ export async function updateUser(
 
 export function socialToIcon(s: Social): JSX.Element {
   let hostname = new URL(s.socialProfileUrl.valueOf()).hostname;
+  if (new URL(s.socialProfileUrl.valueOf()).pathname == "/") {
+    return <div style={{ display: "none" }}></div>;
+  }
   let parse: ParsedDomain | ParseError = psl.parse(hostname);
 
   if (parse.error) {
-    return <Icon>face</Icon>;
+    return <div style={{ display: "none" }}></div>;
   }
 
   let success = parse as ParsedDomain;
 
   switch (success.sld) {
     case "github": {
-      return <GithubIcon />;
+      return <GithubIcon style={{ marginRight: "5px", marginLeft: "5px" }} />;
     }
     case "twitter": {
-      return <TwitterIcon />;
+      return <TwitterIcon style={{ marginRight: "5px", marginLeft: "5px" }} />;
+    }
+    case "facebook": {
+      return <FacebookIcon style={{ marginRight: "5px", marginLeft: "5px" }} />;
+    }
+    case "linkedin": {
+      return <LinkedinIcon style={{ marginRight: "5px", marginLeft: "5px" }} />;
     }
     default: {
-      return <Icon>face</Icon>;
+      return <div style={{ display: "none" }}></div>;
     }
   }
 }
@@ -103,7 +114,8 @@ export function requestSupervisorAccount(
   organization: string,
   googleUserId: string,
   fullName: string,
-  mail: string
+  mail: string,
+  profilePic: string
 ) {
   let config: AxiosRequestConfig = {
     method: "POST",
@@ -113,6 +125,7 @@ export function requestSupervisorAccount(
       fullName: fullName,
       mail: mail,
       organization: organization,
+      profilePic: profilePic,
     },
   };
 
