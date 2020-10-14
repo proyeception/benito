@@ -5,7 +5,7 @@ import { ERROR, PENDING } from "../../../hooks/withFetch";
 import withProjects from "../../../hooks/withProjects";
 import { SearchParams } from "../../../types";
 import styles from "../../../assets/jss/material-kit-react/views/searchSections/searchResultsStyle";
-import { Hidden, makeStyles } from "@material-ui/core";
+import { Hidden, makeStyles, ThemeProvider, createMuiTheme } from "@material-ui/core";
 import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
 import qs from "qs";
@@ -20,10 +20,22 @@ import Spinner from "../../../components/Spinner/Spinner";
 import image from "../../../assets/img/proyectate/nothing.jpg"
 import pictureNotFound from "../../../assets/img/proyectate/picture.svg"
 import Pagination from '@material-ui/lab/Pagination';
+import { grey } from "@material-ui/core/colors";
 
 interface SearchResultsSectionProps extends RouteChildrenProps<SearchParams> {
   status: Fetch;
 }
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      light: '#c41234',
+      main: '#c41234',
+      dark: '#c41234',
+      contrastText: '#fff',
+    },
+  },
+});
 
 const useStyles = makeStyles(styles);
 
@@ -139,19 +151,21 @@ const SearchResultsSection = (props: SearchResultsSectionProps) => {
             </GridContainer>
           </GridItem>
         ))}
-    <div className="container">
-    <Pagination
-          count={noOfPages}
-          page={page}
-          onChange={handleChange}
-          defaultPage={1}
-          color="primary"
-          size="large"
-          showFirstButton
-          showLastButton
-          classes={{ ul: classes.paginator }}
-        />
-    </div>      
+        <GridContainer justify="center" xs={12} sm={12} md={12}>
+          <ThemeProvider theme={theme}>
+          <Pagination
+                count={noOfPages}
+                page={page}
+                onChange={handleChange}
+                defaultPage={1}
+                color="primary"
+                size="large"
+                showFirstButton
+                showLastButton
+                classes={{ ul: classes.paginator }}
+              />
+            </ThemeProvider>
+        </GridContainer>      
       </GridContainer>
 
     </div>
