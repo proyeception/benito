@@ -36,8 +36,9 @@ const recommendationStyle = (theme: Theme) => createStyles({
   },
   picture: {
     display: "block",
-    maxWidth: "100%",
-    maxHeight: "100%",
+    width: "100%",
+    height: "170px",
+    objectFit: "cover",
   },
   result: {
     [theme.breakpoints.up("md")]: {
