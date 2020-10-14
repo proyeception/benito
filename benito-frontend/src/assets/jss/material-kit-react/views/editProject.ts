@@ -48,7 +48,11 @@ const editProjectStyle = (theme: Theme) =>
     autocomplete: {
       paddingBottom: "10px",
       paddingTop: "10px"
+    },
+    datePicker: {
+      paddingTop: "11px"
     }
+
   });
 
 export default editProjectStyle;

@@ -139,6 +139,7 @@ data class SetUsersDTO(
 
 data class CreateProjectDTO(
     val title: String,
+    val creationDate: LocalDate,
     val organizationId: String,
     val categoryId: String
 )
@@ -201,4 +202,9 @@ data class CreateGhostUserDTO(
     val organizations: List<String>,
     val projects: List<String>,
     val mail: String?
+)
+
+data class SearchProjectDTO(
+    val projects: List<ProjectDTO>,
+    val count: Int
 )

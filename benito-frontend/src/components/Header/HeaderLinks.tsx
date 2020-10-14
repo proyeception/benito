@@ -56,7 +56,7 @@ const HeaderLinks = (props: Props) => {
     if (session.role == "SUPERVISOR") {
       drop.push(
         <Link
-          to="/create"
+          to="/projects/create"
           className={classNames("normalize-link", classes.alignCenter)}
         >
           <CreateIcon />{" "}

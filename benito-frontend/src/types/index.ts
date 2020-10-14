@@ -112,4 +112,5 @@ export type SearchParams = {
   documentation?: string;
   organizationName?: string;
   orderBy?: SortMethod;
+  page?: string;
 };
