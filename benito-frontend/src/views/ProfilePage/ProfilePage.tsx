@@ -71,9 +71,6 @@ const ProfilePage = (props: ProfilePageProps) => {
     return <Redirect to={{pathname: "/error"}}/>
   }
 
-  console.error("~~~~~~~~~~~~~~~~~~~~~~~~~~~444")
-  console.error(user.value.organizations.length)
-
   return (
     <div>
       <Header
@@ -108,8 +105,9 @@ const ProfilePage = (props: ProfilePageProps) => {
                         target="_blank"
                         href={s.socialProfileUrl.valueOf()}
                         key={idx}
+                        style={{display: "contents"}}
                       >
-                        <Button justIcon link>
+                        <Button justIcon link style={{display: "contents"}}>
                           {socialToIcon(s)}
                         </Button>
                       </a>
