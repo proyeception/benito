@@ -139,6 +139,7 @@ data class SetUsersDTO(
 
 data class CreateProjectDTO(
     val title: String,
+    val creationDate: LocalDate,
     val organizationId: String,
     val categoryId: String
 )
@@ -147,13 +148,15 @@ data class PersonRefDTO(
     val id: String,
     val fullName: String,
     val username: String?,
-    val profilePicUrl: String? = null
+    val profilePicUrl: String? = null,
+    val socials: List<SocialDTO>?
 ) {
     constructor(medusa: MedusaPersonRefDTO) : this(
         id = medusa.id,
         fullName = medusa.fullName,
         username = medusa.username,
-        profilePicUrl = medusa.profilePic?.url
+        profilePicUrl = medusa.profilePic?.url,
+        socials = medusa.socials
     )
 }
 

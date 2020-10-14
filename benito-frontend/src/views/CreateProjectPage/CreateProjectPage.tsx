@@ -42,7 +42,13 @@ import withUser from "../../hooks/withUser";
 import { createProject, updateContent, uploadDocuments, updatePicture, setProjectUsers } from "../../functions/project";
 import image from "../../assets/img/proyectate/pattern.jpg"
 import { SET_LOGIN_TRUE } from '../../store/login/types';
+import DateInput from "../../components/DateInput/DateInput";
+import { KeyboardDatePicker } from "@material-ui/pickers";;
+import { updateFromDate } from "../../actions/search";
+import store from "../../store";
 import { grey } from "@material-ui/core/colors";
+import moment from "moment";
+import MEDitor from "@uiw/react-md-editor";
 
 const useStyles = makeStyles(styles);
 
@@ -65,6 +71,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
   const { ...rest } = props;
 
   const [title, setTitle] = useState<string | undefined>();
+  const [creationDate, setCreationDate] = useState<string | undefined>();
   const [description, setDescription] = useState<string | undefined>();
   const [readme, setReadme] = useState<string | undefined>();
   const [authorsToAdd, setAuthorsToAdd] = useState<Array<Person>>([]);
@@ -117,7 +124,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
     return <Redirect to={{pathname: "/error"}}/>
   }
 
-  const theme = createMuiTheme({
+  const themeDate = createMuiTheme({
     palette: {
       primary: grey,
     },
@@ -182,10 +189,10 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
     console.log(documentsToUpload)
     console.log(readme)
     console.log(category)
+    console.log(creationDate)
 
     
-    
-    const response = createProject(title!, category!.id, project.organization.id)
+    const response = createProject(title!, category!.id, project.organization.id, creationDate!)
       .then((res) => {
         
         let promises = [];
@@ -227,6 +234,14 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
       }).catch((error) => {return <Redirect to={{ pathname: "/error" }} />;});
 
   }
+  
+  const theme = createMuiTheme({
+    palette: {
+      primary: grey,
+    },
+  });
+
+
 
   return (
     <div>
@@ -248,13 +263,31 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
               En esta página vas a poder crear un nuevo proyecto, no te olvides de asignarselo a tus alumnos para que ellos lo puedan editar.
             </h4>
           </GridItem>
-          <GridItem xs={12} sm={12} md={12}>
+          <GridItem xs={12} sm={12} md={6}>
             <TextField
               fullWidth
               placeholder="Título"
               value={title}
               onChange={(e) => setTitle(e.currentTarget.value)}
             />
+          </GridItem>
+          <GridItem xs={12} sm={12} md={6}>
+            <ThemeProvider theme={themeDate}>
+            <KeyboardDatePicker
+              clearable={true}
+              placeholder="08/04/2016" 
+              format="dd/MM/yyyy"
+              label="Fecha de publicacion"
+              value={creationDate || null}
+              onChange={(e) => {
+                if (e && moment(e).format("yyyy-MM-DD").toString() != 'Invalid date') {
+                  setCreationDate(moment(e).add(1, 'days').format("yyyy-MM-DD").toString());
+                } else {
+                  store.dispatch(updateFromDate(""));
+                }
+              }}
+            />
+            </ThemeProvider>
           </GridItem>
           <GridItem xs={12} sm={12} md={12}>
             <TextField
@@ -268,39 +301,11 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
             />
           </GridItem>
           <GridItem>
-            <h4 className={classes.subtitle}>Contenido extra</h4>
-            <CustomTabs
-              headerColor="primary"
-              className={classes.readme}
-              style={{ overflow: "auto", boxShadow: "none !important"}}
-              tabs={[
-                {
-                  tabName: "Editar",
-                  tabIcon: Edit,
-                  tabContent: (
-                    <ThemeProvider theme={theme}>
-                    <TextField
-                      fullWidth
-                      multiline
-                      rows="23"
-                      value={readme}
-                      placeholder="Acá podés agregar más contenido que represente el proyecto, como texto con distintos formatos o imágenes"
-                      onChange={(e) => setReadme(e.currentTarget.value)}
-                    />
-                    </ThemeProvider>
-                  ),
-                },
-                {
-                  tabName: "Vista previa",
-                  tabicon: Description,
-                  tabContent: (
-                    <div>
-                      <MarkdownCompiler source={readme || ""} />,
-                    </div>
-                  ),
-                },
-              ]}
-            />
+            <h4 className={classes.subtitle}>Contenido extra - podés agregar más contenido que represente el proyecto, como texto con distintos formatos o imágenes</h4>
+              <MEDitor
+                value={readme}
+                onChange={(e) => setReadme(e)}
+              />
           </GridItem>
           <GridItem>
           <h4 className={classes.subtitle}>Imagen</h4>

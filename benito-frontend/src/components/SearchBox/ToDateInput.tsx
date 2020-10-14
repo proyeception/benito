@@ -32,7 +32,7 @@ const ToDateInput = (props: ToDateInputProps) => (
     value={props.to || null}
     onChange={(e) => {
       if (e && moment(e).format("yyyy-MM-DD").toString() != 'Invalid date') {
-        store.dispatch(updateToDate(moment(e).format("yyyy-MM-DD").toString()));
+        store.dispatch(updateToDate(moment(e).add(1, 'days').format("yyyy-MM-DD").toString()));
       } else {
         store.dispatch(updateToDate(""));
       }

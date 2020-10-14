@@ -19,6 +19,7 @@ import styles from "../../../assets/jss/material-kit-react/views/landingPageSect
 
 import { Project } from "../../../types";
 import { Link } from "react-router-dom";
+import { socialToIcon } from "../../../functions/user";
 
 const noProfilePic = "https://image.flaticon.com/icons/png/512/16/16363.png";
 
@@ -66,27 +67,18 @@ export default function TeamSection({ project }: TeamSectionProps) {
                   </Link>
                 </h4>
                 <CardFooter className={classes.justifyCenter}>
-                  <Button
-                    justIcon
-                    color="transparent"
-                    className={classes.margin5}
-                  >
-                    <i className={classes.socials + " fab fa-twitter"} />
-                  </Button>
-                  <Button
-                    justIcon
-                    color="transparent"
-                    className={classes.margin5}
-                  >
-                    <i className={classes.socials + " fab fa-instagram"} />
-                  </Button>
-                  <Button
-                    justIcon
-                    color="transparent"
-                    className={classes.margin5}
-                  >
-                    <i className={classes.socials + " fab fa-facebook"} />
-                  </Button>
+                  {a.socials.map((s, idx) => (
+                      <a
+                        target="_blank"
+                        href={s.socialProfileUrl.valueOf()}
+                        key={idx}
+                        style={{display: "contents"}}
+                      >
+                        <Button justIcon link style={{display: "contents"}}>
+                          {socialToIcon(s)}
+                        </Button>
+                      </a>
+                    ))}
                 </CardFooter>
               </Card>
             </GridItem>

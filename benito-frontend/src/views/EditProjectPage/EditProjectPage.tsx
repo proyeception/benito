@@ -52,7 +52,11 @@ import {
   uploadDocuments,
 } from "../../functions/project";
 import useCreateGhostUser from "../../components/CreateGhostUser/CreateGhostUser";
-import { grey } from "@material-ui/core/colors";
+import { grey, red } from "@material-ui/core/colors";
+import MEDitor from "@uiw/react-md-editor";
+
+
+
 
 const useStyles = makeStyles(styles);
 
@@ -76,6 +80,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
   const [initialTitle, setInitialTitle] = useState("");
   const [initialDescription, setInitialDescription] = useState("");
   const [initialReadme, setInitialReadme] = useState("");
+  const [value, setValue] = useState("**Hello world!!!**");
 
   const [title, setTitle] = useState<string | undefined>();
   const [description, setDescription] = useState<string | undefined>();
@@ -143,7 +148,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
 
   const theme = createMuiTheme({
     palette: {
-      primary: grey,
+      primary: red,
     },
   });
 
@@ -328,38 +333,10 @@ const EditProjectPage = (props: EditProjectPageProps) => {
             />
           </GridItem>
           <GridItem>
-            <h3>Contenido extra</h3>
-            <CustomTabs
-              headerColor="primary"
-              className={classes.readme}
-              style={{ overflow: "auto", boxShadow: "none !important" }}
-              tabs={[
-                {
-                  tabName: "Editar",
-                  tabIcon: Edit,
-                  tabContent: (
-                    <ThemeProvider theme={theme}>
-                    <TextField
-                    fullWidth
-                    multiline
-                    rows="23"
-                    value={readme}
-                    placeholder="Acá podés agregar más contenido que represente el proyecto, como texto con distintos formatos o imágenes"
-                    onChange={(e) => setReadme(e.currentTarget.value)}
-                    />
-                    </ThemeProvider>
-                  ),
-                },
-                {
-                  tabName: "Vista previa",
-                  tabicon: Description,
-                  tabContent: (
-                    <div>
-                      <MarkdownCompiler source={readme || ""} />,
-                    </div>
-                  ),
-                },
-              ]}
+          <h4 className={classes.subtitle}>Contenido extra - podés agregar más contenido que represente el proyecto, como texto con distintos formatos o imágenes</h4>
+            <MEDitor
+              value={readme}
+              onChange={(e) => setReadme(e)}
             />
           </GridItem>
           <GridItem>
@@ -585,7 +562,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
           <DialogContentText id="alert-dialog-description">
             {loading ? (
               <div style={{ display: "flex", justifyContent: "center" }}>
-                <CircularProgress />
+                <ThemeProvider theme={theme}><CircularProgress /></ThemeProvider>
               </div>
             ) : Changes().length == 0 ? (
               <h4>¡Uy! Parece que no hiciste ningún cambio aún</h4>
@@ -598,6 +575,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
             )}
           </DialogContentText>
         </DialogContent>
+        <ThemeProvider theme={theme}>
         <DialogActions>
           <Button onClick={() => setIsModalOpen(false)} color="primary">
             No, mejor no
@@ -613,6 +591,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
             Sí, estoy seguro
           </Button>
         </DialogActions>
+        </ThemeProvider>
       </Dialog>
       <GhostSupervisorForm
         role={"SUPERVISOR"}

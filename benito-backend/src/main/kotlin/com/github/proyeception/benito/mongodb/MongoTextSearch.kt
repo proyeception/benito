@@ -86,6 +86,7 @@ open class MongoTextSearch(
                         it["_id"].toString(),
                         it.get("full_name", String::class.java),
                         it.get("username", String::class.java),
+                        it.get("socials", String::class.java),
                         null
                     )
                 }
@@ -94,6 +95,7 @@ open class MongoTextSearch(
                         it["_id"].toString(),
                         it.get("full_name", String::class.java),
                         it.get("username", String::class.java),
+                        it.get("socials", String::class.java),
                         null
                     )
                 }
