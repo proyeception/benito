@@ -26,7 +26,8 @@ data class MedusaPersonRefDTO(
     val id: String,
     val username: String?,
     val fullName: String,
-    val profilePic: MedusaFileDTO? = null
+    val profilePic: MedusaFileDTO? = null,
+    val socials: List<SocialDTO>?
 )
 
 data class CreateMedusaPersonDTO(

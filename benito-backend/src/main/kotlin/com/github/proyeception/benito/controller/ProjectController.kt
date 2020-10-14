@@ -67,14 +67,16 @@ open class ProjectController(
                         PersonRefDTO(
                                 id = "123",
                                 username = "author",
-                                fullName = "Benito Quinquela"
+                                fullName = "Benito Quinquela",
+                                socials = mutableListOf()
                         )
                 ),
                 supervisors = listOf(
                         PersonRefDTO(
                                 id = "123",
                                 username = "supervisor",
-                                fullName = "Jorge Luis Borges"
+                                fullName = "Jorge Luis Borges",
+                                socials = mutableListOf()
                         )
                 ),
                 tags = emptyList(),

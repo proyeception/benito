@@ -71,9 +71,6 @@ const ProfilePage = (props: ProfilePageProps) => {
     return <Redirect to={{pathname: "/error"}}/>
   }
 
-  console.error("~~~~~~~~~~~~~~~~~~~~~~~~~~~444")
-  console.error(user.value.organizations.length)
-
   return (
     <div>
       <Header
@@ -102,14 +99,15 @@ const ProfilePage = (props: ProfilePageProps) => {
                   </div>
                   <div className={classes.name}>
                     <h3 className={classes.title}>{user.value.fullName}</h3>
-                    <h6>{user.value.username}</h6>
+                    <br/>
                     {user.value.socials.map((s, idx) => (
                       <a
                         target="_blank"
                         href={s.socialProfileUrl.valueOf()}
                         key={idx}
+                        style={{display: "contents"}}
                       >
-                        <Button justIcon link>
+                        <Button justIcon link style={{display: "contents"}}>
                           {socialToIcon(s)}
                         </Button>
                       </a>

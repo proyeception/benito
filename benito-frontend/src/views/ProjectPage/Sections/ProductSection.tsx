@@ -8,12 +8,13 @@ import styles from "../../../assets/jss/material-kit-react/views/landingPageSect
 import { Project } from "../../../types";
 import MarkdownCompiler from "../../../components/MarkdownCompiler/MarkdownCompiler";
 import { Edit } from "@material-ui/icons";
-import { Button } from "@material-ui/core";
+import { Button, createMuiTheme, ThemeProvider } from "@material-ui/core";
 import { connect } from "react-redux";
 import { RootState } from "../../../reducers";
 import { hot } from "react-hot-loader";
 import { SessionState } from "../../../store/session/types";
 import { RouteComponentProps, withRouter } from "react-router-dom";
+import { grey } from "@material-ui/core/colors";
 
 const useStyles = makeStyles(styles);
 
@@ -21,6 +22,12 @@ interface ProductSectionProps extends RouteComponentProps {
   project: Project;
   session: SessionState;
 }
+
+const theme = createMuiTheme({
+  palette: {
+    primary: grey,
+  },
+});
 
 const ProductSection = ({ project, session, history }: ProductSectionProps) => {
   const classes = useStyles();
@@ -38,6 +45,7 @@ const ProductSection = ({ project, session, history }: ProductSectionProps) => {
             Acerca de {project.title}
             {showEdit ? (
               <span>
+                <ThemeProvider theme={theme}>
                 <Button
                   onClick={() => history.push(`/projects/${project.id}/edit`)}
                   type="button"
@@ -46,6 +54,7 @@ const ProductSection = ({ project, session, history }: ProductSectionProps) => {
                 >
                   <Edit /> Editar
                 </Button>
+                </ThemeProvider>
               </span>
             ) : (
               <div></div>
