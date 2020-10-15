@@ -7,7 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 // core components
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
-import Button from "../../components/CustomButtons/Button";
+import Button from "@material-ui/core/Button/Button";
 import GridContainer from "../../components/Grid/GridContainer";
 import GridItem from "../../components/Grid/GridItem";
 import HeaderLinks from "../../components/Header/HeaderLinks";
@@ -21,13 +21,15 @@ import { Redirect, RouteComponentProps } from "react-router-dom";
 import { ERROR, PENDING } from "../../hooks/withFetch";
 import { socialToIcon } from "../../functions/user";
 import { Link } from "react-router-dom";
-import { Card } from "@material-ui/core";
+import { Card, ThemeProvider, createMuiTheme } from "@material-ui/core";
 import CardBody from "../../components/Card/CardBody";
 import CardFooter from "../../components/Card/CardFooter";
 import { cardTitle, title } from "../../assets/jss/material-kit-react";
 import Spinner from "../../components/Spinner/Spinner";
 import image from "../../assets/img/proyectate/pattern.jpg"
 import pictureNotFound from "../../assets/img/proyectate/picture.svg"
+import { ArrowBackIos } from "@material-ui/icons";
+import Pagination from '@material-ui/lab/Pagination';
 
 const useStyles = makeStyles({
   ...styles,
@@ -43,6 +45,17 @@ type MatchParams = {
   id: string;
 };
 
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      light: '#c41234',
+      main: '#c41234',
+      dark: '#c41234',
+      contrastText: '#fff',
+    },
+  },
+});
+
 interface ProfilePageProps extends Props, RouteComponentProps<MatchParams> {}
 
 const ProfilePage = (props: ProfilePageProps) => {
@@ -56,12 +69,26 @@ const ProfilePage = (props: ProfilePageProps) => {
   );
   const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
 
+  const itemsPerPage = 10;
+  const [page, setPage] = React.useState(1);
+  
+  const [noOfPages, setNoOfPages] = React.useState(1);
+
+  const handleChange = (_event: any, value: React.SetStateAction<number>) => {
+    setPage(value)
+  };
+
   const organizationImageClasses = classNames(
     classes.organization,
     classes.imgRoundedCircle
   );
 
-  const user = withUser(props.role, props.match.params.id);
+  const user = withUser(props.role, props.match.params.id, 
+    (p) => {
+      const pageNumbers = Math.ceil(p.projects.length / itemsPerPage)
+      setNoOfPages(pageNumbers)
+    });
+
   const noProfilePic = "https://image.flaticon.com/icons/png/512/16/16363.png";
 
   if (user.type == PENDING) {
@@ -71,6 +98,7 @@ const ProfilePage = (props: ProfilePageProps) => {
   if (user.type == ERROR) {
     return <Redirect to={{pathname: "/error"}}/>
   }
+
 
   return (
     <div>
@@ -108,7 +136,7 @@ const ProfilePage = (props: ProfilePageProps) => {
                         key={idx}
                         style={{display: "contents"}}
                       >
-                        <Button justIcon link style={{display: "contents"}}>
+                        <Button  style={{display: "contents"}}>
                           {socialToIcon(s)}
                         </Button>
                       </a>
@@ -148,7 +176,9 @@ const ProfilePage = (props: ProfilePageProps) => {
                 </h3>
               </GridItem>
               {user.value.projects.length == 0 && <h4 style={{color: "#3c4858"}}>Parece que este usuario no participó en ningún proyecto :(</h4>}
-              {user.value.projects.map((p, idx) => (
+              {user.value.projects
+              .slice((page - 1) * itemsPerPage, page * itemsPerPage)
+              .map((p, idx) => (
                 <GridItem
                   xs={12}
                   sm={12}
@@ -191,7 +221,38 @@ const ProfilePage = (props: ProfilePageProps) => {
                   </Card>
                 </GridItem>
               ))}
+            {user.value.projects.length == 0 ? (
+              <GridContainer></GridContainer>
+            ) : (
+              <GridContainer justify="center" xs={12} sm={12} md={12}>
+                <ThemeProvider theme={theme}>
+                  <Pagination
+                    count={noOfPages}
+                    page={page}
+                    onChange={handleChange}
+                    defaultPage={1}
+                    color="primary"
+                    size="large"
+                    showFirstButton
+                    showLastButton
+                    classes={{ ul: classes.paginator }}
+                  />
+                </ThemeProvider>
+              </GridContainer>  
+            )}
             </GridContainer>
+            <ThemeProvider theme={theme}>
+              <Button className={classes.goback}
+                onClick={() => {
+                  props.history.goBack()
+                }}
+                variant="outlined"
+                size="large"
+                startIcon={<ArrowBackIos />}
+                >
+                Volver
+              </Button>
+              </ThemeProvider>
           </div>
         </div>
       </div>

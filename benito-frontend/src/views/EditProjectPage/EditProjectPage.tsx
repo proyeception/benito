@@ -406,7 +406,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
             </section>
           </GridItem>
         </GridContainer>
-        {role == "SUPERVISOR" ? (
+        {role == "AUTHOR" ? (
           <GridContainer className={classes.container}>
             <GridItem>
             <h4 className={classes.subtitle}>Autores</h4>
@@ -440,7 +440,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                       if (a) setAuthorsToAdd(authorsToAdd.concat(a!));
                     }}
                     renderInput={(params) => (
-                      <TextField {...params} fullWidth />
+                      <ThemeProvider theme={theme}><TextField {...params} fullWidth /></ThemeProvider>
                     )}
                   />
                 </GridItem>

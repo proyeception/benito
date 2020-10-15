@@ -66,6 +66,15 @@ const profilePageStyle = createStyles({
   projectCard: {
     height: "320px",
   },
+  paginator: {
+    justifyContent: "center",
+    padding: "10px"
+  },
+  goback: {
+    marginBottom: "25px",
+    color: "#c41234",
+    background: "#FFFFFF"
+  }
 });
 
 export default profilePageStyle;
