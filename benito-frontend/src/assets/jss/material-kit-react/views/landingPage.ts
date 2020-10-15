@@ -42,6 +42,10 @@ const landingPageStyle = createStyles({
     marginRight: "0",
     paddingLeft: "40px"
   },
+  goback: {
+    marginBottom: "25px",
+    color: "#c41234"
+  }
 });
 
 export default landingPageStyle;

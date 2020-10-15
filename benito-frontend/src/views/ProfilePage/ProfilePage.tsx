@@ -7,7 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 // core components
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
-import Button from "../../components/CustomButtons/Button";
+import Button from "@material-ui/core/Button/Button";
 import GridContainer from "../../components/Grid/GridContainer";
 import GridItem from "../../components/Grid/GridItem";
 import HeaderLinks from "../../components/Header/HeaderLinks";
@@ -28,6 +28,7 @@ import { cardTitle, title } from "../../assets/jss/material-kit-react";
 import Spinner from "../../components/Spinner/Spinner";
 import image from "../../assets/img/proyectate/pattern.jpg"
 import pictureNotFound from "../../assets/img/proyectate/picture.svg"
+import { ArrowBackIos } from "@material-ui/icons";
 import Pagination from '@material-ui/lab/Pagination';
 
 const useStyles = makeStyles({
@@ -135,7 +136,7 @@ const ProfilePage = (props: ProfilePageProps) => {
                         key={idx}
                         style={{display: "contents"}}
                       >
-                        <Button justIcon link style={{display: "contents"}}>
+                        <Button  style={{display: "contents"}}>
                           {socialToIcon(s)}
                         </Button>
                       </a>
@@ -240,6 +241,18 @@ const ProfilePage = (props: ProfilePageProps) => {
               </GridContainer>  
             )}
             </GridContainer>
+            <ThemeProvider theme={theme}>
+              <Button className={classes.goback}
+                onClick={() => {
+                  props.history.goBack()
+                }}
+                variant="outlined"
+                size="large"
+                startIcon={<ArrowBackIos />}
+                >
+                Volver
+              </Button>
+              </ThemeProvider>
           </div>
         </div>
       </div>

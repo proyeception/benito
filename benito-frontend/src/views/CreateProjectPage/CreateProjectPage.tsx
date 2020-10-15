@@ -127,12 +127,6 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
     return <Redirect to={{pathname: "/error"}}/>
   }
 
-  const theme = createMuiTheme({
-    palette: {
-      primary: grey,
-    },
-  });
-
 const themeDate = createMuiTheme({
     palette: {
       primary: grey,
