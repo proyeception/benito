@@ -68,7 +68,7 @@ const ProfilePage = (props: ProfilePageProps) => {
   );
   const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
 
-  const itemsPerPage = 10;
+  const itemsPerPage = 4;
   const [page, setPage] = React.useState(1);
   
   const [noOfPages, setNoOfPages] = React.useState(1);
