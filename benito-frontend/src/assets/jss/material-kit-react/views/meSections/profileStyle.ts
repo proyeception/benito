@@ -33,6 +33,10 @@ const profileStyle = createStyles({
     paddingBottom: "15px",
     borderColor: "999",
   },
+  goback: {
+    marginBottom: "25px",
+    color: "#c41234"
+  }
 });
 
 export default profileStyle;

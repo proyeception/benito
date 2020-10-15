@@ -28,6 +28,7 @@ import { cardTitle, title } from "../../assets/jss/material-kit-react";
 import Spinner from "../../components/Spinner/Spinner";
 import image from "../../assets/img/proyectate/pattern.jpg"
 import pictureNotFound from "../../assets/img/proyectate/picture.svg"
+import { ArrowBackIos } from "@material-ui/icons";
 import Pagination from '@material-ui/lab/Pagination';
 
 const useStyles = makeStyles({
@@ -240,6 +241,16 @@ const ProfilePage = (props: ProfilePageProps) => {
               </GridContainer>  
             )}
             </GridContainer>
+              <Button className={classes.goback}
+                onClick={() => {
+                  props.history.goBack()
+                }}
+                variant="outlined"
+                size="large"
+                startIcon={<ArrowBackIos />}
+                >
+                Volver
+              </Button>
           </div>
         </div>
       </div>

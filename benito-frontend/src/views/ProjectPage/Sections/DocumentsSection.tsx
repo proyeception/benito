@@ -9,6 +9,7 @@ import GridItem from "../../../components/Grid/GridItem";
 import styles from "../../../assets/jss/material-kit-react/views/landingPageSections/documentsStyle";
 import { benitoHost } from "../../../config";
 import GetAppIcon from "@material-ui/icons/GetApp";
+import moment from "moment";
 
 const useStyles = makeStyles(styles);
 
@@ -33,7 +34,7 @@ const DocumentsSection = ({ project }: DocumentsSectionProps) => {
               Fecha de publicación
             </GridItem>
             <GridItem xs={12} md={6}>
-              {project.creationDate}
+              {moment(project.creationDate).add(1, 'days').format("yyyy-MM-DD").toString()}
             </GridItem>
           </GridContainer>
         </GridItem>
