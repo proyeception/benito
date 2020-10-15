@@ -123,12 +123,36 @@ const LoginPage = (props: LoginPageProps) => {
                                   startLogin(
                                     loginData,
                                     props.history,
-                                    "author"
+                                    "author",
+                                    () => {
+                                      setError(true)
+                                      setDisabled(true)
+                                    }
                                   );
                                 }}
                                 onFailure={console.warn}
                               />
                             </GridItem>
+                            <Snackbar
+                                open={error}
+                                autoHideDuration={6000}
+                                onClose={() => {
+                                  setError(false);
+                                  setDisabled(false);
+                                }}
+                              >
+                                <Alert
+                                  onClose={() => {
+                                    setError(false);
+                                    setDisabled(false);
+                                  }}
+                                  severity="error"
+                                >
+                                  ¡Lo sentimos! Salió algo mal procesando la
+                                  solicitud. Nuestros ingenieros ya están
+                                  resolviéndolo.
+                                </Alert>
+                              </Snackbar>
                           </GridContainer>
                         ),
                       },
@@ -165,7 +189,11 @@ const LoginPage = (props: LoginPageProps) => {
                                   startLogin(
                                     loginData,
                                     props.history,
-                                    "supervisor"
+                                    "supervisor",
+                                    () => {
+                                      setError(true)
+                                      setDisabled(true)
+                                    }
                                   );
                                 }}
                                 onFailure={console.warn}
@@ -267,8 +295,8 @@ const LoginPage = (props: LoginPageProps) => {
                                   }}
                                   severity="error"
                                 >
-                                  ¡Lo sentimos! Salió algo mal procesando tu
-                                  solicitud y nuestros ingenieros ya están
+                                  ¡Lo sentimos! Salió algo mal procesando la
+                                  solicitud. Nuestros ingenieros ya están
                                   resolviéndolo.
                                 </Alert>
                               </Snackbar>

@@ -54,7 +54,8 @@ export async function openLocalStoredSession(cb: () => void) {
 export function startLogin(
   login: LoginData,
   history: History,
-  loginPath: "author" | "supervisor"
+  loginPath: "author" | "supervisor",
+  callback: () => void
 ) {
   let config: AxiosRequestConfig = {
     method: "POST",
@@ -67,7 +68,7 @@ export function startLogin(
     .then(() => {
       history.go(0);
     })
-    .catch(console.error);
+    .catch(callback);
 }
 
 export function clearSession(token: string) {
