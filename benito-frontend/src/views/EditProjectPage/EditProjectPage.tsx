@@ -52,6 +52,7 @@ import {
 import useCreateGhostUser from "../../components/CreateGhostUser/CreateGhostUser";
 import { grey, red } from "@material-ui/core/colors";
 import MEDitor from "@uiw/react-md-editor";
+import CreateGhostUser from "../../components/CreateGhostUser/CreateGhostUser";
 
 const useStyles = makeStyles(styles);
 
@@ -105,21 +106,19 @@ const EditProjectPage = (props: EditProjectPageProps) => {
   const [justCreatedAuthors, setJustCreatedAuthors] = useState<Array<Person>>(
     []
   );
-  const [
-    openGhostSupervisorForm,
-    GhostSupervisorForm,
-  ] = useCreateGhostUser((p) =>
-    setJustCreatedSupervisors(justCreatedSupervisors.concat(p))
-  );
-  const [openGhostAuthorForm, GhostAuthorForm] = useCreateGhostUser((p) =>
-    setJustCreatedAuthors(justCreatedAuthors.concat(p))
-  );
   const [titleIncompleted, setTitleIncompleted] = React.useState(false);
   const [descriptionIncompleted, setDescriptionIncompleted] = React.useState(
     false
   );
   const [authors, setAuthors] = useState<Array<Person>>([]);
   const [supervisors, setSupervisors] = useState<Array<Person>>([]);
+  const [
+    createGhostSupervisorFormOpen,
+    setCreateGhostSupervisorFormOpen,
+  ] = useState(false);
+  const [createGhostAuthorFormOpen, setCreateGhostAuthorFormOpen] = useState(
+    false
+  );
 
   const project = withProject(props.match.params.id, (p) => {
     setTitle(p.title);
@@ -483,7 +482,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                     fullWidth
                     type="button"
                     color="primary"
-                    onClick={openGhostAuthorForm}
+                    onClick={() => setCreateGhostAuthorFormOpen(true)}
                   >
                     <AddCircle />
                     <Hidden smDown>Crear nuevo autor</Hidden>
@@ -542,7 +541,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                     fullWidth
                     type="button"
                     color="primary"
-                    onClick={openGhostSupervisorForm}
+                    onClick={() => setCreateGhostSupervisorFormOpen(true)}
                   >
                     <AddCircle />
                     <Hidden smDown>Crear nuevo supervisor</Hidden>
@@ -646,19 +645,27 @@ const EditProjectPage = (props: EditProjectPageProps) => {
           </DialogActions>
         </ThemeProvider>
       </Dialog>
-      <GhostSupervisorForm
+      <CreateGhostUser
         role={"SUPERVISOR"}
         organization={organization}
         project={project.value}
         projects={[]}
         session={props.session}
+        open={createGhostSupervisorFormOpen}
+        setOpen={setCreateGhostSupervisorFormOpen}
+        afterCreate={(p) =>
+          setJustCreatedSupervisors(justCreatedSupervisors.concat(p))
+        }
       />
-      <GhostAuthorForm
+      <CreateGhostUser
         role={"AUTHOR"}
         organization={organization}
         project={project.value}
         projects={[]}
         session={props.session}
+        open={createGhostAuthorFormOpen}
+        setOpen={setCreateGhostSupervisorFormOpen}
+        afterCreate={(p) => setJustCreatedAuthors(justCreatedAuthors.concat(p))}
       />
     </div>
   );
