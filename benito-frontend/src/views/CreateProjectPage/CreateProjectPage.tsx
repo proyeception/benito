@@ -97,12 +97,11 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
     return <Redirect to="/login" />;
   }
 
-/*
   if (!(props.session.role == "SUPERVISOR")) {
     console.log("Usuario sin permisos de supervisor")
     return <Redirect to={{pathname: "/error"}}/>
   }
-*/
+
 
   const user = withUser(props.session.role, props.session.userId, (p) => {    
     if (p.organizations[0] == undefined) {
@@ -244,8 +243,6 @@ const themeDate = createMuiTheme({
       }).catch((error) => {return <Redirect to={{ pathname: "/error" }} />;});
 
   }
-
-
 
   return (
     <div>

@@ -66,6 +66,10 @@ const profilePageStyle = createStyles({
   projectCard: {
     height: "320px",
   },
+  paginator: {
+    justifyContent: "center",
+    padding: "10px"
+  }
 });
 
 export default profilePageStyle;
