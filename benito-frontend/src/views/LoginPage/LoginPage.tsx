@@ -23,10 +23,11 @@ import { connect } from "react-redux";
 import { Redirect, RouteComponentProps, withRouter } from "react-router-dom";
 import CustomTabs from "../../components/CustomTabs/CustomTabs";
 import { Book, Close, SupervisorAccount } from "@material-ui/icons";
-import { Snackbar, Divider, IconButton, TextField } from "@material-ui/core";
+import { Snackbar, Divider, IconButton, TextField, ThemeProvider, createMuiTheme } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { requestSupervisorAccount } from "../../functions/user";
 import { Alert } from "@material-ui/lab";
+import { grey } from "@material-ui/core/colors";
 
 const getKeyValue = <T extends object, U extends keyof T>(obj: T) => (key: U) =>
   obj[key];
@@ -57,6 +58,12 @@ const LoginPage = (props: LoginPageProps) => {
   const [error, setError] = useState(false);
 
   const [activeTab, setActiveTab] = useState(0);
+
+  const theme = createMuiTheme({
+    palette: {
+      primary: grey,
+    },
+  });
 
   return (
     <div>
@@ -179,6 +186,7 @@ const LoginPage = (props: LoginPageProps) => {
                                 O solicitá una cuenta de supervisor para tu
                                 organización
                               </div>
+                              <ThemeProvider theme={theme}>
                               <Autocomplete
                                 fullWidth
                                 options={props.organizations}
@@ -199,6 +207,7 @@ const LoginPage = (props: LoginPageProps) => {
                                   />
                                 )}
                               />
+                              </ThemeProvider>
                               <GoogleLogin
                                 clientId={googleClientId}
                                 render={(renderProps) => (
