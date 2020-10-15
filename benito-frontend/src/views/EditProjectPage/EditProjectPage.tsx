@@ -664,7 +664,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
         projects={[]}
         session={props.session}
         open={createGhostAuthorFormOpen}
-        setOpen={setCreateGhostSupervisorFormOpen}
+        setOpen={setCreateGhostAuthorFormOpen}
         afterCreate={(p) => setJustCreatedAuthors(justCreatedAuthors.concat(p))}
       />
     </div>

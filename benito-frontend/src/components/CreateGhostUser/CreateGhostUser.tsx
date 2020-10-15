@@ -27,7 +27,7 @@ type CreateGhostUserProps = {
   role: Role;
   organization: Organization;
   projects: Array<Project>;
-  project: Project;
+  project?: Project;
   open: boolean;
   setOpen: (b: boolean) => void;
   afterCreate: (p: Person) => void;
@@ -104,7 +104,7 @@ const CreateGhostUser = (props: CreateGhostUserProps) => {
                   <TextField
                     fullWidth
                     label="Proyecto"
-                    value={props.project.title}
+                    value={props.project?.title}
                     disabled
                   />
                   <TextField
@@ -129,7 +129,7 @@ const CreateGhostUser = (props: CreateGhostUserProps) => {
                   setLoading(true);
                   createGhostUser(
                     name,
-                    [props.project.id],
+                    [],
                     [props.organization.id],
                     props.role,
                     mail
