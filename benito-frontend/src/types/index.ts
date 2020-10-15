@@ -19,7 +19,7 @@ export type Person = {
   profilePicUrl?: string;
   organizations: Array<Organization>;
   projects: Array<Project>;
-  socials: Array<Social>;
+  socials: Social;
   contact?: Contact;
   about?: string;
   apiKeys: Array<ApiKey>;
@@ -53,8 +53,9 @@ export type Organization = {
 };
 
 export type Social = {
-  socialName: string;
-  socialProfileUrl: string;
+  facebook?: string;
+  twitter?: string;
+  linkedin?: string;
 };
 
 export type Contact = {
@@ -91,7 +92,7 @@ export type UpdateUser = {
   fullName?: string;
   mail?: string;
   phone?: string;
-  socials?: Array<Social>;
+  socials?: Social;
 };
 
 export enum SortMethod {

@@ -44,38 +44,6 @@ export async function updateUser(
   return axios.request(signRequest(config));
 }
 
-export function socialToIcon(s: Social): JSX.Element {
-  let hostname = new URL(s.socialProfileUrl.valueOf()).hostname;
-  if (new URL(s.socialProfileUrl.valueOf()).pathname == "/") {
-    return <div style={{ display: "none" }}></div>;
-  }
-  let parse: ParsedDomain | ParseError = psl.parse(hostname);
-
-  if (parse.error) {
-    return <div style={{ display: "none" }}></div>;
-  }
-
-  let success = parse as ParsedDomain;
-
-  switch (success.sld) {
-    case "github": {
-      return <GithubIcon style={{ marginRight: "5px", marginLeft: "5px" }} />;
-    }
-    case "twitter": {
-      return <TwitterIcon style={{ marginRight: "5px", marginLeft: "5px" }} />;
-    }
-    case "facebook": {
-      return <FacebookIcon style={{ marginRight: "5px", marginLeft: "5px" }} />;
-    }
-    case "linkedin": {
-      return <LinkedinIcon style={{ marginRight: "5px", marginLeft: "5px" }} />;
-    }
-    default: {
-      return <div style={{ display: "none" }}></div>;
-    }
-  }
-}
-
 export function createGhostUser(
   name: string,
   projects: Array<string>,

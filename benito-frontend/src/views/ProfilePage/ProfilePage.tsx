@@ -19,17 +19,18 @@ import { Role } from "../../types";
 import withUser from "../../hooks/withUser";
 import { Redirect, RouteComponentProps } from "react-router-dom";
 import { ERROR, PENDING } from "../../hooks/withFetch";
-import { socialToIcon } from "../../functions/user";
 import { Link } from "react-router-dom";
 import { Card, ThemeProvider, createMuiTheme } from "@material-ui/core";
 import CardBody from "../../components/Card/CardBody";
-import CardFooter from "../../components/Card/CardFooter";
-import { cardTitle, title } from "../../assets/jss/material-kit-react";
+import { cardTitle } from "../../assets/jss/material-kit-react";
 import Spinner from "../../components/Spinner/Spinner";
-import image from "../../assets/img/proyectate/pattern.jpg"
-import pictureNotFound from "../../assets/img/proyectate/picture.svg"
+import image from "../../assets/img/proyectate/pattern.jpg";
+import pictureNotFound from "../../assets/img/proyectate/picture.svg";
 import { ArrowBackIos } from "@material-ui/icons";
-import Pagination from '@material-ui/lab/Pagination';
+import Pagination from "@material-ui/lab/Pagination";
+import TwitterIcon from "@material-ui/icons/Twitter";
+import FacebookIcon from "@material-ui/icons/Facebook";
+import LinkedInIcon from "@material-ui/icons/LinkedIn";
 
 const useStyles = makeStyles({
   ...styles,
@@ -48,10 +49,10 @@ type MatchParams = {
 const theme = createMuiTheme({
   palette: {
     primary: {
-      light: '#c41234',
-      main: '#c41234',
-      dark: '#c41234',
-      contrastText: '#fff',
+      light: "#c41234",
+      main: "#c41234",
+      dark: "#c41234",
+      contrastText: "#fff",
     },
   },
 });
@@ -71,11 +72,11 @@ const ProfilePage = (props: ProfilePageProps) => {
 
   const itemsPerPage = 10;
   const [page, setPage] = React.useState(1);
-  
+
   const [noOfPages, setNoOfPages] = React.useState(1);
 
   const handleChange = (_event: any, value: React.SetStateAction<number>) => {
-    setPage(value)
+    setPage(value);
   };
 
   const organizationImageClasses = classNames(
@@ -83,36 +84,25 @@ const ProfilePage = (props: ProfilePageProps) => {
     classes.imgRoundedCircle
   );
 
-  const user = withUser(props.role, props.match.params.id, 
-    (p) => {
-      const pageNumbers = Math.ceil(p.projects.length / itemsPerPage)
-      setNoOfPages(pageNumbers)
-    });
+  const user = withUser(props.role, props.match.params.id, (p) => {
+    const pageNumbers = Math.ceil(p.projects.length / itemsPerPage);
+    setNoOfPages(pageNumbers);
+  });
 
   const noProfilePic = "https://image.flaticon.com/icons/png/512/16/16363.png";
 
   if (user.type == PENDING) {
-    return <Spinner/>;
+    return <Spinner />;
   }
 
   if (user.type == ERROR) {
-    return <Redirect to={{pathname: "/error"}}/>
+    return <Redirect to={{ pathname: "/error" }} />;
   }
-
 
   return (
     <div>
-      <Header
-        color="darkGray"
-        rightLinks={<HeaderLinks />}
-        fixed
-        {...rest}
-      />
-      <Parallax
-        small
-        filter
-        image={image}
-      />
+      <Header color="darkGray" rightLinks={<HeaderLinks />} fixed {...rest} />
+      <Parallax small filter image={image} />
       <div className={classNames(classes.main, classes.mainRaised)}>
         <div>
           <div className={classes.container}>
@@ -128,19 +118,46 @@ const ProfilePage = (props: ProfilePageProps) => {
                   </div>
                   <div className={classes.name}>
                     <h3 className={classes.title}>{user.value.fullName}</h3>
-                    <br/>
-                    {user.value.socials.map((s, idx) => (
+                    <br />
+                    {user.value.socials.twitter && (
                       <a
                         target="_blank"
-                        href={s.socialProfileUrl.valueOf()}
-                        key={idx}
-                        style={{display: "contents"}}
+                        href={user.value.socials.twitter}
+                        style={{ display: "contents" }}
                       >
-                        <Button  style={{display: "contents"}}>
-                          {socialToIcon(s)}
+                        <Button style={{ display: "contents" }}>
+                          <TwitterIcon
+                            style={{ marginRight: "5px", marginLeft: "5px" }}
+                          />
                         </Button>
                       </a>
-                    ))}
+                    )}
+                    {user.value.socials.linkedin && (
+                      <a
+                        target="_blank"
+                        href={user.value.socials.linkedin}
+                        style={{ display: "contents" }}
+                      >
+                        <Button style={{ display: "contents" }}>
+                          <LinkedInIcon
+                            style={{ marginRight: "5px", marginLeft: "5px" }}
+                          />
+                        </Button>
+                      </a>
+                    )}
+                    {user.value.socials.facebook && (
+                      <a
+                        target="_blank"
+                        href={user.value.socials.facebook}
+                        style={{ display: "contents" }}
+                      >
+                        <Button style={{ display: "contents" }}>
+                          <FacebookIcon
+                            style={{ marginRight: "5px", marginLeft: "5px" }}
+                          />
+                        </Button>
+                      </a>
+                    )}
                   </div>
                 </div>
               </GridItem>
@@ -152,7 +169,11 @@ const ProfilePage = (props: ProfilePageProps) => {
               <GridItem xs={12} sm={12} md={12}>
                 <h3>Miembro de estas organizaciones</h3>
               </GridItem>
-              {user.value.organizations.length == 0 && <h4 style={{color: "#3c4858"}}>Parece que este usuario no pertenece a ninguna organización :(</h4>}
+              {user.value.organizations.length == 0 && (
+                <h4 style={{ color: "#3c4858" }}>
+                  Parece que este usuario no pertenece a ninguna organización :(
+                </h4>
+              )}
               {user.value.organizations.map((o, idx) => (
                 <GridItem key={idx}>
                   <Link
@@ -175,84 +196,94 @@ const ProfilePage = (props: ProfilePageProps) => {
                   Autor de estos proyectos
                 </h3>
               </GridItem>
-              {user.value.projects.length == 0 && <h4 style={{color: "#3c4858"}}>Parece que este usuario no participó en ningún proyecto :(</h4>}
+              {user.value.projects.length == 0 && (
+                <h4 style={{ color: "#3c4858" }}>
+                  Parece que este usuario no participó en ningún proyecto :(
+                </h4>
+              )}
               {user.value.projects
-              .slice((page - 1) * itemsPerPage, page * itemsPerPage)
-              .map((p, idx) => (
-                <GridItem
-                  xs={12}
-                  sm={12}
-                  md={6}
-                  className={classes.navWrapper}
-                  key={idx}
-                >
-                  <Card style={{ textAlign: "left" }}>
-                    <Link to={`/projects/${p.id}`} className="normalize-link">
-                      <img
-                        src={p.pictureUrl?.valueOf() || pictureNotFound}
-                        alt={p.title.valueOf()}
-                        className={classNames(
-                          classes.imgCardTop,
-                          classes.projectCard
-                        )}
-                      />
-                    </Link>
-                    <CardBody style={{ height: "192px" }}>
+                .slice((page - 1) * itemsPerPage, page * itemsPerPage)
+                .map((p, idx) => (
+                  <GridItem
+                    xs={12}
+                    sm={12}
+                    md={6}
+                    className={classes.navWrapper}
+                    key={idx}
+                  >
+                    <Card style={{ textAlign: "left" }}>
                       <Link to={`/projects/${p.id}`} className="normalize-link">
-                        <h4 className={classes.imgCardTop + "underline-hover"}>
-                          {p.title}
-                        </h4>
+                        <img
+                          src={p.pictureUrl?.valueOf() || pictureNotFound}
+                          alt={p.title.valueOf()}
+                          className={classNames(
+                            classes.imgCardTop,
+                            classes.projectCard
+                          )}
+                        />
                       </Link>
-                      <p
-                        style={{
-                          height: "64px",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                        }}
-                      >
-                        {p.description}
-                      </p>
-                      <p>
-                        <small className={classes.textMuted}>
-                          {p.organization.displayName}
-                        </small>
-                      </p>
-                    </CardBody>
-                  </Card>
-                </GridItem>
-              ))}
-            {user.value.projects.length == 0 ? (
-              <GridContainer></GridContainer>
-            ) : (
-              <GridContainer justify="center" xs={12} sm={12} md={12}>
-                <ThemeProvider theme={theme}>
-                  <Pagination
-                    count={noOfPages}
-                    page={page}
-                    onChange={handleChange}
-                    defaultPage={1}
-                    color="primary"
-                    size="large"
-                    showFirstButton
-                    showLastButton
-                    classes={{ ul: classes.paginator }}
-                  />
-                </ThemeProvider>
-              </GridContainer>  
-            )}
+                      <CardBody style={{ height: "192px" }}>
+                        <Link
+                          to={`/projects/${p.id}`}
+                          className="normalize-link"
+                        >
+                          <h4
+                            className={classes.imgCardTop + "underline-hover"}
+                          >
+                            {p.title}
+                          </h4>
+                        </Link>
+                        <p
+                          style={{
+                            height: "64px",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                          }}
+                        >
+                          {p.description}
+                        </p>
+                        <p>
+                          <small className={classes.textMuted}>
+                            {p.organization.displayName}
+                          </small>
+                        </p>
+                      </CardBody>
+                    </Card>
+                  </GridItem>
+                ))}
+              {user.value.projects.length == 0 ? (
+                <GridContainer></GridContainer>
+              ) : (
+                <GridContainer justify="center" xs={12} sm={12} md={12}>
+                  <ThemeProvider theme={theme}>
+                    <Pagination
+                      count={noOfPages}
+                      page={page}
+                      onChange={handleChange}
+                      defaultPage={1}
+                      color="primary"
+                      size="large"
+                      showFirstButton
+                      showLastButton
+                      classes={{ ul: classes.paginator }}
+                    />
+                  </ThemeProvider>
+                </GridContainer>
+              )}
             </GridContainer>
             <ThemeProvider theme={theme}>
-              <Button className={classes.goback}
+              <Button
+                className={classes.goback}
                 onClick={() => {
-                  props.history.goBack()
+                  props.history.goBack();
                 }}
                 variant="outlined"
                 size="large"
                 startIcon={<ArrowBackIos />}
-                >
+              >
                 Volver
               </Button>
-              </ThemeProvider>
+            </ThemeProvider>
           </div>
         </div>
       </div>

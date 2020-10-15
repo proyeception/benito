@@ -19,7 +19,11 @@ import styles from "../../../assets/jss/material-kit-react/views/landingPageSect
 
 import { Project } from "../../../types";
 import { Link } from "react-router-dom";
-import { socialToIcon } from "../../../functions/user";
+import GithubIcon from "@material-ui/icons/GitHub";
+import TwitterIcon from "@material-ui/icons/Twitter";
+import FacebookIcon from "@material-ui/icons/Facebook";
+import LinkedinIcon from "@material-ui/icons/LinkedIn";
+import { Face } from "@material-ui/icons";
 
 const noProfilePic = "https://image.flaticon.com/icons/png/512/16/16363.png";
 
@@ -67,18 +71,39 @@ export default function TeamSection({ project }: TeamSectionProps) {
                   </Link>
                 </h4>
                 <CardFooter className={classes.justifyCenter}>
-                  {a.socials.map((s, idx) => (
-                      <a
-                        target="_blank"
-                        href={s.socialProfileUrl.valueOf()}
-                        key={idx}
-                        style={{display: "contents"}}
-                      >
-                        <Button justIcon link style={{display: "contents"}}>
-                          {socialToIcon(s)}
-                        </Button>
-                      </a>
-                    ))}
+                  {a.socials.twitter && (
+                    <a
+                      target="_blank"
+                      href={a.socials.twitter}
+                      style={{ display: "contents" }}
+                    >
+                      <Button justIcon link style={{ display: "contents" }}>
+                        <TwitterIcon />
+                      </Button>
+                    </a>
+                  )}
+                  {a.socials.linkedin && (
+                    <a
+                      target="_blank"
+                      href={a.socials.linkedin}
+                      style={{ display: "contents" }}
+                    >
+                      <Button justIcon link style={{ display: "contents" }}>
+                        <LinkedinIcon />
+                      </Button>
+                    </a>
+                  )}
+                  {a.socials.facebook && (
+                    <a
+                      target="_blank"
+                      href={a.socials.facebook}
+                      style={{ display: "contents" }}
+                    >
+                      <Button justIcon link style={{ display: "contents" }}>
+                        <FacebookIcon />
+                      </Button>
+                    </a>
+                  )}
                 </CardFooter>
               </Card>
             </GridItem>

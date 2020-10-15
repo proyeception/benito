@@ -90,6 +90,9 @@ open class MedusaGraphClient(
                     url
                   }
                   about
+                  facebook
+                  twitter
+                  linkedin
                 }
                 supervisors {
                   id
@@ -100,6 +103,9 @@ open class MedusaGraphClient(
                     url
                   }
                   about
+                  facebook
+                  twitter
+                  linkedin
                 }
                 documentation {
                   id

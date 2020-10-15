@@ -54,17 +54,7 @@ open class UserService(
             googleToken = googleToken
         )
 
-        val createUser = medusaClient.createUser(person, UserType.AUTHOR)
-        val copy = createUser.copy()
-
-        val twitter = SocialDTO("Twitter", "https://twitter.com/")
-        val linkedin = SocialDTO("Linkedin", "https://www.linkedin.com/")
-        val facebook = SocialDTO("Facebook", "https://www.facebook.com/")
-        copy.socials = mutableListOf(twitter, linkedin, facebook)
-
-        medusaClient.updateUser(copy.id, UpdateUserDTO(copy.mail, copy.phone, copy.fullName, copy.username, copy.socials), UserType.AUTHOR)
-
-        createUser
+        medusaClient.createUser(person, UserType.AUTHOR)
     }
 
     fun updateAuthorProfilePicture(id: String, image: MultipartFile): PersonDTO = updateUserProfilePicture(
@@ -164,7 +154,11 @@ open class UserService(
                     description = it.description
                 )
             },
-            socials = medusa.socials,
+            socials = SocialDTO(
+                facebook = medusa.facebook,
+                linkedin = medusa.linkedin,
+                twitter = medusa.twitter
+            ),
             contact = ContactDTO(
                 mail = medusa.mail,
                 phone = medusa.phone
@@ -193,7 +187,7 @@ open class UserService(
     private fun updateUser(id: String, user: UpdateUserDTO, userType: UserType) = mapMedusaToDomain {
         medusaClient.updateUser(
             userId = id,
-            user = user,
+            user = UpdateMedusaUserDTO(user),
             userType = userType
         )
     }
