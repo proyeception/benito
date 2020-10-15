@@ -7,7 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 // core components
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
-import Button from "../../components/CustomButtons/Button";
+import Button from "@material-ui/core/Button/Button";
 import GridContainer from "../../components/Grid/GridContainer";
 import GridItem from "../../components/Grid/GridItem";
 import HeaderLinks from "../../components/Header/HeaderLinks";
@@ -136,7 +136,7 @@ const ProfilePage = (props: ProfilePageProps) => {
                         key={idx}
                         style={{display: "contents"}}
                       >
-                        <Button justIcon link style={{display: "contents"}}>
+                        <Button  style={{display: "contents"}}>
                           {socialToIcon(s)}
                         </Button>
                       </a>
@@ -241,6 +241,7 @@ const ProfilePage = (props: ProfilePageProps) => {
               </GridContainer>  
             )}
             </GridContainer>
+            <ThemeProvider theme={theme}>
               <Button className={classes.goback}
                 onClick={() => {
                   props.history.goBack()
@@ -251,6 +252,7 @@ const ProfilePage = (props: ProfilePageProps) => {
                 >
                 Volver
               </Button>
+              </ThemeProvider>
           </div>
         </div>
       </div>

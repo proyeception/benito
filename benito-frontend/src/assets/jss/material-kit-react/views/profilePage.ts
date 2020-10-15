@@ -74,7 +74,6 @@ const profilePageStyle = createStyles({
     marginBottom: "25px",
     color: "#c41234",
     background: "#FFFFFF"
-
   }
 });
 
