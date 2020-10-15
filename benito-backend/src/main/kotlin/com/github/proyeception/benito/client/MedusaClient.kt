@@ -146,7 +146,7 @@ open class MedusaClient(
         ref = MEDUSA_PERSON_REF
     )
 
-    open fun updateUser(userId: String, user: UpdateUserDTO, userType: UserType): MedusaPersonDTO = update(
+    open fun updateUser(userId: String, user: UpdateMedusaUserDTO, userType: UserType): MedusaPersonDTO = update(
         collection = userType.collection,
         id = userId,
         dto = user,

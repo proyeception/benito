@@ -36,12 +36,6 @@ class UserServiceTest : Spec() {
                             id = "profile",
                             url = "https://profilepic.com"
                         ),
-                        socials = listOf(
-                            SocialDTO(
-                                socialName = "Twitter",
-                                socialProfileUrl = "https://twitter.com/benito"
-                            )
-                        ),
                         organizations = listOf(
                             MedusaOrganizationDTO(
                                 displayName = "UTN FRBA",
@@ -85,12 +79,6 @@ class UserServiceTest : Spec() {
                     username = "benitocapo123",
                     fullName = "Benito Quinquela",
                     profilePicUrl = "https://profilepic.com",
-                    socials = listOf(
-                        SocialDTO(
-                            socialName = "Twitter",
-                            socialProfileUrl = "https://twitter.com/benito"
-                        )
-                    ),
                     organizations = listOf(
                         OrganizationDTO(
                             displayName = "UTN FRBA",
@@ -117,7 +105,8 @@ class UserServiceTest : Spec() {
                             )
                         )
                     ),
-                    contact = ContactDTO(null, null)
+                    contact = ContactDTO(null, null),
+                    socials = SocialDTO()
                 )
 
                 val actual = userService.findAuthor("123")
@@ -147,7 +136,6 @@ class UserServiceTest : Spec() {
                         organizations = emptyList(),
                         profilePic = null,
                         projects = emptyList(),
-                        socials = emptyList(),
                         mail = null,
                         phone = null
                     )
@@ -160,7 +148,7 @@ class UserServiceTest : Spec() {
                     organizations = emptyList(),
                     profilePicUrl = null,
                     projects = emptyList(),
-                    socials = emptyList(),
+                    socials = SocialDTO(),
                     contact = ContactDTO(
                         phone = null,
                         mail = null
@@ -178,16 +166,14 @@ class UserServiceTest : Spec() {
                         username = null,
                         fullName = "Benito Quinquela",
                         organizations = emptyList(),
-                        projects = emptyList(),
-                        socials = emptyList()
+                        projects = emptyList()
                     ),
                     MedusaPersonDTO(
                         id = "123",
                         username = null,
                         fullName = "Benito Quinquela",
                         organizations = emptyList(),
-                        projects = emptyList(),
-                        socials = emptyList()
+                        projects = emptyList()
                     )
                 ))
 
@@ -226,8 +212,7 @@ class UserServiceTest : Spec() {
                     username = null,
                     fullName = "Benito Quinquela",
                     organizations = emptyList(),
-                    projects = emptyList(),
-                    socials = emptyList()
+                    projects = emptyList()
                 ))
 
                 userService.createAuthor(
@@ -256,8 +241,7 @@ class UserServiceTest : Spec() {
                     username = null,
                     fullName = "Benito Quinquela",
                     organizations = emptyList(),
-                    projects = emptyList(),
-                    socials = emptyList()
+                    projects = emptyList()
                 ))
 
                 userService.createAuthor(

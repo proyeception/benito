@@ -26,9 +26,7 @@ import Parallax from "../../components/Parallax/Parallax";
 import Spinner from "../../components/Spinner/Spinner";
 import { ERROR, PENDING } from "../../hooks/withFetch";
 import withProject from "../../hooks/withProject";
-import CustomTabs from "../../components/CustomTabs/CustomTabs";
-import { Edit, Description, RemoveCircle, AddCircle } from "@material-ui/icons";
-import MarkdownCompiler from "../../components/MarkdownCompiler/MarkdownCompiler";
+import { RemoveCircle, AddCircle } from "@material-ui/icons";
 import {
   Documentation,
   Organization,
@@ -54,9 +52,7 @@ import {
 import useCreateGhostUser from "../../components/CreateGhostUser/CreateGhostUser";
 import { grey, red } from "@material-ui/core/colors";
 import MEDitor from "@uiw/react-md-editor";
-
-
-
+import CreateGhostUser from "../../components/CreateGhostUser/CreateGhostUser";
 
 const useStyles = makeStyles(styles);
 
@@ -80,7 +76,6 @@ const EditProjectPage = (props: EditProjectPageProps) => {
   const [initialTitle, setInitialTitle] = useState("");
   const [initialDescription, setInitialDescription] = useState("");
   const [initialReadme, setInitialReadme] = useState("");
-  const [value, setValue] = useState("**Hello world!!!**");
 
   const [title, setTitle] = useState<string | undefined>();
   const [description, setDescription] = useState<string | undefined>();
@@ -111,17 +106,19 @@ const EditProjectPage = (props: EditProjectPageProps) => {
   const [justCreatedAuthors, setJustCreatedAuthors] = useState<Array<Person>>(
     []
   );
-  const [
-    openGhostSupervisorForm,
-    GhostSupervisorForm,
-  ] = useCreateGhostUser((p) =>
-    setJustCreatedSupervisors(justCreatedSupervisors.concat(p))
-  );
-  const [openGhostAuthorForm, GhostAuthorForm] = useCreateGhostUser((p) =>
-    setJustCreatedAuthors(justCreatedAuthors.concat(p))
-  );
   const [titleIncompleted, setTitleIncompleted] = React.useState(false);
-  const [descriptionIncompleted, setDescriptionIncompleted] = React.useState(false);
+  const [descriptionIncompleted, setDescriptionIncompleted] = React.useState(
+    false
+  );
+  const [authors, setAuthors] = useState<Array<Person>>([]);
+  const [supervisors, setSupervisors] = useState<Array<Person>>([]);
+  const [
+    createGhostSupervisorFormOpen,
+    setCreateGhostSupervisorFormOpen,
+  ] = useState(false);
+  const [createGhostAuthorFormOpen, setCreateGhostAuthorFormOpen] = useState(
+    false
+  );
 
   const project = withProject(props.match.params.id, (p) => {
     setTitle(p.title);
@@ -146,6 +143,8 @@ const EditProjectPage = (props: EditProjectPageProps) => {
         console.error(e);
         setOrganization("ERROR");
       });
+    setAuthors(authors.concat(p.authors));
+    setSupervisors(supervisors.concat(p.supervisors));
   });
 
   const theme = createMuiTheme({
@@ -209,10 +208,26 @@ const EditProjectPage = (props: EditProjectPageProps) => {
         render: () => <p>Agregar a {a.fullName} como autor</p>,
       })
     );
+    justCreatedAuthors.forEach((a) =>
+      changes.push({
+        undo: () =>
+          setJustCreatedAuthors(justCreatedAuthors.filter((jca) => jca != a)),
+        render: () => <p>Agregar a {a.fullName} como autor</p>,
+      })
+    );
     supervisorsToAdd.forEach((s) =>
       changes.push({
         undo: () =>
           setSupervisorsToAdd(supervisorsToAdd.filter((sta) => sta != s)),
+        render: () => <p>Agregar a {s.fullName} como supervisor</p>,
+      })
+    );
+    justCreatedSupervisors.forEach((s) =>
+      changes.push({
+        undo: () =>
+          setJustCreatedSupervisors(
+            justCreatedSupervisors.filter((jcs) => jcs != s)
+          ),
         render: () => <p>Agregar a {s.fullName} como supervisor</p>,
       })
     );
@@ -306,31 +321,35 @@ const EditProjectPage = (props: EditProjectPageProps) => {
       <Parallax filter image={project.value.pictureUrl} small />
       <div className={classes.main}>
         <GridContainer className={classes.container}>
-        <GridItem xs={12} sm={12} md={12}>
+          <GridItem xs={12} sm={12} md={12}>
             <h2 className={classes.title} style={{ textAlign: "center" }}>
               EDITAR UN PROYECTO
             </h2>
-            <h4 className={classes.subtitle} style={{ textAlign: "left", paddingBottom: "20px" }}>
+            <h4
+              className={classes.subtitle}
+              style={{ textAlign: "left", paddingBottom: "20px" }}
+            >
               En esta página vas a poder editar tu proyecto.
             </h4>
           </GridItem>
           <GridItem xs={12} sm={12} md={12}>
-          <ThemeProvider theme={theme}>
-            <TextField
-              fullWidth
-              required
-              error={titleIncompleted}
-              className={classes.autocomplete}
-              placeholder="Título"
-              value={title}
-              onChange={(e) => {
-                if(e.currentTarget.value.trim() == ""){
-                  setTitleIncompleted(true)
-                } else {
-                  setTitleIncompleted(false)
-                }
-                setTitle(e.currentTarget.value)}}
-            />
+            <ThemeProvider theme={theme}>
+              <TextField
+                fullWidth
+                required
+                error={titleIncompleted}
+                className={classes.autocomplete}
+                placeholder="Título"
+                value={title}
+                onChange={(e) => {
+                  if (e.currentTarget.value.trim() == "") {
+                    setTitleIncompleted(true);
+                  } else {
+                    setTitleIncompleted(false);
+                  }
+                  setTitle(e.currentTarget.value);
+                }}
+              />
             </ThemeProvider>
           </GridItem>
           <GridItem xs={12} sm={12} md={12}>
@@ -343,37 +362,40 @@ const EditProjectPage = (props: EditProjectPageProps) => {
               rows="3"
               value={description}
               onChange={(e) => {
-                if(e.currentTarget.value.trim() == ""){
-                  setDescriptionIncompleted(true)
+                if (e.currentTarget.value.trim() == "") {
+                  setDescriptionIncompleted(true);
                 } else {
-                  setDescriptionIncompleted(false)
+                  setDescriptionIncompleted(false);
                 }
-                setDescription(e.currentTarget.value)}}
+                setDescription(e.currentTarget.value);
+              }}
             />
           </GridItem>
           <GridItem>
-          <h4 className={classes.subtitle}>Contenido extra - podés agregar más contenido que represente el proyecto, como texto con distintos formatos o imágenes</h4>
-            <MEDitor
-              value={readme}
-              onChange={(e) => setReadme(e)}
-            />
+            <h4 className={classes.subtitle}>
+              Contenido extra - podés agregar más contenido que represente el
+              proyecto, como texto con distintos formatos o imágenes
+            </h4>
+            <MEDitor value={readme} onChange={(e) => setReadme(e)} />
           </GridItem>
           <GridItem>
-          <h4 className={classes.subtitle}>Imagen</h4>
+            <h4 className={classes.subtitle}>Imagen</h4>
             <ImageUploader
               withIcon={true}
               name="pictureUrl"
               buttonText="Elegí una imagen para el proyecto"
               onChange={onPictureDrop}
-              label={"Te recomendamos que sea de buena calidad para que el proyecto se vea mejor"}
-              imgExtension={[".jpg",".jpeg", ".png"]}
+              label={
+                "Te recomendamos que sea de buena calidad para que el proyecto se vea mejor"
+              }
+              imgExtension={[".jpg", ".jpeg", ".png"]}
               maxFileSize={5242880}
               singleImage={true}
               withPreview={true}
             />
           </GridItem>
           <GridItem>
-          <h4 className={classes.subtitle}>Documentos</h4>
+            <h4 className={classes.subtitle}>Documentos</h4>
             {project.value.documentation
               .filter((d) => !documentsToRemove.some((dtr) => dtr == d))
               .map((d, idx) => (
@@ -400,18 +422,22 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                 {isDragActive ? (
                   <p>Arrastrá los documentos acá...</p>
                 ) : (
-                  <p>Arrastrá los documentos acá, o hacé click para seleccionar documentos</p>
+                  <p>
+                    Arrastrá los documentos acá, o hacé click para seleccionar
+                    documentos
+                  </p>
                 )}
               </div>
             </section>
           </GridItem>
         </GridContainer>
-        {role == "AUTHOR" ? (
+        {role == "SUPERVISOR" ? (
           <GridContainer className={classes.container}>
             <GridItem>
-            <h4 className={classes.subtitle}>Autores</h4>
+              <h4 className={classes.subtitle}>Autores</h4>
               {project.value.authors
                 .concat(justCreatedAuthors)
+                .concat(authorsToAdd)
                 .filter((a) => !authorsToRemove.some((atr) => atr == a))
                 .map((a, idx) => (
                   <div
@@ -433,14 +459,20 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                   <Autocomplete
                     fullWidth
                     options={organization.authors.filter(
-                      (a) => !authorsToAdd.includes(a)
+                      (a) =>
+                        !(
+                          authorsToAdd.includes(a) ||
+                          project.value.authors.includes(a)
+                        )
                     )}
                     getOptionLabel={(option) => option.fullName}
                     onChange={(e, a) => {
                       if (a) setAuthorsToAdd(authorsToAdd.concat(a!));
                     }}
                     renderInput={(params) => (
-                      <ThemeProvider theme={theme}><TextField {...params} fullWidth /></ThemeProvider>
+                      <ThemeProvider theme={theme}>
+                        <TextField {...params} fullWidth />
+                      </ThemeProvider>
                     )}
                   />
                 </GridItem>
@@ -450,10 +482,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                     fullWidth
                     type="button"
                     color="primary"
-                    onClick={
-                      openGhostAuthorForm
-
-                    }
+                    onClick={() => setCreateGhostAuthorFormOpen(true)}
                   >
                     <AddCircle />
                     <Hidden smDown>Crear nuevo autor</Hidden>
@@ -462,9 +491,10 @@ const EditProjectPage = (props: EditProjectPageProps) => {
               </GridContainer>
             </GridItem>
             <GridItem>
-            <h4 className={classes.subtitle}>Supervisores</h4>
+              <h4 className={classes.subtitle}>Supervisores</h4>
               {project.value.supervisors
                 .concat(justCreatedSupervisors)
+                .concat(supervisorsToAdd)
                 .filter(
                   (s) =>
                     !supervisorsToRemove.some((str) => str == s) ||
@@ -511,7 +541,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                     fullWidth
                     type="button"
                     color="primary"
-                    onClick={openGhostSupervisorForm}
+                    onClick={() => setCreateGhostSupervisorFormOpen(true)}
                   >
                     <AddCircle />
                     <Hidden smDown>Crear nuevo supervisor</Hidden>
@@ -528,7 +558,9 @@ const EditProjectPage = (props: EditProjectPageProps) => {
             <Divider variant="fullWidth" />
           </GridItem>
           <GridItem xs={12} align="left">
-          <h4 className={classes.subtitle}>Cambios, podés hacerles click para deshacerlos</h4>
+            <h4 className={classes.subtitle}>
+              Cambios, podés hacerles click para deshacerlos
+            </h4>
             <ul>
               {Changes().map((c, idx) => (
                 <li
@@ -541,11 +573,9 @@ const EditProjectPage = (props: EditProjectPageProps) => {
               ))}
             </ul>
           </GridItem>
-          <GridItem xs={6}>
-            
-          </GridItem>
+          <GridItem xs={6}></GridItem>
           <GridItem xs={12} align="right">
-          <CustomButton
+            <CustomButton
               type="button"
               color="secondary"
               style={{ width: "15%", textAlign: "right" }}
@@ -582,7 +612,9 @@ const EditProjectPage = (props: EditProjectPageProps) => {
           <DialogContentText id="alert-dialog-description">
             {loading ? (
               <div style={{ display: "flex", justifyContent: "center" }}>
-                <ThemeProvider theme={theme}><CircularProgress /></ThemeProvider>
+                <ThemeProvider theme={theme}>
+                  <CircularProgress />
+                </ThemeProvider>
               </div>
             ) : Changes().length == 0 ? (
               <h4>¡Uy! Parece que no hiciste ningún cambio aún</h4>
@@ -596,36 +628,44 @@ const EditProjectPage = (props: EditProjectPageProps) => {
           </DialogContentText>
         </DialogContent>
         <ThemeProvider theme={theme}>
-        <DialogActions>
-          <Button onClick={() => setIsModalOpen(false)} color="primary">
-            No, mejor no
-          </Button>
-          <Button
-            onClick={() => {
-              setLoading(true);
-              updateProject(project.value);
-            }}
-            color="primary"
-            autoFocus
-          >
-            Sí, estoy seguro
-          </Button>
-        </DialogActions>
+          <DialogActions>
+            <Button onClick={() => setIsModalOpen(false)} color="primary">
+              No, mejor no
+            </Button>
+            <Button
+              onClick={() => {
+                setLoading(true);
+                updateProject(project.value);
+              }}
+              color="primary"
+              autoFocus
+            >
+              Sí, estoy seguro
+            </Button>
+          </DialogActions>
         </ThemeProvider>
       </Dialog>
-      <GhostSupervisorForm
+      <CreateGhostUser
         role={"SUPERVISOR"}
         organization={organization}
         project={project.value}
         projects={[]}
         session={props.session}
+        open={createGhostSupervisorFormOpen}
+        setOpen={setCreateGhostSupervisorFormOpen}
+        afterCreate={(p) =>
+          setJustCreatedSupervisors(justCreatedSupervisors.concat(p))
+        }
       />
-      <GhostAuthorForm
+      <CreateGhostUser
         role={"AUTHOR"}
         organization={organization}
         project={project.value}
         projects={[]}
         session={props.session}
+        open={createGhostAuthorFormOpen}
+        setOpen={setCreateGhostAuthorFormOpen}
+        afterCreate={(p) => setJustCreatedAuthors(justCreatedAuthors.concat(p))}
       />
     </div>
   );
