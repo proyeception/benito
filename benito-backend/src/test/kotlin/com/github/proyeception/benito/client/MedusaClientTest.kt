@@ -28,15 +28,13 @@ class MedusaClientTest : Spec() {
             val author = PersonRefDTO(
                 id = "123",
                 username = "author",
-                fullName = "UnNombre",
-                socials = mutableListOf()
+                fullName = "UnNombre"
             )
 
             val supervisor = PersonRefDTO(
                 id = "123",
                 username = "supervisor",
-                fullName = "UnNombre",
-                socials = mutableListOf()
+                fullName = "UnNombre"
             )
 
             val documentation = DocumentationDTO(
@@ -295,15 +293,13 @@ class MedusaClientTest : Spec() {
             val author = MedusaPersonRefDTO(
                 id = "123",
                 username = "author",
-                fullName = "UnNombre",
-                socials = mutableListOf()
+                fullName = "UnNombre"
             )
 
             val supervisor = MedusaPersonRefDTO(
                 id = "1234",
                 username = "supervisor",
-                fullName = "UnNombre",
-                socials = mutableListOf()
+                fullName = "UnNombre"
             )
 
             val documentation = DocumentationDTO(
