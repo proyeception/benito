@@ -23,7 +23,14 @@ import { connect } from "react-redux";
 import { Redirect, RouteComponentProps, withRouter } from "react-router-dom";
 import CustomTabs from "../../components/CustomTabs/CustomTabs";
 import { Book, Close, SupervisorAccount } from "@material-ui/icons";
-import { Snackbar, Divider, IconButton, TextField, ThemeProvider, createMuiTheme } from "@material-ui/core";
+import {
+  Snackbar,
+  Divider,
+  IconButton,
+  TextField,
+  ThemeProvider,
+  createMuiTheme,
+} from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { requestSupervisorAccount } from "../../functions/user";
 import { Alert } from "@material-ui/lab";
@@ -132,8 +139,8 @@ const LoginPage = (props: LoginPageProps) => {
                                     props.history,
                                     "author",
                                     () => {
-                                      setError(true)
-                                      setDisabled(true)
+                                      setError(true);
+                                      setDisabled(true);
                                     }
                                   );
                                 }}
@@ -141,25 +148,25 @@ const LoginPage = (props: LoginPageProps) => {
                               />
                             </GridItem>
                             <Snackbar
-                                open={error}
-                                autoHideDuration={6000}
+                              open={error}
+                              autoHideDuration={6000}
+                              onClose={() => {
+                                setError(false);
+                                setDisabled(false);
+                              }}
+                            >
+                              <Alert
                                 onClose={() => {
                                   setError(false);
                                   setDisabled(false);
                                 }}
+                                severity="error"
                               >
-                                <Alert
-                                  onClose={() => {
-                                    setError(false);
-                                    setDisabled(false);
-                                  }}
-                                  severity="error"
-                                >
-                                  ¡Lo sentimos! Salió algo mal procesando la
-                                  solicitud. Nuestros ingenieros ya están
-                                  resolviéndolo.
-                                </Alert>
-                              </Snackbar>
+                                ¡Lo sentimos! Salió algo mal procesando la
+                                solicitud. Nuestros ingenieros ya están
+                                resolviéndolo.
+                              </Alert>
+                            </Snackbar>
                           </GridContainer>
                         ),
                       },
@@ -198,8 +205,8 @@ const LoginPage = (props: LoginPageProps) => {
                                     props.history,
                                     "supervisor",
                                     () => {
-                                      setError(true)
-                                      setDisabled(true)
+                                      setError(true);
+                                      setDisabled(true);
                                     }
                                   );
                                 }}
@@ -215,26 +222,28 @@ const LoginPage = (props: LoginPageProps) => {
                                 organización
                               </div>
                               <ThemeProvider theme={theme}>
-                              <Autocomplete
-                                fullWidth
-                                options={props.organizations}
-                                getOptionLabel={(option) => option.displayName}
-                                onChange={(e, o) => setOrganization(o)}
-                                renderInput={(params) => (
-                                  <TextField
-                                    error={hasError}
-                                    label="Organización"
-                                    {...params}
-                                    fullWidth
-                                    helperText={
-                                      hasError
-                                        ? "Por favor, elegí una organización"
-                                        : undefined
-                                    }
-                                    onBlur={() => setHasError(false)}
-                                  />
-                                )}
-                              />
+                                <Autocomplete
+                                  fullWidth
+                                  options={props.organizations}
+                                  getOptionLabel={(option) =>
+                                    option.displayName
+                                  }
+                                  onChange={(e, o) => setOrganization(o)}
+                                  renderInput={(params) => (
+                                    <TextField
+                                      error={hasError}
+                                      label="Organización"
+                                      {...params}
+                                      fullWidth
+                                      helperText={
+                                        hasError
+                                          ? "Por favor, elegí una organización"
+                                          : undefined
+                                      }
+                                      onBlur={() => setHasError(false)}
+                                    />
+                                  )}
+                                />
                               </ThemeProvider>
                               <GoogleLogin
                                 clientId={googleClientId}
