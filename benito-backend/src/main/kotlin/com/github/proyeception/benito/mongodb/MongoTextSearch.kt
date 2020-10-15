@@ -87,7 +87,7 @@ open class MongoTextSearch(
                         it.get("full_name", String::class.java),
                         it.get("username", String::class.java),
                         it.get("socials", String::class.java),
-                        null
+                        SocialDTO()
                     )
                 }
                 supervisors = projectDocument.getList("supervisors", Document::class.java).map {
@@ -96,7 +96,7 @@ open class MongoTextSearch(
                         it.get("full_name", String::class.java),
                         it.get("username", String::class.java),
                         it.get("socials", String::class.java),
-                        null
+                        SocialDTO()
                     )
                 }
                 organization = OrganizationRefDTO(

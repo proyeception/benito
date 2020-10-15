@@ -27,7 +27,9 @@ data class MedusaPersonRefDTO(
     val username: String?,
     val fullName: String,
     val profilePic: MedusaFileDTO? = null,
-    val socials: List<SocialDTO>?
+    val facebook: String? = null,
+    val linkedin: String? = null,
+    val twitter: String? = null
 )
 
 data class CreateMedusaPersonDTO(
