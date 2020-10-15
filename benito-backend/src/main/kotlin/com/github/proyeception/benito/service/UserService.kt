@@ -57,7 +57,7 @@ open class UserService(
         val createUser = medusaClient.createUser(person, UserType.AUTHOR)
         val copy = createUser.copy()
 
-        val twitter = SocialDTO("Twitter", "https://twitter.com/")
+        val twitter = SocialDTO("Twitter", "https://www.twitter.com/")
         val linkedin = SocialDTO("Linkedin", "https://www.linkedin.com/")
         val facebook = SocialDTO("Facebook", "https://www.facebook.com/")
         copy.socials = mutableListOf(twitter, linkedin, facebook)

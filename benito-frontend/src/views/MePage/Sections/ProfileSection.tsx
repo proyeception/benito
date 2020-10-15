@@ -31,7 +31,7 @@ const ProfileSection = (props: ProfileSectionProps) => {
   const [lastTwitter, setLastTwitter] = React.useState("https://www.twitter.com/");
   const [linkedin, setCheckedLinkedin] = React.useState(socials[1].socialProfileUrl != "https://www.linkedin.com/");
   const [lastLinkedin, setLastLinkedin] = React.useState("https://www.linkedin.com/");
-  const [facebook, setCheckedFacebook] = React.useState(socials[2].socialProfileUrl != "https://facebook.com/");
+  const [facebook, setCheckedFacebook] = React.useState(socials[2].socialProfileUrl != "https://www.facebook.com/");
   const [lastFacebook, setLastFacebook] = React.useState("https://www.facebook.com/");
 
   const theme = createMuiTheme({
