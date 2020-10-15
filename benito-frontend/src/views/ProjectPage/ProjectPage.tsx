@@ -29,6 +29,8 @@ import Recommendations from "./Sections/Recommendations";
 import Spinner from "../../components/Spinner/Spinner";
 import { ProjectEditionRole } from "../../types";
 import image from "../../assets/img/proyectate/pattern-big.jpg"
+import Button from "@material-ui/core/Button/Button";
+import { ArrowBackIos } from "@material-ui/icons";
 
 const dashboardRoutes: any = [];
 
@@ -81,11 +83,24 @@ const ProjectPage = (props: Props) => {
             <ProductSection project={project.value} />
             <TeamSection project={project.value} />
             <DocumentsSection project={project.value} />
+            <Button className={classes.goback}
+            onClick={() => {
+              props.history.goBack()
+            }}
+            variant="outlined"
+            size="large"
+            startIcon={<ArrowBackIos />}
+            >
+            Volver
+            </Button>
+          <div></div>
           </GridItem>
           <Divider orientation="vertical" flexItem />
           <GridItem xs={12} sm={12} md={2}  className={classes.recommendations}>
             <Recommendations />
           </GridItem>
+
+
         </GridContainer>
       </div>
       <Footer />
