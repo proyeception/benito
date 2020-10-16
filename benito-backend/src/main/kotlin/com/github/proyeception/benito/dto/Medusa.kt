@@ -27,7 +27,9 @@ data class MedusaPersonRefDTO(
     val username: String?,
     val fullName: String,
     val profilePic: MedusaFileDTO? = null,
-    val socials: List<SocialDTO>?
+    val facebook: String? = null,
+    val linkedin: String? = null,
+    val twitter: String? = null
 )
 
 data class CreateMedusaPersonDTO(
@@ -40,16 +42,18 @@ data class CreateMedusaPersonDTO(
 )
 
 data class MedusaPersonDTO(
-        val id: String,
-        val username: String?,
-        val fullName: String,
-        val organizations: List<MedusaOrganizationDTO>,
-        val profilePic: MedusaFileDTO? = null,
-        val projects: List<MedusaProjectRefDTO>,
-        var socials: List<SocialDTO>,
-        val mail: String? = null,
-        val phone: String? = null,
-        val about: String? = null
+    val id: String,
+    val username: String?,
+    val fullName: String,
+    val organizations: List<MedusaOrganizationDTO>,
+    val profilePic: MedusaFileDTO? = null,
+    val projects: List<MedusaProjectRefDTO>,
+    val mail: String? = null,
+    val phone: String? = null,
+    val about: String? = null,
+    val facebook: String? = null,
+    val linkedin: String? = null,
+    val twitter: String? = null
 )
 
 data class MedusaProjectRefDTO(
@@ -71,7 +75,7 @@ data class DocumentationDTO(
     val driveId: String
 )
 
-data class  CreateDocumentDTO(
+data class CreateDocumentDTO(
     val fileName: String,
     val driveId: String,
     val content: String
@@ -110,8 +114,9 @@ data class MedusaTagDTO(
 )
 
 data class SocialDTO(
-    val socialName: String,
-    val socialProfileUrl: String
+    val facebook: String? = null,
+    val linkedin: String? = null,
+    val twitter: String? = null
 )
 
 data class ContactDTO(
@@ -137,7 +142,7 @@ data class UpdateUserDTO(
     val phone: String?,
     val fullName: String?,
     val username: String?,
-    val socials: List<SocialDTO>?
+    val socials: SocialDTO
 )
 
 data class CreateMedusaProjectDTO(
@@ -182,3 +187,23 @@ data class CreatePendingSupervisorDTO(
 )
 
 private val dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+
+data class UpdateMedusaUserDTO(
+    val mail: String?,
+    val phone: String?,
+    val fullName: String?,
+    val username: String?,
+    val facebook: String?,
+    val linkedin: String?,
+    val twitter: String?
+) {
+    constructor (user: UpdateUserDTO) : this(
+        mail = user.mail,
+        phone = user.phone,
+        fullName = user.fullName,
+        username = user.username,
+        facebook = user.socials.facebook,
+        linkedin = user.socials.linkedin,
+        twitter = user.socials.twitter
+    )
+}

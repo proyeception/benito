@@ -17,9 +17,14 @@ import CardFooter from "../../../components/Card/CardFooter";
 
 import styles from "../../../assets/jss/material-kit-react/views/landingPageSections/teamStyle";
 
-import { Project } from "../../../types";
+import { Person, Project, Role } from "../../../types";
 import { Link } from "react-router-dom";
-import { socialToIcon } from "../../../functions/user";
+import GithubIcon from "@material-ui/icons/GitHub";
+import TwitterIcon from "@material-ui/icons/Twitter";
+import FacebookIcon from "@material-ui/icons/Facebook";
+import LinkedinIcon from "@material-ui/icons/LinkedIn";
+import { Face } from "@material-ui/icons";
+import { mapRoleToCollection } from "../../../functions/user";
 
 const noProfilePic = "https://image.flaticon.com/icons/png/512/16/16363.png";
 
@@ -36,52 +41,83 @@ export default function TeamSection({ project }: TeamSectionProps) {
     classes.imgRoundedCircle,
     classes.imgFluid
   );
+
+  const UserRef = (props: { user: Person; role: Role }) => (
+    <GridItem xs={12} sm={12} md={4}>
+      <Card plain>
+        <GridItem xs={12} sm={12} md={6} className={classes.itemGrid}>
+          <img
+            src={props.user.profilePicUrl?.valueOf() || noProfilePic}
+            alt={props.user.fullName.valueOf()}
+            className={imageClasses}
+          />
+        </GridItem>
+        <h4 className={classes.cardTitle}>
+          <Link
+            to={`/${mapRoleToCollection(props.role)}/${props.user.id}`}
+            className="normalize-link underline-hover"
+          >
+            {props.user.fullName}
+          </Link>
+          <br />
+          <Link
+            to={`/${mapRoleToCollection(props.role)}/${props.user.id}`}
+            className="normalize-link underline-hover"
+          >
+            <small className={classes.smallTitle}>
+              {props.role == "AUTHOR" ? "Autor" : "Supervisor"}
+            </small>
+          </Link>
+        </h4>
+        <CardFooter className={classes.justifyCenter}>
+          {props.user.socials.twitter && (
+            <a
+              target="_blank"
+              href={props.user.socials.twitter}
+              style={{ display: "contents" }}
+            >
+              <Button justIcon link style={{ display: "contents" }}>
+                <TwitterIcon />
+              </Button>
+            </a>
+          )}
+          {props.user.socials.linkedin && (
+            <a
+              target="_blank"
+              href={props.user.socials.linkedin}
+              style={{ display: "contents" }}
+            >
+              <Button justIcon link style={{ display: "contents" }}>
+                <LinkedinIcon />
+              </Button>
+            </a>
+          )}
+          {props.user.socials.facebook && (
+            <a
+              target="_blank"
+              href={props.user.socials.facebook}
+              style={{ display: "contents" }}
+            >
+              <Button justIcon link style={{ display: "contents" }}>
+                <FacebookIcon />
+              </Button>
+            </a>
+          )}
+        </CardFooter>
+      </Card>
+    </GridItem>
+  );
+
   return (
     <div className={classes.section}>
       <h2 className={classes.subtitle}>Conocé al equipo</h2>
       <div>
         <GridContainer>
           {project.authors.map((a, idx) => (
-            <GridItem xs={12} sm={12} md={4}>
-              <Card plain key={idx}>
-                <GridItem xs={12} sm={12} md={6} className={classes.itemGrid}>
-                  <img
-                    src={a.profilePicUrl?.valueOf() || noProfilePic}
-                    alt={a.fullName.valueOf()}
-                    className={imageClasses}
-                  />
-                </GridItem>
-                <h4 className={classes.cardTitle}>
-                  <Link
-                    to={`/authors/${a.id}`}
-                    className="normalize-link underline-hover"
-                  >
-                    {a.fullName}
-                  </Link>
-                  <br />
-                  <Link
-                    to={`/authors/${a.id}`}
-                    className="normalize-link underline-hover"
-                  >
-                    <small className={classes.smallTitle}>{a.username}</small>
-                  </Link>
-                </h4>
-                <CardFooter className={classes.justifyCenter}>
-                  {a.socials.map((s, idx) => (
-                      <a
-                        target="_blank"
-                        href={s.socialProfileUrl.valueOf()}
-                        key={idx}
-                        style={{display: "contents"}}
-                      >
-                        <Button justIcon link style={{display: "contents"}}>
-                          {socialToIcon(s)}
-                        </Button>
-                      </a>
-                    ))}
-                </CardFooter>
-              </Card>
-            </GridItem>
+            <UserRef user={a} key={idx} role="AUTHOR" />
+          ))}
+          {project.supervisors.map((s, idx) => (
+            <UserRef user={s} key={idx} role="SUPERVISOR" />
           ))}
         </GridContainer>
       </div>

@@ -5,7 +5,6 @@ import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.UnauthorizedException
 import com.github.proyeception.benito.service.SessionService
 import com.github.proyeception.benito.service.UserService
-import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*

@@ -44,15 +44,13 @@ class ProjectServiceTest : Spec() {
                 val author = MedusaPersonRefDTO(
                     id = "123",
                     fullName = "Benito Quinquela",
-                    username = "author",
-                    socials = mutableListOf()
+                    username = "author"
                 )
 
                 val supervisor = MedusaPersonRefDTO(
                     id = "123",
                     fullName = "Jorge Luis Borges",
-                    username = "supervisor",
-                    socials = mutableListOf()
+                    username = "supervisor"
                 )
 
                 val documentation = DocumentationDTO(
@@ -72,16 +70,14 @@ class ProjectServiceTest : Spec() {
                         PersonRefDTO(
                             id = "123",
                             username = "author",
-                            fullName = "Benito Quinquela",
-                            socials = mutableListOf()
+                            fullName = "Benito Quinquela"
                         )
                     ),
                     supervisors = listOf(
                         PersonRefDTO(
                             id = "123",
                             username = "supervisor",
-                            fullName = "Jorge Luis Borges",
-                            socials = mutableListOf()
+                            fullName = "Jorge Luis Borges"
                         )
                     ),
                     tags = emptyList(),
@@ -155,15 +151,13 @@ class ProjectServiceTest : Spec() {
                 val author = MedusaPersonRefDTO(
                     id = "123",
                     fullName = "Benito Quinquela",
-                    username = "author",
-                    socials = mutableListOf()
+                    username = "author"
                 )
 
                 val supervisor = MedusaPersonRefDTO(
                     id = "123",
                     fullName = "Jorge Luis Borges",
-                    username = "supervisor",
-                    socials = mutableListOf()
+                    username = "supervisor"
                 )
 
                 val documentation = DocumentationDTO(
@@ -183,16 +177,14 @@ class ProjectServiceTest : Spec() {
                         PersonRefDTO(
                             id = "123",
                             username = "author",
-                            fullName = "Benito Quinquela",
-                            socials = mutableListOf()
+                            fullName = "Benito Quinquela"
                         )
                     ),
                     supervisors = listOf(
                         PersonRefDTO(
                             id = "123",
                             username = "supervisor",
-                            fullName = "Jorge Luis Borges",
-                            socials = mutableListOf()
+                            fullName = "Jorge Luis Borges"
                         )
                     ),
                     tags = emptyList(),

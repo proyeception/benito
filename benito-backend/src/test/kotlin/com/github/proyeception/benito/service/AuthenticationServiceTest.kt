@@ -41,7 +41,7 @@ class AuthenticationServiceTest : Spec() {
                         organizations = emptyList(),
                         profilePicUrl = null,
                         projects = emptyList(),
-                        socials = emptyList(),
+                        socials = SocialDTO(),
                         contact = null
                     )
                 )
@@ -80,7 +80,7 @@ class AuthenticationServiceTest : Spec() {
                         organizations = emptyList(),
                         profilePicUrl = null,
                         contact = null,
-                        socials = emptyList(),
+                        socials = SocialDTO(),
                         projects = emptyList()
                     )
                 )
@@ -119,7 +119,7 @@ class AuthenticationServiceTest : Spec() {
                         fullName = "Benito Quinquela",
                         organizations = emptyList(),
                         projects = emptyList(),
-                        socials = emptyList()
+                        socials = SocialDTO()
                     )
                 )
                 on(hashMock.sha256(eq("456"))).thenReturn("123")

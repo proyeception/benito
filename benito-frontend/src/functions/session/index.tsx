@@ -55,7 +55,7 @@ export function startLogin(
   login: LoginData,
   history: History,
   loginPath: "author" | "supervisor",
-  callback: () => void
+  onError: () => void
 ) {
   let config: AxiosRequestConfig = {
     method: "POST",
@@ -65,10 +65,8 @@ export function startLogin(
   };
   axios
     .request(config)
-    .then(() => {
-      history.go(0);
-    })
-    .catch(callback);
+    .then(() => history.go(0))
+    .catch(onError);
 }
 
 export function clearSession(token: string) {
