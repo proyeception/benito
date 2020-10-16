@@ -6,6 +6,7 @@ import com.github.proyeception.benito.client.MedusaGraphClient
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.FailedDependencyException
 import com.github.proyeception.benito.mongodb.MongoTextSearch
+import org.slf4j.LoggerFactory
 
 open class RecommendationService(
     private val medusaClient: MedusaClient,
@@ -20,7 +21,11 @@ open class RecommendationService(
 
         val recommendations = obtainRecommendedProjects(keywords, projectId)
 
+        LOGGER.info("Obtained recommendations: $recommendations for project: $projectId")
+
         updateProjectsRecommendedScore(projectId, originalRecommendations, keywords, recommendations)
+
+        LOGGER.info("Updating recently recommended Projects")
 
         recommendations.forEach {
             val projectRecommendations = obtainRecommendedProjects(it.project_keywords, it.id)
@@ -40,6 +45,8 @@ open class RecommendationService(
             recommendedProjects: List<ProjectRecommendationDTO>) {
 
         val recommendations: MutableList<CreateRecommendationDTO> = mutableListOf()
+
+        LOGGER.info("Creating Recommendations for project: $projectId")
 
         recommendedProjects.forEach {
             val score: Double = calculateScore(it.project_keywords, keywords)
@@ -63,4 +70,7 @@ open class RecommendationService(
         return projectKeywords.filter { keywordNamesToCompare.contains(it.name) }.sumByDouble { it.score }
     }
 
+    companion object {
+        private val LOGGER = LoggerFactory.getLogger(RecommendationService::class.java)
+    }
 }

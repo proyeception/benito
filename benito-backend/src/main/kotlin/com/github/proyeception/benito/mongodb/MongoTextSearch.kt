@@ -1,6 +1,7 @@
 package com.github.proyeception.benito.mongodb
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.dto.*
 import com.mongodb.MongoClientURI
 import com.mongodb.client.AggregateIterable
@@ -11,6 +12,7 @@ import com.mongodb.client.model.Projections
 import org.bson.Document
 import org.bson.conversions.Bson
 import org.bson.types.ObjectId
+import org.slf4j.LoggerFactory
 import java.lang.ClassCastException
 
 
@@ -183,10 +185,14 @@ open class MongoTextSearch(
 
         val cursor = aggregate.cursor()
 
+        LOGGER.info("CURSOR STATUS: " + cursor.hasNext().toString())
+
         while (cursor.hasNext()) {
             val projectDocumentToCompare: Document = cursor.next()
 
             if (!projectDocumentToCompare.isNullOrEmpty()) {
+
+                LOGGER.info("Comparing document: $projectDocumentToCompare")
 
                 val projectToCompareKeywords = projectDocumentToCompare.getList("keywords", Document::class.java).map {
                     KeywordDTO(
@@ -220,5 +226,9 @@ open class MongoTextSearch(
     }
 
     private fun getScore(it: Document): Double = it.get("score", Number::class.java).toDouble()
+
+    companion object {
+        private val LOGGER = LoggerFactory.getLogger(MongoTextSearch::class.java)
+    }
 
 }

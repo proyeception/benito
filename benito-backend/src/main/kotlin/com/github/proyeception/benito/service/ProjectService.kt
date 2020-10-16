@@ -109,6 +109,7 @@ open class ProjectService(
         try {
             val keywords = keywordService.getKeywords(project)
             val updatedKeywords = medusaClient.updateProjectKeywords(keywords, project)
+            LOGGER.info("Creating Recommendations for project: ${project.id}")
             recommendationService.recalculateRecommendations(project.id, project.recommendations, updatedKeywords)
         } catch (e: Exception) {
             LOGGER.error("There was an error updating keywords for project ${project.id}")
