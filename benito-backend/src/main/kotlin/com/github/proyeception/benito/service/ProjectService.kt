@@ -127,7 +127,7 @@ open class ProjectService(
                     var content = ""
                     try {
                         content = documentParser.parse(fileStream)
-                    } catch (e: NoClassDefFoundError) {
+                    } catch (e: Exception) {
                         LOGGER.warn("No se pudo parsear el documento: " + f.name)
                         LOGGER.error(e.message)
                         LOGGER.error(e.stackTrace.toString())
