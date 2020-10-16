@@ -124,7 +124,14 @@ open class ProjectService(
             files.zip(ids).map { (f, driveId) ->
                 async {
                     val fileStream = f.inputStream
-                    val content = documentParser.parse(fileStream)
+                    var content = ""
+                    try {
+                        content = documentParser.parse(fileStream)
+                    } catch (e: NoClassDefFoundError) {
+                        LOGGER.warn("No se pudo parsear el documento: " + f.name)
+                        LOGGER.error(e.message)
+                        LOGGER.error(e.stackTrace.toString())
+                    }
 
                     CreateDocumentDTO(
                         driveId = driveId,
