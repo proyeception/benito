@@ -5,10 +5,12 @@ import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.client.MedusaGraphClient
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.FailedDependencyException
+import com.github.proyeception.benito.mongodb.MongoTextSearch
 
 open class RecommendationService(
     private val medusaClient: MedusaClient,
-    private val medusaGraphClient: MedusaGraphClient
+    private val medusaGraphClient: MedusaGraphClient,
+    private val mongoTextSearch: MongoTextSearch
 ) {
 
     open fun recalculateRecommendations(
@@ -16,35 +18,19 @@ open class RecommendationService(
             originalRecommendations: List<RecommendationDTO>,
             keywords: List<KeywordDTO>) {
 
-        val medusaProjectsRecommendations = obtainRecommendedProjects(keywords, projectId)
-
-        val recommendations = obtainRecommendations(medusaProjectsRecommendations)
+        val recommendations = obtainRecommendedProjects(keywords, projectId)
 
         updateProjectsRecommendedScore(projectId, originalRecommendations, keywords, recommendations)
 
         recommendations.forEach {
             val projectRecommendations = obtainRecommendedProjects(it.project_keywords, it.id)
-            val recommendations = obtainRecommendations(projectRecommendations)
-            updateProjectsRecommendedScore(it.id, it.original_recommendations, it.project_keywords, recommendations)
+            updateProjectsRecommendedScore(it.id, it.original_recommendations, it.project_keywords, projectRecommendations)
         }
 
     }
 
-    private fun obtainRecommendations(medusaProjectsRecommendations: List<MedusaProjectDTO>): List<ProjectRecommendationDTO> {
-        return medusaProjectsRecommendations
-            .map {
-                ProjectRecommendationDTO(
-                    id = it.id,
-                    project_keywords = it.project_keywords,
-                    original_recommendations = it.recommendations.map { rec -> RecommendationDTO(rec) }
-                )
-            }
-    }
-
-    private fun obtainRecommendedProjects(keywords: List<KeywordDTO>, projectId: String): List<MedusaProjectDTO> {
-        return medusaGraphClient.findProjects(projectKeywords = keywords.map { it.name })
-            .getOrHandle { throw FailedDependencyException("Error getting projects from Medusa") }
-            .filter { projectId != it.id }
+    private fun obtainRecommendedProjects(keywords: List<KeywordDTO>, projectId: String): List<ProjectRecommendationDTO> {
+        return mongoTextSearch.findRecommendedProjects(keywords).filter { it.id != projectId }
     }
 
     private fun updateProjectsRecommendedScore(

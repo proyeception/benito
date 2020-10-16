@@ -111,10 +111,12 @@ open class ServiceModule {
     @Bean
     open fun recommendationService(
         medusaClient: MedusaClient,
-        medusaGraphClient: MedusaGraphClient
+        medusaGraphClient: MedusaGraphClient,
+        mongoTextSearch: MongoTextSearch
     ): RecommendationService = RecommendationService(
         medusaClient = medusaClient,
-        medusaGraphClient = medusaGraphClient
+        medusaGraphClient = medusaGraphClient,
+        mongoTextSearch = mongoTextSearch
     )
 
     @Bean

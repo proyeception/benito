@@ -226,6 +226,10 @@ open class MedusaClient(
                               projectId: String,
                               originalRecommendations: List<RecommendationDTO>) {
 
+        val deletedRecommendations = originalRecommendations
+            .map { it.id.orEmpty() }
+            .filter { it.isNotBlank() }
+            .map { delete("recommendations", it, MEDUSA_RECOMMENDATION_REF) }
         val recommendationsIdList = recommendations
             .map{ create("recommendations", it, MEDUSA_RECOMMENDATION_REF).id }
         val recommendationsIdRef = ProjectRecommendations(recommendationsIdList.map { it } )
