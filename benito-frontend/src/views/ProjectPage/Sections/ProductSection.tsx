@@ -49,7 +49,6 @@ const ProductSection = ({ project, session, history }: ProductSectionProps) => {
                 <Button
                   onClick={() => history.push(`/projects/${project.id}/edit`)}
                   type="button"
-                  color="primary"
                   endIcon
                 >
                   <Edit /> Editar

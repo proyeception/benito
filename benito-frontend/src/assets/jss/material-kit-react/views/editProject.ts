@@ -50,7 +50,13 @@ const editProjectStyle = (theme: Theme) =>
       paddingTop: "10px"
     },
     datePicker: {
-    }
+    },
+    popover: {
+      pointerEvents: 'none',
+    },
+    paper: {
+      padding: theme.spacing(1),
+    },
 
   });
 
