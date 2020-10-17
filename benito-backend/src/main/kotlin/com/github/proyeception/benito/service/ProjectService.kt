@@ -109,6 +109,7 @@ open class ProjectService(
         try {
             val keywords = keywordService.getKeywords(project)
             val updatedKeywords = medusaClient.updateProjectKeywords(keywords, project)
+            LOGGER.info("Creating Recommendations for project: ${project.id}")
             recommendationService.recalculateRecommendations(project.id, project.recommendations, updatedKeywords)
         } catch (e: Exception) {
             LOGGER.error("There was an error updating keywords for project ${project.id}")
@@ -124,7 +125,14 @@ open class ProjectService(
             files.zip(ids).map { (f, driveId) ->
                 async {
                     val fileStream = f.inputStream
-                    val content = documentParser.parse(fileStream)
+                    var content = ""
+                    try {
+                        content = documentParser.parse(fileStream)
+                    } catch (e: Exception) {
+                        LOGGER.warn("No se pudo parsear el documento: " + f.name)
+                        LOGGER.error(e.message)
+                        LOGGER.error(e.stackTrace.toString())
+                    }
 
                     CreateDocumentDTO(
                         driveId = driveId,

@@ -1,5 +1,8 @@
 package com.github.proyeception.benito.mongodb
 
+import arrow.core.const
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.dto.*
 import com.mongodb.MongoClientURI
 import com.mongodb.client.AggregateIterable
@@ -9,6 +12,9 @@ import com.mongodb.client.model.Filters
 import com.mongodb.client.model.Projections
 import org.bson.Document
 import org.bson.conversions.Bson
+import org.bson.types.ObjectId
+import org.slf4j.LoggerFactory
+import java.lang.ClassCastException
 
 
 open class MongoTextSearch(
@@ -156,50 +162,61 @@ open class MongoTextSearch(
         return filters
     }
 
-    fun findRecommendedProjects(updatedProject: ProjectDTO): List<ProjectRecommendationDTO>  {
+    fun findRecommendedProjects(keywords: List<KeywordDTO>): List<ProjectRecommendationDTO>  {
         val mongoClient = startConnection()
         val mongoCollectionProjects = mongoClient.getDatabase(databaseName).getCollection(projectsCollection)
-        val keywords = updatedProject.project_keywords
 
         val keywordsNames = keywords.map { k -> k.name }
+
+        LOGGER.info("keywords to match: $keywordsNames")
 
         val projects = mutableSetOf<ProjectRecommendationDTO>()
 
         val pipeline = mutableListOf(
-                Aggregates.lookup("keywords", "project_keywords", "_id", "keywords"),
-                Aggregates.match(
-                    Filters.and(
-                        Filters.elemMatch("keywords",
-                                Filters.`in`("name", keywordsNames)
-                        )
-                    )
-                ),
-                Aggregates.out("projects")
+            Aggregates.lookup("keywords", "project_keywords", "_id", "keywords"),
+            Aggregates.lookup("recommendations", "recommendations", "_id", "recommendations"),
+            Aggregates.match(
+                Filters.elemMatch("keywords",
+                        Filters.`in`("name", keywordsNames)
+                )
+            )
         )
+
+        LOGGER.warn("STORED PROJECTS: ${mongoCollectionProjects.find().count()}")
 
         val aggregate: AggregateIterable<Document> = mongoCollectionProjects.aggregate(pipeline)
 
         val cursor = aggregate.cursor()
 
+        LOGGER.info("CURSOR STATUS: " + cursor.hasNext().toString())
+
         while (cursor.hasNext()) {
             val projectDocumentToCompare: Document = cursor.next()
 
-            val aggregate: AggregateIterable<Document> = mongoCollectionProjects.aggregate(pipeline)
-            val projectDocument: Document? = aggregate.first()
-            if (!projectDocument.isNullOrEmpty()) {
+            if (!projectDocumentToCompare.isNullOrEmpty()) {
 
-                val projectToCompareKeywords = projectDocument.getList("keywords", Document::class.java).map {
+                LOGGER.info("Comparing document: $projectDocumentToCompare")
+
+                val projectToCompareKeywords = projectDocumentToCompare.getList("keywords", Document::class.java).map {
                     KeywordDTO(
-                            it.get("id", String::class.java),
-                            it.get("name", String::class.java),
-                            it.get("score", Integer::class.java).toDouble()
+                        it.get("_id", ObjectId::class.java).toString(),
+                        it.get("name", String::class.java),
+                        getScore(it)
+                    )
+                }
+
+                val recommendations = projectDocumentToCompare.getList("recommendations", Document::class.java).map {
+                    RecommendationDTO(
+                        id = it.get("_id", ObjectId::class.java).toString(),
+                        score = getScore(it),
+                        projectId = it.get("project", ObjectId::class.java).toString()
                     )
                 }
 
                 val project = ProjectRecommendationDTO(
                     id = projectDocumentToCompare["_id"].toString(),
                     project_keywords = projectToCompareKeywords,
-                    original_recommendations = emptyList()
+                    recommendations = recommendations
                 )
 
                 projects.add(project)
@@ -210,4 +227,11 @@ open class MongoTextSearch(
 
         return projects.toMutableList()
     }
+
+    private fun getScore(it: Document): Double = it.get("score", Number::class.java).toDouble()
+
+    companion object {
+        private val LOGGER = LoggerFactory.getLogger(MongoTextSearch::class.java)
+    }
+
 }

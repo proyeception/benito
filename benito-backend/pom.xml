@@ -218,6 +218,16 @@
         <!-- Apache Commons -->
 
         <!-- Apache POI -->
+        <!--<dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-examples</artifactId>
+            <version>4.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-excelant</artifactId>
+            <version>4.0.0</version>
+        </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
@@ -230,6 +240,11 @@
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
+            <artifactId>ooxml-schemas</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
             <artifactId>poi-scratchpad</artifactId>
             <version>4.0.0</version>
         </dependency>
@@ -238,7 +253,7 @@
             <artifactId>poi-ooxml-schemas</artifactId>
             <version>4.0.0</version>
         </dependency>
-        <!-- Apache POI -->
+         Apache POI -->
 
         <!-- Apache TIKA -->
         <dependency>
@@ -463,10 +478,10 @@
                 </executions>
             </plugin>
             <plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>2.1.6.RELEASE</version>
-			</plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.1.6.RELEASE</version>
+            </plugin>
             <plugin>
                 <groupId>com.heroku.sdk</groupId>
                 <artifactId>heroku-maven-plugin</artifactId>

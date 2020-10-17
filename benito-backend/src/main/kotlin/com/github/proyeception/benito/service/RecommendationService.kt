@@ -1,14 +1,13 @@
 package com.github.proyeception.benito.service
 
-import arrow.core.getOrHandle
 import com.github.proyeception.benito.client.MedusaClient
-import com.github.proyeception.benito.client.MedusaGraphClient
 import com.github.proyeception.benito.dto.*
-import com.github.proyeception.benito.exception.FailedDependencyException
+import com.github.proyeception.benito.storage.RecommendationStorage
+import org.slf4j.LoggerFactory
 
 open class RecommendationService(
     private val medusaClient: MedusaClient,
-    private val medusaGraphClient: MedusaGraphClient
+    private val recommendationStorage: RecommendationStorage
 ) {
 
     open fun recalculateRecommendations(
@@ -16,44 +15,36 @@ open class RecommendationService(
             originalRecommendations: List<RecommendationDTO>,
             keywords: List<KeywordDTO>) {
 
-        val medusaProjectsRecommendations = obtainRecommendedProjects(keywords, projectId)
+        val recommendations = obtainRecommendedProjects(keywords, projectId)
 
-        val recommendations = obtainRecommendations(medusaProjectsRecommendations)
+        LOGGER.info("Obtained recommendations: $recommendations for project: $projectId")
 
         updateProjectsRecommendedScore(projectId, originalRecommendations, keywords, recommendations)
 
+        LOGGER.info("Updating recently recommended Projects")
+
         recommendations.forEach {
             val projectRecommendations = obtainRecommendedProjects(it.project_keywords, it.id)
-            val recommendations = obtainRecommendations(projectRecommendations)
-            updateProjectsRecommendedScore(it.id, it.original_recommendations, it.project_keywords, recommendations)
+            updateProjectsRecommendedScore(it.id, it.recommendations, it.project_keywords, projectRecommendations)
         }
 
     }
 
-    private fun obtainRecommendations(medusaProjectsRecommendations: List<MedusaProjectDTO>): List<ProjectRecommendationDTO> {
-        return medusaProjectsRecommendations
-            .map {
-                ProjectRecommendationDTO(
-                    id = it.id,
-                    project_keywords = it.project_keywords,
-                    original_recommendations = it.recommendations.map { rec -> RecommendationDTO(rec) }
-                )
-            }
-    }
-
-    private fun obtainRecommendedProjects(keywords: List<KeywordDTO>, projectId: String): List<MedusaProjectDTO> {
-        return medusaGraphClient.findProjects(projectKeywords = keywords.map { it.name })
-            .getOrHandle { throw FailedDependencyException("Error getting projects from Medusa") }
-            .filter { projectId != it.id }
-    }
+    private fun obtainRecommendedProjects(
+        keywords: List<KeywordDTO>,
+        projectId: String
+    ): List<ProjectRecommendationDTO> = recommendationStorage
+        .findProjectRecommendationsWithKeyword(keywords).filterNot { it.id == projectId }
 
     private fun updateProjectsRecommendedScore(
-            projectId: String,
-            originalRecommendations: List<RecommendationDTO>,
-            keywords: List<KeywordDTO>,
-            recommendedProjects: List<ProjectRecommendationDTO>) {
-
+        projectId: String,
+        originalRecommendations: List<RecommendationDTO>,
+        keywords: List<KeywordDTO>,
+        recommendedProjects: List<ProjectRecommendationDTO>
+    ) {
         val recommendations: MutableList<CreateRecommendationDTO> = mutableListOf()
+
+        LOGGER.info("Creating Recommendations for project: $projectId")
 
         recommendedProjects.forEach {
             val score: Double = calculateScore(it.project_keywords, keywords)
@@ -69,7 +60,6 @@ open class RecommendationService(
             projectId,
             originalRecommendations
         )
-
     }
 
     private fun calculateScore(projectKeywords: List<KeywordDTO>, updatedProjectKeywords: List<KeywordDTO>): Double {
@@ -77,4 +67,7 @@ open class RecommendationService(
         return projectKeywords.filter { keywordNamesToCompare.contains(it.name) }.sumByDouble { it.score }
     }
 
+    companion object {
+        private val LOGGER = LoggerFactory.getLogger(RecommendationService::class.java)
+    }
 }

@@ -26,7 +26,7 @@ class SessionStorage(
 ) {
 
     fun find(key: String): Session? = mongoTemplate.findOne(
-        Query((where("key").isEqualTo(key))),
+        Query(where("key").isEqualTo(key)),
         CLASS
     )
 

@@ -8,6 +8,7 @@ import com.github.proyeception.benito.parser.DocumentParser
 import com.github.proyeception.benito.service.*
 import com.github.proyeception.benito.snapshot.CategorySnapshot
 import com.github.proyeception.benito.snapshot.OrganizationSnapshot
+import com.github.proyeception.benito.storage.RecommendationStorage
 import com.github.proyeception.benito.storage.SessionStorage
 import com.github.proyeception.benito.utils.FileHelper
 import com.github.proyeception.benito.utils.HashHelper
@@ -111,10 +112,10 @@ open class ServiceModule {
     @Bean
     open fun recommendationService(
         medusaClient: MedusaClient,
-        medusaGraphClient: MedusaGraphClient
+        recommendationStorage: RecommendationStorage
     ): RecommendationService = RecommendationService(
         medusaClient = medusaClient,
-        medusaGraphClient = medusaGraphClient
+        recommendationStorage = recommendationStorage
     )
 
     @Bean
