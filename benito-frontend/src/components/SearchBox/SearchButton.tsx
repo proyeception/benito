@@ -15,6 +15,7 @@ interface SearchButtonProps extends RouteComponentProps {
   organization?: Organization;
   orderBy?: SortMethod;
   title?: string;
+  tag?: string;
   from?: string;
   to?: string;
   keyword?: string;
@@ -47,6 +48,7 @@ const mapStateToProps = (rootState: RootState) => {
     categories: rootState.common.categories,
     organizations: rootState.common.organizations,
     title: rootState.search.title,
+    tag: rootState.search.tag,
     category: rootState.search.category,
     orderBy: rootState.search.orderBy,
     from: rootState.search.from,
