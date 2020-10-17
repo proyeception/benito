@@ -2,6 +2,7 @@ package com.github.proyeception.benito.config
 
 import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.client.MedusaGraphClient
+import com.github.proyeception.benito.mongodb.MongoCustomRecommendations
 import com.github.proyeception.benito.mongodb.MongoTextSearch
 import com.github.proyeception.benito.oauth.GoogleDriveClient
 import com.github.proyeception.benito.parser.DocumentParser
@@ -53,11 +54,13 @@ open class ServiceModule {
     open fun userService(
         medusaClient: MedusaClient,
         organizationService: OrganizationService,
-        fileService: FileService
+        fileService: FileService,
+        recommendationFinder: MongoCustomRecommendations
     ): UserService = UserService(
         medusaClient = medusaClient,
         organizationService = organizationService,
-        fileService = fileService
+        fileService = fileService,
+            recommendations = recommendationFinder
     )
 
     @Bean
@@ -106,6 +109,21 @@ open class ServiceModule {
             port = storageConfig.getInt("port"),
             password = System.getenv("DB_PASSWORD") ?: storageConfig.getString("password"),
             host = storageConfig.getString("host")
+        )
+    }
+
+    @Bean
+    open fun mongoCustomRecommendations(
+            config: Config
+    ): MongoCustomRecommendations {
+        val storageConfig = config.getConfig("storage")
+
+        return MongoCustomRecommendations(
+                user = storageConfig.getString("user"),
+                databaseName = storageConfig.getString("db.name"),
+                port = storageConfig.getInt("port"),
+                password = System.getenv("DB_PASSWORD") ?: storageConfig.getString("password"),
+                host = storageConfig.getString("host")
         )
     }
 

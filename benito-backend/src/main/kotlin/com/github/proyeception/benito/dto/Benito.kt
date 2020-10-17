@@ -212,3 +212,9 @@ data class SearchProjectDTO(
     val projects: List<ProjectDTO>,
     val count: Int
 )
+
+data class CustomRecommendationDTO(
+        val userId: String,
+        val projectId: String,
+        val views: Int
+)

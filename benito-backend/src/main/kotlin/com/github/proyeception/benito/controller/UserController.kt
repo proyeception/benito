@@ -3,6 +3,7 @@ package com.github.proyeception.benito.controller
 import com.github.proyeception.benito.X_QUI_TOKEN
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.UnauthorizedException
+import com.github.proyeception.benito.mongodb.MongoCustomRecommendations
 import com.github.proyeception.benito.service.SessionService
 import com.github.proyeception.benito.service.UserService
 import org.springframework.http.MediaType
@@ -89,6 +90,16 @@ class UserController(
         @PathVariable organizationId: String,
         @RequestHeader(X_QUI_TOKEN, required = true) token: String
     ): PersonDTO = doAuthorized(authorId, token) { userService.authorLeaveOrganization(authorId, organizationId) }
+
+    @RequestMapping(
+            value = ["/benito/{user_id}"],
+            method = [RequestMethod.GET]
+    )
+    @ResponseBody
+    fun customRecommendations(
+            @PathVariable userId: String,
+            @RequestHeader(X_QUI_TOKEN, required = true) token: String
+    ): List<MedusaProjectDTO> = doAuthorized(userId, token) { userService.getCustomRecommendedProjects(userId) }
 
     @RequestMapping(
         value = ["/benito/supervisors/{supervisorId}/organizations/{organizationId}"],

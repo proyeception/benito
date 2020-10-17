@@ -3,6 +3,7 @@ package com.github.proyeception.benito.service
 import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.AmbiguousReferenceException
+import com.github.proyeception.benito.mongodb.MongoCustomRecommendations
 import org.apache.http.entity.ContentType
 import org.slf4j.LoggerFactory
 import org.springframework.web.multipart.MultipartFile
@@ -10,7 +11,8 @@ import org.springframework.web.multipart.MultipartFile
 open class UserService(
     private val medusaClient: MedusaClient,
     private val organizationService: OrganizationService,
-    private val fileService: FileService
+    private val fileService: FileService,
+    private val recommendations: MongoCustomRecommendations
 ) {
     open fun findAuthor(userId: String): PersonDTO = findUserById(userId, UserType.AUTHOR)
 
@@ -92,6 +94,14 @@ open class UserService(
         organizationId = organizationId,
         userType = UserType.SUPERVISOR
     )
+
+    fun updateProjectVisits(id: String, projectId:String){
+        return recommendations.updateView(projectId, id)
+    }
+
+    fun getCustomRecommendedProjects(id: String): List<MedusaProjectDTO> {
+        return recommendations.getCustomRecommendations(id).map { medusaClient.findProject(it.projectId) }
+    }
 
     private fun createGhostUser(ghost: CreateGhostUserDTO, userType: UserType) = mapMedusaToDomain {
         medusaClient.createGhostUser(ghost, userType)
