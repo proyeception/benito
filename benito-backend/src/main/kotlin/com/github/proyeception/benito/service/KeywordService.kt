@@ -16,8 +16,7 @@ import java.util.*
 
 public class KeywordService() {
     open fun getKeywords(project: ProjectDTO): List<KeywordDTO> {
-        //val url = "http://rochychipian.pythonanywhere.com/keywords"
-        val url = "http://localhost:8084/keywords"
+        val url = "http://rochychipian.pythonanywhere.com/keywords"
         val map: MutableMap<String, String> = HashMap()
         val content = project.title + ". " + project.description + ". " + project.extraContent
 
@@ -39,8 +38,7 @@ public class KeywordService() {
 
         val stopwords = getStopwords(cleanText)
 
-        //val url = "http://rochychipian.pythonanywhere.com/hashtags"
-        val url = "http://localhost:8084/hashtags"
+        val url = "http://rochychipian.pythonanywhere.com/hashtags"
         val map: MutableMap<String, String> = HashMap()
 
         map["text"] = cleanText
