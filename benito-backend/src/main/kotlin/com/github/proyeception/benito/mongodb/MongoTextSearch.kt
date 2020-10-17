@@ -1,5 +1,6 @@
 package com.github.proyeception.benito.mongodb
 
+import arrow.core.const
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.dto.*
@@ -167,6 +168,8 @@ open class MongoTextSearch(
 
         val keywordsNames = keywords.map { k -> k.name }
 
+        LOGGER.info("keywords to match: $keywordsNames")
+
         val projects = mutableSetOf<ProjectRecommendationDTO>()
 
         val pipeline = mutableListOf(
@@ -178,6 +181,8 @@ open class MongoTextSearch(
                 )
             )
         )
+
+        LOGGER.warn("STORED PROJECTS: ${mongoCollectionProjects.find().count()}")
 
         val aggregate: AggregateIterable<Document> = mongoCollectionProjects.aggregate(pipeline)
 
