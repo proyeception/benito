@@ -7,6 +7,11 @@ import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.FailedDependencyException
 import com.github.proyeception.benito.mongodb.MongoTextSearch
 import com.github.proyeception.benito.parser.DocumentParser
+import edu.stanford.nlp.ling.CoreAnnotations.*
+import edu.stanford.nlp.ling.CoreLabel
+import edu.stanford.nlp.pipeline.Annotation
+import edu.stanford.nlp.pipeline.StanfordCoreNLP
+import edu.stanford.nlp.util.CoreMap
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
@@ -15,6 +20,8 @@ import org.slf4j.LoggerFactory
 import org.springframework.scheduling.annotation.Async
 import org.springframework.web.multipart.MultipartFile
 import java.time.format.DateTimeFormatter
+import java.util.*
+
 
 open class ProjectService(
     private val medusaClient: MedusaClient,
@@ -227,6 +234,38 @@ open class ProjectService(
     fun recommendedProjects(id: String): List<ProjectDTO> {
         val project = findProject(id)
         return project.recommendations.map { findProject(it.projectId) }.take(4)
+    }
+
+    fun posTag(texto: String): String {
+        System.out.println("Starting Stanford NLP");
+        val props = Properties()
+        props.put("annotators", "tokenize, ssplit, pos, lemma, ner");
+
+        props.setProperty("tokenize.language", "es");
+        props.setProperty("pos.model", "edu/stanford/nlp/models/pos-tagger/spanish/spanish-distsim.tagger");
+        props.setProperty("ner.model", "edu/stanford/nlp/models/ner/spanish.ancora.distsim.s512.crf.ser.gz");
+        props.setProperty("ner.applyNumericClassifiers", "false");
+        props.setProperty("ner.useSUTime", "false");
+        val pipeline = StanfordCoreNLP(props)
+
+        val text: List<String> = listOf("Estaba tomando un té cuando me tocaron el timbre.", "Me gusta mucho el café con leche.");
+        //http://data.cervantesvirtual.com/blog/2017/07/17/libreria-corenlp-de-stanford-de-procesamiento-lenguage-natural-reconocimiento-entidades/
+        for (s : String in text) {
+            val document: Annotation = Annotation(s)
+            pipeline.annotate(document)
+
+            val sentences: List<CoreMap> = document.get(SentencesAnnotation::class.java)
+
+            for (sentence: CoreMap in sentences) {
+                for (token: CoreLabel in sentence[TokensAnnotation::class.java]) {
+                    val word = token[TextAnnotation::class.java]
+                    val pos = token[PartOfSpeechAnnotation::class.java]
+                    val ne = token[NamedEntityTagAnnotation::class.java]
+                    println("Palabra: $word pos: $pos ne:$ne");
+                }
+            }
+        }
+        return "hola";
     }
 
     companion object {

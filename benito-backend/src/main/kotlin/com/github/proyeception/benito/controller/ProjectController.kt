@@ -155,6 +155,13 @@ open class ProjectController(
         projectService.deleteDocument(projectId, documentId)
     }
 
+    @RequestMapping(value = ["/benito/testing"], method = [RequestMethod.POST])
+    @ResponseBody
+    fun posTag(
+        @RequestBody text: String,
+        @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
+    ): String { return projectService.posTag(text); }
+
     @RequestMapping(value = ["/benito/projects/{projectId}/authors"], method = [RequestMethod.POST])
     @ResponseBody
     fun addAuthors(
