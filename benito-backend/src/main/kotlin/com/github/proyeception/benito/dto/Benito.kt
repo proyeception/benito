@@ -214,7 +214,7 @@ data class SearchProjectDTO(
 )
 
 data class CustomRecommendationDTO(
-        val userId: String,
-        val projectId: String,
-        val views: Int
+    val customizationId: String,
+    val projectId: String,
+    val views: Int
 )
