@@ -216,7 +216,7 @@ open class MongoTextSearch(
                 val project = ProjectRecommendationDTO(
                     id = projectDocumentToCompare["_id"].toString(),
                     project_keywords = projectToCompareKeywords,
-                    original_recommendations = recommendations
+                    recommendations = recommendations
                 )
 
                 projects.add(project)

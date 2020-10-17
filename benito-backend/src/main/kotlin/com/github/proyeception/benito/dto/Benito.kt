@@ -194,7 +194,7 @@ data class CreatedProjectRecommendationDTO(
 data class ProjectRecommendationDTO(
     val id: String,
     val project_keywords: List<KeywordDTO>,
-    val original_recommendations: List<RecommendationDTO>
+    val recommendations: List<RecommendationDTO>
 )
 
 data class SetRecommendationDTO(

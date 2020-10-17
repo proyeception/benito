@@ -1,17 +1,13 @@
 package com.github.proyeception.benito.service
 
-import arrow.core.getOrHandle
 import com.github.proyeception.benito.client.MedusaClient
-import com.github.proyeception.benito.client.MedusaGraphClient
 import com.github.proyeception.benito.dto.*
-import com.github.proyeception.benito.exception.FailedDependencyException
-import com.github.proyeception.benito.mongodb.MongoTextSearch
+import com.github.proyeception.benito.storage.RecommendationStorage
 import org.slf4j.LoggerFactory
 
 open class RecommendationService(
     private val medusaClient: MedusaClient,
-    private val medusaGraphClient: MedusaGraphClient,
-    private val mongoTextSearch: MongoTextSearch
+    private val recommendationStorage: RecommendationStorage
 ) {
 
     open fun recalculateRecommendations(
@@ -29,21 +25,23 @@ open class RecommendationService(
 
         recommendations.forEach {
             val projectRecommendations = obtainRecommendedProjects(it.project_keywords, it.id)
-            updateProjectsRecommendedScore(it.id, it.original_recommendations, it.project_keywords, projectRecommendations)
+            updateProjectsRecommendedScore(it.id, it.recommendations, it.project_keywords, projectRecommendations)
         }
 
     }
 
-    private fun obtainRecommendedProjects(keywords: List<KeywordDTO>, projectId: String): List<ProjectRecommendationDTO> {
-        return mongoTextSearch.findRecommendedProjects(keywords).filter { it.id != projectId }
-    }
+    private fun obtainRecommendedProjects(
+        keywords: List<KeywordDTO>,
+        projectId: String
+    ): List<ProjectRecommendationDTO> = recommendationStorage
+        .findProjectRecommendationsWithKeyword(keywords).filterNot { it.id == projectId }
 
     private fun updateProjectsRecommendedScore(
-            projectId: String,
-            originalRecommendations: List<RecommendationDTO>,
-            keywords: List<KeywordDTO>,
-            recommendedProjects: List<ProjectRecommendationDTO>) {
-
+        projectId: String,
+        originalRecommendations: List<RecommendationDTO>,
+        keywords: List<KeywordDTO>,
+        recommendedProjects: List<ProjectRecommendationDTO>
+    ) {
         val recommendations: MutableList<CreateRecommendationDTO> = mutableListOf()
 
         LOGGER.info("Creating Recommendations for project: $projectId")
@@ -62,7 +60,6 @@ open class RecommendationService(
             projectId,
             originalRecommendations
         )
-
     }
 
     private fun calculateScore(projectKeywords: List<KeywordDTO>, updatedProjectKeywords: List<KeywordDTO>): Double {
