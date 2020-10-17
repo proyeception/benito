@@ -10,6 +10,7 @@ import styles from "../../../assets/jss/material-kit-react/views/landingPageSect
 import { benitoHost } from "../../../config";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import moment from "moment";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles(styles);
 
@@ -19,6 +20,8 @@ type DocumentsSectionProps = {
 
 const DocumentsSection = ({ project }: DocumentsSectionProps) => {
   const classes = useStyles();
+
+  console.error("tags " + project.tags)
 
   return (
     <div className={classes.section}>
@@ -35,6 +38,21 @@ const DocumentsSection = ({ project }: DocumentsSectionProps) => {
             </GridItem>
             <GridItem xs={12} md={6}>
               {moment(project.creationDate).add(1, 'days').format("yyyy-MM-DD").toString()}
+            </GridItem>
+            <GridItem xs={12} md={6}>
+              Tags
+            </GridItem>
+            <GridItem xs={12} md={6}>
+              
+              {project.tags.map((tag: string) => {
+                return(<Link
+                  to={`/search?tag=${tag}`}
+                  className="normalize-link"
+                  style={{color:"#c41234"}}
+                >
+                  {"#" + tag + " "} 
+                </Link>)
+              })}
             </GridItem>
           </GridContainer>
         </GridItem>
