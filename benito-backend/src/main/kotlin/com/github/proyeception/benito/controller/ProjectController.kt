@@ -160,7 +160,7 @@ open class ProjectController(
     fun posTag(
         @RequestBody text: String,
         @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
-    ): String { return projectService.posTag(text); }
+    ): String { return "holi"/*keywordService.posTag(text);*/ }
 
     @RequestMapping(value = ["/benito/projects/{projectId}/authors"], method = [RequestMethod.POST])
     @ResponseBody
@@ -201,6 +201,7 @@ open class ProjectController(
         @RequestParam(value = "items", required = true) items: String,
         @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
     ): ProjectDTO = doSupervisorAuthorized(projectId, token) { projectService.deleteSupervisors(projectId, items) }
+
 
     @RequestMapping(value = ["/benito/projects"], method = [RequestMethod.POST])
     @ResponseBody

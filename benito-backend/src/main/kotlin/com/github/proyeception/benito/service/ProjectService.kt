@@ -236,37 +236,6 @@ open class ProjectService(
         return project.recommendations.map { findProject(it.projectId) }.take(4)
     }
 
-    fun posTag(texto: String): String {
-        System.out.println("Starting Stanford NLP");
-        val props = Properties()
-        props.put("annotators", "tokenize, ssplit, pos, lemma, ner");
-
-        props.setProperty("tokenize.language", "es");
-        props.setProperty("pos.model", "edu/stanford/nlp/models/pos-tagger/spanish/spanish-distsim.tagger");
-        props.setProperty("ner.model", "edu/stanford/nlp/models/ner/spanish.ancora.distsim.s512.crf.ser.gz");
-        props.setProperty("ner.applyNumericClassifiers", "false");
-        props.setProperty("ner.useSUTime", "false");
-        val pipeline = StanfordCoreNLP(props)
-
-        val text: List<String> = listOf("Estaba tomando un té cuando me tocaron el timbre.", "Me gusta mucho el café con leche.");
-        //http://data.cervantesvirtual.com/blog/2017/07/17/libreria-corenlp-de-stanford-de-procesamiento-lenguage-natural-reconocimiento-entidades/
-        for (s : String in text) {
-            val document: Annotation = Annotation(s)
-            pipeline.annotate(document)
-
-            val sentences: List<CoreMap> = document.get(SentencesAnnotation::class.java)
-
-            for (sentence: CoreMap in sentences) {
-                for (token: CoreLabel in sentence[TokensAnnotation::class.java]) {
-                    val word = token[TextAnnotation::class.java]
-                    val pos = token[PartOfSpeechAnnotation::class.java]
-                    val ne = token[NamedEntityTagAnnotation::class.java]
-                    println("Palabra: $word pos: $pos ne:$ne");
-                }
-            }
-        }
-        return "hola";
-    }
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(ProjectService::class.java)
