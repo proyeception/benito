@@ -182,7 +182,10 @@ open class MongoTextSearch(
             )
         )
 
-        LOGGER.warn("STORED PROJECTS: ${mongoCollectionProjects.find().count()}")
+        mongoClient.listDatabaseNames().cursor().forEach { LOGGER.info("AVAILABLE DATABASES: $it") }
+        mongoClient.getDatabase(databaseName).listCollectionNames().cursor().forEach { LOGGER.info("AVAILABLE COLLECTIONS: $it") }
+
+        LOGGER.warn("STORED PROJECTS: ${mongoCollectionProjects.find().count()} IN $databaseName WITH USER: $user")
 
         val aggregate: AggregateIterable<Document> = mongoCollectionProjects.aggregate(pipeline)
 
