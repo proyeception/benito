@@ -12,7 +12,8 @@ open class UserService(
     private val medusaClient: MedusaClient,
     private val organizationService: OrganizationService,
     private val fileService: FileService,
-    private val recommendations: MongoCustomRecommendations
+    private val recommendations: MongoCustomRecommendations,
+    private val projectService: ProjectService
 ) {
     open fun findAuthor(userId: String): PersonDTO = findUserById(userId, UserType.AUTHOR)
 
@@ -99,9 +100,10 @@ open class UserService(
         return recommendations.updateView(projectId, id)
     }
 
-    fun getCustomRecommendedProjects(id: String): List<MedusaProjectDTO> {
-        return recommendations.getCustomRecommendations(id).map { medusaClient.findProject(it.projectId) }
-    }
+    fun getCustomRecommendedProjects(token: String): List<ProjectDTO> = recommendations
+        .getCustomRecommendations(token)
+        .map { medusaClient.findProject(it.projectId) }
+        .flatMap { projectService.recommendedProjects(it.id) }
 
     private fun createGhostUser(ghost: CreateGhostUserDTO, userType: UserType) = mapMedusaToDomain {
         medusaClient.createGhostUser(ghost, userType)

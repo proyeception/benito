@@ -1,5 +1,6 @@
 package com.github.proyeception.benito.controller
 
+import com.github.proyeception.benito.X_CUSTOMIZATION_TOKEN
 import com.github.proyeception.benito.X_QUI_TOKEN
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.UnauthorizedException
@@ -92,14 +93,13 @@ class UserController(
     ): PersonDTO = doAuthorized(authorId, token) { userService.authorLeaveOrganization(authorId, organizationId) }
 
     @RequestMapping(
-            value = ["/benito/{user_id}"],
-            method = [RequestMethod.GET]
+        value = ["/benito/users/recommendations"],
+        method = [RequestMethod.GET]
     )
     @ResponseBody
     fun customRecommendations(
-            @PathVariable userId: String,
-            @RequestHeader(X_QUI_TOKEN, required = true) token: String
-    ): List<MedusaProjectDTO> = doAuthorized(userId, token) { userService.getCustomRecommendedProjects(userId) }
+        @RequestHeader(X_CUSTOMIZATION_TOKEN, required = true) token: String
+    ): List<ProjectDTO> = userService.getCustomRecommendedProjects(token)
 
     @RequestMapping(
         value = ["/benito/supervisors/{supervisorId}/organizations/{organizationId}"],

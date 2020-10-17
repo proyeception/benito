@@ -21,11 +21,13 @@ class UserServiceTest : Spec() {
         val organizationMock: OrganizationService = getMock()
         val fileServiceMock: FileService = getMock()
         val recommendations: MongoCustomRecommendations = getMock()
+        val projectService: ProjectService = getMock()
         val userService = UserService(
             medusaClient = medusaMock,
             organizationService = organizationMock,
             fileService = fileServiceMock,
-                recommendations = recommendations
+            recommendations = recommendations,
+            projectService = projectService
         )
 
         "findAuthor" should {

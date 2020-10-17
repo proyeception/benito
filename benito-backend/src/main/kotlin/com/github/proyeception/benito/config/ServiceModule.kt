@@ -55,12 +55,14 @@ open class ServiceModule {
         medusaClient: MedusaClient,
         organizationService: OrganizationService,
         fileService: FileService,
-        recommendationFinder: MongoCustomRecommendations
+        recommendationFinder: MongoCustomRecommendations,
+        projectService: ProjectService
     ): UserService = UserService(
         medusaClient = medusaClient,
         organizationService = organizationService,
         fileService = fileService,
-            recommendations = recommendationFinder
+        recommendations = recommendationFinder,
+        projectService = projectService
     )
 
     @Bean

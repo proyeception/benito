@@ -10,44 +10,46 @@ import org.bson.types.ObjectId
 
 
 open class MongoCustomRecommendations(
-        private val user: String,
-        private val databaseName: String,
-        private val password: String,
-        private val host: String,
-        private val port: Int
-){
+    private val user: String,
+    private val databaseName: String,
+    private val password: String,
+    private val host: String,
+    private val port: Int
+) {
     private val viewedProjectsByUser: String = "user_visits"
 
     private fun startConnection(): MongoClient {
         val uri = MongoClientURI(
-                "mongodb+srv://$user:$password@$host/$databaseName?retryWrites=true&w=majority"
+            "mongodb+srv://$user:$password@$host/$databaseName?retryWrites=true&w=majority"
         )
         return MongoClient(uri)
     }
 
-    open fun updateView(projectID: String, userID: String){
+    open fun updateView(projectID: String, userID: String) {
         val mongoClient = startConnection()
         val mongoCollection = mongoClient.getDatabase(databaseName).getCollection(viewedProjectsByUser)
         mongoCollection.updateOne(
-                Filters.and(
-                        Filters.eq("user_id", ObjectId(userID)),
-                        Filters.eq("project_id", ObjectId(projectID))
-                ),
-                Updates.inc("views", 1),
-                UpdateOptions().upsert(true)
+            Filters.and(
+                Filters.eq("user_id", ObjectId(userID)),
+                Filters.eq("project_id", ObjectId(projectID))
+            ),
+            Updates.inc("views", 1),
+            UpdateOptions().upsert(true)
         )
     }
 
-    open fun getCustomRecommendations(userID: String): MutableList<CustomRecommendationDTO> {
-        val mongoClient = startConnection()
-        val mongoCollection = mongoClient.getDatabase(databaseName).getCollection(viewedProjectsByUser)
-        val refs = mutableListOf<CustomRecommendationDTO>()
-        mongoCollection.find(Filters.eq("user_id", ObjectId(userID))).
-        forEach { refs.add(CustomRecommendationDTO(it["user_id"].toString(), it["project_id"].toString(), it.get("views", Int::class.java))) }
-
-        refs.sortByDescending { it.views }
-        refs.take(10)
-        return refs
-    }
+    open fun getCustomRecommendations(token: String): List<CustomRecommendationDTO> = startConnection()
+        .getDatabase(databaseName).getCollection(viewedProjectsByUser)
+        .find(Filters.eq("customization_id", token))
+        .map {
+            CustomRecommendationDTO(
+                customizationId = it["customization_id"].toString(),
+                projectId = it["project_id"].toString(),
+                views = it.get("views", Int::class.java)
+            )
+        }
+        .toList()
+        .sortedBy { it.views }
+        .take(10)
 
 }
