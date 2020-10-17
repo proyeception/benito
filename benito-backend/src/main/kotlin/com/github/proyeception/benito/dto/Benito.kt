@@ -46,7 +46,7 @@ data class ProjectDTO(
         pictureUrl = medusa.picture?.url,
         authors = medusa.authors.map { PersonRefDTO(it) },
         supervisors = medusa.supervisors.map { PersonRefDTO(it) },
-        tags = emptyList(),
+        tags = medusa.tags.map{ it.tag_name },
         documentation = medusa.documentation,
         organization = OrganizationRefDTO(medusa.organization) ,
         recommendations = medusa.recommendations.map { RecommendationDTO(it) },

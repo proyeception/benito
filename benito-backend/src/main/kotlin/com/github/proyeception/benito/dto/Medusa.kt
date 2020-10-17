@@ -17,7 +17,7 @@ data class MedusaProjectDTO(
     val documentation: List<DocumentationDTO>,
     val category: CategoryDTO,
     val organization: MedusaOrganizationDTO,
-    val tags: List<MedusaTagDTO>,
+    val tags: List<TagDTO>,
     val recommendations: List<MedusaRecommendationDTO>,
     val project_keywords: List<KeywordDTO>
 )
@@ -106,11 +106,6 @@ data class MedusaOrganizationDTO(
     val icon: MedusaFileDTO,
     val supervisors: List<MedusaPersonRefDTO> = emptyList(),
     val authors: List<MedusaPersonRefDTO> = emptyList()
-)
-
-data class MedusaTagDTO(
-    val tagName: String,
-    val displayName: String
 )
 
 data class SocialDTO(

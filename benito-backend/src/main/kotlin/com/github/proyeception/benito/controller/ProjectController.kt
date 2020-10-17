@@ -34,7 +34,8 @@ open class ProjectController(
         @RequestParam(required = false) authorName: String?,
         @RequestParam(required = false, name = "organization") organizationId: String?,
         @RequestParam(required = false) organizationName: String?,
-        @RequestParam(required = false) page: Int?
+        @RequestParam(required = false) page: Int?,
+        @RequestParam(required = false) tag: String?
     ): SearchProjectDTO = projectService.findProjects(
         orderBy = orderBy,
         from = from,
@@ -46,7 +47,8 @@ open class ProjectController(
         authorName = authorName,
         authorId = authorId,
         organizationId = organizationId,
-        organizationName = organizationName
+        organizationName = organizationName,
+        tag = tag
     )
 
     @RequestMapping("/benito/projects/featured", method = [RequestMethod.GET])
