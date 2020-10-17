@@ -7,6 +7,7 @@ import {
 } from "../../types";
 
 export const UPDATE_TITLE = "UPDATE_TITLE";
+export const UPDATE_TAG = "UPDATE_TAG";
 export const UPDATE_CATEGORY = "UPDATE_CATEGORY";
 export const UPDATE_FROM_DATE = "UPDATE_FROM_DATE";
 export const UPDATE_TO_DATE = "UPDATE_TO_DATE";
@@ -21,6 +22,11 @@ export const UPDATE_FETCH_STATUS = "UPDATE_FETCH_STATUS";
 
 interface UpdateTitleAction {
   type: typeof UPDATE_TITLE;
+  payload: string;
+}
+
+interface UpdateTagAction {
+  type: typeof UPDATE_TAG;
   payload: string;
 }
 
@@ -85,6 +91,7 @@ export type Fetch = typeof NOTHING | typeof REFRESH;
 
 export type SearchAction =
   | UpdateTitleAction
+  | UpdateTagAction
   | UpdateCategoryAction
   | UpdateProjects
   | UpdateFromDateAction
@@ -99,6 +106,7 @@ export type SearchAction =
 
 export type SearchState = {
   title?: string;
+  tag?: string;
   category?: Category;
   from?: string;
   to?: string;

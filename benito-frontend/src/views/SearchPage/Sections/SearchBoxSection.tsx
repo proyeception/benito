@@ -19,6 +19,7 @@ import OrganizationSelector from "../../../components/SearchBox/OrganizationSele
 import SearchButton from "../../../components/SearchBox/SearchButton";
 import Sort from "../../../components/SearchBox/Sort";
 import KeywordInput from "../../../components/SearchBox/KeywordInput";
+import TagInput from "../../../components/SearchBox/TagInput";
 
 
 const useStyles = makeStyles(styles);
@@ -49,6 +50,9 @@ const SearchBoxSection = () => {
         </GridItem>
         <GridItem>
           <OrganizationSelector />
+        </GridItem>
+        <GridItem>
+          <TagInput />
         </GridItem>
         <GridItem>
           <SearchButton

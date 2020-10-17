@@ -13,6 +13,7 @@ import {
   UPDATE_SEARCH_PARAMS,
   NOTHING,
   UPDATE_FETCH_STATUS,
+  UPDATE_TAG,
 } from "../../store/search/types";
 import { SortMethod } from "../../types";
 import moment from "moment";
@@ -32,6 +33,11 @@ function searchReducer(
         ...state,
         title: action.payload,
       };
+    case UPDATE_TAG:
+    return {
+      ...state,
+      tag: action.payload,
+    };
     case UPDATE_CATEGORY:
       return {
         ...state,
