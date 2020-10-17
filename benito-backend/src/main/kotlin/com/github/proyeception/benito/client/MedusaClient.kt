@@ -201,6 +201,13 @@ open class MedusaClient(
         id = projectId
     )
 
+    fun modifyProjectTags(projectId: String, tags: MedusaSetTagsDTO): MedusaProjectDTO = update(
+        collection = PROJECTS,
+        ref = MEDUSA_PROJECT_REF,
+        dto = tags,
+        id = projectId
+    )
+
     fun leaveOrganization(userId: String, organizationId: String, userType: UserType): MedusaPersonDTO = delete(
         collection = "${userType.collection}/$userId/organizations",
         id = organizationId,

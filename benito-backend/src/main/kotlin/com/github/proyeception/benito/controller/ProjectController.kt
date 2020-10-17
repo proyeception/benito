@@ -170,6 +170,14 @@ open class ProjectController(
         @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
     ): ProjectDTO = doSupervisorAuthorized(projectId, token) { projectService.addAuthors(projectId, users) }
 
+    @RequestMapping(value = ["/benito/projects/{projectId}/tags"], method = [RequestMethod.POST])
+    @ResponseBody
+    fun setTags(
+        @PathVariable projectId: String,
+        @RequestBody tags: SetTagsDTO,
+        @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
+    ): ProjectDTO = doWithMixedAuthorization(projectId, token) { projectService.setTags(projectId, tags) }
+
     @RequestMapping(value = ["/benito/projects/{projectId}/users"], method = [RequestMethod.PUT])
     @ResponseBody
     fun setUsers(

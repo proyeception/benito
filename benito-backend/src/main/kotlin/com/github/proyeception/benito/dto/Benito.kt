@@ -132,6 +132,19 @@ data class AddUsersDTO(
     val items: List<String>
 )
 
+data class SetTagsDTO(
+    val tags: List<String>
+)
+
+data class MedusaSetTagsDTO(
+    val tags: List<TagDTO>
+)
+
+data class TagDTO(
+    val tag_name: String,
+    val display_name: String
+)
+
 data class SetUsersDTO(
     val authors: List<String>,
     val supervisors: List<String>

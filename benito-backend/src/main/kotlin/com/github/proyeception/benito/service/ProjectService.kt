@@ -7,11 +7,6 @@ import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.FailedDependencyException
 import com.github.proyeception.benito.mongodb.MongoTextSearch
 import com.github.proyeception.benito.parser.DocumentParser
-import edu.stanford.nlp.ling.CoreAnnotations.*
-import edu.stanford.nlp.ling.CoreLabel
-import edu.stanford.nlp.pipeline.Annotation
-import edu.stanford.nlp.pipeline.StanfordCoreNLP
-import edu.stanford.nlp.util.CoreMap
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
@@ -20,7 +15,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.scheduling.annotation.Async
 import org.springframework.web.multipart.MultipartFile
 import java.time.format.DateTimeFormatter
-import java.util.*
 
 
 open class ProjectService(
@@ -234,6 +228,13 @@ open class ProjectService(
     fun recommendedProjects(id: String): List<ProjectDTO> {
         val project = findProject(id)
         return project.recommendations.map { findProject(it.projectId) }.take(4)
+    }
+
+    fun setTags(projectId: String, tags: SetTagsDTO): ProjectDTO = mappingFromMedusa {
+        medusaClient.modifyProjectTags(
+            projectId = projectId,
+            tags = MedusaSetTagsDTO(tags.tags.map { TagDTO(it, it) })
+        )
     }
 
 
