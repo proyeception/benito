@@ -204,6 +204,10 @@ open class UserService(
         )
     }
 
+    fun viewProject(userId: String, projectId: String) {
+        medusaClient.addView(userId, projectId)
+    }
+
     companion object {
         private val LOGGER = LoggerFactory.getLogger(UserService::class.java)
     }

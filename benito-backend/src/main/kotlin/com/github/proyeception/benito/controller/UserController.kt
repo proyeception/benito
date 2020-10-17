@@ -39,6 +39,13 @@ class UserController(
         @RequestBody ghost: CreateGhostUserDTO
     ): PersonDTO = doSupervisorAuthorized(token) { userService.createGhostSupervisor(ghost) }
 
+    @RequestMapping(value = ["/benito/author/{userId}/viewedProjects/{projectId}"], method = [RequestMethod.POST])
+    @ResponseBody
+    fun createGhostSupervisor(
+            @PathVariable userId: String,
+            @PathVariable projectId: String
+    ) { userService.viewProject(userId, projectId)}
+
     @RequestMapping(
         value = ["/benito/authors/{id}/picture"],
         method = [RequestMethod.POST], // should be a PUT, but it seems PUT doesn't work with multipart

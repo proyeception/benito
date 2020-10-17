@@ -181,6 +181,10 @@ data class CreateRecommendationDTO(
     val score: Double
 )
 
+data class CrateViewDTO (
+    val projectId: String
+)
+
 data class CreatedRecommendationDTO(
     val id: String,
     val score: Double,
