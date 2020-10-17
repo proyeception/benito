@@ -104,14 +104,6 @@ open class ProjectController(
     @ResponseBody
     private fun findProject(@PathVariable id: String): ProjectDTO = projectService.findProject(id)
 
-    @RequestMapping("/benito/keywords", method = [RequestMethod.GET])
-    @ResponseBody
-    private fun findTextKeywords(@RequestBody content: String): List<KeywordDTO> {
-        val a = content.replace("\"text\":", "").replace("\"", "")
-        println(a)
-        return keywordService.getKeywordsFromText(a)
-    }
-
     @RequestMapping(
         value = ["/benito/projects/{projectId}/documents"],
         method = [RequestMethod.POST],
@@ -154,13 +146,6 @@ open class ProjectController(
     ): ProjectDTO = doWithMixedAuthorization(projectId = projectId, token = token) {
         projectService.deleteDocument(projectId, documentId)
     }
-
-    @RequestMapping(value = ["/benito/testing"], method = [RequestMethod.POST])
-    @ResponseBody
-    fun posTag(
-        @RequestBody text: String,
-        @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
-    ): String { return "holi"/*keywordService.posTag(text);*/ }
 
     @RequestMapping(value = ["/benito/projects/{projectId}/authors"], method = [RequestMethod.POST])
     @ResponseBody

@@ -16,43 +16,41 @@ import java.util.*
 
 public class KeywordService() {
     open fun getKeywords(project: ProjectDTO): List<KeywordDTO> {
-        val url = "http://rochychipian.pythonanywhere.com/keywords"
+        //val url = "http://rochychipian.pythonanywhere.com/keywords"
+        val url = "http://localhost:8084/keywords"
         val map: MutableMap<String, String> = HashMap()
         val content = project.title + ". " + project.description + ". " + project.extraContent
 
+        val stopwords = getStopwords(content)
+
         map["text"] = content
+        map["stopwords"] = stopwords.dropLast(1).drop(1).toString()
 
         val restService = RestService(RestTemplateBuilder());
         val result = restService.postRequest(url, map)
 
-        println(content)
         println(result)
 
         return result
     }
 
     open fun getKeywordsFromPlainText(text: String): List<String> {
-        val stopwords = getStopwords(text)
+        val cleanText = text.replace("\"text\":", "").replace("\"", "")
 
-        //val url = "http://rochychipian.pythonanywhere.com/keywords"
-        val url = "http://localhost:8084"
+        val stopwords = getStopwords(cleanText)
+
+        //val url = "http://rochychipian.pythonanywhere.com/hashtags"
+        val url = "http://localhost:8084/hashtags"
         val map: MutableMap<String, String> = HashMap()
 
-        map["text"] = text
-        map["stopwords"] = stopwords.toString()
-
-        println(map)
+        map["text"] = cleanText
+        map["stopwords"] = stopwords.dropLast(1).drop(1).toString()
 
         val restService = RestService(RestTemplateBuilder());
-        val result = restService.postRequest(url, map)
+        val result = restService.postRequestHashtags(url, map)
 
-        println(result)
-
-        return listOf("hola");
+        return result;
     }
-
-
-
 
     fun getStopwords(text: String): List<String> {
         System.out.println("Starting Stanford NLP");
@@ -85,8 +83,9 @@ public class KeywordService() {
 
     private fun getStopwords(stanfordResult: MutableMap<String, String>): List<String> {
         val stopwords: MutableList<String> = mutableListOf()
+
         for(word in stanfordResult){
-            if(isStopword(word.value)){
+            if(isStopword(word.value) && (word.value != ",")){
                 stopwords.add(word.key)
             }
         }
@@ -95,22 +94,6 @@ public class KeywordService() {
 
     private fun isStopword(value: String): Boolean {
         return STOPWORDS_CLASSES.any { value.startsWith(it)  }
-    }
-
-
-    //TODO delete
-    open fun getKeywordsFromText(text: String): List<KeywordDTO> { //delete. para la demo.
-        val url = "http://rochychipian.pythonanywhere.com/keywords"
-        val map: MutableMap<String, String> = HashMap()
-
-        map["text"] = text
-
-        val restService = RestService(RestTemplateBuilder());
-        val result = restService.postRequest(url, map)
-
-        println(result)
-
-        return result
     }
 
     companion object {

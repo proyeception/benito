@@ -14,5 +14,5 @@ class TagsController (
 ) {
     @RequestMapping("/benito/tags", method = [RequestMethod.POST])
     @ResponseBody
-    fun featuredProjects(@RequestBody content: String): List<String> = keywordService.getKeywordsFromPlainText(content);
+    fun getTags(@RequestBody content: String): List<String> = keywordService.getKeywordsFromPlainText(content);
 }
