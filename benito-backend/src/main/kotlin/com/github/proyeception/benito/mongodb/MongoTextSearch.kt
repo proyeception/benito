@@ -170,15 +170,13 @@ open class MongoTextSearch(
         val projects = mutableSetOf<ProjectRecommendationDTO>()
 
         val pipeline = mutableListOf(
-                Aggregates.lookup("keywords", "project_keywords", "_id", "keywords"),
-                Aggregates.lookup("recommendations", "recommendations", "_id", "recommendations"),
-                Aggregates.match(
-                    Filters.and(
-                        Filters.elemMatch("keywords",
-                                Filters.`in`("name", keywordsNames)
-                        )
-                    )
+            Aggregates.lookup("keywords", "project_keywords", "_id", "keywords"),
+            Aggregates.lookup("recommendations", "recommendations", "_id", "recommendations"),
+            Aggregates.match(
+                Filters.elemMatch("keywords",
+                        Filters.`in`("name", keywordsNames)
                 )
+            )
         )
 
         val aggregate: AggregateIterable<Document> = mongoCollectionProjects.aggregate(pipeline)
