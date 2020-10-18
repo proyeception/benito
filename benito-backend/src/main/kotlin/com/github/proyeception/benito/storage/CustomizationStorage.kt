@@ -1,27 +1,65 @@
 package com.github.proyeception.benito.storage
 
+import org.springframework.data.domain.Sort
 import org.springframework.data.mongodb.core.MongoTemplate
+import org.springframework.data.mongodb.core.aggregation.Aggregation
 import org.springframework.data.mongodb.core.query.Criteria.where
 import org.springframework.data.mongodb.core.query.Query
 import org.springframework.data.mongodb.core.query.Update
 import org.springframework.data.mongodb.core.query.isEqualTo
 
 data class Tracking(
-    val userId: String?,
-    val token: String,
-    val projects: List<String>
+    val customizationToken: String,
+    val userId: String? = null,
+    val projectId: String
 )
 
-class CustomizationStorage(
+data class Customization(
+    val projectId: String,
+    val views: Int
+)
+
+open class CustomizationStorage(
     private val mongoTemplate: MongoTemplate
 ) {
-    fun update(token: String, projects: List<String>) {
-        mongoTemplate.updateFirst(
-            Query.query(where("token").isEqualTo(token)),
-            Update.update("projects", projects),
-            Any::class.java
+    open fun track(customizationToken: String, projectId: String) {
+        mongoTemplate.save(
+            Tracking(
+                customizationToken = customizationToken,
+                projectId = projectId
+            )
         )
     }
 
-//    fun save(t: Tracking)
+    open fun customRecommendations(customizationToken: String): List<Customization> {
+        val tracking = mongoTemplate
+            .aggregate(
+                Aggregation.newAggregation(
+                    Aggregation.match(where("customizationToken").isEqualTo(customizationToken)),
+                    Aggregation.group("projectId").count().`as`("views"),
+                    Aggregation.sort(Sort.Direction.DESC, "views"),
+                    Aggregation.limit(10)
+                ),
+                "tracking",
+                Map::class.java
+            ).mappedResults
+
+        return tracking.map {
+            val views = it["views"] as Int
+            val projectId = it["_id"] as String
+
+            Customization(
+                projectId = projectId,
+                views = views
+            )
+        }
+    }
+
+    open fun setUserId(customizationToken: String, userId: String) {
+        mongoTemplate.updateMulti(
+            Query(where("customizationToken").isEqualTo(customizationToken)),
+            Update.update("userId", userId),
+            Any::class.java
+        )
+    }
 }

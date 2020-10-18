@@ -7,7 +7,7 @@ import com.github.proyeception.benito.exception.AmbiguousReferenceException
 import com.github.proyeception.benito.mock.eq
 import com.github.proyeception.benito.mock.getMock
 import com.github.proyeception.benito.mock.on
-import com.github.proyeception.benito.mongodb.MongoCustomRecommendations
+import com.github.proyeception.benito.storage.CustomizationStorage
 import com.github.proyeception.benito.utils.HashHelper
 import com.nhaarman.mockito_kotlin.any
 import io.kotlintest.matchers.shouldBe
@@ -21,14 +21,14 @@ class UserServiceTest : Spec() {
         val medusaMock: MedusaClient = getMock()
         val organizationMock: OrganizationService = getMock()
         val fileServiceMock: FileService = getMock()
-        val recommendations: MongoCustomRecommendations = getMock()
+        val customizationStorage: CustomizationStorage = getMock()
         val hashUtils: HashHelper = getMock()
         val projectService: ProjectService = getMock()
         val userService = UserService(
             medusaClient = medusaMock,
             organizationService = organizationMock,
             fileService = fileServiceMock,
-            recommendations = recommendations,
+            customizationStorage = customizationStorage,
             projectService = projectService,
             hashUtils = hashUtils
         )

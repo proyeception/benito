@@ -354,6 +354,12 @@
             <artifactId>arrow-core</artifactId>
             <version>0.10.5</version>
         </dependency>
+
+        <dependency>
+            <groupId>io.arrow-kt</groupId>
+            <artifactId>arrow-fx</artifactId>
+            <version>0.10.5</version>
+        </dependency>
         <!-- Arrow -->
 
         <!-- Typesafe Config -->

@@ -1,10 +1,15 @@
 package com.github.proyeception.benito.service
 
+import arrow.fx.Promise
+import arrow.fx.extensions.io.concurrent.Promise
 import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.AmbiguousReferenceException
-import com.github.proyeception.benito.mongodb.MongoCustomRecommendations
+import com.github.proyeception.benito.storage.CustomizationStorage
 import com.github.proyeception.benito.utils.HashHelper
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import org.apache.http.entity.ContentType
 import org.slf4j.LoggerFactory
 import org.springframework.web.multipart.MultipartFile
@@ -15,7 +20,7 @@ open class UserService(
     private val medusaClient: MedusaClient,
     private val organizationService: OrganizationService,
     private val fileService: FileService,
-    private val recommendations: MongoCustomRecommendations,
+    private val customizationStorage: CustomizationStorage,
     private val projectService: ProjectService,
     private val hashUtils: HashHelper
 ) {
@@ -100,16 +105,17 @@ open class UserService(
         userType = UserType.SUPERVISOR
     )
 
-    fun updateProjectVisits(id: String, projectId: String) {
-        return recommendations.updateView(projectId, id)
-    }
+    fun getCustomRecommendedProjects(token: String): List<ProjectDTO> {
+        val tracking = customizationStorage.customRecommendations(token)
 
-    fun getCustomRecommendedProjects(token: String): List<ProjectDTO> = recommendations
-        .getCustomRecommendations(token)
-        .map { medusaClient.findProject(it.projectId) }
-        .flatMap { projectService.recommendedProjects(it.id) }
-        .distinct()
-        .take(10)
+        return runBlocking {
+            tracking.flatMap {
+                withContext(Dispatchers.Default) { projectService.recommendedProjects(it.projectId) }
+            }
+        }
+            .distinct()
+            .take(10)
+    }
 
     private fun createGhostUser(ghost: CreateGhostUserDTO, userType: UserType) = mapMedusaToDomain {
         medusaClient.createGhostUser(ghost, userType)
@@ -224,11 +230,11 @@ open class UserService(
 
     fun createCustomizationId(): String = hashUtils.sha256(LocalDateTime.now().format(dtf))
 
-    fun trackRecommendation(projectId: String, token: String) = recommendations
-        .updateView(projectId = projectId, customizationId = token)
+    fun trackRecommendation(projectId: String, token: String) = customizationStorage
+        .track(projectId = projectId, customizationToken = token)
 
-    fun setCustomizationUserId(customizationToken: String, userId: String) = recommendations
-        .updateUserId(customizationToken, userId)
+    fun setCustomizationUserId(customizationToken: String, userId: String) = customizationStorage
+        .setUserId(customizationToken, userId)
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(UserService::class.java)
