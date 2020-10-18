@@ -318,7 +318,7 @@ open class MedusaClient(
         // buscar lista de views del autor
         val foundUser = findUser(userId, UserType.AUTHOR)
         // crear nueva view y guardarla
-        val newView = create("views", CrateViewDTO(projectId), MEDUSA_RECOMMENDATION_REF).id
+        val newView = create("project-views", CrateViewDTO(projectId), MEDUSA_VIEW_REF).id
         // hacer un update con los ids de todas las views del autor
         val newViewsList = mutableListOf(newView)
         newViewsList.addAll(foundUser.views.map {it.id })

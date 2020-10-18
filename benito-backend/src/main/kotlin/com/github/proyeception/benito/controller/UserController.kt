@@ -41,7 +41,7 @@ class UserController(
 
     @RequestMapping(value = ["/benito/author/{userId}/viewedProjects/{projectId}"], method = [RequestMethod.POST])
     @ResponseBody
-    fun createGhostSupervisor(
+    fun viewProject(
             @PathVariable userId: String,
             @PathVariable projectId: String
     ) { userService.viewProject(userId, projectId)}
