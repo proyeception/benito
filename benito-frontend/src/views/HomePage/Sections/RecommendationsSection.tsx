@@ -12,16 +12,12 @@ import { cardTitle, container } from "../../../assets/jss/material-kit-react";
 import Button from "../../../components/CustomButtons/Button";
 import { Link, Redirect } from "react-router-dom";
 import featuredStyle from "../../../assets/jss/material-kit-react/views/homeSections/featuredSection";
-import { Height } from "@material-ui/icons";
 import classNames from "classnames";
 import pictureNotFound from "../../../assets/img/proyectate/picture.svg";
-import ProjectLink from "../../../components/Links/ProjectLink";
 import { RootState } from "../../../reducers";
 import { SessionState } from "../../../store/session/types";
 import { connect } from "react-redux";
 import withCustomizedRecommendations from "../../../hooks/withCustomizedRecommendations";
-
-type FeaturedSectionProps = {};
 
 const responsive = {
   largeDesktop: {

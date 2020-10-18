@@ -8,7 +8,6 @@ import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.mock.eq
 import com.github.proyeception.benito.mock.getMock
 import com.github.proyeception.benito.mock.on
-import com.github.proyeception.benito.mongodb.MongoTextSearch
 import com.github.proyeception.benito.parser.DocumentParser
 import com.nhaarman.mockito_kotlin.any
 import io.kotlintest.matchers.shouldBe
@@ -23,7 +22,6 @@ class ProjectServiceTest : Spec() {
         val documentParserMock: DocumentParser = getMock()
         val documentService: DocumentService = getMock()
         val fileServiceMock: FileService = getMock()
-        val mongoMock: MongoTextSearch = getMock()
         val medusaGraphClientMock: MedusaGraphClient = getMock()
         val keywordService: KeywordService = KeywordService()
         val recommendationService: RecommendationService = getMock()
@@ -32,7 +30,6 @@ class ProjectServiceTest : Spec() {
             documentParser = documentParserMock,
             documentService = documentService,
             fileService = fileServiceMock,
-            mongoTextSearch = mongoMock,
             medusaGraphClient = medusaGraphClientMock,
             keywordService = keywordService,
             recommendationService = recommendationService

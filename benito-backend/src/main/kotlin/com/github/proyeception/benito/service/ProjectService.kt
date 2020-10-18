@@ -5,7 +5,6 @@ import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.client.MedusaGraphClient
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.FailedDependencyException
-import com.github.proyeception.benito.mongodb.MongoTextSearch
 import com.github.proyeception.benito.parser.DocumentParser
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -16,14 +15,12 @@ import org.springframework.scheduling.annotation.Async
 import org.springframework.web.multipart.MultipartFile
 import java.time.format.DateTimeFormatter
 
-
 open class ProjectService(
     private val medusaClient: MedusaClient,
     private val medusaGraphClient: MedusaGraphClient,
     private val documentService: DocumentService,
     private val documentParser: DocumentParser,
     private val fileService: FileService,
-    private val mongoTextSearch: MongoTextSearch,
     private val keywordService: KeywordService,
     private val recommendationService: RecommendationService
 ) {

@@ -2,8 +2,6 @@ package com.github.proyeception.benito.config
 
 import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.client.MedusaGraphClient
-import com.github.proyeception.benito.mongodb.MongoCustomRecommendations
-import com.github.proyeception.benito.mongodb.MongoTextSearch
 import com.github.proyeception.benito.oauth.GoogleDriveClient
 import com.github.proyeception.benito.parser.DocumentParser
 import com.github.proyeception.benito.service.*
@@ -14,7 +12,6 @@ import com.github.proyeception.benito.storage.RecommendationStorage
 import com.github.proyeception.benito.storage.SessionStorage
 import com.github.proyeception.benito.utils.FileHelper
 import com.github.proyeception.benito.utils.HashHelper
-import com.typesafe.config.Config
 import org.springframework.context.annotation.Bean
 
 open class ServiceModule {
@@ -24,7 +21,6 @@ open class ServiceModule {
         documentParser: DocumentParser,
         documentService: DocumentService,
         fileService: FileService,
-        mongoTextSearch: MongoTextSearch,
         medusaGraphClient: MedusaGraphClient,
         keywordService: KeywordService, //sacar
         recommendationService: RecommendationService
@@ -33,7 +29,6 @@ open class ServiceModule {
         documentParser = documentParser,
         documentService = documentService,
         fileService = fileService,
-        mongoTextSearch = mongoTextSearch,
         medusaGraphClient = medusaGraphClient,
         keywordService = keywordService, //sacar
         recommendationService = recommendationService
@@ -101,36 +96,6 @@ open class ServiceModule {
         medusaClient = medusaClient,
         organizationSnapshot = organizationSnapshot
     )
-
-    @Bean
-    open fun mongoTextSearch(
-        config: Config
-    ): MongoTextSearch {
-        val storageConfig = config.getConfig("storage")
-
-        return MongoTextSearch(
-            user = storageConfig.getString("user"),
-            databaseName = storageConfig.getString("db.name"),
-            port = storageConfig.getInt("port"),
-            password = System.getenv("DB_PASSWORD") ?: storageConfig.getString("password"),
-            host = storageConfig.getString("host")
-        )
-    }
-
-    @Bean
-    open fun mongoCustomRecommendations(
-            config: Config
-    ): MongoCustomRecommendations {
-        val storageConfig = config.getConfig("storage")
-
-        return MongoCustomRecommendations(
-                user = storageConfig.getString("user"),
-                databaseName = storageConfig.getString("db.name"),
-                port = storageConfig.getInt("port"),
-                password = System.getenv("DB_PASSWORD") ?: storageConfig.getString("password"),
-                host = storageConfig.getString("host")
-        )
-    }
 
     @Bean
     open fun recommendationService(
