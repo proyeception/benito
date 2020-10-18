@@ -68,7 +68,8 @@ class UserServiceTest : Spec() {
                                     id = "picture"
                                 )
                             )
-                        )
+                        ),
+                        views = emptyList()
                     )
                 )
                 on(organizationMock.find(eq("123"), eq(true))).thenReturn(
@@ -145,7 +146,8 @@ class UserServiceTest : Spec() {
                         profilePic = null,
                         projects = emptyList(),
                         mail = null,
-                        phone = null
+                        phone = null,
+                        views = emptyList()
                     )
                 ))
 
@@ -174,14 +176,16 @@ class UserServiceTest : Spec() {
                         username = null,
                         fullName = "Benito Quinquela",
                         organizations = emptyList(),
-                        projects = emptyList()
+                        projects = emptyList(),
+                        views = emptyList()
                     ),
                     MedusaPersonDTO(
                         id = "123",
                         username = null,
                         fullName = "Benito Quinquela",
                         organizations = emptyList(),
-                        projects = emptyList()
+                        projects = emptyList(),
+                        views = emptyList()
                     )
                 ))
 
@@ -220,7 +224,8 @@ class UserServiceTest : Spec() {
                     username = null,
                     fullName = "Benito Quinquela",
                     organizations = emptyList(),
-                    projects = emptyList()
+                    projects = emptyList(),
+                    views = emptyList()
                 ))
 
                 userService.createAuthor(
@@ -249,7 +254,8 @@ class UserServiceTest : Spec() {
                     username = null,
                     fullName = "Benito Quinquela",
                     organizations = emptyList(),
-                    projects = emptyList()
+                    projects = emptyList(),
+                    views = emptyList()
                 ))
 
                 userService.createAuthor(

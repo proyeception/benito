@@ -11,6 +11,7 @@ import org.apache.http.entity.ContentType
 import org.bson.types.ObjectId
 import org.slf4j.LoggerFactory
 import java.io.File
+import kotlin.collections.mutableListOf as mutableListOf
 
 open class MedusaClient(
     private val medusaConnector: HttpConnector
@@ -201,6 +202,13 @@ open class MedusaClient(
         id = projectId
     )
 
+    fun modifyProjectTags(projectId: String, tags: MedusaSetTagsDTO): MedusaProjectDTO = update(
+        collection = PROJECTS,
+        ref = MEDUSA_PROJECT_REF,
+        dto = tags,
+        id = projectId
+    )
+
     fun leaveOrganization(userId: String, organizationId: String, userType: UserType): MedusaPersonDTO = delete(
         collection = "${userType.collection}/$userId/organizations",
         id = organizationId,
@@ -313,10 +321,22 @@ open class MedusaClient(
 
     private fun String.appendParam(param: String, value: String?) = value?.let { "$this${param}=$it&" } ?: this
 
+    fun addView(userId: String, projectId: String) {
+        // buscar lista de views del autor
+        val foundUser = findUser(userId, UserType.AUTHOR)
+        // crear nueva view y guardarla
+        val newView = create("project-views", CrateViewDTO(projectId), MEDUSA_VIEW_REF).id
+        // hacer un update con los ids de todas las views del autor
+        val newViewsList = mutableListOf(newView)
+        newViewsList.addAll(foundUser.views.map {it.id })
+        update("authors", userId, PersonsViews(newViewsList), MEDUSA_PERSON_REF)
+    }
+
     companion object {
         private val LOGGER = LoggerFactory.getLogger(MedusaClient::class.java)
         private const val PROJECTS = "projects"
         private val MEDUSA_PROJECT_REF = object : TypeReference<MedusaProjectDTO>() {}
+        private val MEDUSA_VIEW_REF = object : TypeReference<ViewRefDTO>() {}
         private val MEDUSA_PERSON_REF = object : TypeReference<MedusaPersonDTO>() {}
         private val MEDUSA_KEYWORD_REF = object  : TypeReference<KeywordDTO>() {}
         private val MEDUSA_RECOMMENDATION_REF = object : TypeReference<CreatedRecommendationDTO>() {}
