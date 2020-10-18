@@ -109,6 +109,7 @@ open class UserService(
         .map { medusaClient.findProject(it.projectId) }
         .flatMap { projectService.recommendedProjects(it.id) }
         .distinct()
+        .take(10)
 
     private fun createGhostUser(ghost: CreateGhostUserDTO, userType: UserType) = mapMedusaToDomain {
         medusaClient.createGhostUser(ghost, userType)
