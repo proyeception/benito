@@ -108,6 +108,7 @@ open class UserService(
         .getCustomRecommendations(token)
         .map { medusaClient.findProject(it.projectId) }
         .flatMap { projectService.recommendedProjects(it.id) }
+        .distinct()
 
     private fun createGhostUser(ghost: CreateGhostUserDTO, userType: UserType) = mapMedusaToDomain {
         medusaClient.createGhostUser(ghost, userType)
