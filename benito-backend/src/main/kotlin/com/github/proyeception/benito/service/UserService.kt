@@ -4,16 +4,20 @@ import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.AmbiguousReferenceException
 import com.github.proyeception.benito.mongodb.MongoCustomRecommendations
+import com.github.proyeception.benito.utils.HashHelper
 import org.apache.http.entity.ContentType
 import org.slf4j.LoggerFactory
 import org.springframework.web.multipart.MultipartFile
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 open class UserService(
     private val medusaClient: MedusaClient,
     private val organizationService: OrganizationService,
     private val fileService: FileService,
     private val recommendations: MongoCustomRecommendations,
-    private val projectService: ProjectService
+    private val projectService: ProjectService,
+    private val hashUtils: HashHelper
 ) {
     open fun findAuthor(userId: String): PersonDTO = findUserById(userId, UserType.AUTHOR)
 
@@ -96,7 +100,7 @@ open class UserService(
         userType = UserType.SUPERVISOR
     )
 
-    fun updateProjectVisits(id: String, projectId:String){
+    fun updateProjectVisits(id: String, projectId: String) {
         return recommendations.updateView(projectId, id)
     }
 
@@ -216,7 +220,16 @@ open class UserService(
         )
     }
 
+    fun createCustomizationId(): String = hashUtils.sha256(LocalDateTime.now().format(dtf))
+
+    fun trackRecommendation(projectId: String, token: String) = recommendations
+        .updateView(projectId = projectId, customizationId = token)
+
+    fun setCustomizationUserId(customizationToken: String, userId: String) = recommendations
+        .updateUserId(customizationToken, userId)
+
     companion object {
         private val LOGGER = LoggerFactory.getLogger(UserService::class.java)
+        private val dtf = DateTimeFormatter.ofPattern("yyyyMMdd")
     }
 }

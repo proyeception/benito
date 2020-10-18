@@ -56,13 +56,15 @@ open class ServiceModule {
         organizationService: OrganizationService,
         fileService: FileService,
         recommendationFinder: MongoCustomRecommendations,
-        projectService: ProjectService
+        projectService: ProjectService,
+        hashHelper: HashHelper
     ): UserService = UserService(
         medusaClient = medusaClient,
         organizationService = organizationService,
         fileService = fileService,
         recommendations = recommendationFinder,
-        projectService = projectService
+        projectService = projectService,
+        hashUtils = hashHelper
     )
 
     @Bean

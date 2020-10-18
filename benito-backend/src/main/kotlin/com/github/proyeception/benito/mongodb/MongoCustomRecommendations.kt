@@ -25,13 +25,26 @@ open class MongoCustomRecommendations(
         return MongoClient(uri)
     }
 
-    open fun updateView(projectID: String, userID: String) {
+    open fun updateUserId(customizationId: String, userId: String) {
+        startConnection()
+            .getDatabase(databaseName)
+            .getCollection(viewedProjectsByUser)
+            .updateOne(
+                Filters.and(
+                    Filters.eq("customization_id", customizationId)
+                ),
+                Updates.set("user_id", userId),
+                UpdateOptions().upsert(true)
+            )
+    }
+
+    open fun updateView(projectId: String, customizationId: String) {
         val mongoClient = startConnection()
         val mongoCollection = mongoClient.getDatabase(databaseName).getCollection(viewedProjectsByUser)
         mongoCollection.updateOne(
             Filters.and(
-                Filters.eq("user_id", ObjectId(userID)),
-                Filters.eq("project_id", ObjectId(projectID))
+                Filters.eq("customization_id", customizationId),
+                Filters.eq("project_id", ObjectId(projectId))
             ),
             Updates.inc("views", 1),
             UpdateOptions().upsert(true)
@@ -45,7 +58,7 @@ open class MongoCustomRecommendations(
             CustomRecommendationDTO(
                 customizationId = it["customization_id"].toString(),
                 projectId = it["project_id"].toString(),
-                views = it.get("views", Int::class.java)
+                views = it.get("views", Integer::class.java).toInt()
             )
         }
         .toList()

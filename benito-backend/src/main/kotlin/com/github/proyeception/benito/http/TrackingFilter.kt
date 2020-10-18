@@ -8,9 +8,11 @@ import javax.servlet.http.HttpServletRequest
 class TrackingFilter : Filter {
     override fun init(filterConfig: FilterConfig) = Unit
 
-    override fun doFilter(request: ServletRequest?,
-                          response: ServletResponse?,
-                          chain: FilterChain) {
+    override fun doFilter(
+        request: ServletRequest?,
+        response: ServletResponse?,
+        chain: FilterChain
+    ) {
         if (request is HttpServletRequest) {
             val requestId = request.getHeader("qui-id")
                 ?: lazy { RandomStringUtils.randomAlphanumeric(8) }.value

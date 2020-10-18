@@ -8,6 +8,7 @@ import com.github.proyeception.benito.mock.eq
 import com.github.proyeception.benito.mock.getMock
 import com.github.proyeception.benito.mock.on
 import com.github.proyeception.benito.mongodb.MongoCustomRecommendations
+import com.github.proyeception.benito.utils.HashHelper
 import com.nhaarman.mockito_kotlin.any
 import io.kotlintest.matchers.shouldBe
 import io.kotlintest.matchers.shouldThrow
@@ -21,13 +22,15 @@ class UserServiceTest : Spec() {
         val organizationMock: OrganizationService = getMock()
         val fileServiceMock: FileService = getMock()
         val recommendations: MongoCustomRecommendations = getMock()
+        val hashUtils: HashHelper = getMock()
         val projectService: ProjectService = getMock()
         val userService = UserService(
             medusaClient = medusaMock,
             organizationService = organizationMock,
             fileService = fileServiceMock,
             recommendations = recommendations,
-            projectService = projectService
+            projectService = projectService,
+            hashUtils = hashUtils
         )
 
         "findAuthor" should {
