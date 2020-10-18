@@ -62,6 +62,10 @@ const RecommendationsSection = (props: RecommendationsSectionProps) => {
     return <Spinner />;
   }
 
+  if (featured.value.length == 0) {
+    return <div></div>;
+  }
+
   return (
     <div style={{ marginLeft: "10%", marginRight: "10%" }}>
       <h2

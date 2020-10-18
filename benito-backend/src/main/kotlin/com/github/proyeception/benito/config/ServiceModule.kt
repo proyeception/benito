@@ -9,6 +9,7 @@ import com.github.proyeception.benito.parser.DocumentParser
 import com.github.proyeception.benito.service.*
 import com.github.proyeception.benito.snapshot.CategorySnapshot
 import com.github.proyeception.benito.snapshot.OrganizationSnapshot
+import com.github.proyeception.benito.storage.CustomizationStorage
 import com.github.proyeception.benito.storage.RecommendationStorage
 import com.github.proyeception.benito.storage.SessionStorage
 import com.github.proyeception.benito.utils.FileHelper
@@ -55,14 +56,14 @@ open class ServiceModule {
         medusaClient: MedusaClient,
         organizationService: OrganizationService,
         fileService: FileService,
-        recommendationFinder: MongoCustomRecommendations,
         projectService: ProjectService,
-        hashHelper: HashHelper
+        hashHelper: HashHelper,
+        customizationStorage: CustomizationStorage
     ): UserService = UserService(
         medusaClient = medusaClient,
         organizationService = organizationService,
         fileService = fileService,
-        recommendations = recommendationFinder,
+        customizationStorage = customizationStorage,
         projectService = projectService,
         hashUtils = hashHelper
     )

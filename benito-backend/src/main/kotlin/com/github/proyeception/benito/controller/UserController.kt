@@ -4,7 +4,6 @@ import com.github.proyeception.benito.X_CUSTOMIZATION_TOKEN
 import com.github.proyeception.benito.X_QUI_TOKEN
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.UnauthorizedException
-import com.github.proyeception.benito.mongodb.MongoCustomRecommendations
 import com.github.proyeception.benito.service.SessionService
 import com.github.proyeception.benito.service.UserService
 import org.springframework.http.MediaType
@@ -92,10 +91,7 @@ class UserController(
         @RequestHeader(X_QUI_TOKEN, required = true) token: String
     ): PersonDTO = doAuthorized(authorId, token) { userService.authorLeaveOrganization(authorId, organizationId) }
 
-    @RequestMapping(
-        value = ["/benito/users/recommendations"],
-        method = [RequestMethod.GET]
-    )
+    @RequestMapping(value = ["/benito/users/recommendations"], method = [RequestMethod.GET])
     @ResponseBody
     fun customRecommendations(
         @RequestHeader(X_CUSTOMIZATION_TOKEN, required = true) token: String

@@ -29,7 +29,7 @@ open class MongoCustomRecommendations(
         startConnection()
             .getDatabase(databaseName)
             .getCollection(viewedProjectsByUser)
-            .updateOne(
+            .updateMany(
                 Filters.and(
                     Filters.eq("customization_id", customizationId)
                 ),

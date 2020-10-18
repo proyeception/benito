@@ -238,7 +238,10 @@ open class ProjectService(
 
     fun recommendedProjects(id: String): List<ProjectDTO> {
         val project = findProject(id)
-        return project.recommendations.map { findProject(it.projectId) }.take(4)
+        return runBlocking { project.recommendations
+            .take(4)
+            .map { async {  findProject(it.projectId) } }.awaitAll()
+        }
     }
 
     fun setTags(projectId: String, tags: SetTagsDTO): ProjectDTO = mappingFromMedusa {
