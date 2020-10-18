@@ -8,6 +8,7 @@ import { History } from "history";
 import { fetchUser, mapRoleToCollection } from "../user";
 
 const X_QUI_TOKEN = "x-qui-token";
+export const X_CUSTOMIZATION_TOKEN = "x-customization-token";
 
 export async function openLocalStoredSession(cb: () => void) {
   const quiTokenCookie = Cookies.get(X_QUI_TOKEN);

@@ -1,6 +1,8 @@
 import store from "../store";
 import { Project } from "../types";
 import withFetch, { FetchStatus } from "./withFetch";
+import Cookies from "js-cookie";
+import { X_CUSTOMIZATION_TOKEN } from "../functions/session";
 
 const withProject = (
   projectId: string,
@@ -8,7 +10,16 @@ const withProject = (
 ): FetchStatus<Project> => {
   const [project] = withFetch<Project>(
     `projects/${projectId}`,
-    andThen,
+    (e) => {
+      if (andThen) {
+        andThen(e);
+      }
+      const customizationToken = Cookies.get(X_CUSTOMIZATION_TOKEN);
+
+      if (customizationToken) {
+        localStorage.setItem(X_CUSTOMIZATION_TOKEN, customizationToken);
+      }
+    },
     (config) => {
       let session = store.getState().session;
 

@@ -2,7 +2,7 @@ import { createStore, compose } from "redux";
 import rootReducer, { RootState } from "./reducers/index";
 import { NOTHING } from "./store/search/types";
 import { SortMethod } from "./types";
-import Cookies from "js-cookie";
+import { X_CUSTOMIZATION_TOKEN } from "./functions/session";
 
 const defaultState: RootState = {
   session: {
@@ -22,7 +22,8 @@ const defaultState: RootState = {
     organizations: [],
     isMenuOpen: false,
     loading: false,
-    customizationToken: Cookies.get("x-customization-token"),
+    customizationToken:
+      localStorage.getItem(X_CUSTOMIZATION_TOKEN) || undefined,
   },
   project: {
     editionRole: "VISITOR",

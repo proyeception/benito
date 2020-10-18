@@ -15,7 +15,6 @@ import SearchBoxSection from "./Sections/SearchBoxSection";
 import CategoriesSection from "./Sections/CategoriesSection";
 import FeaturedSection from "./Sections/FeaturedSection";
 import image from "../../assets/img/proyectate/pattern.jpg";
-import Cookies from "js-cookie";
 import RecommendationsSection from "./Sections/RecommendationsSection";
 
 const useStyles = makeStyles(styles);
