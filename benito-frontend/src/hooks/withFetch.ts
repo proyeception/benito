@@ -39,6 +39,7 @@ export default function withFetch<T>(
       let config: AxiosRequestConfig = {
         url: `${benitoHost}/benito/${path || initialPath}`,
         method: "GET",
+        withCredentials: true,
       };
 
       axios
