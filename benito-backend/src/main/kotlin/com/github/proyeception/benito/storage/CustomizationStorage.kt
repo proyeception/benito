@@ -7,11 +7,13 @@ import org.springframework.data.mongodb.core.query.Criteria.where
 import org.springframework.data.mongodb.core.query.Query
 import org.springframework.data.mongodb.core.query.Update
 import org.springframework.data.mongodb.core.query.isEqualTo
+import java.util.*
 
 data class Tracking(
     val customizationToken: String,
     val userId: String? = null,
-    val projectId: String
+    val projectId: String,
+    val date: Date = Date()
 )
 
 data class Customization(
@@ -37,8 +39,9 @@ open class CustomizationStorage(
                 Aggregation.newAggregation(
                     Aggregation.match(where("customizationToken").isEqualTo(customizationToken)),
                     Aggregation.group("projectId").count().`as`("views"),
-                    Aggregation.sort(Sort.Direction.DESC, "views"),
-                    Aggregation.limit(10)
+                    Aggregation.sort(Sort.Direction.DESC, "date"),
+                    Aggregation.limit(10),
+                    Aggregation.sort(Sort.Direction.DESC, "views")
                 ),
                 "tracking",
                 Map::class.java
