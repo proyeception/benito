@@ -29,7 +29,8 @@ open class MedusaGraphClient(
         organizationName: String? = null,
         id: String? = null,
         projectKeywords: List<String>? = null,
-        page: Int = 0
+        page: Int = 0,
+        tag: String? = null
     ): Either<Throwable, List<MedusaProjectDTO>> {
         val params = formatParams(
             orderBy = orderBy,

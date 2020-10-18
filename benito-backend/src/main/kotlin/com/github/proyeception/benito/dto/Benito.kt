@@ -46,7 +46,7 @@ data class ProjectDTO(
         pictureUrl = medusa.picture?.url,
         authors = medusa.authors.map { PersonRefDTO(it) },
         supervisors = medusa.supervisors.map { PersonRefDTO(it) },
-        tags = emptyList(),
+        tags = medusa.tags.map{ it.tag_name },
         documentation = medusa.documentation,
         organization = OrganizationRefDTO(medusa.organization) ,
         recommendations = medusa.recommendations.map { RecommendationDTO(it) },
@@ -130,6 +130,19 @@ data class UpdateContentDTO(
 
 data class AddUsersDTO(
     val items: List<String>
+)
+
+data class SetTagsDTO(
+    val tags: List<String>
+)
+
+data class MedusaSetTagsDTO(
+    val tags: List<TagDTO>
+)
+
+data class TagDTO(
+    val tag_name: String,
+    val display_name: String
 )
 
 data class SetUsersDTO(

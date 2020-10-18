@@ -1,14 +1,19 @@
 import {
   Button,
   createMuiTheme,
+  createStyles,
   Dialog,
   DialogActions,
   DialogTitle,
   Divider,
   Hidden,
+  Icon,
   makeStyles,
+  Popover,
   TextField,
+  Theme,
   ThemeProvider,
+  Typography,
 } from "@material-ui/core";
 import React, { useCallback, useState } from "react";
 import { hot } from "react-hot-loader";
@@ -40,7 +45,9 @@ import {
   updateContent,
   uploadDocuments,
   updatePicture,
+  updateTags,
   setProjectUsers,
+  generateTagsFromText,
 } from "../../functions/project";
 import image from "../../assets/img/proyectate/pattern.jpg";
 import { SET_LOGIN_TRUE } from "../../store/login/types";
@@ -53,6 +60,8 @@ import moment from "moment";
 import MEDitor from "@uiw/react-md-editor";
 import classNames from "classnames";
 import CreateGhostUser from "../../components/CreateGhostUser/CreateGhostUser";
+import { SSL_OP_EPHEMERAL_RSA } from "constants";
+import SelectInput from "@material-ui/core/Select/SelectInput";
 
 const useStyles = makeStyles(styles);
 
@@ -97,6 +106,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
   );
   const [dateIncompleted, setDateIncompleted] = React.useState(true);
   const [categoryIncompleted, setCategoryIncompleted] = React.useState(true);
+  const [supervisorsIncompleted, setSupervisorsIncompleted] = React.useState(true);
   const [
     createGhostSupervisorFormOpen,
     setCreateGhostSupervisorFormOpen,
@@ -104,6 +114,33 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
   const [createGhostAuthorFormOpen, setCreateGhostAuthorFormOpen] = useState(
     false
   );
+  const [generatedTags, setGeneratedTags] = useState<Array<string>>([]);
+  const [selectedTags, setSelectedTags] = useState<Array<string>>([]);
+
+  
+  const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
+
+  const handlePopoverOpen = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+  };
+
+  const [anchorEl2, setAnchorEl2] = React.useState<HTMLElement | null>(null);
+
+  const handlePopoverOpen2 = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    setAnchorEl2(event.currentTarget);
+  };
+
+  const handlePopoverClose2 = () => {
+    setAnchorEl2(null);
+  };
+
+  const open = Boolean(anchorEl);
+
+  const open2 = Boolean(anchorEl2);
 
   console.log(props.session);
   if (!props.session.isLoggedIn) {
@@ -190,9 +227,23 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
         render: () => <p>Agregar a {s.fullName} como supervisor</p>,
       })
     );
+    selectedTags.forEach((s) =>
+      changes.push({
+        undo: () =>
+          setSelectedTags(selectedTags.filter((sta) => sta != s)),
+        render: () => <p>Agregar tag {s}</p>,
+      })
+    );
 
     return changes;
   }
+
+  function generateTags() {
+    let text =  title + " . " + description + " . " + readme
+    if(text.length > 100){
+      generateTagsFromText(text).then(tags => setGeneratedTags(tags.data))
+    }
+  };
 
   function updateProject(project: Project) {
     createProject(title!, category!.id, project.organization.id, creationDate!)
@@ -221,6 +272,11 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
           promises.push(updatePicture(projectId, picture));
         }
 
+        //tags
+        if (selectedTags != []) {
+          promises.push(updateTags(projectId, selectedTags));
+        }
+
         //users
         const usersPromise = setProjectUsers(
           authorsToAdd,
@@ -235,7 +291,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
         Promise.all(promises)
           .catch(console.error)
           .then(() => props.history.push(`/projects/${projectId}`))
-          .then(() => props.history.go(0));
+          //.then(() => props.history.go(0));
       })
       .catch(() => {
         return <Redirect to={{ pathname: "/error" }} />;
@@ -274,6 +330,9 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
               className={classes.autocomplete}
               placeholder="Título"
               value={title}
+              onBlur={(e) => {
+                generateTags()
+              }}
               onChange={(e) => {
                 if (e.currentTarget.value.trim() == "") {
                   setTitleIncompleted(true);
@@ -321,6 +380,9 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
               rowsMax={15}
               rows="3"
               value={description}
+              onBlur={(e) => {
+                generateTags()
+              }}
               onChange={(e) => {
                 if (e.currentTarget.value.trim() == "") {
                   setDescriptionIncompleted(true);
@@ -333,11 +395,90 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
           </GridItem>
           <GridItem>
             <h4 className={classes.subtitle}>
-              Contenido extra - podés agregar más contenido que represente el
-              proyecto, como texto con distintos formatos o imágenes
-            </h4>
-            <MEDitor value={readme} onChange={(e) => setReadme(e)} />
+              Contenido extra <Icon onMouseEnter={handlePopoverOpen2} onMouseLeave={handlePopoverClose2} style={{color:"#c41234", verticalAlign: "middle"}}>help</Icon></h4>
+            <Popover
+              id="mouse-over-popover"
+              className={classes.popover}
+              classes={{
+                paper: classes.paper,
+              }}
+              open={open2}
+              anchorEl={anchorEl2}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+              onClose={handlePopoverClose2}
+              disableRestoreFocus
+            >
+              <Typography>Podés agragar más información sobre tu proyecto para la gente que lo visite. Podés formatear el contenido y cargar imágenes.</Typography>
+            </Popover>
+            <MEDitor value={readme} onChange={(e) => setReadme(e)} onBlur={(e) => generateTags()}/>
           </GridItem>
+
+          <GridItem>
+            <h4 className={classes.subtitle} >Tags <Icon onMouseEnter={handlePopoverOpen} onMouseLeave={handlePopoverClose} style={{color:"#c41234", verticalAlign: "middle"}}>help</Icon></h4>
+            <Popover
+              id="mouse-over-popover"
+              className={classes.popover}
+              classes={{
+                paper: classes.paper,
+              }}
+              open={open}
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+              onClose={handlePopoverClose}
+              disableRestoreFocus
+            >
+              <Typography>Te recomendamos algunos tags generados a partir del contenido que cargaste en los campos anteriores. Los tags sirven para que más gente pueda encontrar tu proyecto!</Typography>
+            </Popover>
+            {selectedTags.map((s, idx) => (
+              <div
+                key={idx}
+                className={classNames(
+                  classes.bullet,
+                  "underline-hover",
+                  "cursor-pointer"
+                )}
+                onClick={() =>
+                  setSelectedTags(
+                    selectedTags.filter((sta) => sta != s)
+                  )
+                }
+              >
+                <RemoveCircle /> {s}
+              </div>
+            ))}
+            <GridContainer style={{ display: "flex", alignItems: "center" }}>
+              <GridItem xs={12}>
+                <Autocomplete
+                  fullWidth
+                  clearOnBlur
+                  options={generatedTags.filter(
+                    (s) => !selectedTags.includes(s)
+                  )}
+                  freeSolo
+                  getOptionLabel={(option) => option}
+                  onChange={(e, s) => {
+                    if (s) setSelectedTags(selectedTags.concat(s!));
+                  }}
+                  renderInput={(params) => <TextField {...params} fullWidth />}
+                />
+              </GridItem>
+            </GridContainer>
+          </GridItem>
+
           <GridItem>
             <h4 className={classes.subtitle}>Imagen</h4>
             <ImageUploader
@@ -460,9 +601,9 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                   "cursor-pointer"
                 )}
                 onClick={() =>
-                  setSupervisorsToAdd(
-                    supervisorsToAdd.filter((sta) => sta != s)
-                  )
+                  {
+                    setSupervisorsToAdd(supervisorsToAdd.filter((sta) => sta != s))
+                  }
                 }
               >
                 <RemoveCircle /> {s.fullName}
@@ -472,15 +613,24 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
               <GridItem xs={9}>
                 <Autocomplete
                   fullWidth
-                  clearOnBlur
                   options={organization.supervisors.filter(
                     (s) => !supervisorsToAdd.includes(s)
                   )}
                   getOptionLabel={(option) => option.fullName}
-                  onChange={(e, s) => {
-                    if (s) setSupervisorsToAdd(supervisorsToAdd.concat(s!));
+                  
+                  onPointerLeave={(e) => {
+                    if (supervisorsToAdd.length > 0){
+                      setSupervisorsIncompleted(false)
+                    } else {
+                      setSupervisorsIncompleted(true)
+                    }
                   }}
-                  renderInput={(params) => <TextField {...params} fullWidth />}
+                  onChange={(e, s) => {
+                    if (s) {
+                      setSupervisorsToAdd(supervisorsToAdd.concat(s!));
+                    }
+                  }}
+                  renderInput={(params) => <TextField {...params}  fullWidth error={supervisorsIncompleted}/>}
                 />
               </GridItem>
               <GridItem xs={3}>
@@ -541,7 +691,14 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                 categoryIncompleted
               }
               style={{ width: "15%", textAlign: "right" }}
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => {
+                if(supervisorsToAdd.length > 0){
+                  setIsModalOpen(true)
+                  setSupervisorsIncompleted(false)
+                } else {
+                  setSupervisorsIncompleted(true)
+                }
+              }}
             >
               Guardar cambios
             </CustomButton>
@@ -565,6 +722,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
           <Button
             onClick={() => {
               setLoading(true);
+              setIsModalOpen(false)
               updateProject(project);
             }}
             color="primary"
