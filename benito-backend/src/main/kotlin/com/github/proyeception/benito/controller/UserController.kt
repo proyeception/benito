@@ -54,7 +54,7 @@ class UserController(
     fun viewProject(
             @PathVariable userId: String,
             @PathVariable projectId: String
-    ) { userService.viewProject(userId, projectId)}
+    ) { userService.viewProject(userId, projectId) }
 
     @RequestMapping(
         value = ["/benito/authors/{id}/picture"],
