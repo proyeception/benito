@@ -60,6 +60,8 @@ import moment from "moment";
 import MEDitor from "@uiw/react-md-editor";
 import classNames from "classnames";
 import CreateGhostUser from "../../components/CreateGhostUser/CreateGhostUser";
+import { SSL_OP_EPHEMERAL_RSA } from "constants";
+import SelectInput from "@material-ui/core/Select/SelectInput";
 
 const useStyles = makeStyles(styles);
 
@@ -104,6 +106,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
   );
   const [dateIncompleted, setDateIncompleted] = React.useState(true);
   const [categoryIncompleted, setCategoryIncompleted] = React.useState(true);
+  const [supervisorsIncompleted, setSupervisorsIncompleted] = React.useState(true);
   const [
     createGhostSupervisorFormOpen,
     setCreateGhostSupervisorFormOpen,
@@ -288,7 +291,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
         Promise.all(promises)
           .catch(console.error)
           .then(() => props.history.push(`/projects/${projectId}`))
-          .then(() => props.history.go(0));
+          //.then(() => props.history.go(0));
       })
       .catch(() => {
         return <Redirect to={{ pathname: "/error" }} />;
@@ -598,9 +601,9 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                   "cursor-pointer"
                 )}
                 onClick={() =>
-                  setSupervisorsToAdd(
-                    supervisorsToAdd.filter((sta) => sta != s)
-                  )
+                  {
+                    setSupervisorsToAdd(supervisorsToAdd.filter((sta) => sta != s))
+                  }
                 }
               >
                 <RemoveCircle /> {s.fullName}
@@ -610,15 +613,24 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
               <GridItem xs={9}>
                 <Autocomplete
                   fullWidth
-                  clearOnBlur
                   options={organization.supervisors.filter(
                     (s) => !supervisorsToAdd.includes(s)
                   )}
                   getOptionLabel={(option) => option.fullName}
-                  onChange={(e, s) => {
-                    if (s) setSupervisorsToAdd(supervisorsToAdd.concat(s!));
+                  
+                  onPointerLeave={(e) => {
+                    if (supervisorsToAdd.length > 0){
+                      setSupervisorsIncompleted(false)
+                    } else {
+                      setSupervisorsIncompleted(true)
+                    }
                   }}
-                  renderInput={(params) => <TextField {...params} fullWidth />}
+                  onChange={(e, s) => {
+                    if (s) {
+                      setSupervisorsToAdd(supervisorsToAdd.concat(s!));
+                    }
+                  }}
+                  renderInput={(params) => <TextField {...params}  fullWidth error={supervisorsIncompleted}/>}
                 />
               </GridItem>
               <GridItem xs={3}>
@@ -679,7 +691,14 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                 categoryIncompleted
               }
               style={{ width: "15%", textAlign: "right" }}
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => {
+                if(supervisorsToAdd.length > 0){
+                  setIsModalOpen(true)
+                  setSupervisorsIncompleted(false)
+                } else {
+                  setSupervisorsIncompleted(true)
+                }
+              }}
             >
               Guardar cambios
             </CustomButton>
@@ -703,6 +722,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
           <Button
             onClick={() => {
               setLoading(true);
+              setIsModalOpen(false)
               updateProject(project);
             }}
             color="primary"
