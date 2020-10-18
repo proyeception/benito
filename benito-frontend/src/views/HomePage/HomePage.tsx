@@ -14,23 +14,22 @@ import Footer from "../../components/Footer/Footer";
 import SearchBoxSection from "./Sections/SearchBoxSection";
 import CategoriesSection from "./Sections/CategoriesSection";
 import FeaturedSection from "./Sections/FeaturedSection";
-import image from "../../assets/img/proyectate/pattern.jpg"
+import image from "../../assets/img/proyectate/pattern.jpg";
+import Cookies from "js-cookie";
+import RecommendationsSection from "./Sections/RecommendationsSection";
 
 const useStyles = makeStyles(styles);
 
-type HomePageProps = {};
+type HomePageProps = {
+  customizationToken?: string;
+};
 
 const HomePage = (props: HomePageProps) => {
   const classes = useStyles();
   const { ...rest } = props;
   return (
     <div>
-      <Header
-        rightLinks={<HeaderLinks />}
-        fixed
-        color="darkGray"
-        {...rest}
-      />
+      <Header rightLinks={<HeaderLinks />} fixed color="darkGray" {...rest} />
       <Parallax image={image} filter small>
         <div className={classes.container}>
           <GridContainer>
@@ -51,6 +50,11 @@ const HomePage = (props: HomePageProps) => {
         </Hidden>
         <FeaturedSection />
         <CategoriesSection />
+        {props.customizationToken && (
+          <RecommendationsSection
+            customizationToken={props.customizationToken}
+          />
+        )}
       </div>
       <Footer />
     </div>
@@ -60,6 +64,7 @@ const HomePage = (props: HomePageProps) => {
 const mapStateToProps = (rootState: RootState) => {
   return {
     categories: rootState.common.categories,
+    customizationToken: rootState.common.customizationToken,
   };
 };
 

@@ -36,4 +36,5 @@ export type CommonState = {
   isMenuOpen: Boolean;
   loading: Boolean;
   organizations: Array<Organization>;
+  customizationToken?: string;
 };

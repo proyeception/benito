@@ -1,9 +1,9 @@
 package com.github.proyeception.benito.controller
 
+import com.github.proyeception.benito.X_CUSTOMIZATION_TOKEN
 import com.github.proyeception.benito.X_QUI_TOKEN
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.UnauthorizedException
-import com.github.proyeception.benito.service.RecommendationService
 import com.github.proyeception.benito.service.SessionService
 import com.github.proyeception.benito.service.UserService
 import org.springframework.http.MediaType
@@ -15,8 +15,7 @@ import javax.ws.rs.ForbiddenException
 @Controller
 class UserController(
     private val userService: UserService,
-    private val sessionService: SessionService,
-    private val recommendationService: RecommendationService
+    private val sessionService: SessionService
 ) {
 
     @RequestMapping(value = ["/benito/authors/{id}"], method = [RequestMethod.GET])
@@ -91,6 +90,12 @@ class UserController(
         @PathVariable organizationId: String,
         @RequestHeader(X_QUI_TOKEN, required = true) token: String
     ): PersonDTO = doAuthorized(authorId, token) { userService.authorLeaveOrganization(authorId, organizationId) }
+
+    @RequestMapping(value = ["/benito/users/recommendations"], method = [RequestMethod.GET])
+    @ResponseBody
+    fun customRecommendations(
+        @RequestHeader(X_CUSTOMIZATION_TOKEN, required = true) token: String
+    ): List<ProjectDTO> = userService.getCustomRecommendedProjects(token)
 
     @RequestMapping(
         value = ["/benito/supervisors/{supervisorId}/organizations/{organizationId}"],

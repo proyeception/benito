@@ -194,6 +194,10 @@ data class CreateRecommendationDTO(
     val score: Double
 )
 
+data class CrateViewDTO (
+    val projectId: String
+)
+
 data class CreatedRecommendationDTO(
     val id: String,
     val score: Double,
@@ -207,7 +211,7 @@ data class CreatedProjectRecommendationDTO(
 data class ProjectRecommendationDTO(
     val id: String,
     val project_keywords: List<KeywordDTO>,
-    val original_recommendations: List<RecommendationDTO>
+    val recommendations: List<RecommendationDTO>
 )
 
 data class SetRecommendationDTO(
@@ -224,4 +228,10 @@ data class CreateGhostUserDTO(
 data class SearchProjectDTO(
     val projects: List<ProjectDTO>,
     val count: Int
+)
+
+data class CustomRecommendationDTO(
+    val customizationId: String,
+    val projectId: String,
+    val views: Int
 )

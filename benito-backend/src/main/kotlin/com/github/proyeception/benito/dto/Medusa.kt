@@ -53,7 +53,13 @@ data class MedusaPersonDTO(
     val about: String? = null,
     val facebook: String? = null,
     val linkedin: String? = null,
-    val twitter: String? = null
+    val twitter: String? = null,
+    val views: List<ViewRefDTO>
+)
+
+data class ViewRefDTO(
+        val id: String,
+        val projectId: String?
 )
 
 data class MedusaProjectRefDTO(
@@ -165,6 +171,10 @@ data class ProjectKeywords(
 
 data class ProjectRecommendations(
     val recommendations: List<String>
+)
+
+data class PersonsViews(
+        val views: List<String>
 )
 
 data class MedusaRecommendationDTO(

@@ -1,5 +1,7 @@
 package com.github.proyeception.benito.config
 
+import com.github.proyeception.benito.storage.CustomizationStorage
+import com.github.proyeception.benito.storage.RecommendationStorage
 import com.github.proyeception.benito.storage.SessionStorage
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -11,4 +13,14 @@ open class StorageConfig {
     open fun sessionStorage(
         mongoTemplate: MongoTemplate
     ) = SessionStorage(mongoTemplate)
+
+    @Bean
+    open fun recommendationStorage(
+        mongoTemplate: MongoTemplate
+    ) = RecommendationStorage(mongoTemplate)
+
+    @Bean
+    open fun customizationStorage(
+        mongoTemplate: MongoTemplate
+    ) = CustomizationStorage(mongoTemplate)
 }

@@ -1,16 +1,22 @@
 package com.github.proyeception.benito.controller
 
+import com.github.proyeception.benito.X_CUSTOMIZATION_TOKEN
 import com.github.proyeception.benito.X_QUI_TOKEN
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.ForbiddenException
 import com.github.proyeception.benito.exception.UnauthorizedException
+import com.github.proyeception.benito.extension.asyncAlso
 import com.github.proyeception.benito.service.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import java.time.LocalDate
-
+import javax.servlet.http.Cookie
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 
 @Controller
 open class ProjectController(
@@ -29,7 +35,7 @@ open class ProjectController(
         @RequestParam(required = false) to: String?,
         @RequestParam(required = false) title: String?,
         @RequestParam(required = false) category: String?,
-        @RequestParam(required = false) keyword:String?,
+        @RequestParam(required = false) keyword: String?,
         @RequestParam(required = false, name = "author") authorId: String?,
         @RequestParam(required = false) authorName: String?,
         @RequestParam(required = false, name = "organization") organizationId: String?,
@@ -57,8 +63,9 @@ open class ProjectController(
 
     @RequestMapping("/benito/projects/{id}/recommendations", method = [RequestMethod.GET])
     @ResponseBody
-    private fun projectRecommendations(@PathVariable id: String): List<ProjectDTO> {if(id == "1") {
-        val rec = ProjectDTO(
+    private fun projectRecommendations(@PathVariable id: String): List<ProjectDTO> {
+        if (id == "1") {
+            val rec = ProjectDTO(
                 id = "1",
                 title = "project title",
                 description = "project description",
@@ -66,34 +73,34 @@ open class ProjectController(
                 creationDate = LocalDate.of(2020, 2, 6),
                 pictureUrl = "https://images.unsplash.com/photo-1541327079290-5127e8c6d7b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1650&q=80",
                 authors = listOf(
-                        PersonRefDTO(
-                                id = "123",
-                                username = "author",
-                                fullName = "Benito Quinquela"
-                        )
+                    PersonRefDTO(
+                        id = "123",
+                        username = "author",
+                        fullName = "Benito Quinquela"
+                    )
                 ),
                 supervisors = listOf(
-                        PersonRefDTO(
-                                id = "123",
-                                username = "supervisor",
-                                fullName = "Jorge Luis Borges"
-                        )
+                    PersonRefDTO(
+                        id = "123",
+                        username = "supervisor",
+                        fullName = "Jorge Luis Borges"
+                    )
                 ),
                 tags = emptyList(),
                 documentation = listOf(DocumentationDTO(
-                        id = "asd",
-                        fileName = "Acta de proyecto",
-                        driveId = "123"
+                    id = "asd",
+                    fileName = "Acta de proyecto",
+                    driveId = "123"
                 )),
                 organization = OrganizationRefDTO(
-                        id = "123",
-                        displayName = "UTN FRBA"
+                    id = "123",
+                    displayName = "UTN FRBA"
                 ),
                 recommendations = emptyList(),
                 project_keywords = emptyList()
-        )
-        return mutableListOf(rec, rec, rec)
-    } else {
+            )
+            return mutableListOf(rec, rec, rec)
+        } else {
             return projectService.recommendedProjects(id)
         }
     }
@@ -104,7 +111,28 @@ open class ProjectController(
 
     @RequestMapping("/benito/projects/{id}", method = [RequestMethod.GET])
     @ResponseBody
-    private fun findProject(@PathVariable id: String): ProjectDTO = projectService.findProject(id)
+    private fun findProject(
+        @PathVariable id: String,
+        @RequestHeader(value = X_CUSTOMIZATION_TOKEN, required = false) customizationToken: String?,
+        @RequestHeader(value = X_QUI_TOKEN, required = false) sessionToken: String?,
+        httpResponse: HttpServletResponse
+    ): ProjectDTO = projectService.findProject(id)
+        .also { p ->
+            val token = customizationToken ?: userService.createCustomizationId()
+
+            if (customizationToken == null) {
+                httpResponse.addCookie(Cookie(X_CUSTOMIZATION_TOKEN, token).also { it.path = "/" })
+            }
+
+            GlobalScope.launch {
+                userService.trackRecommendation(p.id, token)
+
+                sessionToken
+                    ?.let { sessionService[it] }
+                    ?.let { userService.setCustomizationUserId(token, it.userId) }
+            }
+
+        }
 
     @RequestMapping(
         value = ["/benito/projects/{projectId}/documents"],
@@ -218,7 +246,7 @@ open class ProjectController(
         allowedRoles = listOf(RoleDTO.SUPERVISOR, RoleDTO.AUTHOR),
         authorizeCheck = {
             projectService.hasSupervisor(supervisorId = it, projectId = projectId) ||
-            projectService.hasAuthor(authorId = it, projectId = projectId)
+                projectService.hasAuthor(authorId = it, projectId = projectId)
         },
         f = f
     )

@@ -2,12 +2,15 @@ package com.github.proyeception.benito.config
 
 import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.client.MedusaGraphClient
+import com.github.proyeception.benito.mongodb.MongoCustomRecommendations
 import com.github.proyeception.benito.mongodb.MongoTextSearch
 import com.github.proyeception.benito.oauth.GoogleDriveClient
 import com.github.proyeception.benito.parser.DocumentParser
 import com.github.proyeception.benito.service.*
 import com.github.proyeception.benito.snapshot.CategorySnapshot
 import com.github.proyeception.benito.snapshot.OrganizationSnapshot
+import com.github.proyeception.benito.storage.CustomizationStorage
+import com.github.proyeception.benito.storage.RecommendationStorage
 import com.github.proyeception.benito.storage.SessionStorage
 import com.github.proyeception.benito.utils.FileHelper
 import com.github.proyeception.benito.utils.HashHelper
@@ -52,11 +55,17 @@ open class ServiceModule {
     open fun userService(
         medusaClient: MedusaClient,
         organizationService: OrganizationService,
-        fileService: FileService
+        fileService: FileService,
+        projectService: ProjectService,
+        hashHelper: HashHelper,
+        customizationStorage: CustomizationStorage
     ): UserService = UserService(
         medusaClient = medusaClient,
         organizationService = organizationService,
-        fileService = fileService
+        fileService = fileService,
+        customizationStorage = customizationStorage,
+        projectService = projectService,
+        hashUtils = hashHelper
     )
 
     @Bean
@@ -109,14 +118,27 @@ open class ServiceModule {
     }
 
     @Bean
+    open fun mongoCustomRecommendations(
+            config: Config
+    ): MongoCustomRecommendations {
+        val storageConfig = config.getConfig("storage")
+
+        return MongoCustomRecommendations(
+                user = storageConfig.getString("user"),
+                databaseName = storageConfig.getString("db.name"),
+                port = storageConfig.getInt("port"),
+                password = System.getenv("DB_PASSWORD") ?: storageConfig.getString("password"),
+                host = storageConfig.getString("host")
+        )
+    }
+
+    @Bean
     open fun recommendationService(
         medusaClient: MedusaClient,
-        medusaGraphClient: MedusaGraphClient,
-        mongoTextSearch: MongoTextSearch
+        recommendationStorage: RecommendationStorage
     ): RecommendationService = RecommendationService(
         medusaClient = medusaClient,
-        medusaGraphClient = medusaGraphClient,
-        mongoTextSearch = mongoTextSearch
+        recommendationStorage = recommendationStorage
     )
 
     @Bean

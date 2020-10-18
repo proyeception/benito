@@ -7,6 +7,8 @@ import com.github.proyeception.benito.exception.AmbiguousReferenceException
 import com.github.proyeception.benito.mock.eq
 import com.github.proyeception.benito.mock.getMock
 import com.github.proyeception.benito.mock.on
+import com.github.proyeception.benito.storage.CustomizationStorage
+import com.github.proyeception.benito.utils.HashHelper
 import com.nhaarman.mockito_kotlin.any
 import io.kotlintest.matchers.shouldBe
 import io.kotlintest.matchers.shouldThrow
@@ -19,10 +21,16 @@ class UserServiceTest : Spec() {
         val medusaMock: MedusaClient = getMock()
         val organizationMock: OrganizationService = getMock()
         val fileServiceMock: FileService = getMock()
+        val customizationStorage: CustomizationStorage = getMock()
+        val hashUtils: HashHelper = getMock()
+        val projectService: ProjectService = getMock()
         val userService = UserService(
             medusaClient = medusaMock,
             organizationService = organizationMock,
-            fileService = fileServiceMock
+            fileService = fileServiceMock,
+            customizationStorage = customizationStorage,
+            projectService = projectService,
+            hashUtils = hashUtils
         )
 
         "findAuthor" should {
@@ -60,7 +68,8 @@ class UserServiceTest : Spec() {
                                     id = "picture"
                                 )
                             )
-                        )
+                        ),
+                        views = emptyList()
                     )
                 )
                 on(organizationMock.find(eq("123"), eq(true))).thenReturn(
@@ -137,7 +146,8 @@ class UserServiceTest : Spec() {
                         profilePic = null,
                         projects = emptyList(),
                         mail = null,
-                        phone = null
+                        phone = null,
+                        views = emptyList()
                     )
                 ))
 
@@ -166,14 +176,16 @@ class UserServiceTest : Spec() {
                         username = null,
                         fullName = "Benito Quinquela",
                         organizations = emptyList(),
-                        projects = emptyList()
+                        projects = emptyList(),
+                        views = emptyList()
                     ),
                     MedusaPersonDTO(
                         id = "123",
                         username = null,
                         fullName = "Benito Quinquela",
                         organizations = emptyList(),
-                        projects = emptyList()
+                        projects = emptyList(),
+                        views = emptyList()
                     )
                 ))
 
@@ -212,7 +224,8 @@ class UserServiceTest : Spec() {
                     username = null,
                     fullName = "Benito Quinquela",
                     organizations = emptyList(),
-                    projects = emptyList()
+                    projects = emptyList(),
+                    views = emptyList()
                 ))
 
                 userService.createAuthor(
@@ -241,7 +254,8 @@ class UserServiceTest : Spec() {
                     username = null,
                     fullName = "Benito Quinquela",
                     organizations = emptyList(),
-                    projects = emptyList()
+                    projects = emptyList(),
+                    views = emptyList()
                 ))
 
                 userService.createAuthor(
