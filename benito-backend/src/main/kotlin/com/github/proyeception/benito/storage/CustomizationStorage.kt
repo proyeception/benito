@@ -2,10 +2,10 @@ package com.github.proyeception.benito.storage
 
 import org.springframework.data.domain.Sort
 import org.springframework.data.mongodb.core.MongoTemplate
-import org.springframework.data.mongodb.core.aggregation.Aggregation
+import org.springframework.data.mongodb.core.aggregation.Aggregation.*
 import org.springframework.data.mongodb.core.query.Criteria.where
 import org.springframework.data.mongodb.core.query.Query
-import org.springframework.data.mongodb.core.query.Update
+import org.springframework.data.mongodb.core.query.Update.update
 import org.springframework.data.mongodb.core.query.isEqualTo
 import java.util.*
 
@@ -13,7 +13,7 @@ data class Tracking(
     val customizationToken: String,
     val userId: String? = null,
     val projectId: String,
-    val date: Date = Date()
+    val date: Long = Date().time
 )
 
 data class Customization(
@@ -36,12 +36,12 @@ open class CustomizationStorage(
     open fun customRecommendations(customizationToken: String): List<Customization> {
         val tracking = mongoTemplate
             .aggregate(
-                Aggregation.newAggregation(
-                    Aggregation.match(where("customizationToken").isEqualTo(customizationToken)),
-                    Aggregation.group("projectId").count().`as`("views"),
-                    Aggregation.sort(Sort.Direction.DESC, "date"),
-                    Aggregation.limit(10),
-                    Aggregation.sort(Sort.Direction.DESC, "views")
+                newAggregation(
+                    match(where("customizationToken").isEqualTo(customizationToken)),
+                    sort(Sort.Direction.DESC, "date"),
+                    group("projectId").count().`as`("views"),
+                    limit(10),
+                    sort(Sort.Direction.DESC, "views")
                 ),
                 "tracking",
                 Map::class.java
@@ -61,7 +61,7 @@ open class CustomizationStorage(
     open fun setUserId(customizationToken: String, userId: String) {
         mongoTemplate.updateMulti(
             Query(where("customizationToken").isEqualTo(customizationToken)),
-            Update.update("userId", userId),
+            update("userId", userId),
             Any::class.java
         )
     }
