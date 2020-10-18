@@ -9,6 +9,7 @@ import { fromOrganizationName } from "../organization";
 
 export function buildQueryParams({
   title,
+  tag,
   category,
   from,
   to,
@@ -19,6 +20,7 @@ export function buildQueryParams({
 }: SearchParams) {
   var query = "?"
     .concat(buildQueryParamProperty("title", title))
+    .concat(buildQueryParamProperty("tag", tag))
     .concat(buildQueryParamProperty("category", category))
     .concat(buildQueryParamProperty("from", from))
     .concat(buildQueryParamProperty("to", to))

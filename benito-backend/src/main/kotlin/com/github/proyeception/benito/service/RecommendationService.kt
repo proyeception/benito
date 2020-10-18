@@ -73,4 +73,23 @@ open class RecommendationService(
     companion object {
         private val LOGGER = LoggerFactory.getLogger(RecommendationService::class.java)
     }
+
+    public fun getAuthorRecommendations(authorId: String): List<ProjectDTO>{
+        val user = medusaClient.findUser(authorId, UserType.AUTHOR)
+
+
+        val p = medusaClient.findProjects().map{ProjectDTO(it)}
+        return p
+    }
+
+    public fun getSupervisorRecommendations(authorId: String): List<ProjectDTO>{
+        val user = medusaClient.findUser(authorId, UserType.SUPERVISOR)
+
+
+        val p = medusaClient.findProjects().map{ProjectDTO(it)}
+        return p
+    }
+
+    private fun mappingFromMedusa(f: () -> MedusaProjectDTO): ProjectDTO = ProjectDTO(f())
+
 }

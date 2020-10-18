@@ -84,6 +84,17 @@ export function updatePicture(projectId: string, picture: File) {
   return axios.request(signRequest(pictureConfig)).then(console.log);
 }
 
+export function updateTags(projectId: string, tags: Array<string>) {
+
+  let pictureConfig: AxiosRequestConfig = {
+    url: `${benitoHost}/benito/projects/${projectId}/tags`,
+    method: "POST",
+    data: {tags},
+  };
+
+  return axios.request(signRequest(pictureConfig)).then(console.log);
+}
+
 export function uploadDocuments(projectId: string, documents: Array<File>) {
   const form = new FormData();
   documents.forEach((f: File) => form.append("file", f, f.name));
@@ -125,6 +136,20 @@ export function setProjectUsers(
       supervisors: supervisors.map((s) => s.id),
     },
     method: "PUT",
+  };
+
+  return axios.request(signRequest(config));
+}
+
+export function generateTagsFromText(
+  text: string
+) {
+  let config: AxiosRequestConfig = {
+    url: `${benitoHost}/benito/tags`,
+    data: {
+      text
+    },
+    method: "POST",
   };
 
   return axios.request(signRequest(config));

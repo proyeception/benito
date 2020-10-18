@@ -16,6 +16,7 @@ import org.springframework.scheduling.annotation.Async
 import org.springframework.web.multipart.MultipartFile
 import java.time.format.DateTimeFormatter
 
+
 open class ProjectService(
     private val medusaClient: MedusaClient,
     private val medusaGraphClient: MedusaGraphClient,
@@ -38,7 +39,8 @@ open class ProjectService(
         authorName: String?,
         organizationId: String?,
         organizationName: String?,
-        page: Int?
+        page: Int?,
+        tag: String?
     ): SearchProjectDTO {
         val projects = medusaGraphClient.findProjects(
             orderBy = orderBy,
@@ -51,7 +53,8 @@ open class ProjectService(
             keyword = keyword,
             organizationId = organizationId,
             organizationName = organizationName,
-            page = page ?: 0
+            page = page ?: 0,
+            tag = tag
         )
             .getOrHandle {
                 LOGGER.error("Error getting projects from Medusa with Graph")
@@ -59,23 +62,31 @@ open class ProjectService(
             }
             .map { ProjectDTO(it) }
 
-        val count: Int = medusaGraphClient.countProjects(
-            from = from,
-            to = to,
-            title = title,
-            category = category,
-            authorId = authorId,
-            authorName = authorName,
-            keyword = keyword,
-            organizationId = organizationId,
-            organizationName = organizationName
-        ).getOrHandle {
-            LOGGER.error("Error counting projects from Medusa with Graph")
-            throw FailedDependencyException("Error counting projects from Medusa")
-        }
+        return if (tag.isNullOrEmpty()) {
+            val count: Int = medusaGraphClient.countProjects(
+                from = from,
+                to = to,
+                title = title,
+                category = category,
+                authorId = authorId,
+                authorName = authorName,
+                keyword = keyword,
+                organizationId = organizationId,
+                organizationName = organizationName
+            ).getOrHandle {
+                LOGGER.error("Error counting projects from Medusa with Graph")
+                throw FailedDependencyException("Error counting projects from Medusa")
+            }
 
-        return SearchProjectDTO(projects, count)
+            SearchProjectDTO(projects, count)
+        } else {
+            //Strapi no soporta queries por graphQL con repeatable components por el momento
+            val projectsFilteredByTag = projects.filter { filterByTag(tag, it) }
+            SearchProjectDTO(projectsFilteredByTag, projectsFilteredByTag.count())
+        }
     }
+
+    private fun filterByTag(tag: String, project: ProjectDTO): Boolean = project.tags.any { it.contains(tag) }
 
     fun featuredProjects(): List<ProjectDTO> = medusaGraphClient.findProjects(
         orderBy = OrderDTO.VIEWS_DESC
@@ -229,6 +240,14 @@ open class ProjectService(
         val project = findProject(id)
         return project.recommendations.map { findProject(it.projectId) }.take(4)
     }
+
+    fun setTags(projectId: String, tags: SetTagsDTO): ProjectDTO = mappingFromMedusa {
+        medusaClient.modifyProjectTags(
+            projectId = projectId,
+            tags = MedusaSetTagsDTO(tags.tags.map { TagDTO(it, it) })
+        )
+    }
+
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(ProjectService::class.java)

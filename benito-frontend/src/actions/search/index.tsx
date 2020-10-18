@@ -1,6 +1,7 @@
 import {
   SearchAction,
   UPDATE_TITLE,
+  UPDATE_TAG,
   UPDATE_CATEGORY,
   UPDATE_PROJECTS,
   UPDATE_FROM_DATE,
@@ -20,6 +21,13 @@ import { Category, Organization, SortMethod } from "../../types";
 export function updateTitle(name: string): SearchAction {
   return {
     type: UPDATE_TITLE,
+    payload: name,
+  };
+}
+
+export function updateTag(name: string): SearchAction {
+  return {
+    type: UPDATE_TAG,
     payload: name,
   };
 }

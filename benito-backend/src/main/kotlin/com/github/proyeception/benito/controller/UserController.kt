@@ -3,6 +3,7 @@ package com.github.proyeception.benito.controller
 import com.github.proyeception.benito.X_QUI_TOKEN
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.UnauthorizedException
+import com.github.proyeception.benito.service.RecommendationService
 import com.github.proyeception.benito.service.SessionService
 import com.github.proyeception.benito.service.UserService
 import org.springframework.http.MediaType
@@ -14,7 +15,8 @@ import javax.ws.rs.ForbiddenException
 @Controller
 class UserController(
     private val userService: UserService,
-    private val sessionService: SessionService
+    private val sessionService: SessionService,
+    private val recommendationService: RecommendationService
 ) {
 
     @RequestMapping(value = ["/benito/authors/{id}"], method = [RequestMethod.GET])
@@ -24,6 +26,14 @@ class UserController(
     @RequestMapping(value = ["/benito/supervisors/{id}"], method = [RequestMethod.GET])
     @ResponseBody
     fun findSupervisor(@PathVariable id: String) = userService.findSupervisor(id)
+
+    @RequestMapping(value = ["/benito/authors/{id}/recommendations"], method = [RequestMethod.GET])
+    @ResponseBody
+    fun getAuthorRecommendations(@PathVariable id: String) = recommendationService.getAuthorRecommendations(id)
+
+    @RequestMapping(value = ["/benito/supervisor/{id}/recommendations"], method = [RequestMethod.GET])
+    @ResponseBody
+    fun getSupervisorRecommendations(@PathVariable id: String) = recommendationService.getSupervisorRecommendations(id)
 
     @RequestMapping(value = ["/benito/authors"], method = [RequestMethod.POST])
     @ResponseBody

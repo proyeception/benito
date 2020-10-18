@@ -2,6 +2,7 @@ package com.github.proyeception.benito.service
 
 import com.github.proyeception.benito.dto.KeywordDTO
 import com.github.proyeception.benito.dto.KeywordsWrapper
+import com.github.proyeception.benito.dto.ProjectKeywords
 import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.HttpEntity
@@ -31,6 +32,13 @@ class RestService(restTemplateBuilder: RestTemplateBuilder) {
         val entity: HttpEntity<Map<String, Any>> = HttpEntity(body, headers)
         val response = this.restTemplate.postForEntity(url, entity, KeywordsWrapper::class.java)
         return response.body.keywords
+    }
+
+    open fun postRequestHashtags(url: String, body: MutableMap<String, String>): List<String> {
+        val headers = HttpHeaders()
+        val entity: HttpEntity<Map<String, Any>> = HttpEntity(body, headers)
+        val response = this.restTemplate.postForEntity(url, entity, ProjectKeywords::class.java)
+        return response.body.project_keywords
     }
 
     inline fun <reified T: Any> typeRef(): ParameterizedTypeReference<T> = object: ParameterizedTypeReference<T>(){}

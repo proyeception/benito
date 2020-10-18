@@ -34,7 +34,8 @@ open class ProjectController(
         @RequestParam(required = false) authorName: String?,
         @RequestParam(required = false, name = "organization") organizationId: String?,
         @RequestParam(required = false) organizationName: String?,
-        @RequestParam(required = false) page: Int?
+        @RequestParam(required = false) page: Int?,
+        @RequestParam(required = false) tag: String?
     ): SearchProjectDTO = projectService.findProjects(
         orderBy = orderBy,
         from = from,
@@ -46,7 +47,8 @@ open class ProjectController(
         authorName = authorName,
         authorId = authorId,
         organizationId = organizationId,
-        organizationName = organizationName
+        organizationName = organizationName,
+        tag = tag
     )
 
     @RequestMapping("/benito/projects/featured", method = [RequestMethod.GET])
@@ -104,14 +106,6 @@ open class ProjectController(
     @ResponseBody
     private fun findProject(@PathVariable id: String): ProjectDTO = projectService.findProject(id)
 
-    @RequestMapping("/benito/keywords", method = [RequestMethod.GET])
-    @ResponseBody
-    private fun findTextKeywords(@RequestBody content: String): List<KeywordDTO> {
-        val a = content.replace("\"text\":", "").replace("\"", "")
-        println(a)
-        return keywordService.getKeywordsFromText(a)
-    }
-
     @RequestMapping(
         value = ["/benito/projects/{projectId}/documents"],
         method = [RequestMethod.POST],
@@ -163,6 +157,14 @@ open class ProjectController(
         @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
     ): ProjectDTO = doSupervisorAuthorized(projectId, token) { projectService.addAuthors(projectId, users) }
 
+    @RequestMapping(value = ["/benito/projects/{projectId}/tags"], method = [RequestMethod.POST])
+    @ResponseBody
+    fun setTags(
+        @PathVariable projectId: String,
+        @RequestBody tags: SetTagsDTO,
+        @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
+    ): ProjectDTO = doWithMixedAuthorization(projectId, token) { projectService.setTags(projectId, tags) }
+
     @RequestMapping(value = ["/benito/projects/{projectId}/users"], method = [RequestMethod.PUT])
     @ResponseBody
     fun setUsers(
@@ -194,6 +196,7 @@ open class ProjectController(
         @RequestParam(value = "items", required = true) items: String,
         @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
     ): ProjectDTO = doSupervisorAuthorized(projectId, token) { projectService.deleteSupervisors(projectId, items) }
+
 
     @RequestMapping(value = ["/benito/projects"], method = [RequestMethod.POST])
     @ResponseBody
