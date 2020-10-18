@@ -28,9 +28,35 @@ import { Divider, Hidden } from "@material-ui/core";
 import Recommendations from "./Sections/Recommendations";
 import Spinner from "../../components/Spinner/Spinner";
 import { ProjectEditionRole } from "../../types";
-import image from "../../assets/img/proyectate/pattern-big.jpg"
+import image from "../../assets/img/proyectate/pattern-big.jpg";
 import Button from "@material-ui/core/Button/Button";
-import { ArrowBackIos } from "@material-ui/icons";
+import { ArrowBackIos, Telegram } from "@material-ui/icons";
+import {
+  EmailShareButton,
+  FacebookIcon,
+  FacebookShareButton,
+  HatenaShareButton,
+  InstapaperShareButton,
+  LineShareButton,
+  LinkedinIcon,
+  LinkedinShareButton,
+  LivejournalShareButton,
+  MailruShareButton,
+  OKShareButton,
+  PinterestShareButton,
+  PocketShareButton,
+  RedditShareButton,
+  TelegramIcon,
+  TelegramShareButton,
+  TumblrShareButton,
+  TwitterIcon,
+  TwitterShareButton,
+  ViberShareButton,
+  VKShareButton,
+  WhatsappIcon,
+  WhatsappShareButton,
+  WorkplaceShareButton,
+} from "react-share";
 
 const dashboardRoutes: any = [];
 
@@ -58,6 +84,11 @@ const ProjectPage = (props: Props) => {
     return <Redirect to={{ pathname: "/error" }} />;
   }
 
+  const shareUrl = `https://www.benito-stg.herokuapp.com/projects/${project.value.id}`;
+  const shareBrief =
+    project.value.description.length > 100
+      ? project.value.description.slice(0, 97) + "..."
+      : project.value.description;
   return (
     <div>
       <Header
@@ -73,6 +104,50 @@ const ProjectPage = (props: Props) => {
             <GridItem xs={12} sm={12} md={6}>
               <h1 className={classes.title}>{project.value.title}</h1>
               <br />
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  fontSize: "14px",
+                }}
+              >
+                <FacebookShareButton
+                  url={shareUrl}
+                  quote={shareBrief}
+                  hashtag={"#" + project.value.title}
+                >
+                  <FacebookIcon round size={32} />
+                </FacebookShareButton>
+                <TwitterShareButton
+                  url={shareUrl}
+                  title={project.value.title}
+                  hashtags={[project.value.title]
+                    .concat(project.value.tags)
+                    .concat("Proyectate")}
+                >
+                  <TwitterIcon round size={32} />
+                </TwitterShareButton>
+                <LinkedinShareButton
+                  url={shareUrl}
+                  title={project.value.title}
+                  summary={shareBrief}
+                  source="Proyectate"
+                >
+                  <LinkedinIcon round size={32} />
+                </LinkedinShareButton>
+                <TelegramShareButton url={shareUrl} title={project.value.title}>
+                  <TelegramIcon round size={32} />
+                </TelegramShareButton>
+                <WhatsappShareButton
+                  url={shareUrl}
+                  title={"Proyectate: " + project.value.title}
+                  separator={`
+
+`}
+                >
+                  <WhatsappIcon round size={32} />
+                </WhatsappShareButton>
+              </div>
             </GridItem>
           </GridContainer>
         </div>
@@ -83,24 +158,23 @@ const ProjectPage = (props: Props) => {
             <ProductSection project={project.value} />
             <TeamSection project={project.value} />
             <DocumentsSection project={project.value} />
-            <Button className={classes.goback}
-            onClick={() => {
-              props.history.goBack()
-            }}
-            variant="outlined"
-            size="large"
-            startIcon={<ArrowBackIos />}
+            <Button
+              className={classes.goback}
+              onClick={() => {
+                props.history.goBack();
+              }}
+              variant="outlined"
+              size="large"
+              startIcon={<ArrowBackIos />}
             >
-            Volver
+              Volver
             </Button>
-          <div></div>
+            <div></div>
           </GridItem>
           <Divider orientation="vertical" flexItem />
-          <GridItem xs={12} sm={12} md={2}  className={classes.recommendations}>
+          <GridItem xs={12} sm={12} md={2} className={classes.recommendations}>
             <Recommendations />
           </GridItem>
-
-
         </GridContainer>
       </div>
       <Footer />
