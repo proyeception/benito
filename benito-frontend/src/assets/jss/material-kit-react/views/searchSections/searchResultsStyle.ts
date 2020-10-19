@@ -39,13 +39,18 @@ const searchResultsStyle = (theme: Theme) =>
       height: "auto",
     },
     authors: {
-      color: "#3c4858",
-      textAlign: "right",
-      fontSize: "13px",
-      verticalAlign: "bottom",
-      position: "absolute",
-      bottom: 0,
-      right: 0,
+      [theme.breakpoints.down("md")]: {
+        textAlign: "right"
+      },
+      [theme.breakpoints.up("md")]: {
+        color: "#3c4858",
+        textAlign: "right",
+        fontSize: "13px",
+        verticalAlign: "bottom",
+        position: "absolute",
+        bottom: 0,
+        right: 0,
+      },
     },
     result: {
       [theme.breakpoints.up("md")]: {
