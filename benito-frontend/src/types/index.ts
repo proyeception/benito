@@ -8,7 +8,7 @@ export type Project = {
   creationDate: Date;
   tags: Array<string>;
   extraContent: string;
-  documentation: Array<Documentation>;
+  documentation?: Array<Documentation>;
   organization: Organization;
 };
 

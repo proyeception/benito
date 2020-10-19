@@ -128,10 +128,11 @@ const EditProjectPage = (props: EditProjectPageProps) => {
   const [generatedTags, setGeneratedTags] = useState<Array<string>>([]);
   const [selectedTags, setSelectedTags] = useState<Array<string>>([]);
 
-  
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
 
-  const handlePopoverOpen = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  const handlePopoverOpen = (
+    event: React.MouseEvent<HTMLElement, MouseEvent>
+  ) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -141,7 +142,9 @@ const EditProjectPage = (props: EditProjectPageProps) => {
 
   const [anchorEl2, setAnchorEl2] = React.useState<HTMLElement | null>(null);
 
-  const handlePopoverOpen2 = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  const handlePopoverOpen2 = (
+    event: React.MouseEvent<HTMLElement, MouseEvent>
+  ) => {
     setAnchorEl2(event.currentTarget);
   };
 
@@ -154,11 +157,11 @@ const EditProjectPage = (props: EditProjectPageProps) => {
   const open2 = Boolean(anchorEl2);
 
   function generateTags() {
-    let text =  title + " . " + description + " . " + readme
-    if(text.length > 100){
-      generateTagsFromText(text).then(tags => setGeneratedTags(tags.data))
+    let text = title + " . " + description + " . " + readme;
+    if (text.length > 100) {
+      generateTagsFromText(text).then((tags) => setGeneratedTags(tags.data));
     }
-  };
+  }
 
   const project = withProject(props.match.params.id, (p) => {
     setTitle(p.title);
@@ -264,8 +267,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
     );
     selectedTags.forEach((s) =>
       changes.push({
-        undo: () =>
-          setSelectedTags(selectedTags.filter((sta) => sta != s)),
+        undo: () => setSelectedTags(selectedTags.filter((sta) => sta != s)),
         render: () => <p>Agregar tag {s}</p>,
       })
     );
@@ -315,8 +317,8 @@ const EditProjectPage = (props: EditProjectPageProps) => {
     const contentPromise = updateContent(
       projectId,
       project.documentation
-        .filter((d) => !documentsToRemove.includes(d))
-        .map((d) => d.id),
+        ?.filter((d) => !documentsToRemove.includes(d))
+        ?.map((d) => d.id) || [],
       title,
       description,
       readme
@@ -394,7 +396,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                 placeholder="Título"
                 value={title}
                 onBlur={(e) => {
-                  generateTags()
+                  generateTags();
                 }}
                 onChange={(e) => {
                   if (e.currentTarget.value.trim() == "") {
@@ -417,7 +419,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
               rows="3"
               value={description}
               onBlur={(e) => {
-                generateTags()
+                generateTags();
               }}
               onChange={(e) => {
                 if (e.currentTarget.value.trim() == "") {
@@ -430,8 +432,16 @@ const EditProjectPage = (props: EditProjectPageProps) => {
             />
           </GridItem>
           <GridItem>
-          <h4 className={classes.subtitle}>
-              Contenido extra <Icon onMouseEnter={handlePopoverOpen2} onMouseLeave={handlePopoverClose2} style={{color:"#c41234", verticalAlign: "middle"}}>help</Icon></h4>
+            <h4 className={classes.subtitle}>
+              Contenido extra{" "}
+              <Icon
+                onMouseEnter={handlePopoverOpen2}
+                onMouseLeave={handlePopoverClose2}
+                style={{ color: "#c41234", verticalAlign: "middle" }}
+              >
+                help
+              </Icon>
+            </h4>
             <Popover
               id="mouse-over-popover"
               className={classes.popover}
@@ -441,22 +451,38 @@ const EditProjectPage = (props: EditProjectPageProps) => {
               open={open2}
               anchorEl={anchorEl2}
               anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
+                vertical: "bottom",
+                horizontal: "left",
               }}
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
+                vertical: "top",
+                horizontal: "left",
               }}
               onClose={handlePopoverClose2}
               disableRestoreFocus
             >
-              <Typography>Podés agragar más información sobre tu proyecto para la gente que lo visite. Podés formatear el contenido y cargar imágenes.</Typography>
+              <Typography>
+                Podés agragar más información sobre tu proyecto para la gente
+                que lo visite. Podés formatear el contenido y cargar imágenes.
+              </Typography>
             </Popover>
-            <MEDitor value={readme} onChange={(e) => setReadme(e)} onBlur={(e) => generateTags()} />
+            <MEDitor
+              value={readme}
+              onChange={(e) => setReadme(e)}
+              onBlur={(e) => generateTags()}
+            />
           </GridItem>
           <GridItem>
-            <h4 className={classes.subtitle} >Tags <Icon onMouseEnter={handlePopoverOpen} onMouseLeave={handlePopoverClose} style={{color:"#c41234", verticalAlign: "middle"}}>help</Icon></h4>
+            <h4 className={classes.subtitle}>
+              Tags{" "}
+              <Icon
+                onMouseEnter={handlePopoverOpen}
+                onMouseLeave={handlePopoverClose}
+                style={{ color: "#c41234", verticalAlign: "middle" }}
+              >
+                help
+              </Icon>
+            </h4>
             <Popover
               id="mouse-over-popover"
               className={classes.popover}
@@ -466,17 +492,21 @@ const EditProjectPage = (props: EditProjectPageProps) => {
               open={open}
               anchorEl={anchorEl}
               anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
+                vertical: "bottom",
+                horizontal: "left",
               }}
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
+                vertical: "top",
+                horizontal: "left",
               }}
               onClose={handlePopoverClose}
               disableRestoreFocus
             >
-              <Typography>Te recomendamos algunos tags generados a partir del contenido que cargaste en los campos anteriores. Los tags sirven para que más gente pueda encontrar tu proyecto!</Typography>
+              <Typography>
+                Te recomendamos algunos tags generados a partir del contenido
+                que cargaste en los campos anteriores. Los tags sirven para que
+                más gente pueda encontrar tu proyecto!
+              </Typography>
             </Popover>
             {selectedTags.map((s, idx) => (
               <div
@@ -487,9 +517,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                   "cursor-pointer"
                 )}
                 onClick={() =>
-                  setSelectedTags(
-                    selectedTags.filter((sta) => sta != s)
-                  )
+                  setSelectedTags(selectedTags.filter((sta) => sta != s))
                 }
               >
                 <RemoveCircle /> {s}
@@ -531,23 +559,27 @@ const EditProjectPage = (props: EditProjectPageProps) => {
           </GridItem>
           <GridItem>
             <h4 className={classes.subtitle}>Documentos</h4>
-            {project.value.documentation
-              .filter((d) => !documentsToRemove.some((dtr) => dtr == d))
-              .map((d, idx) => (
-                <div
-                  key={idx}
-                  className={classNames(
-                    classes.bullet,
-                    "underline-hover",
-                    "cursor-pointer"
-                  )}
-                  onClick={() =>
-                    setDocumentsToRemove(documentsToRemove.concat(d))
-                  }
-                >
-                  <RemoveCircle /> {d.fileName}
-                </div>
-              ))}
+            {project.value.documentation ? (
+              project.value.documentation
+                ?.filter((d) => !documentsToRemove.some((dtr) => dtr == d))
+                ?.map((d, idx) => (
+                  <div
+                    key={idx}
+                    className={classNames(
+                      classes.bullet,
+                      "underline-hover",
+                      "cursor-pointer"
+                    )}
+                    onClick={() =>
+                      setDocumentsToRemove(documentsToRemove.concat(d))
+                    }
+                  >
+                    <RemoveCircle /> {d.fileName}
+                  </div>
+                ))
+            ) : (
+              <div></div>
+            )}
             <section
               className="dropzone-container"
               style={{ marginTop: "15px" }}

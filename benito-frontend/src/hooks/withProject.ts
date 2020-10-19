@@ -24,12 +24,13 @@ const withProject = (
       let session = store.getState().session;
 
       if (session.isLoggedIn) {
-        const userId = session.userId;
+        const token = session.token;
+
         return {
           ...config,
           headers: {
             ...config.headers,
-            "x-qui-token": userId,
+            "x-qui-token": token,
           },
         };
       }

@@ -32,7 +32,7 @@ data class ProjectDTO(
     val authors: List<PersonRefDTO>,
     val supervisors: List<PersonRefDTO>,
     val tags: List<String>,
-    val documentation: List<DocumentationDTO>,
+    val documentation: List<DocumentationDTO>?,
     val organization: OrganizationRefDTO,
     val recommendations: List<RecommendationDTO>,
     val project_keywords: List<KeywordDTO>

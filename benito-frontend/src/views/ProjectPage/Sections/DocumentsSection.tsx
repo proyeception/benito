@@ -21,7 +21,7 @@ type DocumentsSectionProps = {
 const DocumentsSection = ({ project }: DocumentsSectionProps) => {
   const classes = useStyles();
 
-  console.error("tags " + project.tags)
+  console.error("tags " + project.tags);
 
   return (
     <div className={classes.section}>
@@ -37,38 +37,46 @@ const DocumentsSection = ({ project }: DocumentsSectionProps) => {
               Fecha de publicación
             </GridItem>
             <GridItem xs={12} md={6}>
-              {moment(project.creationDate).add(1, 'days').format("yyyy-MM-DD").toString()}
+              {moment(project.creationDate)
+                .add(1, "days")
+                .format("yyyy-MM-DD")
+                .toString()}
             </GridItem>
             <GridItem xs={12} md={6}>
               Tags
             </GridItem>
             <GridItem xs={12} md={6}>
-              
               {project.tags.map((tag: string) => {
-                return(<Link
-                  to={`/search?tag=${tag}`}
-                  className="normalize-link"
-                  style={{color:"#c41234"}}
-                >
-                  {"#" + tag + " "} 
-                </Link>)
+                return (
+                  <Link
+                    to={`/search?tag=${tag}`}
+                    className="normalize-link"
+                    style={{ color: "#c41234" }}
+                  >
+                    {"#" + tag + " "}
+                  </Link>
+                );
               })}
             </GridItem>
           </GridContainer>
         </GridItem>
         <GridItem xs={12} md={6} className={classes.documentsContainer}>
-          {project.documentation.map((d, idx) => (
-            <a
-              key={idx}
-              href={`${benitoHost}/benito/documents/${d.driveId}`}
-              className={classes.document}
-            >
-              <div>
-                <GetAppIcon />
-              </div>
-              <div>{d.fileName}</div>
-            </a>
-          ))}
+          {project.documentation != undefined ? (
+            project.documentation?.map((d, idx) => (
+              <a
+                key={idx}
+                href={`${benitoHost}/benito/documents/${d.driveId}`}
+                className={classes.document}
+              >
+                <div>
+                  <GetAppIcon />
+                </div>
+                <div>{d.fileName}</div>
+              </a>
+            ))
+          ) : (
+            <div></div>
+          )}
         </GridItem>
       </GridContainer>
     </div>
