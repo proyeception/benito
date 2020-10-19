@@ -74,11 +74,24 @@ open class RecommendationService(
         private val LOGGER = LoggerFactory.getLogger(RecommendationService::class.java)
     }
 
-    public fun getAuthorRecommendations(authorId: String): List<ProjectDTO>{
-        val user = medusaClient.findUser(authorId, UserType.AUTHOR)
+    public fun getAuthorRecommendations(authorId: String, type: UserType): List<ProjectDTO>{
+        val user = medusaClient.findUser(authorId, type)
+        val views = user.views
+        val differentProjectsIds = mutableListOf<ViewRefDTO>()
+        for (view in views){
+            if(!differentProjectsIds.map{it.id}.contains(view.id) &&
+                (differentProjectsIds.filter{it.projectId == view.projectId}
+                                    .get(0).creationDate < view.creationDate){
+                differentProjectsIds.add(view)
+            }
+        }
+        val viewedProjects = differentProjectsIds.map{medusaClient.findProject(it.projectId)}
+        val p = viewedProjects.flatMap { it.recommendations }
+                                .sortedBy {it.score}
+                                .take(6)
+                                .map { medusaClient.findProject(it.project) }
+                                .map{ProjectDTO(it) }
 
-
-        val p = medusaClient.findProjects().map{ProjectDTO(it)}
         return p
     }
 
@@ -89,7 +102,5 @@ open class RecommendationService(
         val p = medusaClient.findProjects().map{ProjectDTO(it)}
         return p
     }
-
-    private fun mappingFromMedusa(f: () -> MedusaProjectDTO): ProjectDTO = ProjectDTO(f())
 
 }

@@ -25,11 +25,11 @@ class UserController(
 
     @RequestMapping(value = ["/benito/supervisors/{id}"], method = [RequestMethod.GET])
     @ResponseBody
-    fun findSupervisor(@PathVariable id: String) = userService.findSupervisor(id)
+    fun findSupervisor(@PathVariable id: String) = recommendationService.getAuthorRecommendations(id, UserType.SUPERVISOR)
 
     @RequestMapping(value = ["/benito/authors/{id}/recommendations"], method = [RequestMethod.GET])
     @ResponseBody
-    fun getAuthorRecommendations(@PathVariable id: String) = recommendationService.getAuthorRecommendations(id)
+    fun getAuthorRecommendations(@PathVariable id: String) = recommendationService.getAuthorRecommendations(id, UserType.AUTHOR)
 
     @RequestMapping(value = ["/benito/supervisor/{id}/recommendations"], method = [RequestMethod.GET])
     @ResponseBody

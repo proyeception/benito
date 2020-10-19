@@ -59,7 +59,7 @@ data class MedusaPersonDTO(
 
 data class ViewRefDTO(
         val id: String,
-        val projectId: String?
+        val projectId: String
 )
 
 data class MedusaProjectRefDTO(
