@@ -64,7 +64,8 @@ data class PersonDTO(
     val socials: SocialDTO,
     val contact: ContactDTO? = null,
     val about: String? = null,
-    val apiKeys: List<Any> = emptyList()
+    val apiKeys: List<Any> = emptyList(),
+    val views: List<ViewRefDTO> = emptyList()
 )
 
 data class OrganizationRefDTO(

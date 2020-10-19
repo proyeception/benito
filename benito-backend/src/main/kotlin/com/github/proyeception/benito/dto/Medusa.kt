@@ -1,6 +1,8 @@
 package com.github.proyeception.benito.dto
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.joda.time.LocalDateTime
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -59,7 +61,9 @@ data class MedusaPersonDTO(
 
 data class ViewRefDTO(
         val id: String,
-        val projectId: String
+        val projectId: String,
+        @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'") @JsonProperty("createdAt")
+        val createdAt: LocalDateTime
 )
 
 data class MedusaProjectRefDTO(
