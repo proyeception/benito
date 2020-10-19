@@ -366,8 +366,7 @@ class MedusaClientTest : Spec() {
                     username = null,
                     fullName = "Benito Quinquela",
                     organizations = emptyList(),
-                    projects = emptyList(),
-                    views = emptyList()
+                    projects = emptyList()
                 )
                 on(responseMock.deserializeAs(any(TypeReference::class.java))).thenReturn(person)
 
