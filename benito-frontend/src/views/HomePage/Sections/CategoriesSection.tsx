@@ -27,7 +27,7 @@ const CategoriesSection = (props: CategoriesSectionProps) => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    autoplay: true,
+    autoplay: false,
   };
 
   const classes = useStyles();
@@ -46,8 +46,8 @@ const CategoriesSection = (props: CategoriesSectionProps) => {
                 src={c.imageUrl}
                 alt={c.name}
               />
-              <div className="slick-caption" style={{ display: "inline" }}>
-                <h4 style={{color: "#2f3336", fontWeight: 400, fontSize: "40px", opacity: 1 }}>{c.name}</h4>
+              <div className={classes.cardText} style={{ display: "inline" }}>
+                <h4 style={{color: "#2f3336", fontWeight: 400, fontSize:"3vw", opacity: 1, textAlign: "center" }}>{c.name}</h4>
               </div>
             </div>
           </Link>
