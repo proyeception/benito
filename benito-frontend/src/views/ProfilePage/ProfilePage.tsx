@@ -20,7 +20,7 @@ import withUser from "../../hooks/withUser";
 import { Redirect, RouteComponentProps } from "react-router-dom";
 import { ERROR, PENDING } from "../../hooks/withFetch";
 import { Link } from "react-router-dom";
-import { Card, ThemeProvider, createMuiTheme } from "@material-ui/core";
+import { Card, ThemeProvider, createMuiTheme, Hidden } from "@material-ui/core";
 import CardBody from "../../components/Card/CardBody";
 import { cardTitle } from "../../assets/jss/material-kit-react";
 import Spinner from "../../components/Spinner/Spinner";
@@ -271,19 +271,21 @@ const ProfilePage = (props: ProfilePageProps) => {
                 </GridContainer>
               )}
             </GridContainer>
-            <ThemeProvider theme={theme}>
-              <Button
-                className={classes.goback}
-                onClick={() => {
-                  props.history.goBack();
-                }}
-                variant="outlined"
-                size="large"
-                startIcon={<ArrowBackIos />}
-              >
-                Volver
-              </Button>
-            </ThemeProvider>
+            <Hidden only={["xs", "sm"]}>
+              <ThemeProvider theme={theme}>
+                <Button
+                  className={classes.goback}
+                  onClick={() => {
+                    props.history.goBack();
+                  }}
+                  variant="outlined"
+                  size="large"
+                  startIcon={<ArrowBackIos />}
+                >
+                  Volver
+                </Button>
+              </ThemeProvider>
+            </Hidden>
           </div>
         </div>
       </div>
