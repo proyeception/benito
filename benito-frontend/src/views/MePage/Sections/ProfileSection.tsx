@@ -124,6 +124,9 @@ const ProfileSection = (props: ProfileSectionProps) => {
             <RedSwitch
               checked={twitterEnabled}
               onChange={() => {
+                if(!lastTwitter){
+                  setLastTwitter("https://www.twitter.com/")
+                }
                 if (twitterEnabled) {
                   setLastTwitter(twitter);
                   setTwitter(undefined);
@@ -143,7 +146,11 @@ const ProfileSection = (props: ProfileSectionProps) => {
           fullWidth
           disabled={!twitterEnabled}
           value={twitter || lastTwitter}
-          onChange={(e) => setTwitter(e.currentTarget.value)}
+          onChange={(e) => {
+            if(e.currentTarget.value.startsWith("https://www.twitter.com/")){
+              setTwitter(e.currentTarget.value)
+              }
+            }}
           id="twitterField"
         />
       </GridItem>
@@ -160,6 +167,9 @@ const ProfileSection = (props: ProfileSectionProps) => {
               checked={linkedinEnabled}
               color="primary"
               onChange={() => {
+                if(!lastLinkedin){
+                  setLastLinkedin("https://www.linkedin.com/")
+                }
                 if (linkedinEnabled) {
                   setLastLinkedin(linkedin);
                   setLinkedin(undefined);
@@ -179,7 +189,11 @@ const ProfileSection = (props: ProfileSectionProps) => {
           fullWidth
           disabled={!linkedinEnabled}
           value={linkedin || lastLinkedin}
-          onChange={(e) => setLinkedin(e.currentTarget.value)}
+          onChange={(e) => {
+            if(e.currentTarget.value.startsWith("https://www.linkedin.com/")){
+              setLinkedin(e.currentTarget.value)
+            }
+            }}
         />
       </GridItem>
       <GridItem
@@ -194,8 +208,11 @@ const ProfileSection = (props: ProfileSectionProps) => {
             <RedSwitch
               checked={facebookEnabled}
               onChange={() => {
+                if(!lastFacebook){
+                  setLastFacebook("https://www.facebook.com/")
+                }
                 if (facebookEnabled) {
-                  setLastTwitter(facebook);
+                  setLastFacebook(facebook);
                   setFacebook(undefined);
                   setFacebookEnabled(false);
                 } else {
@@ -213,7 +230,11 @@ const ProfileSection = (props: ProfileSectionProps) => {
           fullWidth
           disabled={!facebookEnabled}
           value={facebook || lastFacebook}
-          onChange={(e) => setFacebook(e.currentTarget.value)}
+          onChange={(e) => {
+            if(e.currentTarget.value.startsWith("https://www.facebook.com/")){
+              setFacebook(e.currentTarget.value)
+            }
+            }}
         />
       </GridItem>
       <GridItem
