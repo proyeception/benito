@@ -25,7 +25,7 @@ const imagesStyles = createStyles({
     height: "-webkit-fill-available",
     objectFit: "cover",
     borderTopLeftRadius: "calc(.25rem - 1px)",
-    borderTopRightRadius: "calc(.25rem - 1px)",
+    borderTopRightRadius: "calc(.25rem - 1px)"
   },
   imgCardBottom: {
     width: "100%",

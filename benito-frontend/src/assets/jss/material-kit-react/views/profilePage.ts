@@ -74,6 +74,13 @@ const profilePageStyle = createStyles({
     marginBottom: "25px",
     color: "#c41234",
     background: "#FFFFFF"
+  },
+  longTitle:{
+    textOverflow: "ellipsis",
+    lineClamp: 2,
+    display: "-webkit-box",
+    boxOrient: "vertical",
+    overflow: "hidden"
   }
 });
 
