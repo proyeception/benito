@@ -137,10 +137,22 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
   const handlePopoverClose2 = () => {
     setAnchorEl2(null);
   };
+  
+  const [anchorEl3, setAnchorEl3] = React.useState<HTMLElement | null>(null);
+
+  const handlePopoverOpen3 = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    setAnchorEl3(event.currentTarget);
+  };
+
+  const handlePopoverClose3 = () => {
+    setAnchorEl3(null);
+  };
 
   const open = Boolean(anchorEl);
 
   const open2 = Boolean(anchorEl2);
+
+  const open3 = Boolean(anchorEl3);
 
   console.log(props.session);
   if (!props.session.isLoggedIn) {
@@ -415,7 +427,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
               onClose={handlePopoverClose2}
               disableRestoreFocus
             >
-              <Typography>Podés agragar más información sobre tu proyecto para la gente que lo visite. Podés formatear el contenido y cargar imágenes.</Typography>
+              <Typography>Podés agregar más información sobre tu proyecto para la gente que lo visite. Podés formatear el contenido y cargar imágenes.</Typography>
             </Popover>
             <MEDitor value={readme} onChange={(e) => setReadme(e)} onBlur={(e) => generateTags()}/>
           </GridItem>
@@ -480,7 +492,28 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
           </GridItem>
 
           <GridItem>
-            <h4 className={classes.subtitle}>Imagen</h4>
+          <h4 className={classes.subtitle}>Imagen <Icon onMouseEnter={handlePopoverOpen3} onMouseLeave={handlePopoverClose3} style={{color:"#c41234", verticalAlign: "middle"}}>help</Icon></h4>
+            <Popover
+              id="mouse-over-popover"
+              className={classes.popover}
+              classes={{
+                paper: classes.paper,
+              }}
+              open={open3}
+              anchorEl={anchorEl3}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+              onClose={handlePopoverClose3}
+              disableRestoreFocus
+            >
+            <Typography>Esta será la imagen de tu proyecto: en la página principal y en las búsquedas. También se verá en el encabezado!</Typography>
+            </Popover>
             <ImageUploader
               withIcon={true}
               name="pictureUrl"
