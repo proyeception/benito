@@ -100,6 +100,7 @@ const headerLinksStyle = (theme: Theme) =>
       position: "relative",
       fontSize: "20px !important",
       marginRight: "4px",
+      color: "white"
     },
     dropdownLink: {
       "&,&:hover,&:focus": {

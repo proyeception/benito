@@ -3,7 +3,6 @@ import { createStyles, Theme } from "@material-ui/core/styles";
 
 const recommendationStyle = (theme: Theme) => createStyles({
   section: {
-    padding: "70px 0",
     paddingRight:"30px",
     paddingLeft:"20px",
     textAlign: "center",
@@ -20,7 +19,8 @@ const recommendationStyle = (theme: Theme) => createStyles({
     marginBottom: "1rem",
     marginTop: "1px",
     textDecoration: "none",
-    textAlign: "center"
+    textAlign: "center",
+    paddingBottom: "10px"
   },
   subtitle: {
     ...subtitle,
@@ -29,7 +29,10 @@ const recommendationStyle = (theme: Theme) => createStyles({
     minHeight: "32px",
     textDecoration: "none",
     fontSize: "26px",
-    textAlign: "center"
+    textAlign: "center",
+    [theme.breakpoints.down("md")]: {
+      paddingRight: "30px"
+  }
   },
   description: {
     color: "#999",
@@ -41,9 +44,9 @@ const recommendationStyle = (theme: Theme) => createStyles({
     objectFit: "cover",
   },
   result: {
-    [theme.breakpoints.up("md")]: {
-      height: "210px",
-    },
+    [theme.breakpoints.down("md")]: {
+      paddingRight: "30px"
+  }
   },
 });
 
