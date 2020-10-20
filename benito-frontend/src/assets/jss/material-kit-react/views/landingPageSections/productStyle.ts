@@ -1,10 +1,13 @@
 import { title } from "../../../material-kit-react";
-import { createStyles } from "@material-ui/core/styles";
+import { Theme, createStyles } from "@material-ui/core/styles";
 
-const productStyle = createStyles({
+const productStyle = (theme: Theme) => createStyles({
   section: {
     padding: "70px 0",
-    textAlign: "left",
+    [theme.breakpoints.down("md")]: {
+      padding: "20px 0"
+    },
+    textAlign: "justify",
   },
   title: {
     ...title,
@@ -12,9 +15,13 @@ const productStyle = createStyles({
     marginTop: "30px",
     minHeight: "32px",
     textDecoration: "none",
+    [theme.breakpoints.down("md")]: {
+        fontSize: "6vw"
+    }
   },
   description: {
     color: "#999",
+    overflow: "auto"
   },
 });
 

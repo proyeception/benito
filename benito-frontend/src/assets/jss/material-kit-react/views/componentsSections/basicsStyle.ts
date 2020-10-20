@@ -1,10 +1,13 @@
 import { container, title } from "../../../material-kit-react";
 import customCheckboxRadioSwitch from "../../../material-kit-react/customCheckboxRadioSwitch";
-import { createStyles } from '@material-ui/core/styles';
+import { Theme, createStyles } from '@material-ui/core/styles';
 
-const basicsStyle = createStyles({
+const basicsStyle = (theme: Theme) => createStyles({
   sections: {
-    padding: "70px 0"
+    padding: "70px 0",
+    [theme.breakpoints.down("md")]: {
+      padding: "20px 0"
+    }
   },
   container,
   title: {

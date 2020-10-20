@@ -76,7 +76,6 @@ const SearchResultsSection = (props: Props) => {
           <GridItem key={idx} xs={12} sm={12} md={12}>
             <GridContainer className={classes.result}>
                 <ProjectLink id={p.id}>
-                  <Hidden only={["xs", "sm"]}>
                     <div>
                       <img
                         src={p.pictureUrl?.valueOf() || pictureNotFound}
@@ -87,7 +86,6 @@ const SearchResultsSection = (props: Props) => {
                     <div className={classes.title + " underline-hover"}>
                       {p.title}
                     </div>
-                  </Hidden>
                 </ProjectLink>
             </GridContainer>
           </GridItem>

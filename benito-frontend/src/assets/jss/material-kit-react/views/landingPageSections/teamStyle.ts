@@ -1,11 +1,14 @@
 import { cardTitle, title, subtitle } from "../../../material-kit-react";
 import imagesStyle from "../../imagesStyles";
-import { createStyles } from "@material-ui/core/styles";
+import { Theme, createStyles } from "@material-ui/core/styles";
 
-const teamStyle = createStyles({
+const teamStyle = (theme: Theme) => createStyles({
   section: {
     padding: "70px 0",
-    textAlign: "center"
+    textAlign: "center",
+    [theme.breakpoints.down("md")]: {
+      paddingBottom: "20px"
+    },
   },
   title: {
     ...title,
@@ -20,6 +23,9 @@ const teamStyle = createStyles({
     marginTop: "30px",
     minHeight: "32px",
     textDecoration: "none",
+    [theme.breakpoints.down("md")]: {
+      fontSize: "6vw"
+  }
   },
   ...imagesStyle,
   itemGrid: {

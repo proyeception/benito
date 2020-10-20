@@ -33,16 +33,16 @@ const DocumentsSection = ({ project }: DocumentsSectionProps) => {
         </GridItem>
         <GridItem xs={12} md={6}>
           <GridContainer justify="between" className={classes.description}>
-            <GridItem xs={12} md={6}>
+            <GridItem xs={6} md={6}>
               Fecha de publicación
             </GridItem>
-            <GridItem xs={12} md={6}>
+            <GridItem xs={6} md={6} style={{textAlign: "right"}}>
               {moment(project.creationDate).add(1, 'days').format("yyyy-MM-DD").toString()}
             </GridItem>
-            <GridItem xs={12} md={6}>
+            <GridItem xs={6} md={6}>
               Tags
             </GridItem>
-            <GridItem xs={12} md={6}>
+            <GridItem xs={6} md={6} style={{textAlign: "right"}}>
               
               {project.tags.map((tag: string) => {
                 return(<Link
