@@ -149,9 +149,45 @@ const EditProjectPage = (props: EditProjectPageProps) => {
     setAnchorEl2(null);
   };
 
+  const [anchorEl3, setAnchorEl3] = React.useState<HTMLElement | null>(null);
+
+  const handlePopoverOpen3 = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    setAnchorEl3(event.currentTarget);
+  };
+
+  const handlePopoverClose3 = () => {
+    setAnchorEl3(null);
+  };
+
+  const [anchorEl4, setAnchorEl4] = React.useState<HTMLElement | null>(null);
+
+  const handlePopoverOpen4 = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    setAnchorEl4(event.currentTarget);
+  };
+
+  const handlePopoverClose4 = () => {
+    setAnchorEl4(null);
+  };
+
+  const [anchorEl5, setAnchorEl5] = React.useState<HTMLElement | null>(null);
+
+  const handlePopoverOpen5 = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    setAnchorEl5(event.currentTarget);
+  };
+
+  const handlePopoverClose5 = () => {
+    setAnchorEl5(null);
+  };
+
   const open = Boolean(anchorEl);
 
   const open2 = Boolean(anchorEl2);
+
+  const open3 = Boolean(anchorEl3);
+  
+  const open4 = Boolean(anchorEl4);
+
+  const open5 = Boolean(anchorEl5);
 
   function generateTags() {
     let text =  title + " . " + description + " . " + readme
@@ -451,7 +487,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
               onClose={handlePopoverClose2}
               disableRestoreFocus
             >
-              <Typography>Podés agragar más información sobre tu proyecto para la gente que lo visite. Podés formatear el contenido y cargar imágenes.</Typography>
+              <Typography>Podés agregar más información sobre tu proyecto para la gente que lo visite. Podés formatear el contenido y cargar imágenes.</Typography>
             </Popover>
             <MEDitor value={readme} onChange={(e) => setReadme(e)} onBlur={(e) => generateTags()} />
           </GridItem>
@@ -514,7 +550,28 @@ const EditProjectPage = (props: EditProjectPageProps) => {
             </GridContainer>
           </GridItem>
           <GridItem>
-            <h4 className={classes.subtitle}>Imagen</h4>
+          <h4 className={classes.subtitle}>Imagen <Icon onMouseEnter={handlePopoverOpen3} onMouseLeave={handlePopoverClose3} style={{color:"#c41234", verticalAlign: "middle"}}>help</Icon></h4>
+            <Popover
+              id="mouse-over-popover"
+              className={classes.popover}
+              classes={{
+                paper: classes.paper,
+              }}
+              open={open3}
+              anchorEl={anchorEl3}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+              onClose={handlePopoverClose3}
+              disableRestoreFocus
+            >
+            <Typography>Esta será la imagen de tu proyecto: en la página principal y en las búsquedas. También se verá en el encabezado!</Typography>
+            </Popover>
             <ImageUploader
               withIcon={true}
               name="pictureUrl"
@@ -569,8 +626,30 @@ const EditProjectPage = (props: EditProjectPageProps) => {
         {role == "SUPERVISOR" ? (
           <GridContainer className={classes.container}>
             <GridItem>
-              <h4 className={classes.subtitle}>Autores</h4>
-              {project.value.authors
+              <h4 className={classes.subtitle}>Autores <Icon onMouseEnter={handlePopoverOpen4} onMouseLeave={handlePopoverClose4} style={{color:"#c41234", verticalAlign: "middle"}}>help</Icon></h4>
+              <Popover
+                id="mouse-over-popover"
+                className={classes.popover}
+                classes={{
+                  paper: classes.paper,
+                }}
+                open={open4}
+                anchorEl={anchorEl4}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+                onClose={handlePopoverClose4}
+                disableRestoreFocus
+              >
+              <Typography>Acá podés agregar autores al proyecto. Se ofrecen aquellos que tengan un usuario registrado y que pertenezcan a la organización.<br></br>
+                También se pueden agregar colaboradores sin usuarios asignados, ingresando su nombre y mail con la opción: "Crear nuevo autor"</Typography>
+              </Popover>
+            {project.value.authors
                 .concat(justCreatedAuthors)
                 .concat(authorsToAdd)
                 .filter((a) => !authorsToRemove.some((atr) => atr == a))
@@ -626,7 +705,29 @@ const EditProjectPage = (props: EditProjectPageProps) => {
               </GridContainer>
             </GridItem>
             <GridItem>
-              <h4 className={classes.subtitle}>Supervisores</h4>
+              <h4 className={classes.subtitle}>Supervisores <Icon onMouseEnter={handlePopoverOpen5} onMouseLeave={handlePopoverClose5} style={{color:"#c41234", verticalAlign: "middle"}}>help</Icon></h4>
+              <Popover
+                id="mouse-over-popover"
+                className={classes.popover}
+                classes={{
+                  paper: classes.paper,
+                }}
+                open={open5}
+                anchorEl={anchorEl5}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+                onClose={handlePopoverClose5}
+                disableRestoreFocus
+              >
+              <Typography>Acá podés agregar supervisores al proyecto. Se ofrecen aquellos que tengan un usuario registrado y que pertenezcan a la organización.<br></br>
+                También se pueden agregar colaboradores sin usuarios asignados, ingresando su nombre y mail con la opción: "Crear nuevo supervisor"</Typography>
+              </Popover>
               {project.value.supervisors
                 .concat(justCreatedSupervisors)
                 .concat(supervisorsToAdd)
