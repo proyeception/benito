@@ -82,17 +82,10 @@ const RecommendationsSection = (props: RecommendationsSectionProps) => {
         dotListClass="custom-dot-list-style"
       >
         {featured.value.map((project, index) => (
-          <Card
-            key={index}
-            style={{ width: "20rem", height: "420px", boxShadow: "none" }}
-          >
+          <Card key={index} className={classes.card} style={{ maxWidth: "20rem", height: "420px", boxShadow: "none" }}>
             <img
               style={{ height: "180px", width: "100%", display: "block" }}
-              className={classNames(
-                classes.imgCard,
-                classes.imgRaised,
-                classes.imgFit
-              )}
+              className={classNames( classes.imgCard, classes.imgRaised, classes.imgFit)}
               src={project.pictureUrl || pictureNotFound}
               alt={project.title}
             />
