@@ -17,12 +17,19 @@ const productStyle = (theme: Theme) => createStyles({
     textDecoration: "none",
     [theme.breakpoints.down("md")]: {
         fontSize: "6vw"
-    }
+    },
   },
   description: {
     color: "#999",
     overflow: "auto"
   },
+  longTitle:{
+    textOverflow: "ellipsis",
+    lineClamp: 4,
+    display: "-webkit-box",
+    boxOrient: "vertical",
+    overflow: "hidden"
+  }
 });
 
 export default productStyle;

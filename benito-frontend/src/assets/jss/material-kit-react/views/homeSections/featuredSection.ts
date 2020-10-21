@@ -19,6 +19,13 @@ const featuredStyle = (theme: Theme) =>
         paddingRight: "5px"
       },
     },
+    longTitle:{
+      textOverflow: "ellipsis",
+      lineClamp: 2,
+      display: "-webkit-box",
+      boxOrient: "vertical",
+      overflow: "hidden"
+    },
   });
 
 export default featuredStyle;

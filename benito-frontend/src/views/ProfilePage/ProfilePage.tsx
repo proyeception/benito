@@ -228,7 +228,7 @@ const ProfilePage = (props: ProfilePageProps) => {
                           className="normalize-link"
                         >
                           <h4
-                            className={(classes.imgCardTop, "underline-hover", classes.longTitle)}
+                            className={classNames(classes.imgCardTop, "underline-hover", classes.longTitle)}
                           >
                             {p.title}
                           </h4>

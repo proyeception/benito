@@ -15,6 +15,7 @@ import { hot } from "react-hot-loader";
 import { SessionState } from "../../../store/session/types";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { grey } from "@material-ui/core/colors";
+import classNames from "classnames";
 
 const useStyles = makeStyles(styles);
 
@@ -41,7 +42,7 @@ const ProductSection = ({ project, session, history }: ProductSectionProps) => {
     <div className={classes.section}>
       <GridContainer justify="center">
         <GridItem xs={12} sm={12} md={12}>
-          <h2 className={classes.title} style={{ textAlign: "center" }}>
+          <h2 className={classNames(classes.longTitle, classes.title)} style={{ textAlign: "center" }}>
             Acerca de {project.title}
             {showEdit ? (
               <span>

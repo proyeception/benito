@@ -20,7 +20,7 @@ const homePage = (theme: Theme) => createStyles({
     fontSize: "1.313rem",
     maxWidth: "500px",
     margin: "10px 0 0",
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down("sm")]: {
       fontSize: "4vw"
     },
   },

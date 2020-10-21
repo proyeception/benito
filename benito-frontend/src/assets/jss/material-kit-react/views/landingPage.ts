@@ -59,6 +59,13 @@ const landingPageStyle = (theme: Theme) => createStyles({
   goback: {
     marginBottom: "25px",
     color: "#c41234"
+  },
+  longTitle:{
+    textOverflow: "ellipsis",
+    lineClamp: 4,
+    display: "-webkit-box",
+    boxOrient: "vertical",
+    overflow: "hidden"
   }
 });
 

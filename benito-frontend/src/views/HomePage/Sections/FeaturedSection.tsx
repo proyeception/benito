@@ -61,7 +61,7 @@ const FeaturedSection = (props: FeaturedSectionProps) => {
       <Carousel
         responsive={responsive}
         infinite={true}
-        autoPlay={true}
+        autoPlay={false}
         autoPlaySpeed={5000}
         transitionDuration={500}
         containerClass="carousel-container"
@@ -79,7 +79,7 @@ const FeaturedSection = (props: FeaturedSectionProps) => {
             />
             <CardBody className="read-more-container">
             <div className="organization">{project.organization.displayName}</div>
-              <p className={classes.cardTitle}>{project.title}</p>
+              <p style={{height:"50px"}} className={classNames(classes.cardTitle, classes.longTitle)}>{project.title}</p>
               <div className="read-more-container">
                 <p className="featured-card-text">{project.description}</p>
                 <p className="read-more"></p>

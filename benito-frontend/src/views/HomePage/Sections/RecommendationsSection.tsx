@@ -93,7 +93,7 @@ const RecommendationsSection = (props: RecommendationsSectionProps) => {
               <div className="organization">
                 {project.organization.displayName}
               </div>
-              <p className={classes.cardTitle}>{project.title}</p>
+              <p className={classNames(classes.cardTitle, classes.longTitle)}>{project.title}</p>
               <div className="read-more-container">
                 <p className="featured-card-text">{project.description}</p>
                 <p className="read-more"></p>

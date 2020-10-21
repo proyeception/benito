@@ -102,7 +102,7 @@ const ProjectPage = (props: Props) => {
         <div className={classes.container}>
           <GridContainer>
             <GridItem xs={12} sm={12} md={6}>
-              <h1 className={classes.title}>{project.value.title}</h1>
+              <h1 className={classNames(classes.title, classes.longTitle)}>{project.value.title}</h1>
               <br />
               <div
                 style={{
