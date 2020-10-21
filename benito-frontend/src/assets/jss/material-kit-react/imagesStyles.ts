@@ -22,7 +22,6 @@ const imagesStyles = createStyles({
   imgCardTop: {
     display: "block",
     width: "100%",
-    height: "-webkit-fill-available",
     objectFit: "cover",
     borderTopLeftRadius: "calc(.25rem - 1px)",
     borderTopRightRadius: "calc(.25rem - 1px)"
