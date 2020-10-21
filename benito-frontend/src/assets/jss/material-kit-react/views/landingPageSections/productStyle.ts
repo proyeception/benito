@@ -27,7 +27,8 @@ const productStyle = (theme: Theme) => createStyles({
   },
   description: {
     color: "#999",
-    overflow: "auto"
+    overflow: "auto",
+    fontSize: "100%",
   },
   longTitle:{
     textOverflow: "ellipsis",

@@ -61,10 +61,10 @@ const ProductSection = ({ project, session, history }: ProductSectionProps) => {
             )}
           </h2>
           <h3></h3>
-          <h5 className={classes.description}>{project.description}</h5>
+          <p className={classes.description}>{project.description}</p>
         </GridItem>
         <GridItem xs={12} sm={12} md={12}>
-          <div className={classes.description}>
+          <div className={"description"}>
             <MarkdownCompiler source={project.extraContent.valueOf()} />
           </div>
         </GridItem>
