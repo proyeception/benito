@@ -107,3 +107,21 @@
 .react-multi-carousel-list {
   position: inherit !important;
 }
+
+.description {
+  color: #999;
+  overflow: auto;
+  @media only screen and (min-width: 992px){
+    h1 {
+      font-size: 2vw
+    }
+  }
+  @media only screen and (max-width: 600px){
+    h1 {
+      font-size: 6vw
+    }
+  }
+  p {
+    font-size: 100%;
+  }
+}

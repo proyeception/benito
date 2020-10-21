@@ -61,7 +61,7 @@ const FeaturedSection = (props: FeaturedSectionProps) => {
       <Carousel
         responsive={responsive}
         infinite={true}
-        autoPlay={true}
+        autoPlay={false}
         autoPlaySpeed={5000}
         transitionDuration={500}
         containerClass="carousel-container"
@@ -70,16 +70,16 @@ const FeaturedSection = (props: FeaturedSectionProps) => {
         dotListClass="custom-dot-list-style"
       >
         {featured.value.map((project, index) => (
-          <Card key={index} style={{ width: "20rem", height:"420px", boxShadow: "none"}}>
+          <Card key={index} className={classes.card} style={{ maxWidth: "20rem", height:"420px", boxShadow: "none"}}>
             <img
-              style={{ height: "180px", width: "100%", display: "block" }}
+              style={{ height: "180px", width: "100%", display: "block"}}
               className={classNames(classes.imgCard, classes.imgRaised, classes.imgFit)}
               src={project.pictureUrl || pictureNotFound}
               alt={project.title}
             />
             <CardBody className="read-more-container">
             <div className="organization">{project.organization.displayName}</div>
-              <p className={classes.cardTitle}>{project.title}</p>
+              <p style={{height:"50px"}} className={classNames(classes.cardTitle, classes.longTitle)}>{project.title}</p>
               <div className="read-more-container">
                 <p className="featured-card-text">{project.description}</p>
                 <p className="read-more"></p>

@@ -1,10 +1,9 @@
 import { title, subtitle } from "../../../material-kit-react";
-import { createStyles } from "@material-ui/core/styles";
+import { Theme, createStyles } from "@material-ui/core/styles";
 
-const documentsStyle = createStyles({
+const documentsStyle = (theme: Theme) => createStyles({
   section: {
-    padding: "70px 0",
-    textAlign: "left",
+    textAlign: "left"
   },
   title: {
     ...title,
@@ -19,6 +18,9 @@ const documentsStyle = createStyles({
     marginTop: "30px",
     minHeight: "32px",
     textDecoration: "none",
+    [theme.breakpoints.down("md")]: {
+      fontSize: "6vw"
+  }
   },
   description: {
     color: "#999",
@@ -26,6 +28,9 @@ const documentsStyle = createStyles({
   documentsContainer: {
     maxHeight: "360px",
     overflow: "scroll",
+    [theme.breakpoints.down("sm")]: {
+      paddingTop: "20px"
+  }
   },
   document: {
     display: "flex",

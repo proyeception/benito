@@ -102,7 +102,7 @@ const ProjectPage = (props: Props) => {
         <div className={classes.container}>
           <GridContainer>
             <GridItem xs={12} sm={12} md={6}>
-              <h1 className={classes.title}>{project.value.title}</h1>
+              <h1 className={classNames(classes.title, classes.longTitle)}>{project.value.title}</h1>
               <br />
               <div
                 style={{
@@ -158,7 +158,15 @@ const ProjectPage = (props: Props) => {
             <ProductSection project={project.value} />
             <TeamSection project={project.value} />
             <DocumentsSection project={project.value} />
-            <Button
+            <div></div>
+          </GridItem>
+          <Divider orientation="vertical" flexItem />
+          <GridItem xs={12} sm={12} md={2} className={classes.recommendations}>
+            <Recommendations />
+          </GridItem>
+          <Hidden only={["xs", "sm"]}>
+          <GridItem xs={12} sm={12} md={12} className={classNames(classes.project, classes.actions)}>
+          <Button
               className={classes.goback}
               onClick={() => {
                 props.history.goBack();
@@ -169,12 +177,8 @@ const ProjectPage = (props: Props) => {
             >
               Volver
             </Button>
-            <div></div>
           </GridItem>
-          <Divider orientation="vertical" flexItem />
-          <GridItem xs={12} sm={12} md={2} className={classes.recommendations}>
-            <Recommendations />
-          </GridItem>
+          </Hidden>
         </GridContainer>
       </div>
       <Footer />

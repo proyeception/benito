@@ -30,11 +30,13 @@ import {
   TextField,
   ThemeProvider,
   createMuiTheme,
+  Hidden,
 } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { requestSupervisorAccount } from "../../functions/user";
 import { Alert } from "@material-ui/lab";
 import { grey } from "@material-ui/core/colors";
+import classNames from "classnames";
 
 const getKeyValue = <T extends object, U extends keyof T>(obj: T) => (key: U) =>
   obj[key];
@@ -82,7 +84,7 @@ const LoginPage = (props: LoginPageProps) => {
         {...rest}
       />
       <div
-        className={classes.pageHeader}
+        className={classNames(classes.pageHeader, classes.background)}
         style={{
           backgroundImage: "url(" + image + ")",
           backgroundSize: "cover",
@@ -150,6 +152,7 @@ const LoginPage = (props: LoginPageProps) => {
                             <Snackbar
                               open={error}
                               autoHideDuration={6000}
+                              
                               onClose={() => {
                                 setError(false);
                                 setDisabled(false);
@@ -161,6 +164,7 @@ const LoginPage = (props: LoginPageProps) => {
                                   setDisabled(false);
                                 }}
                                 severity="error"
+                                style={{zIndex: 999, opacity: 1}}
                               >
                                 ¡Lo sentimos! Salió algo mal procesando la
                                 solicitud. Nuestros ingenieros ya están
@@ -291,6 +295,7 @@ const LoginPage = (props: LoginPageProps) => {
                               >
                                 <Alert
                                   onClose={() => setSuccess(false)}
+                                  style={{zIndex: 999, opacity: 1}}
                                   severity="success"
                                 >
                                   ¡Listo! Un administrador revisará tu solicitud
@@ -312,6 +317,7 @@ const LoginPage = (props: LoginPageProps) => {
                                     setDisabled(false);
                                   }}
                                   severity="error"
+                                  style={{zIndex: 999, opacity: "1 !important"}}
                                 >
                                   ¡Lo sentimos! Salió algo mal procesando la
                                   solicitud. Nuestros ingenieros ya están
@@ -330,7 +336,7 @@ const LoginPage = (props: LoginPageProps) => {
             </GridItem>
           </GridContainer>
         </div>
-        <Footer whiteFont />
+        <Hidden smDown><Footer whiteFont /></Hidden>
       </div>
     </div>
   );

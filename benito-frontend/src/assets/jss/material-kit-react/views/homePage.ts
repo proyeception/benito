@@ -11,12 +11,18 @@ const homePage = (theme: Theme) => createStyles({
     fontSize: "4.2rem",
     fontWeight: 600,
     display: "inline-block",
-    position: "relative"
+    position: "relative",
+    [theme.breakpoints.down("md")]: {
+      fontSize: "6vw"
+    },
   },
   subtitle: {
     fontSize: "1.313rem",
     maxWidth: "500px",
-    margin: "10px 0 0"
+    margin: "10px 0 0",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "4vw"
+    },
   },
   main: {
     background: "#FFFFFF",

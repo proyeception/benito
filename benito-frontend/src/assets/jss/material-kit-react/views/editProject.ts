@@ -57,6 +57,14 @@ const editProjectStyle = (theme: Theme) =>
     paper: {
       padding: theme.spacing(1),
     },
+    button: {
+      [theme.breakpoints.down("md")]: {
+        width: "49%"
+      },
+      [theme.breakpoints.up("md")]: {
+        width: "15%"
+      },
+    }
 
   });
 
