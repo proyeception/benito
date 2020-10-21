@@ -42,7 +42,7 @@ const ProductSection = ({ project, session, history }: ProductSectionProps) => {
     <div className={classes.section}>
       <GridContainer justify="center">
         <GridItem xs={12} sm={12} md={12}>
-          <h2 className={classNames(classes.longTitle, classes.title)} style={{ textAlign: "center" }}>
+          <h2 className={classNames(classes.title)} style={{ textAlign: "center" }}>
             Acerca de {project.title}
             {showEdit ? (
               <span>

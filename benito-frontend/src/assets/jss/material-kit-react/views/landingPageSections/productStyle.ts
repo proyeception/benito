@@ -15,9 +15,15 @@ const productStyle = (theme: Theme) => createStyles({
     marginTop: "30px",
     minHeight: "32px",
     textDecoration: "none",
+    overflow: "hidden",
+    overflowWrap: "anywhere",
+    textTransform: "uppercase",
     [theme.breakpoints.down("md")]: {
-        fontSize: "6vw"
+        fontSize: "4vw"
     },
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "6vw"
+  },
   },
   description: {
     color: "#999",
