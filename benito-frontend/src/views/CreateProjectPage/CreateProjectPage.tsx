@@ -774,7 +774,8 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
             <CustomButton
               type="button"
               color="secondary"
-              style={{ width: "15%", textAlign: "right" }}
+              style={{ textAlign: "right" }}
+              className={classes.button}
               onClick={
                 () => {}
                 //props.history.push(`/projects/${project.id}`)
@@ -791,7 +792,8 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                 dateIncompleted ||
                 categoryIncompleted
               }
-              style={{ width: "15%", textAlign: "right" }}
+              style={{ textAlign: "right" }}
+              className={classes.button}
               onClick={() => {
                 if(supervisorsToAdd.length > 0){
                   setIsModalOpen(true)
