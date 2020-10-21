@@ -12,9 +12,9 @@ import {
   boxShadow,
   drawerWidth,
 } from "../../material-kit-react";
-import { createStyles } from "@material-ui/core/styles";
+import { createStyles, Theme } from "@material-ui/core/styles";
 
-const headerStyle = createStyles({
+const headerStyle = (theme: Theme) => createStyles({
   appBar: {
     display: "flex",
     border: "0",
@@ -152,6 +152,25 @@ const headerStyle = createStyles({
     paddingLeft: "0",
     ...transition,
   },
+  logoContainer: {
+    maxHeight: "40px",
+    [theme.breakpoints.down("sm")]: {
+      maxHeight: "25px"
+    },
+  },
+  brandLogo: {
+    maxHeight: "40px",
+    [theme.breakpoints.down("sm")]: {
+      maxHeight: "25px"
+    },
+  },
+  organizationLogo: {
+    maxHeight: "40px",
+    [theme.breakpoints.down("sm")]: {
+      maxHeight: "25px"
+    },
+  },
+
 });
 
 export default headerStyle;

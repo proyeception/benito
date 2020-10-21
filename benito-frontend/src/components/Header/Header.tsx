@@ -25,13 +25,6 @@ const getKeyValue = <T extends object, U extends keyof T>(obj: T) => (key: U) =>
 
 const useStyles = makeStyles(styles);
 
-const brand = (
-  <div className="brand-logo">
-    <img src={logo} className="brand-logo" />
-    <img src={utnLogo} className="brand-logo" />
-  </div>
-);
-
 type Any = any;
 
 interface HeaderProps extends RouteComponentProps, Any {}
@@ -42,6 +35,14 @@ const Header = (props: HeaderProps) => {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
+  const brand = (
+    <div className={classes.logoContainer}>
+      <img src={logo} className={classes.brandLogo} />
+      <img src={utnLogo} className={classes.organizationLogo} />
+    </div>
+  );
+  
   const { color, rightLinks, leftLinks, fixed, absolute } = props;
   const appBarClasses = classNames({
     [classes.appBar]: true,
