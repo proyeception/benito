@@ -14,7 +14,10 @@ const landingPageStyle = (theme: Theme) => createStyles({
     marginTop: "30px",
     minHeight: "32px",
     color: "#FFFFFF",
-    textDecoration: "none"
+    textDecoration: "none",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "7vw"
+    }
   },
   subtitle: {
     fontSize: "1.313rem",
