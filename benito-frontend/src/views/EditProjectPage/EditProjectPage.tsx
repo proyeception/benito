@@ -814,7 +814,8 @@ const EditProjectPage = (props: EditProjectPageProps) => {
             <CustomButton
               type="button"
               color="secondary"
-              style={{ width: "15%", textAlign: "right" }}
+              style={{ textAlign: "right" }}
+              className={classes.button}
               onClick={() =>
                 props.history.push(`/projects/${project.value.id}`)
               }
@@ -824,8 +825,9 @@ const EditProjectPage = (props: EditProjectPageProps) => {
             <CustomButton
               type="button"
               color="primary"
+              className={classes.button}
               disabled={titleIncompleted || descriptionIncompleted}
-              style={{ width: "15%", textAlign: "right" }}
+              style={{ textAlign: "right" }}
               onClick={() => setIsModalOpen(true)}
             >
               Guardar cambios

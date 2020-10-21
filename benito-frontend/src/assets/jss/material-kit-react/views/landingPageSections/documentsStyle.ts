@@ -28,6 +28,9 @@ const documentsStyle = (theme: Theme) => createStyles({
   documentsContainer: {
     maxHeight: "360px",
     overflow: "scroll",
+    [theme.breakpoints.down("sm")]: {
+      paddingTop: "20px"
+  }
   },
   document: {
     display: "flex",
