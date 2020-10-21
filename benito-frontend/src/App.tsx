@@ -23,6 +23,8 @@ import NotFoundPage from "./views/NotFoundPage/NotFoundPage";
 import EditProjectPage from "./views/EditProjectPage/EditProjectPage";
 import ComingSoon from './views/ComingSoon/ComingSoon';
 import CreateProjectPage from "./views/CreateProjectPage/CreateProjectPage";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core";
+import { grey } from "@material-ui/core/colors";
 
 const App = () => {
   const [isLoggingIn, setIsLoggingIn] = useState(true);
@@ -50,7 +52,14 @@ const App = () => {
     return <div id="login" />;
   }
 
+  const theme = createMuiTheme({
+    palette: {
+      primary: grey,
+    },
+  });
+
   return (
+    <ThemeProvider theme={theme}>
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <BrowserRouter>
         <Switch>
@@ -69,6 +78,7 @@ const App = () => {
         </Switch>
       </BrowserRouter>
     </MuiPickersUtilsProvider>
+    </ThemeProvider>
   );
 };
 
