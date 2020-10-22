@@ -35,7 +35,8 @@ data class ProjectDTO(
     val documentation: List<DocumentationDTO>?,
     val organization: OrganizationRefDTO,
     val recommendations: List<RecommendationDTO>,
-    val project_keywords: List<KeywordDTO>
+    val project_keywords: List<KeywordDTO>,
+    val keywordMatchingDocs: List<DocumentationDTO> = emptyList()
 ) {
     constructor(medusa: MedusaProjectDTO) : this(
         id = medusa.id,
@@ -50,7 +51,8 @@ data class ProjectDTO(
         documentation = medusa.documentation,
         organization = OrganizationRefDTO(medusa.organization) ,
         recommendations = medusa.recommendations.map { RecommendationDTO(it) },
-        project_keywords = medusa.project_keywords
+        project_keywords = medusa.project_keywords,
+        keywordMatchingDocs = medusa.keywordMatchingDocs ?: emptyList()
     )
 }
 

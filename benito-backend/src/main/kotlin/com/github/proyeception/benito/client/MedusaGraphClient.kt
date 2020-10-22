@@ -115,6 +115,13 @@ open class MedusaGraphClient(
                   file_name
                   drive_id
                 }
+                ${keyword?.let { """
+                keyword_matching_docs: documentation(where: { content_contains: "$it" } ) {
+                  id
+                  file_name
+                  drive_id
+                }
+                """.trimIndent() } ?: ""}
                 recommendations {
                   id
                   score

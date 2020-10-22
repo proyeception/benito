@@ -10,6 +10,7 @@ export type Project = {
   extraContent: string;
   documentation?: Array<Documentation>;
   organization: Organization;
+  keywordMatchingDocs: Array<Documentation>;
 };
 
 export type Person = {
