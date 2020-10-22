@@ -127,6 +127,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
 
   const [generatedTags, setGeneratedTags] = useState<Array<string>>([]);
   const [selectedTags, setSelectedTags] = useState<Array<string>>([]);
+  const [initialTags, setInitialTags] = useState<Array<string>>([]);
 
   
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
@@ -221,6 +222,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
       });
     setAuthors(authors.concat(p.authors));
     setSupervisors(supervisors.concat(p.supervisors));
+    setInitialTags(p.tags)
   });
 
   const theme = createMuiTheme({
@@ -371,8 +373,8 @@ const EditProjectPage = (props: EditProjectPageProps) => {
     }
 
     //tags
-    if (selectedTags != []) {
-      promises.push(updateTags(projectId, selectedTags));
+    if (initialTags.concat(selectedTags) != []) {
+      promises.push(updateTags(projectId, initialTags.concat(selectedTags)));
     }
 
     //users
@@ -489,8 +491,9 @@ const EditProjectPage = (props: EditProjectPageProps) => {
             >
               <Typography>Podés agregar más información sobre tu proyecto para la gente que lo visite. Podés formatear el contenido y cargar imágenes.</Typography>
             </Popover>
-            <MEDitor value={readme} onChange={(e) => setReadme(e)} onBlur={(e) => generateTags()} />
+            <MEDitor value={readme} style={{overflow:"hidden"}} onChange={(e) => setReadme(e)} onBlur={(e) => generateTags()} />
           </GridItem>
+          <br/> 
           <GridItem>
             <h4 className={classes.subtitle} >Tags <Icon onMouseEnter={handlePopoverOpen} onMouseLeave={handlePopoverClose} style={{color:"#c41234", verticalAlign: "middle"}}>help</Icon></h4>
             <Popover
@@ -514,7 +517,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
             >
               <Typography>Te recomendamos algunos tags generados a partir del contenido que cargaste en los campos anteriores. Los tags sirven para que más gente pueda encontrar tu proyecto!</Typography>
             </Popover>
-            {selectedTags.map((s, idx) => (
+            {selectedTags.concat(initialTags).map((s, idx) => (
               <div
                 key={idx}
                 className={classNames(

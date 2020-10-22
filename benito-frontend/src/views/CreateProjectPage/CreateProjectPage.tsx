@@ -453,9 +453,9 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
             >
               <Typography>Podés agregar más información sobre tu proyecto para la gente que lo visite. Podés formatear el contenido y cargar imágenes.</Typography>
             </Popover>
-            <MEDitor value={readme} onChange={(e) => setReadme(e)} onBlur={(e) => generateTags()}/>
+            <MEDitor value={readme} style={{overflow:"hidden"}} onChange={(e) => setReadme(e)} onBlur={(e) => generateTags()}/>
           </GridItem>
-
+          <br/> 
           <GridItem>
             <h4 className={classes.subtitle} >Tags <Icon onMouseEnter={handlePopoverOpen} onMouseLeave={handlePopoverClose} style={{color:"#c41234", verticalAlign: "middle"}}>help</Icon></h4>
             <Popover
