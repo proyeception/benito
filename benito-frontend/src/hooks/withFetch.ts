@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { useEffect, useState } from "react";
 import { benitoHost } from "../config";
+import { signRequest } from "../functions/http";
 
 export const PENDING = "PENDING";
 export const SUCCESS = "SUCCESS";
@@ -24,8 +25,7 @@ export type FetchStatus<T> = FetchSuccess<T> | FetchError | FetchPending;
 
 export default function withFetch<T>(
   path: string,
-  onSuccess?: (arg0: T) => void,
-  customize?: (config: AxiosRequestConfig) => AxiosRequestConfig
+  onSuccess?: (arg0: T) => void
 ): [FetchStatus<T>, (path: string) => void] {
   const [status, setStatus] = useState<FetchStatus<T>>({ type: PENDING });
   const [isFetching, setIsFetching] = useState(false);
@@ -43,12 +43,8 @@ export default function withFetch<T>(
         withCredentials: true,
       };
 
-      if (customize) {
-        config = customize(config);
-      }
-
       axios
-        .request<T>(config)
+        .request<T>(signRequest(config))
         .then((res) => res.data)
         .then((t) => {
           setStatus({ type: SUCCESS, value: t });

@@ -7,6 +7,8 @@ export function signRequest(config: AxiosRequestConfig): AxiosRequestConfig {
     ...config,
     headers: {
       "x-qui-token": session.isLoggedIn ? session.token : null,
+      "x-customization-token":
+        store.getState().common.customizationToken || null,
     },
   };
 }

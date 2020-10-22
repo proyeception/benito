@@ -49,11 +49,7 @@ const HomePage = (props: HomePageProps) => {
         </Hidden>
         <FeaturedSection />
         <CategoriesSection />
-        {props.customizationToken && (
-          <RecommendationsSection
-            customizationToken={props.customizationToken}
-          />
-        )}
+        {props.customizationToken && <RecommendationsSection />}
       </div>
       <Footer />
     </div>

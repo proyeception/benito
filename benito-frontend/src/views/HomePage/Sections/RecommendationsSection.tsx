@@ -41,13 +41,8 @@ const styles = (theme: Theme) => {
 
 const useStyles = makeStyles(styles);
 
-type RecommendationsSectionProps = {
-  session: SessionState;
-  customizationToken: string;
-};
-
-const RecommendationsSection = (props: RecommendationsSectionProps) => {
-  const featured = withCustomizedRecommendations(props.customizationToken);
+const RecommendationsSection = () => {
+  const featured = withCustomizedRecommendations();
   const classes = useStyles();
 
   if (featured.type == "ERROR") {
@@ -82,10 +77,18 @@ const RecommendationsSection = (props: RecommendationsSectionProps) => {
         dotListClass="custom-dot-list-style"
       >
         {featured.value.map((project, index) => (
-          <Card key={index} className={classes.card} style={{ maxWidth: "20rem", height: "420px", boxShadow: "none" }}>
+          <Card
+            key={index}
+            className={classes.card}
+            style={{ maxWidth: "20rem", height: "420px", boxShadow: "none" }}
+          >
             <img
               style={{ height: "180px", width: "100%", display: "block" }}
-              className={classNames( classes.imgCard, classes.imgRaised, classes.imgFit)}
+              className={classNames(
+                classes.imgCard,
+                classes.imgRaised,
+                classes.imgFit
+              )}
               src={project.pictureUrl || pictureNotFound}
               alt={project.title}
             />
@@ -93,7 +96,9 @@ const RecommendationsSection = (props: RecommendationsSectionProps) => {
               <div className="organization">
                 {project.organization.displayName}
               </div>
-              <p className={classNames(classes.cardTitle, classes.longTitle)}>{project.title}</p>
+              <p className={classNames(classes.cardTitle, classes.longTitle)}>
+                {project.title}
+              </p>
               <div className="read-more-container">
                 <p className="featured-card-text">{project.description}</p>
                 <p className="read-more"></p>

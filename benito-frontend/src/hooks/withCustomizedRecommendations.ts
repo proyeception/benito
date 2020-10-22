@@ -1,21 +1,10 @@
 import { Project } from "../types";
 import withFetch from "./withFetch";
 
-export default function withCustomizedRecommendations(
-  customizationToken: string
-) {
+export default function withCustomizedRecommendations() {
   const [projects] = withFetch<Array<Project>>(
     "users/recommendations",
-    () => {},
-    (config) => {
-      return {
-        ...config,
-        headers: {
-          ...config.headers,
-          "x-customization-token": customizationToken,
-        },
-      };
-    }
+    () => {}
   );
   return projects;
 }

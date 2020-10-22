@@ -5,9 +5,9 @@ import withFetch, { FetchStatus } from "./withFetch";
 type Refresh = (params: SearchParams) => void;
 
 type Search = {
-  projects: Array<Project>,
-  count: number,
-}
+  projects: Array<Project>;
+  count: number;
+};
 
 const withProjects = (
   params: SearchParams,
