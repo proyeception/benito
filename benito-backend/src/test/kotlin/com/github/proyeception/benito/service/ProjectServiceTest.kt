@@ -23,7 +23,7 @@ class ProjectServiceTest : Spec() {
         val documentService: DocumentService = getMock()
         val fileServiceMock: FileService = getMock()
         val medusaGraphClientMock: MedusaGraphClient = getMock()
-        val keywordService: KeywordService = KeywordService()
+        val keywordService = KeywordService()
         val recommendationService: RecommendationService = getMock()
         val projectService = ProjectService(
             medusaClient = medusaClient,
@@ -268,7 +268,7 @@ class ProjectServiceTest : Spec() {
 
                 val inputMock: InputStream = getMock()
                 on(multipartMock.inputStream).thenReturn(inputMock)
-                on(documentParserMock.parse(eq(inputMock))).thenReturn("asd")
+                on(documentParserMock.parse(eq(inputMock), any())).thenReturn("asd")
                 on(documentService.saveFile(
                     file = eq(multipartMock),
                     projectId = eq("123")

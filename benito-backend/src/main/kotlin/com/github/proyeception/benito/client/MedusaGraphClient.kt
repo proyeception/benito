@@ -7,7 +7,9 @@ import com.github.proyeception.benito.connector.GraphResponse
 import com.github.proyeception.benito.dto.MedusaProjectDTO
 import com.github.proyeception.benito.dto.OrderDTO
 import com.github.proyeception.benito.extension.replaceUrlSpaces
+import org.eclipse.jetty.util.Promise
 import org.slf4j.LoggerFactory
+import java.util.concurrent.CompletableFuture
 
 open class MedusaGraphClient(
     private val medusaGraphConnector: GraphConnector
@@ -49,7 +51,6 @@ open class MedusaGraphClient(
             projectKeywords = projectKeywords,
             requiresLimit = limit
         )
-
         LOGGER.info("Search params: $params")
 
         return medusaGraphConnector.execute(

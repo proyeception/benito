@@ -5,8 +5,8 @@ import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.client.MedusaGraphClient
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.FailedDependencyException
+import com.github.proyeception.benito.extension.asyncIO
 import com.github.proyeception.benito.parser.DocumentParser
-import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
 import org.apache.http.entity.ContentType
@@ -107,8 +107,8 @@ open class ProjectService(
             val projectsFilteredByTag = projects.filter { filterByTag(tag, it) }
             val count = projectsFilteredByTag.count()
             val pageSize = 10
-            val start = (page?:0) * pageSize
-            val limit = minOf((start + pageSize - 1), count-1)
+            val start = (page ?: 0) * pageSize
+            val limit = minOf((start + pageSize - 1), count - 1)
             SearchProjectDTO(projectsFilteredByTag.slice(start..limit), count)
         }
     }
@@ -155,22 +155,12 @@ open class ProjectService(
     }
 
     fun saveDocuments(projectId: String, files: List<MultipartFile>): ProjectDTO = mappingFromMedusa {
-        val ids = runBlocking {
-            files.map { f -> async { documentService.saveFile(projectId = projectId, file = f) } }.awaitAll()
-        }
-
         val docs = runBlocking {
-            files.zip(ids).map { (f, driveId) ->
-                async {
+            files.map { f ->
+                asyncIO {
+                    val driveId = documentService.saveFile(projectId = projectId, file = f)
                     val fileStream = f.inputStream
-                    var content = ""
-                    try {
-                        content = documentParser.parse(fileStream)
-                    } catch (e: Exception) {
-                        LOGGER.warn("No se pudo parsear el documento: " + f.name)
-                        LOGGER.error(e.message)
-                        LOGGER.error(e.stackTrace.toString())
-                    }
+                    val content = documentParser.parse(fileStream, f.originalFilename ?: f.name) ?: ""
 
                     CreateDocumentDTO(
                         driveId = driveId,
@@ -265,9 +255,10 @@ open class ProjectService(
 
     fun recommendedProjects(id: String): List<ProjectDTO> {
         val project = findProject(id)
-        return runBlocking { project.recommendations
-            .take(4)
-            .map { async {  findProject(it.projectId) } }.awaitAll()
+        return runBlocking {
+            project.recommendations
+                .take(4)
+                .map { asyncIO { findProject(it.projectId) } }.awaitAll()
         }
     }
 

@@ -6,6 +6,7 @@ import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.ForbiddenException
 import com.github.proyeception.benito.exception.UnauthorizedException
 import com.github.proyeception.benito.service.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.springframework.http.MediaType
@@ -20,9 +21,7 @@ import javax.servlet.http.HttpServletResponse
 open class ProjectController(
     private val projectService: ProjectService,
     private val sessionService: SessionService,
-    private val userService: UserService,
-    private val recommendationService: RecommendationService,
-    private val keywordService: KeywordService
+    private val userService: UserService
 ) {
 
     @RequestMapping("/benito/projects", method = [RequestMethod.GET])
@@ -97,7 +96,6 @@ open class ProjectController(
                     ?.let { sessionService[it] }
                     ?.let { userService.setCustomizationUserId(token, it.userId) }
             }
-
         }
 
     @RequestMapping(

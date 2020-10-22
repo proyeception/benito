@@ -7,7 +7,9 @@ import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.AmbiguousReferenceException
 import com.github.proyeception.benito.storage.CustomizationStorage
 import com.github.proyeception.benito.utils.HashHelper
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.future.future
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.apache.http.entity.ContentType
@@ -107,6 +109,13 @@ open class UserService(
 
     fun getCustomRecommendedProjects(token: String): List<ProjectDTO> {
         val tracking = customizationStorage.customRecommendations(token)
+
+        tracking.map {
+            CoroutineScope(Dispatchers.IO).future { projectService.recommendedProjects(it.projectId) }
+        }
+
+        CoroutineScope(Dispatchers.IO).future {
+        }
 
         return runBlocking {
             tracking.flatMap {
