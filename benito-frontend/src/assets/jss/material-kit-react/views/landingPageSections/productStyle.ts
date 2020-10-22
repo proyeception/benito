@@ -1,10 +1,13 @@
 import { title } from "../../../material-kit-react";
-import { createStyles } from "@material-ui/core/styles";
+import { Theme, createStyles } from "@material-ui/core/styles";
 
-const productStyle = createStyles({
+const productStyle = (theme: Theme) => createStyles({
   section: {
     padding: "70px 0",
-    textAlign: "left",
+    [theme.breakpoints.down("md")]: {
+      padding: "20px 0"
+    },
+    textAlign: "justify",
   },
   title: {
     ...title,
@@ -12,10 +15,28 @@ const productStyle = createStyles({
     marginTop: "30px",
     minHeight: "32px",
     textDecoration: "none",
+    overflow: "hidden",
+    overflowWrap: "anywhere",
+    textTransform: "uppercase",
+    [theme.breakpoints.down("md")]: {
+        fontSize: "4vw"
+    },
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "6vw"
+  },
   },
   description: {
     color: "#999",
+    overflow: "auto",
+    fontSize: "100%",
   },
+  longTitle:{
+    textOverflow: "ellipsis",
+    lineClamp: 4,
+    display: "-webkit-box",
+    boxOrient: "vertical",
+    overflow: "hidden"
+  }
 });
 
 export default productStyle;

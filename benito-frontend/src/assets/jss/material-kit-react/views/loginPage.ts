@@ -1,7 +1,7 @@
 import { container } from "../../material-kit-react";
-import { createStyles } from "@material-ui/core/styles";
+import { createStyles, Theme } from "@material-ui/core/styles";
 
-const signupPageStyle = createStyles({
+const signupPageStyle = (theme: Theme) => createStyles({
   container: {
     ...container,
     zIndex: 2,
@@ -83,6 +83,12 @@ const signupPageStyle = createStyles({
   inputIconsColor: {
     color: "#495057",
   },
+  background:{
+    [theme.breakpoints.down("md")]: {
+      backgroundImage: "url('/src/assets/img/proyectate/mobile-login.png') !important",
+      backgroundColor: "whitesmoke"
+    },
+  }
 });
 
 export default signupPageStyle;

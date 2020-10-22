@@ -20,7 +20,8 @@ export default function ErrorPage(props: any) {
             <GridItem
                 xs={12}
                 sm={12}
-                md={6}
+                md={12}
+                lg={6}
                 id="search-box"
             >
                 <div className={classes.text}>
@@ -31,7 +32,8 @@ export default function ErrorPage(props: any) {
             <GridItem
                 xs={12}
                 sm={12}
-                md={5}
+                md={12}
+                lg={5}
                 id="results"
             >
                 <img src={developer} className={classes.image}/>
