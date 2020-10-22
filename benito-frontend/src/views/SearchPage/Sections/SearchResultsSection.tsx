@@ -25,6 +25,8 @@ import Spinner from "../../../components/Spinner/Spinner";
 import image from "../../../assets/img/proyectate/nothing.jpg";
 import pictureNotFound from "../../../assets/img/proyectate/picture.svg";
 import Pagination from "@material-ui/lab/Pagination";
+import { Alert, AlertTitle } from "@material-ui/lab";
+import classNames from "classnames";
 
 interface SearchResultsSectionProps extends RouteChildrenProps<SearchParams> {
   status: Fetch;
@@ -121,7 +123,9 @@ const SearchResultsSection = (props: SearchResultsSectionProps) => {
               <GridItem xs={12} sm={12} md={9}>
                 <div className={classes.contentContainer}>
                   <ProjectLink id={p.id}>
-                    <div className={classes.title + " underline-hover"}>
+                    <div
+                      className={classNames(classes.title, " underline-hover")}
+                    >
                       {p.title}
                     </div>
                     <Hidden mdUp>
@@ -133,21 +137,6 @@ const SearchResultsSection = (props: SearchResultsSectionProps) => {
                     </Hidden>
                   </ProjectLink>
                   <div className={classes.description}>{p.description}</div>
-                  <br />
-                  {p.keywordMatchingDocs.length > 0 && (
-                    <div>
-                      <div>
-                        Los siguientes documentos son relevantes para tu
-                        búsqueda:
-                      </div>
-
-                      <ul>
-                        {p.keywordMatchingDocs.map((d, idx) => (
-                          <li key={idx}>{d.fileName}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
                 </div>
                 <br />
                 <div className={classes.authors}>
@@ -166,6 +155,25 @@ const SearchResultsSection = (props: SearchResultsSectionProps) => {
                 </ProjectLink>
               </GridItem>
             </GridContainer>
+            {p.keywordMatchingDocs.length > 0 && (
+              <Alert
+                severity="info"
+                icon={false}
+                style={{
+                  marginTop: "30px",
+                  backgroundColor: "#ececec",
+                }}
+              >
+                <AlertTitle>
+                  Los siguientes documentos son relevantes para tu búsqueda:
+                </AlertTitle>
+                <ul>
+                  {p.keywordMatchingDocs.map((d, idx) => (
+                    <li key={idx}>{d.fileName}</li>
+                  ))}
+                </ul>
+              </Alert>
+            )}
           </GridItem>
         ))}
         <GridContainer justify="center" xs={12} sm={12} md={12}>
