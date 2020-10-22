@@ -30,7 +30,8 @@ open class MedusaGraphClient(
         id: String? = null,
         projectKeywords: List<String>? = null,
         page: Int = 0,
-        tag: String? = null
+        tag: String? = null,
+        limit: Boolean = true
     ): Either<Throwable, List<MedusaProjectDTO>> {
         val params = formatParams(
             orderBy = orderBy,
@@ -45,7 +46,8 @@ open class MedusaGraphClient(
             organizationName = organizationName,
             page = page,
             id = id,
-            projectKeywords = projectKeywords
+            projectKeywords = projectKeywords,
+            requiresLimit = limit
         )
 
         LOGGER.info("Search params: $params")
@@ -217,7 +219,8 @@ open class MedusaGraphClient(
         organizationName: String? = null,
         id: String? = null,
         projectKeywords: List<String>? = null,
-        page: Int = 0
+        page: Int = 0,
+        requiresLimit: Boolean = true
     ): String {
         val where = mutableListOf<String>()
         title?.let { where.add("""title_contains: "$it"""") }
@@ -236,7 +239,8 @@ open class MedusaGraphClient(
 
         val sort = orderBy?.let { """sort: "${it.sortMethod}"""" }
 
-        val start = """start: ${page * PAGE_SIZE}"""
+        val startValue: Int = if (requiresLimit) page * PAGE_SIZE else 0
+        val start = """start: $startValue"""
 
         val limit = """limit: $PAGE_SIZE"""
 
@@ -244,8 +248,12 @@ open class MedusaGraphClient(
         where.takeUnless { it.isEmpty() }?.let {
             params.add("where: { ${it.joinToString(", ")} }")
         }
+
         params.add(start)
-        params.add(limit)
+
+        if(requiresLimit) {
+            params.add(limit)
+        }
         sort?.let { params.add(it) }
 
         return params.joinToString(", ")

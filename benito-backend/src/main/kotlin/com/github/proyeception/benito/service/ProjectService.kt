@@ -39,27 +39,31 @@ open class ProjectService(
         page: Int?,
         tag: String?
     ): SearchProjectDTO {
-        val projects = medusaGraphClient.findProjects(
-            orderBy = orderBy,
-            from = from,
-            to = to,
-            title = title,
-            category = category,
-            authorId = authorId,
-            authorName = authorName,
-            keyword = keyword,
-            organizationId = organizationId,
-            organizationName = organizationName,
-            page = page ?: 0,
-            tag = tag
-        )
-            .getOrHandle {
-                LOGGER.error("Error getting projects from Medusa with Graph")
-                throw FailedDependencyException("Error getting projects from Medusa")
-            }
-            .map { ProjectDTO(it) }
+
 
         return if (tag.isNullOrEmpty()) {
+
+            val projects = medusaGraphClient.findProjects(
+                orderBy = orderBy,
+                from = from,
+                to = to,
+                title = title,
+                category = category,
+                authorId = authorId,
+                authorName = authorName,
+                keyword = keyword,
+                organizationId = organizationId,
+                organizationName = organizationName,
+                page = page ?: 0,
+                tag = tag,
+                limit = true
+            )
+                .getOrHandle {
+                    LOGGER.error("Error getting projects from Medusa with Graph")
+                    throw FailedDependencyException("Error getting projects from Medusa")
+                }
+                .map { ProjectDTO(it) }
+
             val count: Int = medusaGraphClient.countProjects(
                 from = from,
                 to = to,
@@ -77,9 +81,35 @@ open class ProjectService(
 
             SearchProjectDTO(projects, count)
         } else {
+
+            val projects = medusaGraphClient.findProjects(
+                orderBy = orderBy,
+                from = from,
+                to = to,
+                title = title,
+                category = category,
+                authorId = authorId,
+                authorName = authorName,
+                keyword = keyword,
+                organizationId = organizationId,
+                organizationName = organizationName,
+                page = page ?: 0,
+                tag = tag,
+                limit = false
+            )
+                .getOrHandle {
+                    LOGGER.error("Error getting projects from Medusa with Graph")
+                    throw FailedDependencyException("Error getting projects from Medusa")
+                }
+                .map { ProjectDTO(it) }
+
             //Strapi no soporta queries por graphQL con repeatable components por el momento
             val projectsFilteredByTag = projects.filter { filterByTag(tag, it) }
-            SearchProjectDTO(projectsFilteredByTag, projectsFilteredByTag.count())
+            val count = projectsFilteredByTag.count()
+            val pageSize = 10
+            val start = (page?:0) * pageSize
+            val limit = minOf((start + pageSize - 1), count-1)
+            SearchProjectDTO(projectsFilteredByTag.slice(start..limit), count)
         }
     }
 
