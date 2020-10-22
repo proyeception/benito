@@ -18,46 +18,52 @@ const searchResultsStyle = (theme: Theme) =>
       marginTop: "30px",
       minHeight: "32px",
       textDecoration: "none",
+      textOverflow: "ellipsis",
+      overflow: "hidden",
+      lineClamp: 1,
+      whiteSpace: "nowrap",
     },
     description: {
       color: "#3c4858",
       textOverflow: "ellipsis",
-      lineClamp: 5,
+      lineClamp: 4,
       display: "-webkit-box",
       boxOrient: "vertical",
-      overflow: "hidden"
+      overflow: "hidden",
     },
     picture: {
       display: "block",
       width: "100%",
-      height: "-webkit-fill-available",
       objectFit: "cover",
+      height: "100%",
     },
     pictureMobile: {
       display: "block",
-      width: "-webkit-fill-available",
-      height: "auto",
+      width: "100%",
+      height: "320px",
     },
     authors: {
       [theme.breakpoints.down("md")]: {
-        textAlign: "right"
+        textAlign: "right",
       },
       [theme.breakpoints.up("md")]: {
         color: "#3c4858",
         textAlign: "right",
         fontSize: "13px",
-        verticalAlign: "bottom",
-        position: "absolute",
         bottom: 0,
         right: 0,
       },
     },
     result: {
+      [theme.breakpoints.down("sm")]: {
+        height: "592px",
+      },
       [theme.breakpoints.up("md")]: {
-        height: "240px",
+        height: "300px",
       },
       display: "flex",
       flexGrow: 1,
+      overflow: "hidden",
     },
     text: {
       display: "flex",
@@ -65,26 +71,14 @@ const searchResultsStyle = (theme: Theme) =>
       alignItems: "center",
       flexDirection: "column",
       verticalAlign: "middle",
-      height:"90%",
+      height: "90%",
     },
-
-    white: {
-      background: "#FFFFFF",
-      height:"100%",
-      width:"100%",
-      position:"absolute",
-      left:"0",
-      top:"0",
-      overflow: "hidden",
-    },
-
     image: {
       width: "70%",
       marginLeft: "auto",
       marginRight: "auto",
-      display: "block"
+      display: "block",
     },
-
     message: {
       ...title,
       fontSize: "40px",
@@ -93,7 +87,6 @@ const searchResultsStyle = (theme: Theme) =>
       textAlign: "center",
       verticalAlign: "middle",
     },
-
     submessage: {
       ...subtitle,
       fontSize: "25px",
@@ -106,8 +99,16 @@ const searchResultsStyle = (theme: Theme) =>
 
     paginator: {
       justifyContent: "center",
-      padding: "10px"
-    }
+      padding: "10px",
+    },
+    contentContainer: {
+      [theme.breakpoints.up("md")]: {
+        height: "192px",
+      },
+      [theme.breakpoints.down("sm")]: {
+        height: "480px",
+      },
+    },
   });
 
 export default searchResultsStyle;
