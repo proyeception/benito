@@ -5,15 +5,15 @@ import com.github.proyeception.benito.X_QUI_TOKEN
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.ForbiddenException
 import com.github.proyeception.benito.exception.UnauthorizedException
-import com.github.proyeception.benito.service.*
-import kotlinx.coroutines.Dispatchers
+import com.github.proyeception.benito.service.ProjectService
+import com.github.proyeception.benito.service.SessionService
+import com.github.proyeception.benito.service.UserService
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
-import java.time.LocalDate
 import javax.servlet.http.Cookie
 import javax.servlet.http.HttpServletResponse
 
@@ -38,7 +38,8 @@ open class ProjectController(
         @RequestParam(required = false, name = "organization") organizationId: String?,
         @RequestParam(required = false) organizationName: String?,
         @RequestParam(required = false) page: Int?,
-        @RequestParam(required = false) tag: String?
+        @RequestParam(required = false) tag: String?,
+        @RequestHeader(required = false, value = X_QUI_TOKEN) sessionToken: String?
     ): SearchProjectDTO = projectService.findProjects(
         orderBy = orderBy,
         from = from,
@@ -52,7 +53,9 @@ open class ProjectController(
         organizationId = organizationId,
         organizationName = organizationName,
         tag = tag
-    )
+    ).let { sp ->
+        sp.copy(projects = sp.projects.map { removeSensitiveIfNotAuthorized(sessionToken, it) })
+    }
 
     @RequestMapping("/benito/projects/featured", method = [RequestMethod.GET])
     @ResponseBody
@@ -75,13 +78,7 @@ open class ProjectController(
         @RequestHeader(value = X_QUI_TOKEN, required = false) sessionToken: String?,
         httpResponse: HttpServletResponse
     ): ProjectDTO = projectService.findProject(id)
-        .let {
-            sessionToken?.let { st -> sessionService[st] }
-                ?.userId
-                ?.takeIf { uid -> it.authors.any { a -> a.id == uid } || it.supervisors.any { s -> s.id == uid } }
-                ?.let { _ -> it }
-                ?: it.copy(documentation = null)
-        }
+        .let { removeSensitiveIfNotAuthorized(sessionToken, it) }
         .also { p ->
             val token = customizationToken ?: userService.createCustomizationId()
 
@@ -237,4 +234,13 @@ open class ProjectController(
             ?.let(f)
             ?: throw ForbiddenException(forbiddenMessage)
     }
+
+    private fun removeSensitiveIfNotAuthorized(
+        sessionToken: String?,
+        project: ProjectDTO
+    ): ProjectDTO = sessionToken?.let { st -> sessionService[st] }
+        ?.userId
+        ?.takeIf { uid -> project.authors.any { a -> a.id == uid } || project.supervisors.any { s -> s.id == uid } }
+        ?.let { _ -> project }
+        ?: project.copy(documentation = null, keywordMatchingDocs = emptyList())
 }
