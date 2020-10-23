@@ -75,7 +75,7 @@ open class GoogleDriveClient(
             }
         }
 
-    private fun query(query: String): Either<Throwable, List<GoogleFileDTO>> = googleDriveConnector.get(
+    fun query(query: String): Either<Throwable, List<GoogleFileDTO>> = googleDriveConnector.get(
         url = "https://www.googleapis.com/drive/v3/files?q=${query.replaceUrlSpaces()}"
     )
         .map { it.deserializeAs(object : TypeReference<QueryDTO>() {}) }

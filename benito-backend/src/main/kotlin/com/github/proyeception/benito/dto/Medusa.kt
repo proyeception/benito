@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-
 data class MedusaProjectDTO(
     val id: String,
     val title: String,
@@ -207,3 +206,7 @@ data class UpdateMedusaUserDTO(
         twitter = user.socials.twitter
     )
 }
+
+data class UpdateDriveFolderDTO(
+    val driveFolderId: String
+)

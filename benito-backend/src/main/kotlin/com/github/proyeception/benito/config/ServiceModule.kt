@@ -8,6 +8,7 @@ import com.github.proyeception.benito.service.*
 import com.github.proyeception.benito.snapshot.CategorySnapshot
 import com.github.proyeception.benito.snapshot.OrganizationSnapshot
 import com.github.proyeception.benito.storage.CustomizationStorage
+import com.github.proyeception.benito.storage.DriveStorage
 import com.github.proyeception.benito.storage.RecommendationStorage
 import com.github.proyeception.benito.storage.SessionStorage
 import com.github.proyeception.benito.utils.FileHelper
@@ -23,7 +24,9 @@ open class ServiceModule {
         fileService: FileService,
         medusaGraphClient: MedusaGraphClient,
         keywordService: KeywordService, //sacar
-        recommendationService: RecommendationService
+        recommendationService: RecommendationService,
+        driveStorage: DriveStorage,
+        googleDriveClient: GoogleDriveClient
     ): ProjectService = ProjectService(
         medusaClient = medusaClient,
         documentParser = documentParser,
@@ -31,7 +34,9 @@ open class ServiceModule {
         fileService = fileService,
         medusaGraphClient = medusaGraphClient,
         keywordService = keywordService, //sacar
-        recommendationService = recommendationService
+        recommendationService = recommendationService,
+        driveStorage = driveStorage,
+        googleDriveClient = googleDriveClient
     )
 
     @Bean

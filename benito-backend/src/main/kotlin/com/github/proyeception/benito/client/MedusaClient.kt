@@ -81,6 +81,13 @@ open class MedusaClient(
         ref = MEDUSA_PROJECT_REF
     )
 
+    fun updateProjectDriveFolder(id: String, id1: String): Any = update(
+        collection = PROJECTS,
+        id = id,
+        ref = ANY_REF,
+        dto = UpdateDriveFolderDTO(id1)
+    )
+
     open fun findUser(userId: String, userType: UserType): MedusaPersonDTO = findOne(
         collection = userType.collection,
         id = userId,

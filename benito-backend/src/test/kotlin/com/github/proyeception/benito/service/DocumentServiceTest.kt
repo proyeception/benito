@@ -25,20 +25,10 @@ class DocumentServiceTest : Spec() {
                 val multipartMock: MultipartFile = getMock()
                 on(multipartMock.originalFilename).thenReturn("some-doc")
 
-                on(googleMock.findOrCreateFolder(
-                    name = eq("456")
-                )).thenReturn(
-                    GoogleFileDTO(
-                        id = "123456",
-                        name = "some-doc",
-                        mimeType = "application/pdf",
-                        webContentLink = null
-                    ).right()
-                )
                 on(googleMock.createFile(
                     name = eq("some-doc"),
                     file = eq(multipartMock),
-                    folderId = eq("123456")
+                    folderId = eq("456")
                 )).thenReturn(FileCreatedDTO(
                     id = "123",
                     name = "some-doc",
@@ -46,7 +36,7 @@ class DocumentServiceTest : Spec() {
                 ).right())
 
                 val expected = "123"
-                val actual = documentService.saveFile(file = multipartMock, projectId = "456")
+                val actual = documentService.saveFile(file = multipartMock, folderId = "456")
 
                 actual shouldBe expected
             }
@@ -55,24 +45,14 @@ class DocumentServiceTest : Spec() {
                 val multipartMock: MultipartFile = getMock()
                 on(multipartMock.originalFilename).thenReturn("some-doc")
 
-                on(googleMock.findOrCreateFolder(
-                    name = eq("456")
-                )).thenReturn(
-                    GoogleFileDTO(
-                        id = "123456",
-                        name = "some-doc",
-                        mimeType = "application/pdf",
-                        webContentLink = null
-                    ).right()
-                )
                 on(googleMock.createFile(
                     name = eq("some-doc"),
                     file = eq(multipartMock),
-                    folderId = eq("123456")
+                    folderId = eq("456")
                 )).thenReturn(RuntimeException("error").left())
 
                 shouldThrow<RuntimeException> {
-                    documentService.saveFile(file = multipartMock, projectId = "456")
+                    documentService.saveFile(file = multipartMock, folderId = "456")
                 }
             }
         }

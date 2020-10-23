@@ -8,7 +8,10 @@ import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.mock.eq
 import com.github.proyeception.benito.mock.getMock
 import com.github.proyeception.benito.mock.on
+import com.github.proyeception.benito.oauth.GoogleDriveClient
 import com.github.proyeception.benito.parser.DocumentParser
+import com.github.proyeception.benito.storage.Drive
+import com.github.proyeception.benito.storage.DriveStorage
 import com.nhaarman.mockito_kotlin.any
 import io.kotlintest.matchers.shouldBe
 import org.mockito.Mockito.verify
@@ -25,6 +28,8 @@ class ProjectServiceTest : Spec() {
         val medusaGraphClientMock: MedusaGraphClient = getMock()
         val keywordService = KeywordService()
         val recommendationService: RecommendationService = getMock()
+        val driveClientMock: GoogleDriveClient = getMock()
+        val driveStorageMock: DriveStorage = getMock()
         val projectService = ProjectService(
             medusaClient = medusaClient,
             documentParser = documentParserMock,
@@ -32,7 +37,9 @@ class ProjectServiceTest : Spec() {
             fileService = fileServiceMock,
             medusaGraphClient = medusaGraphClientMock,
             keywordService = keywordService,
-            recommendationService = recommendationService
+            recommendationService = recommendationService,
+            driveStorage = driveStorageMock,
+            googleDriveClient = driveClientMock
         )
 
         "projects" should {
@@ -267,11 +274,12 @@ class ProjectServiceTest : Spec() {
                 )
 
                 val inputMock: InputStream = getMock()
+                on(driveStorageMock.findOne(any())).thenReturn(Drive("456", "123"))
                 on(multipartMock.inputStream).thenReturn(inputMock)
                 on(documentParserMock.parse(eq(inputMock), any())).thenReturn("asd")
                 on(documentService.saveFile(
                     file = eq(multipartMock),
-                    projectId = eq("123")
+                    folderId = eq("123")
                 )).thenReturn("456")
                 on(medusaClient.saveDocuments(
                     docs = eq(

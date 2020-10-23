@@ -5,13 +5,15 @@ import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.client.MedusaGraphClient
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.FailedDependencyException
+import com.github.proyeception.benito.exception.NotFoundException
 import com.github.proyeception.benito.extension.asyncIO
+import com.github.proyeception.benito.extension.launchIOAsync
+import com.github.proyeception.benito.oauth.GoogleDriveClient
 import com.github.proyeception.benito.parser.DocumentParser
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.runBlocking
+import com.github.proyeception.benito.storage.DriveStorage
+import kotlinx.coroutines.*
 import org.apache.http.entity.ContentType
 import org.slf4j.LoggerFactory
-import org.springframework.scheduling.annotation.Async
 import org.springframework.web.multipart.MultipartFile
 import java.time.format.DateTimeFormatter
 
@@ -22,9 +24,10 @@ open class ProjectService(
     private val documentParser: DocumentParser,
     private val fileService: FileService,
     private val keywordService: KeywordService,
-    private val recommendationService: RecommendationService
+    private val recommendationService: RecommendationService,
+    private val googleDriveClient: GoogleDriveClient,
+    private val driveStorage: DriveStorage
 ) {
-
     open fun findProjects(
         orderBy: OrderDTO?,
         from: String?,
@@ -130,19 +133,15 @@ open class ProjectService(
         medusaClient.findProject(projectId = id)
     }
 
-    fun updateProjectContent(content: UpdateContentDTO, projectId: String): ProjectDTO {
-        val updatedProject = mappingFromMedusa {
-            medusaClient.updateProjectContent(
-                content = content,
-                id = projectId
-            )
-        }
-        updateProjectKeywords(updatedProject)
-        return updatedProject
+    fun updateProjectContent(content: UpdateContentDTO, projectId: String): ProjectDTO = mappingFromMedusa {
+        medusaClient.updateProjectContent(
+            content = content,
+            id = projectId
+        )
     }
+        .also { launchIOAsync { updateProjectKeywords(it) } }
 
     // Creo que es mejor usar una corrutina para esto, ya son asincrónicas
-    @Async
     open fun updateProjectKeywords(project: ProjectDTO) {
         try {
             val keywords = keywordService.getKeywords(project)
@@ -156,9 +155,11 @@ open class ProjectService(
 
     fun saveDocuments(projectId: String, files: List<MultipartFile>): ProjectDTO = mappingFromMedusa {
         val docs = runBlocking {
+            val (_, driveFolderId) = driveStorage.findOne(projectId)
+                ?: throw NotFoundException("No drive for project $projectId")
             files.map { f ->
                 asyncIO {
-                    val driveId = documentService.saveFile(projectId = projectId, file = f)
+                    val driveId = documentService.saveFile(folderId = driveFolderId, file = f)
                     val fileStream = f.inputStream
                     val content = documentParser.parse(fileStream, f.originalFilename ?: f.name) ?: ""
 
@@ -242,7 +243,20 @@ open class ProjectService(
         LOGGER.info("{}", medusaProject)
         val medusa = medusaClient.createProject(medusaProject)
         medusa
-    }.also { updateProjectKeywords(it) }
+    }
+        .also { launchIOAsync { createDriveFolder(it) } }
+        .also { launchIOAsync { updateProjectKeywords(it) } }
+
+    private fun createDriveFolder(project: ProjectDTO) {
+        googleDriveClient.createFolder(
+            folderName = project.title.decapitalize().replace("\\s+".toRegex(), "-")
+        ).fold(
+            ifLeft = { e ->
+                LOGGER.error("Failed to create drive folder for project ${project.title}", e)
+            },
+            ifRight = { f -> medusaClient.updateProjectDriveFolder(project.id, f.id) }
+        )
+    }
 
     fun setAuthors(projectId: String, users: SetUsersDTO) = mappingFromMedusa {
         medusaClient.modifyProjectUsers(

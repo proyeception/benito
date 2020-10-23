@@ -12,3 +12,5 @@ fun <T> CoroutineScope.asyncIO(block: suspend CoroutineScope.() -> T): Deferred<
     context = Dispatchers.IO,
     block = block
 )
+
+fun <T> launchIOAsync(f: suspend CoroutineScope.() -> T): Job = GlobalScope.launch(Dispatchers.IO) { f(this) }
