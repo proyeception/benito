@@ -98,6 +98,7 @@ open class MedusaGraphClient(
                   facebook
                   twitter
                   linkedin
+                  ghost
                 }
                 supervisors {
                   id
@@ -112,6 +113,7 @@ open class MedusaGraphClient(
                   facebook
                   twitter
                   linkedin
+                  ghost
                 }
                 documentation {
                   id
@@ -132,6 +134,7 @@ open class MedusaGraphClient(
                     id
                   }
                 }
+                open
                 project_keywords {
                   name
                   score

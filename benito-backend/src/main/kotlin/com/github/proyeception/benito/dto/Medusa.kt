@@ -19,7 +19,8 @@ data class MedusaProjectDTO(
     val tags: List<TagDTO>,
     val recommendations: List<MedusaRecommendationDTO>,
     val project_keywords: List<KeywordDTO>,
-    val keywordMatchingDocs: List<DocumentationDTO>? = null
+    val keywordMatchingDocs: List<DocumentationDTO>? = null,
+    val open: Boolean = false
 )
 
 data class MedusaPersonRefDTO(
@@ -30,7 +31,8 @@ data class MedusaPersonRefDTO(
     val facebook: String? = null,
     val linkedin: String? = null,
     val twitter: String? = null,
-    val mail: String? = null
+    val mail: String? = null,
+    val ghost: Boolean = false
 )
 
 data class CreateMedusaPersonDTO(
@@ -54,7 +56,8 @@ data class MedusaPersonDTO(
     val about: String? = null,
     val facebook: String? = null,
     val linkedin: String? = null,
-    val twitter: String? = null
+    val twitter: String? = null,
+    val ghost: Boolean = false
 )
 
 data class MedusaProjectRefDTO(

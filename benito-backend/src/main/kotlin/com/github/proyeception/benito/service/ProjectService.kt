@@ -275,7 +275,7 @@ open class ProjectService(
 
             runBlocking {
                 (it.authors + it.supervisors)
-                    .filter { u -> u.mail != null }
+                    .filter { u -> u.mail != null && !u.ghost }
                     .filter { u -> u.id !in permitted.map { p -> p.userId } }
                     .map { u ->
                         asyncIO {
@@ -306,7 +306,6 @@ open class ProjectService(
             tags = MedusaSetTagsDTO(tags.tags.map { TagDTO(it, it) })
         )
     }
-
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(ProjectService::class.java)

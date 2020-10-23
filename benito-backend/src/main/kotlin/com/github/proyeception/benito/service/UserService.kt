@@ -196,7 +196,8 @@ open class UserService(
                 mail = medusa.mail,
                 phone = medusa.phone
             ),
-            about = medusa.about
+            about = medusa.about,
+            ghost = medusa.ghost
         )
     }
 
