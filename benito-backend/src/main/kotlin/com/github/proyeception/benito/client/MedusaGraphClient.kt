@@ -93,6 +93,7 @@ open class MedusaGraphClient(
                     id
                     url
                   }
+                  mail
                   about
                   facebook
                   twitter
@@ -106,6 +107,7 @@ open class MedusaGraphClient(
                     id
                     url
                   }
+                  mail
                   about
                   facebook
                   twitter

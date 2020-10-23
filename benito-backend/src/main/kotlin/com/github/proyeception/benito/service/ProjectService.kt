@@ -11,6 +11,7 @@ import com.github.proyeception.benito.extension.launchIOAsync
 import com.github.proyeception.benito.oauth.GoogleDriveClient
 import com.github.proyeception.benito.parser.DocumentParser
 import com.github.proyeception.benito.storage.DriveStorage
+import com.github.proyeception.benito.storage.PermissionsStorage
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
 import org.apache.http.entity.ContentType
@@ -27,7 +28,8 @@ open class ProjectService(
     private val keywordService: KeywordService,
     private val recommendationService: RecommendationService,
     private val googleDriveClient: GoogleDriveClient,
-    private val driveStorage: DriveStorage
+    private val driveStorage: DriveStorage,
+    private val permissionsStorage: PermissionsStorage
 ) {
     open fun findProjects(
         orderBy: OrderDTO?,
@@ -259,12 +261,33 @@ open class ProjectService(
         ifRight = { it }
     )
 
-    fun setAuthors(projectId: String, users: SetUsersDTO) = mappingFromMedusa {
+    fun setUsers(projectId: String, users: SetUsersDTO) = mappingFromMedusa {
         medusaClient.modifyProjectUsers(
             projectId = projectId,
             users = users
         )
     }
+        .also {
+            val (_, driveFolderId) = driveStorage.findOne(it.id)
+                ?: throw NotFoundException("No folder found for project ${it.id}")
+
+            val permitted = permissionsStorage.findPermissionsForFile(driveFolderId)
+
+            runBlocking {
+                (it.authors + it.supervisors)
+                    .filter { u -> u.mail != null }
+                    .filter { u -> u.id !in permitted.map { p -> p.userId } }
+                    .map { u ->
+                        asyncIO {
+                            googleDriveClient.giveWriterPermission(u.mail!!, driveFolderId)
+                                .fold(
+                                    ifLeft = { e -> LOGGER.info("Failed to give write permission to ${u.mail}", e) },
+                                    ifRight = { p -> permissionsStorage.save(u.id, p.id, driveFolderId) }
+                                )
+                        }
+                    }.awaitAll()
+            }
+        }
 
     private fun mappingFromMedusa(f: () -> MedusaProjectDTO): ProjectDTO = ProjectDTO(f())
 

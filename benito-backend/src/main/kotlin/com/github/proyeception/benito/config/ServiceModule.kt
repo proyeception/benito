@@ -7,10 +7,7 @@ import com.github.proyeception.benito.parser.DocumentParser
 import com.github.proyeception.benito.service.*
 import com.github.proyeception.benito.snapshot.CategorySnapshot
 import com.github.proyeception.benito.snapshot.OrganizationSnapshot
-import com.github.proyeception.benito.storage.CustomizationStorage
-import com.github.proyeception.benito.storage.DriveStorage
-import com.github.proyeception.benito.storage.RecommendationStorage
-import com.github.proyeception.benito.storage.SessionStorage
+import com.github.proyeception.benito.storage.*
 import com.github.proyeception.benito.utils.FileHelper
 import com.github.proyeception.benito.utils.HashHelper
 import org.springframework.context.annotation.Bean
@@ -26,7 +23,8 @@ open class ServiceModule {
         keywordService: KeywordService, //sacar
         recommendationService: RecommendationService,
         driveStorage: DriveStorage,
-        googleDriveClient: GoogleDriveClient
+        googleDriveClient: GoogleDriveClient,
+        permissionsStorage: PermissionsStorage
     ): ProjectService = ProjectService(
         medusaClient = medusaClient,
         documentParser = documentParser,
@@ -36,7 +34,8 @@ open class ServiceModule {
         keywordService = keywordService, //sacar
         recommendationService = recommendationService,
         driveStorage = driveStorage,
-        googleDriveClient = googleDriveClient
+        googleDriveClient = googleDriveClient,
+        permissionsStorage = permissionsStorage
     )
 
     @Bean

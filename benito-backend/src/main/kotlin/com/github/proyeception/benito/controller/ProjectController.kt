@@ -160,7 +160,7 @@ open class ProjectController(
         @PathVariable projectId: String,
         @RequestBody users: SetUsersDTO,
         @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
-    ): ProjectDTO = doSupervisorAuthorized(projectId, token) { projectService.setAuthors(projectId, users) }
+    ): ProjectDTO = doSupervisorAuthorized(projectId, token) { projectService.setUsers(projectId, users) }
 
     @RequestMapping(value = ["/benito/projects/{projectId}/authors"], method = [RequestMethod.DELETE])
     @ResponseBody

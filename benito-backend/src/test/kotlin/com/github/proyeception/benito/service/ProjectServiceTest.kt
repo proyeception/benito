@@ -12,6 +12,7 @@ import com.github.proyeception.benito.oauth.GoogleDriveClient
 import com.github.proyeception.benito.parser.DocumentParser
 import com.github.proyeception.benito.storage.Drive
 import com.github.proyeception.benito.storage.DriveStorage
+import com.github.proyeception.benito.storage.PermissionsStorage
 import com.nhaarman.mockito_kotlin.any
 import io.kotlintest.matchers.shouldBe
 import org.mockito.Mockito.verify
@@ -30,6 +31,7 @@ class ProjectServiceTest : Spec() {
         val recommendationService: RecommendationService = getMock()
         val driveClientMock: GoogleDriveClient = getMock()
         val driveStorageMock: DriveStorage = getMock()
+        val permissionStorageMock: PermissionsStorage = getMock()
         val projectService = ProjectService(
             medusaClient = medusaClient,
             documentParser = documentParserMock,
@@ -39,7 +41,8 @@ class ProjectServiceTest : Spec() {
             keywordService = keywordService,
             recommendationService = recommendationService,
             driveStorage = driveStorageMock,
-            googleDriveClient = driveClientMock
+            googleDriveClient = driveClientMock,
+            permissionsStorage = permissionStorageMock
         )
 
         "projects" should {

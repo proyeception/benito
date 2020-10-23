@@ -56,6 +56,17 @@ open class GoogleDriveClient(
             .map { it.deserializeAs(object : TypeReference<FileCreatedDTO>() {}) }
     }
 
+    open fun giveWriterPermission(mail: String, fileId: String): Either<Throwable, PermissionDTO> {
+        return googleDriveConnector.post(
+            url = "https://www.googleapis.com/drive/v3/files/$fileId/permissions",
+            body = CreatePermissionDTO(
+                role = "writer",
+                type = "user",
+                emailAddress = mail
+            )
+        ).map { it.deserializeAs(object : TypeReference<PermissionDTO>() {}) }
+    }
+
     private fun makePublic(fileId: String): Either<Throwable, Unit> {
         return googleDriveConnector.post(
             url = "https://www.googleapis.com/drive/v3/files/$fileId/permissions",

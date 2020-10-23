@@ -164,7 +164,8 @@ data class PersonRefDTO(
     val fullName: String,
     val username: String?,
     val profilePicUrl: String? = null,
-    val socials: SocialDTO = SocialDTO()
+    val socials: SocialDTO = SocialDTO(),
+    val mail: String? = null
 ) {
     constructor(medusa: MedusaPersonRefDTO) : this(
         id = medusa.id,
@@ -175,7 +176,8 @@ data class PersonRefDTO(
             facebook = medusa.facebook,
             linkedin = medusa.linkedin,
             twitter = medusa.twitter
-        )
+        ),
+        mail = medusa.mail
     )
 }
 

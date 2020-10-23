@@ -64,5 +64,10 @@ data class CreateFolderDTO(
 
 data class CreatePermissionDTO(
     val role: String,
-    val type: String
+    val type: String,
+    val emailAddress: String? = null
+)
+
+data class PermissionDTO(
+    val id: String
 )

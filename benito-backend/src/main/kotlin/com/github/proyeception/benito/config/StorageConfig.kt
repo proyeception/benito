@@ -1,9 +1,6 @@
 package com.github.proyeception.benito.config
 
-import com.github.proyeception.benito.storage.CustomizationStorage
-import com.github.proyeception.benito.storage.DriveStorage
-import com.github.proyeception.benito.storage.RecommendationStorage
-import com.github.proyeception.benito.storage.SessionStorage
+import com.github.proyeception.benito.storage.*
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.mongodb.core.MongoTemplate
@@ -29,4 +26,9 @@ open class StorageConfig {
     open fun driveStorage(
         mongoTemplate: MongoTemplate
     ) = DriveStorage(mongoTemplate)
+
+    @Bean
+    open fun permissionsStorage(
+        mongoTemplate: MongoTemplate
+    ) = PermissionsStorage(mongoTemplate)
 }
