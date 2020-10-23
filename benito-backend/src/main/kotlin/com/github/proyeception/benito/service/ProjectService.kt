@@ -11,7 +11,8 @@ import com.github.proyeception.benito.extension.launchIOAsync
 import com.github.proyeception.benito.oauth.GoogleDriveClient
 import com.github.proyeception.benito.parser.DocumentParser
 import com.github.proyeception.benito.storage.DriveStorage
-import kotlinx.coroutines.*
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.runBlocking
 import org.apache.http.entity.ContentType
 import org.slf4j.LoggerFactory
 import org.springframework.web.multipart.MultipartFile
@@ -233,30 +234,30 @@ open class ProjectService(
     }
 
     fun createProject(supervisorId: String, project: CreateProjectDTO): ProjectDTO = mappingFromMedusa {
+        val file = createDriveFolder(project.title)
         val medusaProject = CreateMedusaProjectDTO(
             organization = project.organizationId,
             category = project.categoryId,
             supervisors = listOf(supervisorId),
             title = project.title,
-            creationDate = project.creationDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+            creationDate = project.creationDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+            driveFolderId = file.id
         )
         LOGGER.info("{}", medusaProject)
         val medusa = medusaClient.createProject(medusaProject)
         medusa
     }
-        .also { launchIOAsync { createDriveFolder(it) } }
         .also { launchIOAsync { updateProjectKeywords(it) } }
 
-    private fun createDriveFolder(project: ProjectDTO) {
-        googleDriveClient.createFolder(
-            folderName = project.title.decapitalize().replace("\\s+".toRegex(), "-")
-        ).fold(
-            ifLeft = { e ->
-                LOGGER.error("Failed to create drive folder for project ${project.title}", e)
-            },
-            ifRight = { f -> medusaClient.updateProjectDriveFolder(project.id, f.id) }
-        )
-    }
+    private fun createDriveFolder(title: String): GoogleFileDTO = googleDriveClient.createFolder(
+        folderName = title.decapitalize().replace("\\s+".toRegex(), "-")
+    ).fold(
+        ifLeft = { e ->
+            LOGGER.error("Failed to create drive folder for project $title", e)
+            throw e
+        },
+        ifRight = { it }
+    )
 
     fun setAuthors(projectId: String, users: SetUsersDTO) = mappingFromMedusa {
         medusaClient.modifyProjectUsers(

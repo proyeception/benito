@@ -60,8 +60,8 @@ open class GoogleDriveClient(
         return googleDriveConnector.post(
             url = "https://www.googleapis.com/drive/v3/files/$fileId/permissions",
             body = CreatePermissionDTO(
-                type = "reader",
-                role = "anyone"
+                role = "reader",
+                type = "anyone"
             )
         ).map(void)
     }

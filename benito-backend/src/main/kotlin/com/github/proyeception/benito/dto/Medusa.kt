@@ -146,7 +146,8 @@ data class CreateMedusaProjectDTO(
     val description: String = "",
     val creationDate: String = LocalDate.now().format(dtf),
     val supervisors: List<String>,
-    val category: String
+    val category: String,
+    val driveFolderId: String
 )
 
 data class KeywordDTO(
