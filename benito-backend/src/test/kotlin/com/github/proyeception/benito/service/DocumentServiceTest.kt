@@ -14,6 +14,7 @@ import io.kotlintest.matchers.shouldThrow
 import io.kotlintest.properties.forAll
 import org.mockito.Mockito.anyString
 import org.springframework.web.multipart.MultipartFile
+import java.time.LocalDateTime
 
 class DocumentServiceTest : Spec() {
     init {
@@ -32,7 +33,8 @@ class DocumentServiceTest : Spec() {
                 )).thenReturn(FileCreatedDTO(
                     id = "123",
                     name = "some-doc",
-                    mimeType = "application/pdf"
+                    mimeType = "application/pdf",
+                    createdTime = LocalDateTime.now()
                 ).right())
 
                 val expected = "123"
@@ -65,7 +67,8 @@ class DocumentServiceTest : Spec() {
                             id = "123",
                             name = "some-doc",
                             mimeType = "application/pdf",
-                            webContentLink = webContentLink
+                            webContentLink = webContentLink,
+                            modifiedTime = LocalDateTime.now()
                         ).right()
                     )
                     val expected = webContentLink
@@ -82,7 +85,8 @@ class DocumentServiceTest : Spec() {
                             id = "123",
                             name = "some-doc",
                             mimeType = "application/pdf",
-                            webContentLink = null
+                            webContentLink = null,
+                            modifiedTime = LocalDateTime.now()
                         ).right()
                     )
                     val expected = "https://fallback.com"

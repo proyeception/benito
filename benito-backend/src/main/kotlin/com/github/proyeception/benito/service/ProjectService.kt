@@ -8,14 +8,17 @@ import com.github.proyeception.benito.exception.FailedDependencyException
 import com.github.proyeception.benito.exception.NotFoundException
 import com.github.proyeception.benito.extension.asyncIO
 import com.github.proyeception.benito.extension.launchIOAsync
+import com.github.proyeception.benito.job.FileWatcher
 import com.github.proyeception.benito.oauth.GoogleDriveClient
 import com.github.proyeception.benito.parser.DocumentParser
 import com.github.proyeception.benito.storage.DriveStorage
+import com.github.proyeception.benito.storage.PermissionsStorage
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
 import org.apache.http.entity.ContentType
 import org.slf4j.LoggerFactory
 import org.springframework.web.multipart.MultipartFile
+import java.io.File
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -29,8 +32,26 @@ open class ProjectService(
     private val statsService: StatsService,
     private val recommendationService: RecommendationService,
     private val googleDriveClient: GoogleDriveClient,
-    private val driveStorage: DriveStorage
+    private val driveStorage: DriveStorage,
+    private val permissionsStorage: PermissionsStorage
 ) {
+    open fun closeProject(projectId: String) = mappingFromMedusa {
+        medusaClient.updateProjectOpen(projectId, false)
+    }
+        .also {
+            launchIOAsync {
+                permissionsStorage.findPermissionsForFile(it.driveFolderId)
+                    .map { p ->
+                        asyncIO {
+                            googleDriveClient.deletePermission(
+                                fileId = it.driveFolderId,
+                                permissionId =  p.permissionId
+                            )
+                        }
+                    }.awaitAll()
+            }
+        }
+
     open fun findProjects(
         orderBy: OrderDTO?,
         from: String?,
@@ -163,6 +184,27 @@ open class ProjectService(
         }
     }
 
+    fun saveDriveDocuments(projectId: String, files: List<Pair<File, String>>) = mappingFromMedusa {
+        val docs = runBlocking {
+            val (_, driveFolderId) = driveStorage.findOne(projectId)
+                ?: throw NotFoundException("No drive for project $projectId")
+            files.map { (f, driveId) ->
+                asyncIO {
+                    val fileStream = f.inputStream()
+                    val content = documentParser.parse(fileStream, f.name) ?: ""
+
+                    CreateDocumentDTO(
+                        driveId = driveId,
+                        content = content,
+                        fileName = f.name
+                    )
+                }
+            }.awaitAll()
+        }
+
+        medusaClient.saveDocuments(CreateDocumentsDTO(docs), projectId)
+    }
+
     fun saveDocuments(projectId: String, files: List<MultipartFile>): ProjectDTO = mappingFromMedusa {
         val docs = runBlocking {
             val (_, driveFolderId) = driveStorage.findOne(projectId)
@@ -195,13 +237,11 @@ open class ProjectService(
         medusaClient.updateProjectImage(id, UpdatePictureDTO(file))
     }
 
-    fun hasAuthor(authorId: String, projectId: String): Boolean = findProject(projectId)
-        .authors
-        .any { it.id == authorId }
+    fun canAuthorEdit(authorId: String, projectId: String): Boolean = findProject(projectId)
+        .let { p -> p.authors.any { it.id == authorId } && p.open }
 
-    fun hasSupervisor(supervisorId: String, projectId: String) = findProject(projectId)
-        .supervisors
-        .any { it.id == supervisorId }
+    fun canSupervisorEdit(supervisorId: String, projectId: String) = findProject(projectId)
+        .let { p -> p.supervisors.any { it.id == supervisorId } && p.open }
 
     fun deleteDocument(projectId: String, documentId: String): ProjectDTO = mappingFromMedusa {
         medusaClient.deleteDocumentFromProject(
@@ -268,12 +308,33 @@ open class ProjectService(
         ifRight = { it }
     )
 
-    fun setAuthors(projectId: String, users: SetUsersDTO) = mappingFromMedusa {
+    fun setUsers(projectId: String, users: SetUsersDTO) = mappingFromMedusa {
         medusaClient.modifyProjectUsers(
             projectId = projectId,
             users = users
         )
     }
+        .also {
+            val driveFolderId = it.driveFolderId
+
+            val permitted = permissionsStorage.findPermissionsForFile(driveFolderId)
+
+            launchIOAsync {
+                (it.authors + it.supervisors)
+                    .filter { u -> u.mail != null && !u.ghost }
+                    .filter { u -> u.id !in permitted.map { p -> p.mail } }
+                    .map { u ->
+                        asyncIO {
+                            googleDriveClient.giveWriterPermission(u.mail!!, driveFolderId)
+                                .fold(
+                                    ifLeft = { e -> LOGGER.info("Failed to give write permission to ${u.mail}", e) },
+                                    ifRight = { p -> permissionsStorage.save(u.mail, p.id, driveFolderId) }
+                                )
+                        }
+                    }.awaitAll()
+            }
+
+        }
 
     private fun mappingFromMedusa(f: () -> MedusaProjectDTO): ProjectDTO = ProjectDTO(f())
 

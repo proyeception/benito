@@ -19,7 +19,9 @@ data class MedusaProjectDTO(
     val tags: List<TagDTO>,
     val recommendations: List<MedusaRecommendationDTO>,
     val project_keywords: List<KeywordDTO>,
-    val keywordMatchingDocs: List<DocumentationDTO>? = null
+    val keywordMatchingDocs: List<DocumentationDTO>? = null,
+    val open: Boolean = false,
+    val driveFolderId: String
 )
 
 data class MedusaPersonRefDTO(
@@ -29,7 +31,9 @@ data class MedusaPersonRefDTO(
     val profilePic: MedusaFileDTO? = null,
     val facebook: String? = null,
     val linkedin: String? = null,
-    val twitter: String? = null
+    val twitter: String? = null,
+    val mail: String? = null,
+    val ghost: Boolean = false
 )
 
 data class CreateMedusaPersonDTO(
@@ -53,7 +57,8 @@ data class MedusaPersonDTO(
     val about: String? = null,
     val facebook: String? = null,
     val linkedin: String? = null,
-    val twitter: String? = null
+    val twitter: String? = null,
+    val ghost: Boolean = false
 )
 
 data class MedusaProjectRefDTO(
@@ -210,4 +215,20 @@ data class UpdateMedusaUserDTO(
 
 data class UpdateDriveFolderDTO(
     val driveFolderId: String
+)
+
+data class UpdateMedusaProjectDTO(
+    val title: String? = null,
+    val description: String? = null,
+    val extraContent: String? = null,
+    val picture: String? = null,
+    val authors: List<String>? = null,
+    val supervisors: List<String>? = null,
+    val open: Boolean?
+)
+
+data class UpdateDocumentDTO(
+    val fileName: String? = null,
+    val content: String? = null,
+    val driveId: String? = null
 )

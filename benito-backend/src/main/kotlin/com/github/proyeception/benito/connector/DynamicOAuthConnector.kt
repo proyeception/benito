@@ -2,6 +2,7 @@ package com.github.proyeception.benito.connector
 
 import arrow.core.Either
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.github.proyeception.benito.utils.FileHelper
 import com.github.scribejava.core.builder.ServiceBuilder
 import com.github.scribejava.core.builder.api.DefaultApi20
 import com.github.scribejava.core.oauth.OAuth20Service
@@ -9,10 +10,12 @@ import com.typesafe.config.Config
 
 open class DynamicOAuthConnector(
     oAuth20Service: OAuth20Service,
-    objectMapper: ObjectMapper
+    objectMapper: ObjectMapper,
+    fileHelper: FileHelper
 ) : AbstractOAuthConnector(
     oAuth20Service = oAuth20Service,
-    objectMapper = objectMapper
+    objectMapper = objectMapper,
+    fileHelper = fileHelper
 ) {
     public override fun get(url: String, token: String) = super.get(url, token)
 
@@ -46,7 +49,8 @@ open class DynamicOAuthConnector(
                 .callback(moduleConfig.getString("callback"))
                 .defaultScope(moduleConfig.getString("scope"))
                 .build(api),
-            objectMapper = objectMapper
+            objectMapper = objectMapper,
+            fileHelper = FileHelper()
         )
     }
 }

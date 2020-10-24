@@ -10,32 +10,39 @@ import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.mock.eq
 import com.github.proyeception.benito.mock.getMock
 import com.github.proyeception.benito.mock.on
+import com.github.proyeception.benito.utils.FileHelper
 import com.nhaarman.mockito_kotlin.anyVararg
 import io.kotlintest.matchers.shouldBe
 import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito.verify
 import org.springframework.web.multipart.MultipartFile
+import java.time.LocalDate
+import java.time.LocalDateTime
 
 class GoogleDriveClientTest : Spec() {
     init {
         val mapperMock: ObjectMapper = getMock()
         val connectorMock: OAuthConnector = getMock()
+        val fileHelperMock: FileHelper = getMock()
         val googleDriveClient = GoogleDriveClient(
             objectMapper = mapperMock,
-            googleDriveConnector = connectorMock
+            googleDriveConnector = connectorMock,
+            fileHelper = fileHelperMock
         )
 
         "getFile" should {
             "retrieve the fileId asking for webContentLink, mimeType and name of the file" {
                 val responseMock: HttpResponse = getMock()
                 on(connectorMock.get(anyString())).thenReturn(responseMock.right())
+                val date = LocalDateTime.now()
                 on(responseMock.deserializeAs(any(TypeReference::class.java))).thenReturn(
                     GoogleFileDTO(
                         id = "123",
                         name = "some name",
                         mimeType = "application/pdf",
-                        webContentLink = null
+                        webContentLink = null,
+                        modifiedTime = date
                     )
                 )
 
@@ -43,7 +50,8 @@ class GoogleDriveClientTest : Spec() {
                     id = "123",
                     name = "some name",
                     mimeType = "application/pdf",
-                    webContentLink = null
+                    webContentLink = null,
+                    modifiedTime = date
                 ).right()
 
                 val actual = googleDriveClient.getFile("123")
@@ -51,13 +59,15 @@ class GoogleDriveClientTest : Spec() {
                 actual shouldBe expected
 
                 verify(connectorMock).get(
-                    eq("https://www.googleapis.com/drive/v3/files/123?fields=id,webContentLink,name,mimeType")
+                    eq("https://www.googleapis.com/drive/v3/files/123?fields=id,webContentLink,name,mimeType,modifiedTime")
                 )
             }
         }
 
         "createFile" should {
             "make a POST to the API with the file" {
+                val date = LocalDateTime.now()
+
                 val metadataBytes = ByteArray(60)
                 val responseMock: HttpResponse = getMock()
                 on(mapperMock.writeValueAsBytes(any(MetadataDTO::class.java))).thenReturn(metadataBytes)
@@ -69,7 +79,8 @@ class GoogleDriveClientTest : Spec() {
                     FileCreatedDTO(
                         id = "123",
                         name = "some-file",
-                        mimeType = "application/pdf"
+                        mimeType = "application/pdf",
+                        createdTime = date
                     )
                 )
                 val multipartMock: MultipartFile = getMock()
@@ -79,7 +90,8 @@ class GoogleDriveClientTest : Spec() {
                 val expected = FileCreatedDTO(
                     id = "123",
                     name = "some-file",
-                    mimeType = "application/pdf"
+                    mimeType = "application/pdf",
+                    createdTime = date
                 ).right()
 
                 val actual = googleDriveClient.createFile("123", multipartMock, "456")
@@ -96,6 +108,8 @@ class GoogleDriveClientTest : Spec() {
 
         "createFolder" should {
             "make a POST to the API and then make it public" {
+                val date = LocalDateTime.now()
+
                 val metadataBytes = ByteArray(60)
                 val responseMock: HttpResponse = getMock()
                 on(mapperMock.writeValueAsBytes(any(MetadataDTO::class.java))).thenReturn(metadataBytes)
@@ -107,7 +121,8 @@ class GoogleDriveClientTest : Spec() {
                     FileCreatedDTO(
                         id = "123",
                         name = "some-file",
-                        mimeType = "application/pdf"
+                        mimeType = "application/pdf",
+                        createdTime = date
                     )
                 )
 
@@ -115,7 +130,8 @@ class GoogleDriveClientTest : Spec() {
                     id = "123",
                     name = "some-file",
                     mimeType = "application/pdf",
-                    webContentLink = null
+                    webContentLink = null,
+                    modifiedTime = date
                 ).right()
 
                 val actual = googleDriveClient.createFolder("folder")
@@ -131,8 +147,8 @@ class GoogleDriveClientTest : Spec() {
                 verify(connectorMock).post(
                     eq("https://www.googleapis.com/drive/v3/files/123/permissions"),
                     eq(CreatePermissionDTO(
-                        type = "reader",
-                        role = "anyone"
+                        type = "anyone",
+                        role = "reader"
                     ))
                 )
             }

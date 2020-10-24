@@ -2,20 +2,28 @@ package com.github.proyeception.benito.connector
 
 import arrow.core.Either
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.github.proyeception.benito.utils.FileHelper
 import com.github.scribejava.core.builder.ServiceBuilder
 import com.github.scribejava.core.builder.api.DefaultApi20
 import com.github.scribejava.core.oauth.OAuth20Service
 import com.typesafe.config.Config
 
-
 open class OAuthConnector(
     oAuth20Service: OAuth20Service,
     objectMapper: ObjectMapper,
+    fileHelper: FileHelper,
     private val token: String
 ) : AbstractOAuthConnector(
     oAuth20Service = oAuth20Service,
-    objectMapper = objectMapper
+    objectMapper = objectMapper,
+    fileHelper = fileHelper
 ) {
+
+    open fun downloadFile(url: String, filePath: String) = downloadFile(
+        url = url,
+        token = token,
+        filePath = filePath
+    )
 
     open fun get(url: String): Either<Throwable, HttpResponse> = get(url, token)
 
@@ -49,7 +57,8 @@ open class OAuthConnector(
                 .defaultScope(moduleConfig.getString("scope"))
                 .build(api),
             token = System.getenv("${moduleName.toUpperCase()}_TOKEN") ?: moduleConfig.getString("token"),
-            objectMapper = objectMapper
+            objectMapper = objectMapper,
+            fileHelper = FileHelper()
         )
     }
 }

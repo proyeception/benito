@@ -56,8 +56,12 @@ export function updateContent(
   return axios.request(signRequest(config));
 }
 
-export function createProject(title: string, category: string, organization: string, creationDate: string): AxiosPromise<Project> {
-  
+export function createProject(
+  title: string,
+  category: string,
+  organization: string,
+  creationDate: string
+): AxiosPromise<Project> {
   let newProject: AxiosRequestConfig = {
     url: `${benitoHost}/benito/projects`,
     method: "POST",
@@ -65,8 +69,8 @@ export function createProject(title: string, category: string, organization: str
       title: title,
       categoryId: category,
       organizationId: organization,
-      creationDate: creationDate
-    }
+      creationDate: creationDate,
+    },
   };
   return axios.request<Project>(signRequest(newProject));
 }
@@ -85,11 +89,10 @@ export function updatePicture(projectId: string, picture: File) {
 }
 
 export function updateTags(projectId: string, tags: Array<string>) {
-
   let pictureConfig: AxiosRequestConfig = {
     url: `${benitoHost}/benito/projects/${projectId}/tags`,
     method: "POST",
-    data: {tags},
+    data: { tags },
   };
 
   return axios.request(signRequest(pictureConfig)).then(console.log);
@@ -141,14 +144,21 @@ export function setProjectUsers(
   return axios.request(signRequest(config));
 }
 
-export function generateTagsFromText(
-  text: string
-) {
+export function generateTagsFromText(text: string) {
   let config: AxiosRequestConfig = {
     url: `${benitoHost}/benito/tags`,
     data: {
-      text
+      text,
     },
+    method: "POST",
+  };
+
+  return axios.request(signRequest(config));
+}
+
+export function closeProject(projectId: string) {
+  let config: AxiosRequestConfig = {
+    url: `${benitoHost}/benito/projects/${projectId}/close`,
     method: "POST",
   };
 

@@ -5,6 +5,8 @@ import com.github.proyeception.benito.X_QUI_TOKEN
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.ForbiddenException
 import com.github.proyeception.benito.exception.UnauthorizedException
+import com.github.proyeception.benito.extension.launchIOAsync
+import com.github.proyeception.benito.job.FileWatcher
 import com.github.proyeception.benito.service.ProjectService
 import com.github.proyeception.benito.service.SessionService
 import com.github.proyeception.benito.service.StatsService
@@ -22,7 +24,8 @@ import javax.servlet.http.HttpServletResponse
 open class ProjectController(
     private val projectService: ProjectService,
     private val sessionService: SessionService,
-    private val userService: UserService
+    private val userService: UserService,
+    private val fileWatcher: FileWatcher
 ) {
 
     @RequestMapping("/benito/projects", method = [RequestMethod.GET])
@@ -107,6 +110,16 @@ open class ProjectController(
         @RequestParam("file") files: Array<MultipartFile>
     ): ProjectDTO = projectService.saveDocuments(projectId, files.toList())
 
+    @RequestMapping(value = ["/benito/projects/{projectId}/close"], method = [RequestMethod.POST])
+    @ResponseBody
+    fun closeProject(
+        @PathVariable projectId: String,
+        @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
+    ): ProjectDTO = doSupervisorAuthorized(projectId, token) {
+        projectService.closeProject(projectId)
+            .also { launchIOAsync { fileWatcher.unwatch(it.driveFolderId) } }
+    }
+
     @RequestMapping(value = ["/benito/projects/{id}/content"], method = [RequestMethod.PATCH])
     @ResponseBody
     fun updateProjectContent(
@@ -161,7 +174,7 @@ open class ProjectController(
         @PathVariable projectId: String,
         @RequestBody users: SetUsersDTO,
         @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
-    ): ProjectDTO = doSupervisorAuthorized(projectId, token) { projectService.setAuthors(projectId, users) }
+    ): ProjectDTO = doSupervisorAuthorized(projectId, token) { projectService.setUsers(projectId, users) }
 
     @RequestMapping(value = ["/benito/projects/{projectId}/authors"], method = [RequestMethod.DELETE])
     @ResponseBody
@@ -207,8 +220,8 @@ open class ProjectController(
         token = token,
         allowedRoles = listOf(RoleDTO.SUPERVISOR, RoleDTO.AUTHOR),
         authorizeCheck = {
-            projectService.hasSupervisor(supervisorId = it, projectId = projectId) ||
-                projectService.hasAuthor(authorId = it, projectId = projectId)
+            projectService.canSupervisorEdit(supervisorId = it, projectId = projectId) ||
+                projectService.canAuthorEdit(authorId = it, projectId = projectId)
         },
         f = f
     )
@@ -216,7 +229,7 @@ open class ProjectController(
     private fun <T> doSupervisorAuthorized(projectId: String, token: String, f: (String) -> T) = doAuthorized(
         token = token,
         allowedRoles = listOf(RoleDTO.SUPERVISOR),
-        authorizeCheck = { projectService.hasSupervisor(supervisorId = it, projectId = projectId) },
+        authorizeCheck = { projectService.canSupervisorEdit(supervisorId = it, projectId = projectId) },
         f = f
     )
 

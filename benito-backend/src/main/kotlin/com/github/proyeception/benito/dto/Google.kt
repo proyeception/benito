@@ -1,22 +1,27 @@
 package com.github.proyeception.benito.dto
 
+import java.time.LocalDateTime
+
 data class GoogleFileDTO(
     val id: String,
     val name: String,
     val mimeType: String,
-    val webContentLink: String?
+    val webContentLink: String?,
+    val modifiedTime: LocalDateTime
 )
 
 data class FileCreatedDTO(
     val id: String,
     val name: String,
-    val mimeType: String
+    val mimeType: String,
+    val createdTime: LocalDateTime
 ) {
     fun toFile(): GoogleFileDTO = GoogleFileDTO(
         name = name,
         mimeType = mimeType,
         webContentLink = null,
-        id = id
+        id = id,
+        modifiedTime = createdTime
     )
 }
 
@@ -64,5 +69,10 @@ data class CreateFolderDTO(
 
 data class CreatePermissionDTO(
     val role: String,
-    val type: String
+    val type: String,
+    val emailAddress: String? = null
+)
+
+data class PermissionDTO(
+    val id: String
 )

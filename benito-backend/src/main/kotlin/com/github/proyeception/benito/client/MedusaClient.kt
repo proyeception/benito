@@ -65,6 +65,13 @@ open class MedusaClient(
         ref = MEDUSA_PROJECT_REF
     )
 
+    open fun updateDocument(documentId: String, doc: UpdateDocumentDTO): DocumentationDTO = update(
+        collection = DOCUMENTS,
+        dto = doc,
+        ref = DOCUMENTATION_REF,
+        id = documentId
+    )
+
     open fun saveDocuments(docs: CreateDocumentsDTO, projectId: String): MedusaProjectDTO = create(
         collection = "projects/$projectId/documents",
         dto = docs,
@@ -81,11 +88,11 @@ open class MedusaClient(
         ref = MEDUSA_PROJECT_REF
     )
 
-    fun updateProjectDriveFolder(id: String, id1: String): Any = update(
+    open fun updateProjectOpen(id: String, state: Boolean): MedusaProjectDTO = update(
         collection = PROJECTS,
         id = id,
-        ref = ANY_REF,
-        dto = UpdateDriveFolderDTO(id1)
+        dto = UpdateMedusaProjectDTO(open = state),
+        ref = MEDUSA_PROJECT_REF
     )
 
     open fun findUser(userId: String, userType: UserType): MedusaPersonDTO = findOne(
@@ -338,5 +345,7 @@ open class MedusaClient(
         private val CREATE_RECOMMENDATION_REF = object : TypeReference<CreateRecommendationDTO>() {}
         private val ANY_REF = object : TypeReference<Any>() {}
         private val PENDING_SUPERVISOR_REF = object : TypeReference<CreatePendingSupervisorDTO>() {}
+        private val DOCUMENTS = "documentations"
+        private val DOCUMENTATION_REF = object : TypeReference<DocumentationDTO>() {}
     }
 }

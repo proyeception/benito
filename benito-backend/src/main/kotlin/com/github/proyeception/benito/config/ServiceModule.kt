@@ -24,7 +24,8 @@ open class ServiceModule {
         recommendationService: RecommendationService,
         driveStorage: DriveStorage,
         googleDriveClient: GoogleDriveClient,
-        statsService: StatsService
+        statsService: StatsService,
+	permissionsStorage: PermissionsStorage
     ): ProjectService = ProjectService(
         medusaClient = medusaClient,
         documentParser = documentParser,
@@ -35,7 +36,8 @@ open class ServiceModule {
         recommendationService = recommendationService,
         driveStorage = driveStorage,
         googleDriveClient = googleDriveClient,
-        statsService = statsService
+        permissionsStorage = permissionsStorage,
+	statsService = statsService
     )
 
     @Bean

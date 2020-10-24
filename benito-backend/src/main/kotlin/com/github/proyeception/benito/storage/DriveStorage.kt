@@ -1,9 +1,7 @@
 package com.github.proyeception.benito.storage
 
 import org.springframework.data.mongodb.core.MongoTemplate
-import org.springframework.data.mongodb.core.aggregation.Aggregation
-import org.springframework.data.mongodb.core.aggregation.Aggregation.match
-import org.springframework.data.mongodb.core.aggregation.Aggregation.project
+import org.springframework.data.mongodb.core.aggregation.Aggregation.*
 import org.springframework.data.mongodb.core.query.Criteria.where
 import org.springframework.data.mongodb.core.query.isEqualTo
 
@@ -17,7 +15,7 @@ open class DriveStorage(
 ) {
     open fun findOne(projectId: String): Drive? = mongoTemplate
         .aggregate(
-            Aggregation.newAggregation(
+            newAggregation(
                 match(where("_id").isEqualTo(projectId)),
                 PROJECTION
             ),
@@ -27,9 +25,12 @@ open class DriveStorage(
         .mappedResults
         .firstOrNull()
 
-    open fun findAll(): List<Drive> = mongoTemplate
+    open fun findOpen(): List<Drive> = mongoTemplate
         .aggregate(
-            Aggregation.newAggregation(PROJECTION),
+            newAggregation(
+                match(where("open").isEqualTo(true)),
+                PROJECTION
+            ),
             "projects",
             Drive::class.java
         )

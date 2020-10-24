@@ -10,6 +10,7 @@ import com.github.proyeception.benito.mock.getMock
 import com.github.proyeception.benito.mock.on
 import com.github.proyeception.benito.mock.shouldBeEqual
 import com.github.proyeception.benito.types.ScribeResponse
+import com.github.proyeception.benito.utils.FileHelper
 import com.github.scribejava.core.model.OAuth2AccessToken
 import com.github.scribejava.core.model.OAuthRequest
 import com.github.scribejava.core.model.Verb
@@ -28,11 +29,13 @@ class OAuthConnectorTest : Spec() {
     init {
         val authServiceMock: OAuth20Service = getMock()
         val mapperMock: ObjectMapper = getMock()
+        val fileHelperMock: FileHelper = getMock()
 
         val oAuthClient = OAuthConnector(
             oAuth20Service = authServiceMock,
             objectMapper = mapperMock,
-            token = "123"
+            token = "123",
+            fileHelper = fileHelperMock
         )
 
         val accessTokenMock: OAuth2AccessToken = getMock()

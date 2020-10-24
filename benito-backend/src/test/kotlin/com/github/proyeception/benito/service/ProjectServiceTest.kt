@@ -5,6 +5,7 @@ import com.github.proyeception.benito.Spec
 import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.client.MedusaGraphClient
 import com.github.proyeception.benito.dto.*
+import com.github.proyeception.benito.job.FileWatcher
 import com.github.proyeception.benito.mock.eq
 import com.github.proyeception.benito.mock.getMock
 import com.github.proyeception.benito.mock.on
@@ -12,6 +13,7 @@ import com.github.proyeception.benito.oauth.GoogleDriveClient
 import com.github.proyeception.benito.parser.DocumentParser
 import com.github.proyeception.benito.storage.Drive
 import com.github.proyeception.benito.storage.DriveStorage
+import com.github.proyeception.benito.storage.PermissionsStorage
 import com.nhaarman.mockito_kotlin.any
 import io.kotlintest.matchers.shouldBe
 import org.mockito.Mockito.verify
@@ -31,6 +33,7 @@ class ProjectServiceTest : Spec() {
         val driveClientMock: GoogleDriveClient = getMock()
         val driveStorageMock: DriveStorage = getMock()
         val statsService: StatsService = getMock()
+	val permissionStorageMock: PermissionsStorage = getMock()
         val projectService = ProjectService(
             medusaClient = medusaClient,
             documentParser = documentParserMock,
@@ -41,7 +44,8 @@ class ProjectServiceTest : Spec() {
             recommendationService = recommendationService,
             driveStorage = driveStorageMock,
             googleDriveClient = driveClientMock,
-            statsService = statsService
+            permissionsStorage = permissionStorageMock,
+	    statsService = statsService
         )
 
         "projects" should {
@@ -92,8 +96,9 @@ class ProjectServiceTest : Spec() {
                         id = "123",
                         displayName = "UTN FRBA"
                     ),
-                        recommendations = emptyList(),
-                        project_keywords = emptyList()
+                    recommendations = emptyList(),
+                    project_keywords = emptyList(),
+                    driveFolderId = "123"
                 )
 
                 val newProject = MedusaProjectDTO(
@@ -125,7 +130,8 @@ class ProjectServiceTest : Spec() {
                     ),
                     tags = emptyList(),
                     recommendations = emptyList(),
-                    project_keywords = emptyList()
+                    project_keywords = emptyList(),
+                    driveFolderId = "123"
                 )
 
                 val projects = listOf(newProject)
@@ -200,8 +206,9 @@ class ProjectServiceTest : Spec() {
                         id = "123",
                         displayName = "UTN FRBA"
                     ),
-                        recommendations = emptyList(),
-                        project_keywords = emptyList()
+                    recommendations = emptyList(),
+                    project_keywords = emptyList(),
+                    driveFolderId = "123"
                 )
 
                 val newProject = MedusaProjectDTO(
@@ -228,7 +235,8 @@ class ProjectServiceTest : Spec() {
                     ),
                     tags = emptyList(),
                     recommendations = emptyList(),
-                    project_keywords = emptyList()
+                    project_keywords = emptyList(),
+                    driveFolderId = "123"
                 )
 
                 val projectResult = newProject
@@ -272,7 +280,8 @@ class ProjectServiceTest : Spec() {
                     ),
                     tags = emptyList(),
                     recommendations = emptyList(),
-                    project_keywords = emptyList()
+                    project_keywords = emptyList(),
+                    driveFolderId = "123"
                 )
 
                 val inputMock: InputStream = getMock()
@@ -330,7 +339,8 @@ class ProjectServiceTest : Spec() {
                     ),
                     tags = emptyList(),
                     recommendations = emptyList(),
-                    project_keywords = emptyList()
+                    project_keywords = emptyList(),
+                    driveFolderId = "123"
                 )
 
                 val file = MedusaFileDTO(
@@ -383,7 +393,8 @@ class ProjectServiceTest : Spec() {
                     ),
                     tags = emptyList(),
                     recommendations = emptyList(),
-                    project_keywords = emptyList()
+                    project_keywords = emptyList(),
+                    driveFolderId = "123"
                 )
 
                 val file = MedusaFileDTO(

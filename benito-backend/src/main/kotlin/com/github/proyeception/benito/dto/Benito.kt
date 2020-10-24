@@ -1,5 +1,6 @@
 package com.github.proyeception.benito.dto
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDate
@@ -37,7 +38,9 @@ data class ProjectDTO(
     val organization: OrganizationRefDTO,
     val recommendations: List<RecommendationDTO>,
     val project_keywords: List<KeywordDTO>,
-    val keywordMatchingDocs: List<DocumentationDTO> = emptyList()
+    val keywordMatchingDocs: List<DocumentationDTO> = emptyList(),
+    val open: Boolean = false,
+    @JsonIgnore val driveFolderId: String
 ) {
     constructor(medusa: MedusaProjectDTO) : this(
         id = medusa.id,
@@ -53,7 +56,9 @@ data class ProjectDTO(
         organization = OrganizationRefDTO(medusa.organization) ,
         recommendations = medusa.recommendations.map { RecommendationDTO(it) },
         project_keywords = medusa.project_keywords,
-        keywordMatchingDocs = medusa.keywordMatchingDocs ?: emptyList()
+        keywordMatchingDocs = medusa.keywordMatchingDocs ?: emptyList(),
+        open = medusa.open,
+        driveFolderId = medusa.driveFolderId
     )
 }
 
@@ -67,7 +72,8 @@ data class PersonDTO(
     val socials: SocialDTO,
     val contact: ContactDTO? = null,
     val about: String? = null,
-    val apiKeys: List<Any> = emptyList()
+    val apiKeys: List<Any> = emptyList(),
+    val ghost: Boolean = false
 )
 
 data class OrganizationRefDTO(
@@ -117,11 +123,11 @@ enum class RoleDTO {
 }
 
 data class LoginDTO(
-        val googleUserId: String,
-        val fullName: String,
-        val mail: String,
-        val profilePictureUrl: String?,
-        val token: String
+    val googleUserId: String,
+    val fullName: String,
+    val mail: String,
+    val profilePictureUrl: String?,
+    val token: String
 )
 
 data class UpdateContentDTO(
@@ -165,7 +171,9 @@ data class PersonRefDTO(
     val fullName: String,
     val username: String?,
     val profilePicUrl: String? = null,
-    val socials: SocialDTO = SocialDTO()
+    val socials: SocialDTO = SocialDTO(),
+    val mail: String? = null,
+    val ghost: Boolean = false
 ) {
     constructor(medusa: MedusaPersonRefDTO) : this(
         id = medusa.id,
@@ -176,7 +184,9 @@ data class PersonRefDTO(
             facebook = medusa.facebook,
             linkedin = medusa.linkedin,
             twitter = medusa.twitter
-        )
+        ),
+        mail = medusa.mail,
+        ghost = medusa.ghost
     )
 }
 
@@ -225,7 +235,8 @@ data class CreateGhostUserDTO(
     val fullName: String,
     val organizations: List<String>,
     val projects: List<String>,
-    val mail: String?
+    val mail: String?,
+    val ghost: Boolean = true
 )
 
 data class SearchProjectDTO(

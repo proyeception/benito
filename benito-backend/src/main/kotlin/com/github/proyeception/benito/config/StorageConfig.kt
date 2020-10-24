@@ -31,4 +31,9 @@ open class StorageConfig {
     open fun statsStorage(
         mongoTemplate: MongoTemplate
     ) = StatsStorage(mongoTemplate)
+
+    @Bean
+    open fun permissionsStorage(
+        mongoTemplate: MongoTemplate
+    ) = PermissionsStorage(mongoTemplate)
 }
