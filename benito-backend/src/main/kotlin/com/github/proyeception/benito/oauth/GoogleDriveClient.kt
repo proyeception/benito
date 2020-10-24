@@ -35,7 +35,7 @@ open class GoogleDriveClient(
     } ?: export(file)
 
     open fun modifiedFilesSinceIn(parentId: String, modifyDate: LocalDateTime) = this
-        .query("'${parentId}' in parents and modifiedDate >= '${modifyDate.format(FORMATTER)}'")
+        .query("'${parentId}' in parents and modifiedTime >= '${modifyDate.format(FORMATTER)}'")
 
     open fun getFile(fileId: String): Either<Throwable, GoogleFileDTO> = googleDriveConnector.get(
         url = "https://www.googleapis.com/drive/v3/files/$fileId?fields=id,webContentLink,name,mimeType,modifiedTime"
@@ -103,7 +103,7 @@ open class GoogleDriveClient(
     }
 
     fun query(query: String): Either<Throwable, List<GoogleFileDTO>> = googleDriveConnector.get(
-        url = "https://www.googleapis.com/drive/v3/files?q=${query.replaceUrlSpaces()}"
+        url = "https://www.googleapis.com/drive/v3/files?fields=files(id,webContentLink,name,mimeType,modifiedTime)&q=${query.replaceUrlSpaces()}"
     )
         .map { it.deserializeAs(object : TypeReference<QueryDTO>() {}) }
         .map { it.files }
