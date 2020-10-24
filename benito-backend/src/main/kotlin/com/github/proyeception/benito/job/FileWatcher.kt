@@ -38,27 +38,34 @@ class FileWatcher(
 
     private fun poll() {
         LOGGER.info("Polling for file changes...")
-        driveFolders.forEach {
-            googleDriveClient
-                .modifiedFilesSinceIn(it.driveFolderId, lastNotification)
-                .fold(
-                    ifLeft = { e -> LOGGER.warn("Failed to retrieve file $it", e) },
-                    ifRight = { fs ->
-                        if (fs.isNotEmpty()) {
-                            LOGGER.info("Folder ${it.driveFolderId} was updated")
-                            fileObserver.notify(
-                                fs,
-                                it.projectId,
-                                lastNotification
-                            )
-                        } else {
-                            LOGGER.info("No changes on folder ${it.driveFolderId}")
+        kotlin.runCatching {
+            driveFolders.forEach {
+                googleDriveClient
+                    .modifiedFilesSinceIn(it.driveFolderId, lastNotification)
+                    .fold(
+                        ifLeft = { e -> LOGGER.warn("Failed to retrieve file $it", e) },
+                        ifRight = { fs ->
+                            if (fs.isNotEmpty()) {
+                                LOGGER.info("Folder ${it.driveFolderId} was updated")
+                                fileObserver.notify(
+                                    fs,
+                                    it.projectId,
+                                    lastNotification
+                                )
+                            } else {
+                                LOGGER.info("No changes on folder ${it.driveFolderId}")
+                            }
                         }
-                    }
-                )
+                    )
+            }
         }
-        lastNotification = LocalDateTime.now()
-        LOGGER.info("Done. Will check again in $refreshRate seconds")
+            .onFailure {
+                LOGGER.warn("There was an error checking for updates", it)
+            }
+            .onSuccess {
+                lastNotification = LocalDateTime.now()
+                LOGGER.info("Done. Will check again in $refreshRate seconds")
+            }
     }
 
     companion object {

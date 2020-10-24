@@ -8,12 +8,11 @@ import com.github.proyeception.benito.extension.splitBy
 import com.github.proyeception.benito.oauth.GoogleDriveClient
 import com.github.proyeception.benito.parser.DocumentParser
 import com.github.proyeception.benito.service.ProjectService
+import com.github.proyeception.benito.utils.FileHelper
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
 import org.slf4j.LoggerFactory
 import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 
 data class Document(
     val driveId: String,
@@ -25,7 +24,8 @@ class FileObserver(
     private val googleDriveClient: GoogleDriveClient,
     private val projectService: ProjectService,
     private val documentParser: DocumentParser,
-    private val medusaClient: MedusaClient
+    private val medusaClient: MedusaClient,
+    private val fileHelper: FileHelper
 ) {
     fun notify(files: List<GoogleFileDTO>, projectId: String, lastNotification: LocalDateTime) {
         val project = projectService.findProject(projectId)
@@ -35,6 +35,8 @@ class FileObserver(
                 asyncIO {
                     val file = googleDriveClient.downloadFile(it)
                     val content = documentParser.parse(file.inputStream(), file.name) ?: ""
+
+                    fileHelper.deleteFile(file)
 
                     Document(
                         driveId = it.id,
@@ -51,13 +53,17 @@ class FileObserver(
             .mapFirst { it.map { u -> u to alreadyExistentDocs.find { d -> d.driveId == u.driveId }?.id!! } }
 
         updated.forEach {
-            updateDocumentContent(
+            updateDocument(
                 content = it.first.content,
-                documentId = it.second
+                documentId = it.second,
+                fileName = it.first.name
             )
+
+            LOGGER.info("Document ${it.first.driveId} was updated")
         }
 
         newDocs.forEach {
+            LOGGER.info("Creating new file ${it.driveId}")
             medusaClient.saveDocuments(
                 docs = CreateDocumentsDTO(
                     items = listOf(
@@ -73,13 +79,10 @@ class FileObserver(
         }
     }
 
-    private fun updateDocumentContent(content: String, documentId: String): DocumentationDTO = medusaClient
-        .updateDocument(documentId, UpdateDocumentDTO(content = content))
+    private fun updateDocument(content: String, fileName: String, documentId: String): DocumentationDTO = medusaClient
+        .updateDocument(documentId, UpdateDocumentDTO(content = content, fileName = fileName))
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(FileObserver::class.java)
-        private val FORMATTER = DateTimeFormatter
-            .ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-            .withZone(ZoneId.of("UTC"))
     }
 }

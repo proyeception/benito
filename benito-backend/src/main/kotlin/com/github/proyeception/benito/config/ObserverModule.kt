@@ -5,6 +5,7 @@ import com.github.proyeception.benito.oauth.GoogleDriveClient
 import com.github.proyeception.benito.observer.FileObserver
 import com.github.proyeception.benito.parser.DocumentParser
 import com.github.proyeception.benito.service.ProjectService
+import com.github.proyeception.benito.utils.FileHelper
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -15,11 +16,13 @@ open class ObserverModule {
         projectService: ProjectService,
         googleDriveClient: GoogleDriveClient,
         documentParser: DocumentParser,
-        medusaClient: MedusaClient
+        medusaClient: MedusaClient,
+        fileHelper: FileHelper
     ): FileObserver = FileObserver(
         googleDriveClient = googleDriveClient,
         projectService = projectService,
         documentParser = documentParser,
-        medusaClient = medusaClient
+        medusaClient = medusaClient,
+        fileHelper = fileHelper
     )
 }

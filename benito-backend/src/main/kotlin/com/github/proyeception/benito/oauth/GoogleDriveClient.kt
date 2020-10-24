@@ -31,7 +31,7 @@ open class GoogleDriveClient(
             .forName(file.mimeType)
             .extension
 
-        fileHelper.downloadFromUrl(wcl, "/tmp/${file.id}$extension")
+        fileHelper.downloadFromUrl(wcl, "/tmp/${file.name}$extension")
     } ?: export(file)
 
     open fun modifiedFilesSinceIn(parentId: String, modifyDate: LocalDateTime) = this
