@@ -1,12 +1,14 @@
 import { InputLabel, Select, TextField } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import React from "react";
+import React, { useState } from "react";
 import { hot } from "react-hot-loader";
 import { connect } from "react-redux";
 import { RootState } from "../../../reducers";
-import { Category } from "../../../types";
+import { Category, OrganizationQuantityType } from "../../../types";
 import { ChartOptions } from "chart.js";
 import { Pie } from 'react-chartjs-2';
+import withProjectxOrganizations from '../../../hooks/withProjectsxOrganizations';
+import { updateProjectxQuantity } from "../../../functions/project";
 
 type OrganizationQuantityProps = {
   categories: Array<Category>;
@@ -15,63 +17,69 @@ type OrganizationQuantityProps = {
 };
 
 
-const data = {
-    labels: [
-      'Red',
-      'Green',
-      'Yellow'
-    ],
-    datasets: [{
-      data: [300, 50, 100, 239, 10000],
-      backgroundColor: [
-        '#FF6384',
-        '#36A2EB',
-        '#FFCE56',
-        '#76A2EB',
-        '#31A2EB',
-        '#36C2EB',
-        '#36AFEB',
-        '#36A2AB',
-        '#32A2E1',
-        '#3622E3',
-      ],
-      hoverBackgroundColor: [
-        '#FF6384',
-        '#36A2EB',
-        '#FFCE56',
-      ]
-    }]
-  };
-  
-  let options: ChartOptions = {
-    legend: {
-      position: 'bottom',
-    }
-  };
-  
 
-const OrganizationQuantity = (props: OrganizationQuantityProps) => (
-  <div>
-    <Autocomplete
-      fullWidth
-      options={props.categories}
-      getOptionLabel={(option) => option.name}
-      defaultValue={props.category}
-      onChange={(e, c) => {
-        
-      }}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          fullWidth
-          label="Categoría"
-          variant={props.variant}
-        />
-      )}
-    />
-  <Pie data={data} options={options} />
-  </div>
-);
+  
+  const OrganizationQuantity = (props: OrganizationQuantityProps) => {
+
+    function updateOrganizationxquantity(id: string){
+      withProjectxOrganizations(id, (r) => {
+        setLabels(r.map((result: OrganizationQuantityType) => result.organization))
+        setQuantity(r.map((result: OrganizationQuantityType) => result.quantity))
+      });
+    }
+    
+    const [labels, setLabels] = useState<Array<string>>([]);
+    const [quantity, setQuantity] = useState<Array<number>>([]);
+    const [colors, setColors] = useState<Array<string>>([]);
+
+    withProjectxOrganizations("", (r) => {
+      setLabels(r.map((result: OrganizationQuantityType) => result.organization))
+      setQuantity(r.map((result: OrganizationQuantityType) => result.quantity))
+      var randomColor = require('randomcolor');
+      setColors(r.map(() => randomColor()))
+    });
+
+    const data = {
+      labels: labels,
+      datasets: [{
+        data: quantity,
+        backgroundColor: colors,
+        hoverBackgroundColor: colors
+        }]
+      };
+      
+      let options: ChartOptions = {
+        legend: {
+          position: 'bottom',
+        }
+      };
+
+    return (
+    <div>
+      <Autocomplete
+        fullWidth
+        options={props.categories}
+        getOptionLabel={(option) => option.name}
+        defaultValue={props.category}
+        onChange={(e, c) => {
+          updateProjectxQuantity(c!.id).then((r) => {
+            setLabels(r.data.map((result: OrganizationQuantityType) => result.organization))
+            setQuantity(r.data.map((result: OrganizationQuantityType) => result.quantity))
+          })
+        }}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            fullWidth
+            label="Categoría"
+            variant={props.variant}
+          />
+        )}
+      />
+      {labels.length == 0 ? (<h1>Oops</h1>) : (<Pie data={data} options={options} />)}
+    </div>
+    )
+}
 
 const mapStateToProps = (rootState: RootState) => {
   return {

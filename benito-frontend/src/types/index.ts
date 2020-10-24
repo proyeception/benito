@@ -117,3 +117,8 @@ export type SearchParams = {
   orderBy?: SortMethod;
   page?: string;
 };
+
+export type OrganizationQuantityType = {
+  organization: string,
+  quantity: number
+}

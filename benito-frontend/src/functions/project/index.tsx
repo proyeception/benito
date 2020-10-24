@@ -1,4 +1,4 @@
-import { Project, Role, Person } from "../../types";
+import { Project, Role, Person, OrganizationQuantityType } from "../../types";
 import { benitoHost } from "../../config";
 import axios, { AxiosRequestConfig, AxiosPromise } from "axios";
 import { signRequest } from "../http";
@@ -163,4 +163,14 @@ export function closeProject(projectId: string) {
   };
 
   return axios.request(signRequest(config));
+}
+
+export function updateProjectxQuantity(
+  id: string
+): AxiosPromise<Array<OrganizationQuantityType>> {
+  let results: AxiosRequestConfig = {
+    url: `${benitoHost}/benito/stats/projectsxorganization?categoryId=${id}`,
+    method: "GET"
+  };
+  return axios.request<Array<OrganizationQuantityType>>(signRequest(results));
 }

@@ -48,7 +48,9 @@ const StatsPage = (props: StatsPageProps) => {
         </div>
       </Parallax>
       <div className={classNames(classes.main, classes.mainRaised)}>
-        <OrganizationQuantity />
+        <div className={classes.container}>
+          <OrganizationQuantity />
+        </div>
       </div>
       <Footer />
     </div>
