@@ -12,14 +12,30 @@ import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.AmbiguousReferenceException
 import com.github.proyeception.benito.extension.replaceUrlSpaces
 import com.github.proyeception.benito.extension.void
+import com.github.proyeception.benito.utils.FileHelper
+import org.apache.tika.mime.MimeTypes
 import org.slf4j.LoggerFactory
 import org.springframework.web.multipart.MultipartFile
 import java.io.File
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 open class GoogleDriveClient(
     private val googleDriveConnector: OAuthConnector,
-    private val objectMapper: ObjectMapper
+    private val objectMapper: ObjectMapper,
+    private val fileHelper: FileHelper
 ) {
+    open fun downloadFile(file: GoogleFileDTO): File = file.webContentLink?.let { wcl ->
+        val extension = MimeTypes.getDefaultMimeTypes()
+            .forName(file.mimeType)
+            .extension
+
+        fileHelper.downloadFromUrl(wcl, "/tmp/${file.id}$extension")
+    } ?: export(file)
+
+    open fun modifiedFilesSinceIn(parentId: String, modifyDate: LocalDateTime) = this
+        .query("'${parentId}' in parents and modifiedDate >= '${modifyDate.format(FORMATTER)}'")
 
     open fun getFile(fileId: String): Either<Throwable, GoogleFileDTO> = googleDriveConnector.get(
         url = "https://www.googleapis.com/drive/v3/files/$fileId?fields=id,webContentLink,name,mimeType,modifiedTime"
@@ -86,15 +102,6 @@ open class GoogleDriveClient(
         ).map(void)
     }
 
-    open fun findOrCreateFolder(name: String): Either<Throwable, GoogleFileDTO> = query("name = '$name'")
-        .flatMap {
-            when (it.size) {
-                0 -> createFolder(name)
-                1 -> it.first().right()
-                else -> AmbiguousReferenceException("More than one result found for $name").left()
-            }
-        }
-
     fun query(query: String): Either<Throwable, List<GoogleFileDTO>> = googleDriveConnector.get(
         url = "https://www.googleapis.com/drive/v3/files?q=${query.replaceUrlSpaces()}"
     )
@@ -109,5 +116,8 @@ open class GoogleDriveClient(
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(GoogleDriveClient::class.java)
+        private val FORMATTER = DateTimeFormatter
+            .ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+            .withZone(ZoneId.of("UTC"))
     }
 }

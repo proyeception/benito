@@ -226,3 +226,9 @@ data class UpdateMedusaProjectDTO(
     val supervisors: List<String>? = null,
     val open: Boolean?
 )
+
+data class UpdateDocumentDTO(
+    val fileName: String? = null,
+    val content: String? = null,
+    val driveId: String? = null
+)

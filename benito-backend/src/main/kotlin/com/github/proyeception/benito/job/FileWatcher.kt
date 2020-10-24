@@ -40,21 +40,24 @@ class FileWatcher(
         LOGGER.info("Polling for file changes...")
         driveFolders.forEach {
             googleDriveClient
-                .getFile(fileId = it.driveFolderId)
+                .modifiedFilesSinceIn(it.driveFolderId, lastNotification)
                 .fold(
                     ifLeft = { e -> LOGGER.warn("Failed to retrieve file $it", e) },
-                    ifRight = { f ->
-                        if (f.modifiedTime.isAfter(lastNotification)) {
-                            LOGGER.info("File ${f.name} was updated")
+                    ifRight = { fs ->
+                        if (fs.isNotEmpty()) {
+                            LOGGER.info("Folder ${it.driveFolderId} was updated")
                             fileObserver.notify(
-                                f,
+                                fs,
                                 it.projectId,
                                 lastNotification
                             )
+                        } else {
+                            LOGGER.info("No changes on folder ${it.driveFolderId}")
                         }
                     }
                 )
         }
+        lastNotification = LocalDateTime.now()
         LOGGER.info("Done. Will check again in $refreshRate seconds")
     }
 
