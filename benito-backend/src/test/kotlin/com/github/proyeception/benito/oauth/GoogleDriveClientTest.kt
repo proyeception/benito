@@ -131,8 +131,8 @@ class GoogleDriveClientTest : Spec() {
                 verify(connectorMock).post(
                     eq("https://www.googleapis.com/drive/v3/files/123/permissions"),
                     eq(CreatePermissionDTO(
-                        type = "reader",
-                        role = "anyone"
+                        type = "anyone",
+                        role = "reader"
                     ))
                 )
             }
