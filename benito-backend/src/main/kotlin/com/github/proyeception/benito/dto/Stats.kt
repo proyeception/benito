@@ -18,10 +18,6 @@ data class ProjectSearchDTO(
     val visitedOn: LocalDate
 )
 
-data class OrganizationQuantityResultDTO(
-    val result: List<OrganizationQuantityDTO>
-)
-
 data class OrganizationQuantityDTO(
     val organization: String,
     val quantity: Int

@@ -1,7 +1,6 @@
 package com.github.proyeception.benito.controller;
 
 import com.github.proyeception.benito.dto.OrganizationQuantityDTO
-import com.github.proyeception.benito.dto.OrganizationQuantityResultDTO
 import com.github.proyeception.benito.dto.ProjectVisitDTO
 import com.github.proyeception.benito.service.*
 import org.springframework.stereotype.Controller;
@@ -21,5 +20,5 @@ class StatsController (
     @ResponseBody
     private fun projectsXorganizationWcategory(
         @RequestParam(required = false) categoryId: String?
-    ): OrganizationQuantityResultDTO = OrganizationQuantityResultDTO(statsService.projectsXorganization(categoryId))
+    ): List<OrganizationQuantityDTO> = statsService.projectsXorganization(categoryId)
 }
