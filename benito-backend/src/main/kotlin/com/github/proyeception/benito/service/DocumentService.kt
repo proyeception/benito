@@ -1,8 +1,5 @@
 package com.github.proyeception.benito.service
 
-import com.github.proyeception.benito.client.MedusaClient
-import com.github.proyeception.benito.dto.DocumentationDTO
-import com.github.proyeception.benito.dto.UpdateDocumentDTO
 import com.github.proyeception.benito.oauth.GoogleDriveClient
 import org.slf4j.LoggerFactory
 import org.springframework.web.multipart.MultipartFile

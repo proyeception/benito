@@ -2,12 +2,12 @@ package com.github.proyeception.benito.observer
 
 import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.dto.*
+import com.github.proyeception.benito.extension.asyncIO
 import com.github.proyeception.benito.extension.mapFirst
 import com.github.proyeception.benito.extension.splitBy
 import com.github.proyeception.benito.oauth.GoogleDriveClient
 import com.github.proyeception.benito.parser.DocumentParser
 import com.github.proyeception.benito.service.ProjectService
-import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
 import org.slf4j.LoggerFactory
@@ -32,7 +32,7 @@ class FileObserver(
         val alreadyExistentDocs = project.documentation ?: emptyList()
         val docs = runBlocking {
             files.map {
-                async {
+                asyncIO {
                     val file = googleDriveClient.downloadFile(it)
                     val content = documentParser.parse(file.inputStream(), file.name) ?: ""
 

@@ -10,6 +10,7 @@ import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.mock.eq
 import com.github.proyeception.benito.mock.getMock
 import com.github.proyeception.benito.mock.on
+import com.github.proyeception.benito.utils.FileHelper
 import com.nhaarman.mockito_kotlin.anyVararg
 import io.kotlintest.matchers.shouldBe
 import org.mockito.ArgumentMatchers.any
@@ -23,9 +24,11 @@ class GoogleDriveClientTest : Spec() {
     init {
         val mapperMock: ObjectMapper = getMock()
         val connectorMock: OAuthConnector = getMock()
+        val fileHelperMock: FileHelper = getMock()
         val googleDriveClient = GoogleDriveClient(
             objectMapper = mapperMock,
-            googleDriveConnector = connectorMock
+            googleDriveConnector = connectorMock,
+            fileHelper = fileHelperMock
         )
 
         "getFile" should {
