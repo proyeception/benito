@@ -3,6 +3,7 @@ package com.github.proyeception.benito.service
 import com.github.proyeception.benito.oauth.GoogleDriveClient
 import org.slf4j.LoggerFactory
 import org.springframework.web.multipart.MultipartFile
+import java.io.File
 
 open class DocumentService(
     private val googleClient: GoogleDriveClient

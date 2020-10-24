@@ -35,7 +35,13 @@ class DriveWatcher(
                 .getFile(fileId = it.driveFolderId)
                 .fold(
                     ifLeft = { e -> LOGGER.warn("Failed to retrieve file $it", e) },
-                    ifRight = { f -> if (f.modifiedTime.isAfter(lastNotification)) fileObserver.notify(f, it.projectId) }
+                    ifRight = { f ->
+                        if (f.modifiedTime.isAfter(lastNotification)) fileObserver.notify(
+                            f,
+                            it.projectId,
+                            lastNotification
+                        )
+                    }
                 )
         }
     }

@@ -17,6 +17,7 @@ import kotlinx.coroutines.runBlocking
 import org.apache.http.entity.ContentType
 import org.slf4j.LoggerFactory
 import org.springframework.web.multipart.MultipartFile
+import java.io.File
 import java.time.format.DateTimeFormatter
 
 open class ProjectService(
@@ -168,6 +169,27 @@ open class ProjectService(
         } catch (e: Exception) {
             LOGGER.error("There was an error updating keywords for project ${project.id}")
         }
+    }
+
+    fun saveDriveDocuments(projectId: String, files: List<Pair<File, String>>) = mappingFromMedusa {
+        val docs = runBlocking {
+            val (_, driveFolderId) = driveStorage.findOne(projectId)
+                ?: throw NotFoundException("No drive for project $projectId")
+            files.map { (f, driveId) ->
+                asyncIO {
+                    val fileStream = f.inputStream()
+                    val content = documentParser.parse(fileStream, f.name) ?: ""
+
+                    CreateDocumentDTO(
+                        driveId = driveId,
+                        content = content,
+                        fileName = f.name
+                    )
+                }
+            }.awaitAll()
+        }
+
+        medusaClient.saveDocuments(CreateDocumentsDTO(docs), projectId)
     }
 
     fun saveDocuments(projectId: String, files: List<MultipartFile>): ProjectDTO = mappingFromMedusa {
