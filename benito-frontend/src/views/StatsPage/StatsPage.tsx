@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { RootState } from "../../reducers";
 import classNames from "classnames";
 import styles from "../../assets/jss/material-kit-react/views/homePage";
-import { Hidden, makeStyles } from "@material-ui/core";
+import { Hidden, makeStyles, TextField } from "@material-ui/core";
 import Header from "../../components/Header/Header";
 import HeaderLinks from "../../components/Header/HeaderLinks";
 import Parallax from "../../components/Parallax/Parallax";
@@ -12,16 +12,24 @@ import GridContainer from "../../components/Grid/GridContainer";
 import GridItem from "../../components/Grid/GridItem";
 import Footer from "../../components/Footer/Footer";
 import image from "../../assets/img/proyectate/pattern.jpg";
+import { ChartOptions } from 'chart.js'
+import { Autocomplete } from "@material-ui/lab";
+import { Category } from "../../types";
+import OrganizationQuantity from "./Sections/OrganizationQuantity"
 
 const useStyles = makeStyles(styles);
 
 type StatsPageProps = {
   customizationToken?: string;
+  categories: Array<Category>;
+  category?: Category;
 };
+
 
 const StatsPage = (props: StatsPageProps) => {
   const classes = useStyles();
   const { ...rest } = props;
+
   return (
     <div>
       <Header rightLinks={<HeaderLinks />} fixed color="darkGray" {...rest} />
@@ -40,7 +48,7 @@ const StatsPage = (props: StatsPageProps) => {
         </div>
       </Parallax>
       <div className={classNames(classes.main, classes.mainRaised)}>
-  
+        <OrganizationQuantity />
       </div>
       <Footer />
     </div>
