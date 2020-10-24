@@ -2,6 +2,7 @@ package com.github.proyeception.benito.config
 
 import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.client.MedusaGraphClient
+import com.github.proyeception.benito.job.FileWatcher
 import com.github.proyeception.benito.oauth.GoogleDriveClient
 import com.github.proyeception.benito.parser.DocumentParser
 import com.github.proyeception.benito.service.*
@@ -24,7 +25,8 @@ open class ServiceModule {
         recommendationService: RecommendationService,
         driveStorage: DriveStorage,
         googleDriveClient: GoogleDriveClient,
-        permissionsStorage: PermissionsStorage
+        permissionsStorage: PermissionsStorage,
+        fileWatcher: FileWatcher
     ): ProjectService = ProjectService(
         medusaClient = medusaClient,
         documentParser = documentParser,
@@ -35,7 +37,8 @@ open class ServiceModule {
         recommendationService = recommendationService,
         driveStorage = driveStorage,
         googleDriveClient = googleDriveClient,
-        permissionsStorage = permissionsStorage
+        permissionsStorage = permissionsStorage,
+        fileWatcher = fileWatcher
     )
 
     @Bean

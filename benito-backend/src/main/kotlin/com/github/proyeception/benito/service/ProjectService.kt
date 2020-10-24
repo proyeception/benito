@@ -8,6 +8,7 @@ import com.github.proyeception.benito.exception.FailedDependencyException
 import com.github.proyeception.benito.exception.NotFoundException
 import com.github.proyeception.benito.extension.asyncIO
 import com.github.proyeception.benito.extension.launchIOAsync
+import com.github.proyeception.benito.job.FileWatcher
 import com.github.proyeception.benito.oauth.GoogleDriveClient
 import com.github.proyeception.benito.parser.DocumentParser
 import com.github.proyeception.benito.storage.DriveStorage
@@ -30,7 +31,8 @@ open class ProjectService(
     private val recommendationService: RecommendationService,
     private val googleDriveClient: GoogleDriveClient,
     private val driveStorage: DriveStorage,
-    private val permissionsStorage: PermissionsStorage
+    private val permissionsStorage: PermissionsStorage,
+    private val fileWatcher: FileWatcher
 ) {
     open fun closeProject(projectId: String) = mappingFromMedusa {
         medusaClient.updateProjectOpen(projectId, false)
@@ -48,6 +50,7 @@ open class ProjectService(
                     }.awaitAll()
             }
         }
+        .also { launchIOAsync { fileWatcher.unwatch(it.driveFolderId) } }
 
     open fun findProjects(
         orderBy: OrderDTO?,
