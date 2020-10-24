@@ -7,6 +7,7 @@ import arrow.core.left
 import arrow.core.right
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.github.proyeception.benito.config.Environment
 import com.github.proyeception.benito.connector.OAuthConnector
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.AmbiguousReferenceException

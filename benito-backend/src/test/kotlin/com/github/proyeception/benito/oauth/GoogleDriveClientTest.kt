@@ -16,6 +16,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito.verify
 import org.springframework.web.multipart.MultipartFile
+import java.time.LocalDateTime
 
 class GoogleDriveClientTest : Spec() {
     init {
@@ -30,12 +31,14 @@ class GoogleDriveClientTest : Spec() {
             "retrieve the fileId asking for webContentLink, mimeType and name of the file" {
                 val responseMock: HttpResponse = getMock()
                 on(connectorMock.get(anyString())).thenReturn(responseMock.right())
+                val date = LocalDateTime.now()
                 on(responseMock.deserializeAs(any(TypeReference::class.java))).thenReturn(
                     GoogleFileDTO(
                         id = "123",
                         name = "some name",
                         mimeType = "application/pdf",
-                        webContentLink = null
+                        webContentLink = null,
+                        modifiedTime = date
                     )
                 )
 
@@ -43,7 +46,8 @@ class GoogleDriveClientTest : Spec() {
                     id = "123",
                     name = "some name",
                     mimeType = "application/pdf",
-                    webContentLink = null
+                    webContentLink = null,
+                    modifiedTime = date
                 ).right()
 
                 val actual = googleDriveClient.getFile("123")
@@ -115,7 +119,8 @@ class GoogleDriveClientTest : Spec() {
                     id = "123",
                     name = "some-file",
                     mimeType = "application/pdf",
-                    webContentLink = null
+                    webContentLink = null,
+                    modifiedTime = LocalDateTime.now()
                 ).right()
 
                 val actual = googleDriveClient.createFolder("folder")

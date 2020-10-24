@@ -1,10 +1,13 @@
 package com.github.proyeception.benito.dto
 
+import java.time.LocalDateTime
+
 data class GoogleFileDTO(
     val id: String,
     val name: String,
     val mimeType: String,
-    val webContentLink: String?
+    val webContentLink: String?,
+    val modifiedTime: LocalDateTime
 )
 
 data class FileCreatedDTO(
@@ -16,7 +19,8 @@ data class FileCreatedDTO(
         name = name,
         mimeType = mimeType,
         webContentLink = null,
-        id = id
+        id = id,
+        modifiedTime = LocalDateTime.now()
     )
 }
 

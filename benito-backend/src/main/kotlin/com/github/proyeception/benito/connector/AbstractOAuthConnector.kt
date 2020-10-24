@@ -4,17 +4,21 @@ import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.github.proyeception.benito.exception.FailedDependencyException
 import com.github.proyeception.benito.exception.HttpException
 import com.github.proyeception.benito.extension.isError
+import com.github.proyeception.benito.utils.FileHelper
 import com.github.scribejava.core.model.OAuth2AccessToken
 import com.github.scribejava.core.model.OAuthRequest
 import com.github.scribejava.core.model.Verb
 import com.github.scribejava.core.oauth.OAuth20Service
 import org.slf4j.LoggerFactory
+import java.io.File
 
 abstract class AbstractOAuthConnector(
     private val oAuth20Service: OAuth20Service,
-    private val objectMapper: ObjectMapper
+    private val objectMapper: ObjectMapper,
+    private val fileHelper: FileHelper
 ) {
     fun accessToken(authorization: String): OAuth2AccessToken = oAuth20Service.getAccessToken(authorization)
 
@@ -60,6 +64,24 @@ abstract class AbstractOAuthConnector(
             status = response.code,
             headers = response.headers
         ).right()
+    }
+
+    protected open fun downloadFile(
+        url: String,
+        token: String,
+        filePath: String
+    ): File {
+        val accessToken = oAuth20Service.refreshAccessToken(token)
+        val request = OAuthRequest(Verb.GET, url)
+        oAuth20Service.signRequest(accessToken, request)
+        val response = oAuth20Service.execute(request)
+
+        if (response.code.isError()) {
+            LOGGER.error(response.message, response.body)
+            throw FailedDependencyException("Failed to download file at $url")
+        }
+
+        return fileHelper.createFileFromInputStream(filePath, response.stream)
     }
 
     protected open fun get(url: String, token: String): Either<Throwable, HttpResponse> = executeRequest(

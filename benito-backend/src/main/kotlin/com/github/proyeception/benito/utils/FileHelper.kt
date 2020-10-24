@@ -20,7 +20,7 @@ open class FileHelper {
 
     open fun deleteFile(file: File) = Files.delete(file.toPath())
 
-    private fun createFileFromInputStream(filePath: String, input: InputStream): File {
+    fun createFileFromInputStream(filePath: String, input: InputStream): File {
         val pathToFile = Paths.get(filePath)
         Files.copy(input, pathToFile)
 
