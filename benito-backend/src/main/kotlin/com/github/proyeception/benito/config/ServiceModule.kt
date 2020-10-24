@@ -123,7 +123,8 @@ open class ServiceModule {
 
     @Bean
     open fun statsService(
-        statsStorage: StatsStorage
-    ): StatsService = StatsService(statsStorage)
+        statsStorage: StatsStorage,
+        medusaClient: MedusaClient
+    ): StatsService = StatsService(statsStorage, medusaClient)
 
 }
