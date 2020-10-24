@@ -48,6 +48,7 @@
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "psl": "^1.8.0",
     "qs": "^6.9.4",
+    "randomcolor": "^0.6.2",
     "react": "^16.13.1",
     "react-chartjs-2": "^2.10.0",
     "react-chips": "^0.8.0",
