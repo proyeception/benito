@@ -16,11 +16,9 @@ class StatsController (
     @ResponseBody
     private fun allVisits(): List<ProjectVisitDTO> = statsService.findAll()
 
-    @RequestMapping("/benito/stats/projectsxorganization/{categoryId}", method = [RequestMethod.GET])
-    @ResponseBody
-    private fun projectsXorganizationWcategory(@PathVariable categoryId: String): List<OrganizationQuantityDTO> = statsService.projectsXorganization(categoryId)
-
     @RequestMapping("/benito/stats/projectsxorganization", method = [RequestMethod.GET])
     @ResponseBody
-    private fun projectsXorganization(): List<OrganizationQuantityDTO> = statsService.projectsXorganization(null)
+    private fun projectsXorganizationWcategory(
+        @RequestParam(required = false) categoryId: String?
+    ): List<OrganizationQuantityDTO> = statsService.projectsXorganization(categoryId)
 }
