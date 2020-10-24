@@ -249,18 +249,3 @@ data class CustomRecommendationDTO(
     val projectId: String,
     val views: Int
 )
-
-@Document(collection="project_visit")
-data class ProjectVisitDTO(
-    val projectId: String,
-    val categoryId: String,
-    val organizationId: String,
-    val visitedOn: LocalDate
-)
-
-@Document(collection="project_search")
-data class ProjectSearchDTO(
-    val tag: String,
-    val categoryId: String,
-    val visitedOn: LocalDate
-)
