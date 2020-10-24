@@ -16,6 +16,7 @@ import { ChartOptions } from 'chart.js'
 import { Autocomplete } from "@material-ui/lab";
 import { Category } from "../../types";
 import OrganizationQuantity from "./Sections/OrganizationQuantity"
+import ProjectCreationTimeline from "./Sections/ProjectCreationTimeline"
 
 const useStyles = makeStyles(styles);
 
@@ -50,6 +51,7 @@ const StatsPage = (props: StatsPageProps) => {
       <div className={classNames(classes.main, classes.mainRaised)}>
         <div className={classes.container}>
           <OrganizationQuantity />
+          <ProjectCreationTimeline />
         </div>
       </div>
       <Footer />

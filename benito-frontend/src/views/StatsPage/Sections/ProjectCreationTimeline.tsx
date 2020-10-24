@@ -4,32 +4,29 @@ import React, { useState } from "react";
 import { hot } from "react-hot-loader";
 import { connect } from "react-redux";
 import { RootState } from "../../../reducers";
-import { Category, OrganizationQuantityType } from "../../../types";
+import { Category, ProjectCreationTimelineType } from "../../../types";
 import { ChartOptions } from "chart.js";
-import { Pie } from 'react-chartjs-2';
-import withProjectxOrganizations from '../../../hooks/withProjectsxOrganizations';
-import { updateProjectxQuantity } from "../../../functions/project";
+import { Line } from 'react-chartjs-2';
+import withProjectCreationTimeline from "../../../hooks/withProjectCreationTimeline";
+import { updateProjectCreationTimeline } from "../../../functions/project";
 import Spinner from "../../../components/Spinner/Spinner";
 import { PENDING } from "../../../hooks/withFetch";
 
-type OrganizationQuantityProps = {
+type ProjectCreationTimelineProps = {
   categories: Array<Category>;
   category?: Category;
   variant?: "standard" | "outlined" | "filled" | undefined;
 };
-
-
-
   
-  const OrganizationQuantity = (props: OrganizationQuantityProps) => {
+  const ProjectCreationTimeline = (props: ProjectCreationTimelineProps) => {
     
     const [labels, setLabels] = useState<Array<string>>([]);
     const [quantity, setQuantity] = useState<Array<number>>([]);
     const [colors, setColors] = useState<Array<string>>([]);
 
-    const results = withProjectxOrganizations("", (r) => {
-      setLabels(r.map((result: OrganizationQuantityType) => result.organization))
-      setQuantity(r.map((result: OrganizationQuantityType) => result.quantity))
+    const results = withProjectCreationTimeline("", (r) => {
+      setLabels(r.map((result: ProjectCreationTimelineType) => result.organization))
+      setQuantity(r.map((result: ProjectCreationTimelineType) => result.quantity))
       var randomColor = require('randomcolor');
       setColors(r.map(() => randomColor()))
     });
@@ -60,10 +57,14 @@ type OrganizationQuantityProps = {
         options={props.categories}
         getOptionLabel={(option) => option.name}
         defaultValue={props.category}
-        onChange={(e, c) => {
-          updateProjectxQuantity(c!.id).then((r) => {
-            setLabels(r.data.map((result: OrganizationQuantityType) => result.organization))
-            setQuantity(r.data.map((result: OrganizationQuantityType) => result.quantity))
+        onChange={(e, c: Category | null) => {
+          let category: string = ""
+          if(c) {
+            category = c.id
+          }
+          updateProjectCreationTimeline(category).then((r) => {
+            setLabels(r.data.map((result: ProjectCreationTimelineType) => result.organization))
+            setQuantity(r.data.map((result: ProjectCreationTimelineType) => result.quantity))
           })
         }}
         renderInput={(params) => (
@@ -75,7 +76,7 @@ type OrganizationQuantityProps = {
           />
         )}
       />
-      {labels.length == 0 ? (<h1>Oops</h1>) : (<Pie data={data} options={options} />)}
+      {labels.length == 0 ? (<h1>No se encontraron resultados</h1>) : (<Line data={data} options={options} />)}
     </div>
     )
 }
@@ -86,4 +87,4 @@ const mapStateToProps = (rootState: RootState) => {
   };
 };
 
-export default hot(module)(connect(mapStateToProps)(OrganizationQuantity));
+export default hot(module)(connect(mapStateToProps)(ProjectCreationTimeline));
