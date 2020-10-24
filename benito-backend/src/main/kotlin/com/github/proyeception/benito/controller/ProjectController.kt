@@ -7,6 +7,7 @@ import com.github.proyeception.benito.exception.ForbiddenException
 import com.github.proyeception.benito.exception.UnauthorizedException
 import com.github.proyeception.benito.service.ProjectService
 import com.github.proyeception.benito.service.SessionService
+import com.github.proyeception.benito.service.StatsService
 import com.github.proyeception.benito.service.UserService
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

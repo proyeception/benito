@@ -16,6 +16,7 @@ import kotlinx.coroutines.runBlocking
 import org.apache.http.entity.ContentType
 import org.slf4j.LoggerFactory
 import org.springframework.web.multipart.MultipartFile
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 open class ProjectService(
@@ -25,6 +26,7 @@ open class ProjectService(
     private val documentParser: DocumentParser,
     private val fileService: FileService,
     private val keywordService: KeywordService,
+    private val statsService: StatsService,
     private val recommendationService: RecommendationService,
     private val googleDriveClient: GoogleDriveClient,
     private val driveStorage: DriveStorage
@@ -131,7 +133,14 @@ open class ProjectService(
     fun count(): CountDTO = CountDTO(medusaClient.projectCount())
 
     open fun findProject(id: String): ProjectDTO = mappingFromMedusa {
-        medusaClient.findProject(projectId = id)
+        val project = medusaClient.findProject(projectId = id)
+        statsService.registerVisit(ProjectVisitDTO(
+            projectId = project.id,
+            categoryId = project.category.id,
+            organizationId = project.organization.id,
+            visitedOn = LocalDate.now()
+        ))
+        project
     }
 
     fun updateProjectContent(content: UpdateContentDTO, projectId: String): ProjectDTO = mappingFromMedusa {

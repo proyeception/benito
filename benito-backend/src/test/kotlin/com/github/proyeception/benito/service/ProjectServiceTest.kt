@@ -30,6 +30,7 @@ class ProjectServiceTest : Spec() {
         val recommendationService: RecommendationService = getMock()
         val driveClientMock: GoogleDriveClient = getMock()
         val driveStorageMock: DriveStorage = getMock()
+        val statsService: StatsService = getMock()
         val projectService = ProjectService(
             medusaClient = medusaClient,
             documentParser = documentParserMock,
@@ -39,7 +40,8 @@ class ProjectServiceTest : Spec() {
             keywordService = keywordService,
             recommendationService = recommendationService,
             driveStorage = driveStorageMock,
-            googleDriveClient = driveClientMock
+            googleDriveClient = driveClientMock,
+            statsService = statsService
         )
 
         "projects" should {
