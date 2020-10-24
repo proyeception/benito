@@ -168,8 +168,12 @@ export function closeProject(projectId: string) {
 export function updateProjectxQuantity(
   id: string
 ): AxiosPromise<Array<OrganizationQuantityType>> {
+  let queryParams = ""
+  if(id != "") {
+    queryParams = "?categoryId=" + id
+  }
   let results: AxiosRequestConfig = {
-    url: `${benitoHost}/benito/stats/projectsxorganization?categoryId=${id}`,
+    url: `${benitoHost}/benito/stats/projectsxorganization${queryParams}` ,
     method: "GET"
   };
   return axios.request<Array<OrganizationQuantityType>>(signRequest(results));

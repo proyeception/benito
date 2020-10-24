@@ -61,7 +61,11 @@ type OrganizationQuantityProps = {
         getOptionLabel={(option) => option.name}
         defaultValue={props.category}
         onChange={(e, c) => {
-          updateProjectxQuantity(c!.id).then((r) => {
+          let category = ""
+          if(c) {
+            category = c!.id
+          }
+          updateProjectxQuantity(category).then((r) => {
             setLabels(r.data.map((result: OrganizationQuantityType) => result.organization))
             setQuantity(r.data.map((result: OrganizationQuantityType) => result.quantity))
           })
