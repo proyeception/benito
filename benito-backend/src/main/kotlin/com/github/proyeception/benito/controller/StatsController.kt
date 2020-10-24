@@ -17,9 +17,4 @@ class StatsController (
     @RequestMapping("/benito/stats/findall", method = [RequestMethod.GET])
     @ResponseBody
     private fun allVisits(): List<ProjectVisitDTO> = statsService.findAll()
-
-    //TODO delete
-    @RequestMapping("/benito/stats/insert", method = [RequestMethod.POST])
-    @ResponseBody
-    private fun insertVisit(@RequestBody visit: ProjectVisitDTO) = statsService.insert(visit)
 }
