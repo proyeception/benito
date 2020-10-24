@@ -18,6 +18,7 @@ import { Category } from "./types";
 import { fetchOrganizations } from "./functions/organization";
 import MePage from "./views/MePage/MePage";
 import HomePage from "./views/HomePage/HomePage";
+import StatsPage from "./views/StatsPage/StatsPage";
 import ErrorPage from "./views/ErrorPage/ErrorPage";
 import NotFoundPage from "./views/NotFoundPage/NotFoundPage";
 import EditProjectPage from "./views/EditProjectPage/EditProjectPage";
@@ -71,6 +72,7 @@ const App = () => {
           <Route path="/supervisors/:id" component={SupervisorPage} />
           <Route path="/login" component={LoginPage} />
           <Route path="/error" component={ErrorPage} />
+          <Route path="/stats" component={StatsPage} />
           <Route path="/comingSoon" component={ComingSoon} />
           <Route path="/me/:tab" component={MePage} />
           <Route path="/" exact component={HomePage} />
