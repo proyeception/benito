@@ -56,6 +56,13 @@ open class GoogleDriveClient(
             .map { it.deserializeAs(object : TypeReference<FileCreatedDTO>() {}) }
     }
 
+    open fun deletePermission(
+        fileId: String,
+        permissionId: String
+    ): Either<Throwable, Unit> = googleDriveConnector.delete(
+            url = "https://www.googleapis.com/drive/v3/files/$fileId/permissions/$permissionId"
+        ).map(void)
+
     open fun giveWriterPermission(mail: String, fileId: String): Either<Throwable, PermissionDTO> {
         return googleDriveConnector.post(
             url = "https://www.googleapis.com/drive/v3/files/$fileId/permissions",

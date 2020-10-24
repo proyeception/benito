@@ -20,7 +20,8 @@ data class MedusaProjectDTO(
     val recommendations: List<MedusaRecommendationDTO>,
     val project_keywords: List<KeywordDTO>,
     val keywordMatchingDocs: List<DocumentationDTO>? = null,
-    val open: Boolean = false
+    val open: Boolean = false,
+    val driveFolderId: String
 )
 
 data class MedusaPersonRefDTO(
@@ -214,4 +215,14 @@ data class UpdateMedusaUserDTO(
 
 data class UpdateDriveFolderDTO(
     val driveFolderId: String
+)
+
+data class UpdateMedusaProjectDTO(
+    val title: String? = null,
+    val description: String? = null,
+    val extraContent: String? = null,
+    val picture: String? = null,
+    val authors: List<String>? = null,
+    val supervisors: List<String>? = null,
+    val open: Boolean?
 )

@@ -1,5 +1,6 @@
 package com.github.proyeception.benito.dto
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDate
 
@@ -37,7 +38,8 @@ data class ProjectDTO(
     val recommendations: List<RecommendationDTO>,
     val project_keywords: List<KeywordDTO>,
     val keywordMatchingDocs: List<DocumentationDTO> = emptyList(),
-    val open: Boolean = false
+    val open: Boolean = false,
+    @JsonIgnore val driveFolderId: String
 ) {
     constructor(medusa: MedusaProjectDTO) : this(
         id = medusa.id,
@@ -54,7 +56,8 @@ data class ProjectDTO(
         recommendations = medusa.recommendations.map { RecommendationDTO(it) },
         project_keywords = medusa.project_keywords,
         keywordMatchingDocs = medusa.keywordMatchingDocs ?: emptyList(),
-        open = medusa.open
+        open = medusa.open,
+        driveFolderId = medusa.driveFolderId
     )
 }
 

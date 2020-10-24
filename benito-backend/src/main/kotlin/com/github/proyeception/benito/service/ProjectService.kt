@@ -31,6 +31,23 @@ open class ProjectService(
     private val driveStorage: DriveStorage,
     private val permissionsStorage: PermissionsStorage
 ) {
+    open fun closeProject(projectId: String) = mappingFromMedusa {
+        medusaClient.updateProjectOpen(projectId, false)
+    }
+        .also {
+            launchIOAsync {
+                permissionsStorage.findPermissionsForFile(it.driveFolderId)
+                    .map { p ->
+                        asyncIO {
+                            googleDriveClient.deletePermission(
+                                fileId = it.driveFolderId,
+                                permissionId =  p.permissionId
+                            )
+                        }
+                    }.awaitAll()
+            }
+        }
+
     open fun findProjects(
         orderBy: OrderDTO?,
         from: String?,
@@ -45,10 +62,7 @@ open class ProjectService(
         page: Int?,
         tag: String?
     ): SearchProjectDTO {
-
-
         return if (tag.isNullOrEmpty()) {
-
             val projects = medusaGraphClient.findProjects(
                 orderBy = orderBy,
                 from = from,
@@ -188,13 +202,11 @@ open class ProjectService(
         medusaClient.updateProjectImage(id, UpdatePictureDTO(file))
     }
 
-    fun hasAuthor(authorId: String, projectId: String): Boolean = findProject(projectId)
-        .authors
-        .any { it.id == authorId }
+    fun canAuthorEdit(authorId: String, projectId: String): Boolean = findProject(projectId)
+        .let { p -> p.authors.any { it.id == authorId } && p.open }
 
-    fun hasSupervisor(supervisorId: String, projectId: String) = findProject(projectId)
-        .supervisors
-        .any { it.id == supervisorId }
+    fun canSupervisorEdit(supervisorId: String, projectId: String) = findProject(projectId)
+        .let { p -> p.supervisors.any { it.id == supervisorId } && p.open }
 
     fun deleteDocument(projectId: String, documentId: String): ProjectDTO = mappingFromMedusa {
         medusaClient.deleteDocumentFromProject(
@@ -268,25 +280,25 @@ open class ProjectService(
         )
     }
         .also {
-            val (_, driveFolderId) = driveStorage.findOne(it.id)
-                ?: throw NotFoundException("No folder found for project ${it.id}")
+            val driveFolderId = it.driveFolderId
 
             val permitted = permissionsStorage.findPermissionsForFile(driveFolderId)
 
-            runBlocking {
+            launchIOAsync {
                 (it.authors + it.supervisors)
                     .filter { u -> u.mail != null && !u.ghost }
-                    .filter { u -> u.id !in permitted.map { p -> p.userId } }
+                    .filter { u -> u.id !in permitted.map { p -> p.mail } }
                     .map { u ->
                         asyncIO {
                             googleDriveClient.giveWriterPermission(u.mail!!, driveFolderId)
                                 .fold(
                                     ifLeft = { e -> LOGGER.info("Failed to give write permission to ${u.mail}", e) },
-                                    ifRight = { p -> permissionsStorage.save(u.id, p.id, driveFolderId) }
+                                    ifRight = { p -> permissionsStorage.save(u.mail, p.id, driveFolderId) }
                                 )
                         }
                     }.awaitAll()
             }
+
         }
 
     private fun mappingFromMedusa(f: () -> MedusaProjectDTO): ProjectDTO = ProjectDTO(f())

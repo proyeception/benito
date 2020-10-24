@@ -106,6 +106,15 @@ open class ProjectController(
         @RequestParam("file") files: Array<MultipartFile>
     ): ProjectDTO = projectService.saveDocuments(projectId, files.toList())
 
+    @RequestMapping(value = ["/benito/projects/{projectId}/close"], method = [RequestMethod.POST])
+    @ResponseBody
+    fun closeProject(
+        @PathVariable projectId: String,
+        @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
+    ): ProjectDTO = doSupervisorAuthorized(projectId, token) {
+        projectService.closeProject(projectId)
+    }
+
     @RequestMapping(value = ["/benito/projects/{id}/content"], method = [RequestMethod.PATCH])
     @ResponseBody
     fun updateProjectContent(
@@ -206,8 +215,8 @@ open class ProjectController(
         token = token,
         allowedRoles = listOf(RoleDTO.SUPERVISOR, RoleDTO.AUTHOR),
         authorizeCheck = {
-            projectService.hasSupervisor(supervisorId = it, projectId = projectId) ||
-                projectService.hasAuthor(authorId = it, projectId = projectId)
+            projectService.canSupervisorEdit(supervisorId = it, projectId = projectId) ||
+                projectService.canAuthorEdit(authorId = it, projectId = projectId)
         },
         f = f
     )
@@ -215,7 +224,7 @@ open class ProjectController(
     private fun <T> doSupervisorAuthorized(projectId: String, token: String, f: (String) -> T) = doAuthorized(
         token = token,
         allowedRoles = listOf(RoleDTO.SUPERVISOR),
-        authorizeCheck = { projectService.hasSupervisor(supervisorId = it, projectId = projectId) },
+        authorizeCheck = { projectService.canSupervisorEdit(supervisorId = it, projectId = projectId) },
         f = f
     )
 
