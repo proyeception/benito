@@ -9,6 +9,8 @@ import { ChartOptions } from "chart.js";
 import { Pie } from 'react-chartjs-2';
 import withProjectxOrganizations from '../../../hooks/withProjectsxOrganizations';
 import { updateProjectxQuantity } from "../../../functions/project";
+import Spinner from "../../../components/Spinner/Spinner";
+import { PENDING } from "../../../hooks/withFetch";
 
 type OrganizationQuantityProps = {
   categories: Array<Category>;
@@ -32,12 +34,16 @@ type OrganizationQuantityProps = {
     const [quantity, setQuantity] = useState<Array<number>>([]);
     const [colors, setColors] = useState<Array<string>>([]);
 
-    withProjectxOrganizations("", (r) => {
+    const results = withProjectxOrganizations("", (r) => {
       setLabels(r.map((result: OrganizationQuantityType) => result.organization))
       setQuantity(r.map((result: OrganizationQuantityType) => result.quantity))
       var randomColor = require('randomcolor');
       setColors(r.map(() => randomColor()))
     });
+
+    if (results.type == PENDING) {
+      return <Spinner />;
+    }
 
     const data = {
       labels: labels,
