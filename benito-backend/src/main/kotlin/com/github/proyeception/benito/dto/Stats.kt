@@ -23,6 +23,6 @@ data class OrganizationQuantityResultDTO(
 )
 
 data class OrganizationQuantityDTO(
-    val organizationId: String,
+    val organization: String,
     val quantity: Int
 )
