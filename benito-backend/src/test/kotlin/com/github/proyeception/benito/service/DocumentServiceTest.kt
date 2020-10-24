@@ -33,7 +33,8 @@ class DocumentServiceTest : Spec() {
                 )).thenReturn(FileCreatedDTO(
                     id = "123",
                     name = "some-doc",
-                    mimeType = "application/pdf"
+                    mimeType = "application/pdf",
+                    createdTime = LocalDateTime.now()
                 ).right())
 
                 val expected = "123"

@@ -13,14 +13,15 @@ data class GoogleFileDTO(
 data class FileCreatedDTO(
     val id: String,
     val name: String,
-    val mimeType: String
+    val mimeType: String,
+    val createdTime: LocalDateTime
 ) {
     fun toFile(): GoogleFileDTO = GoogleFileDTO(
         name = name,
         mimeType = mimeType,
         webContentLink = null,
         id = id,
-        modifiedTime = LocalDateTime.now()
+        modifiedTime = createdTime
     )
 }
 

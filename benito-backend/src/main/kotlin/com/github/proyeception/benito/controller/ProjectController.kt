@@ -5,6 +5,8 @@ import com.github.proyeception.benito.X_QUI_TOKEN
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.ForbiddenException
 import com.github.proyeception.benito.exception.UnauthorizedException
+import com.github.proyeception.benito.extension.launchIOAsync
+import com.github.proyeception.benito.job.FileWatcher
 import com.github.proyeception.benito.service.ProjectService
 import com.github.proyeception.benito.service.SessionService
 import com.github.proyeception.benito.service.UserService
@@ -21,7 +23,8 @@ import javax.servlet.http.HttpServletResponse
 open class ProjectController(
     private val projectService: ProjectService,
     private val sessionService: SessionService,
-    private val userService: UserService
+    private val userService: UserService,
+    private val fileWatcher: FileWatcher
 ) {
 
     @RequestMapping("/benito/projects", method = [RequestMethod.GET])
@@ -113,6 +116,7 @@ open class ProjectController(
         @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
     ): ProjectDTO = doSupervisorAuthorized(projectId, token) {
         projectService.closeProject(projectId)
+            .also { launchIOAsync { fileWatcher.unwatch(it.driveFolderId) } }
     }
 
     @RequestMapping(value = ["/benito/projects/{id}/content"], method = [RequestMethod.PATCH])

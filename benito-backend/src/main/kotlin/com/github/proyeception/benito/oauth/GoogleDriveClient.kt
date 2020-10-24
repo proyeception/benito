@@ -22,7 +22,7 @@ open class GoogleDriveClient(
 ) {
 
     open fun getFile(fileId: String): Either<Throwable, GoogleFileDTO> = googleDriveConnector.get(
-        url = "https://www.googleapis.com/drive/v3/files/$fileId?fields=id,webContentLink,name,mimeType"
+        url = "https://www.googleapis.com/drive/v3/files/$fileId?fields=id,webContentLink,name,mimeType,modifiedTime"
     )
         .map { it.deserializeAs(object : TypeReference<GoogleFileDTO>() {}) }
 

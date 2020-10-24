@@ -55,6 +55,7 @@ class FileWatcher(
                     }
                 )
         }
+        LOGGER.info("Done. Will check again in $refreshRate seconds")
     }
 
     companion object {

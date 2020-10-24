@@ -15,11 +15,11 @@ class FileObserver(
     private val projectService: ProjectService,
     private val fileHelper: FileHelper
 ) {
-    fun notify(file: GoogleFileDTO, projectId: String, lastNotification: LocalDateTime) {
+    fun notify(googleFile: GoogleFileDTO, projectId: String, lastNotification: LocalDateTime) {
         googleDriveClient
-            .query("'${file.id}' in parents and modifiedDate >= '${lastNotification.format(FORMATTER)}'")
+            .query("'${googleFile.id}' in parents and modifiedDate >= '${lastNotification.format(FORMATTER)}'")
             .fold(
-                ifLeft = { LOGGER.warn("Failed to retrieve files in folder ${file.id}") },
+                ifLeft = { LOGGER.warn("Failed to retrieve files in folder ${googleFile.id}") },
                 ifRight = {
                     val files = it.map { f ->
                         val file = f.webContentLink?.let { wcl ->
@@ -27,7 +27,7 @@ class FileObserver(
                                 .forName(f.mimeType)
                                 .extension
 
-                            fileHelper.downloadFromUrl(wcl, "/tmp/${file.id}$extension")
+                            fileHelper.downloadFromUrl(wcl, "/tmp/${googleFile.id}$extension")
                         } ?: googleDriveClient.export(f)
                         file to f.id
                     }

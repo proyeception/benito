@@ -31,8 +31,7 @@ open class ProjectService(
     private val recommendationService: RecommendationService,
     private val googleDriveClient: GoogleDriveClient,
     private val driveStorage: DriveStorage,
-    private val permissionsStorage: PermissionsStorage,
-    private val fileWatcher: FileWatcher
+    private val permissionsStorage: PermissionsStorage
 ) {
     open fun closeProject(projectId: String) = mappingFromMedusa {
         medusaClient.updateProjectOpen(projectId, false)
@@ -50,7 +49,6 @@ open class ProjectService(
                     }.awaitAll()
             }
         }
-        .also { launchIOAsync { fileWatcher.unwatch(it.driveFolderId) } }
 
     open fun findProjects(
         orderBy: OrderDTO?,
