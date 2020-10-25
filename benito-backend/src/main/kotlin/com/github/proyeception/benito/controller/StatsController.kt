@@ -30,8 +30,10 @@ class StatsController (
     @RequestMapping("/benito/stats/projectsxcategoryxyear", method = [RequestMethod.GET])
     @ResponseBody
     private fun projectsXyearWcategory(
-        @RequestParam(required = false) categoryIds: List<String>?
-    ): List<ProjectCreationTimelineDTO> = statsService.projectsXyearWcategory(categoryIds)
+        @RequestParam(required = false) categoryIds: List<String>?,
+        @RequestParam(required = false) since: Int?,
+        @RequestParam(required = false) to: Int?
+    ): List<ProjectCreationTimelineDTO> = statsService.projectsXyearWcategory(categoryIds, since, to)
 
     @RequestMapping("/benito/stats/topprojects", method = [RequestMethod.GET])
     @ResponseBody
