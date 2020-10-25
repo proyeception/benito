@@ -50,7 +50,7 @@ open class GoogleDriveClient(
 
         return Either.fx {
             val res = googleDriveConnector.post(
-                url = "https://www.googleapis.com/drive/v3/files",
+                url = "https://www.googleapis.com/drive/v3/files?fields=id,name,mimeType,createdTime",
                 body = CreateFolderDTO(
                     name = folderName
                 )
@@ -68,7 +68,7 @@ open class GoogleDriveClient(
         file?.let { bodyParts.add(Pair("multipart/form-data", it.bytes)) }
 
         return googleDriveConnector.post(
-            url = "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart",
+            url = "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,name,mimeType,createdTime",
             bodyParts = *bodyParts.toTypedArray()
         )
             .map { it.deserializeAs(object : TypeReference<FileCreatedDTO>() {}) }
