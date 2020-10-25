@@ -1,6 +1,5 @@
 package com.github.proyeception.benito.service
 
-import arrow.core.extensions.list.monad.flatMap
 import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.storage.StatsStorage
@@ -18,11 +17,18 @@ open class StatsService(
 
     fun projectsXorganization(categoryId: String?): List<OrganizationQuantityDTO> {
         val projects = medusaClient.findProjects()
-        val result = projects.filter{it.category.id == categoryId || categoryId.isNullOrBlank()}
+        return projects.filter {it.category.id == categoryId || categoryId.isNullOrBlank()}
                     .groupingBy { it.organization.displayName }
                     .eachCount()
-                    .map{OrganizationQuantityDTO(it.key, it.value)}
-        return result
+                    .map {OrganizationQuantityDTO(it.key, it.value)}
+    }
+
+    fun projectsXcategory(organizationId: String?): List<CategoryQuantityDTO> {
+        val projects = medusaClient.findProjects()
+        return projects.filter {it.organization.id == organizationId || organizationId.isNullOrBlank()}
+            .groupingBy { it.category.name }
+            .eachCount()
+            .map {CategoryQuantityDTO(it.key, it.value)}
     }
 
     fun projectsXyearWcategory(categoryIds: List<String>?): List<ProjectCreationTimelineDTO> {
