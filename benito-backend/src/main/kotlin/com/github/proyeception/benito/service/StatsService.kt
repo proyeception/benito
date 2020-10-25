@@ -85,7 +85,16 @@ open class StatsService(
         return result
     }
 
-    fun topprojects(categoryId: String?, organizationId: String?, year: Int?): List<ProjectInfoDTO> {
-        return statsStorage.topProjectsByCriteria(categoryId, organizationId, year)
+    fun topProjects(categoryId: String?, organizationId: String?, year: Int?): List<ProjectInfoDTO> {
+        val projectRefs: List<ProjectViewsDTO> = statsStorage.topProjectsByCriteria(categoryId, organizationId, year)
+        return projectRefs.map {
+            val project = medusaClient.findProject(it._id)
+            ProjectInfoDTO(
+                title = project.title,
+                pictureUrl = project.picture?.url,
+                projectId = project.id,
+                views = it.viewsCount
+            )
+        }
     }
 }
