@@ -36,5 +36,5 @@ class StatsController (
         @RequestParam(required = false) categoryId: String?,
         @RequestParam(required = false) organizationId: String?,
         @RequestParam(required = false) year: Int?
-    ): List<ProjectInfoDTO> = statsService.topprojects(categoryId, organizationId, year)
+    ): List<ProjectInfoDTO> = statsService.topProjects(categoryId, organizationId, year)
 }

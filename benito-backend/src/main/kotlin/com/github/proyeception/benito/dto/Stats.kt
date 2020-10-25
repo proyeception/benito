@@ -39,3 +39,8 @@ data class ProjectInfoDTO(
     val projectId: String,
     val views: Int
 )
+
+data class ProjectViewsDTO(
+    val _id: String,
+    val viewsCount: Int
+)
