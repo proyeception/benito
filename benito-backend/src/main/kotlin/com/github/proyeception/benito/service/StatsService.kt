@@ -102,9 +102,7 @@ open class StatsService(
     }
 
     fun topTags(year: Int?): List<TagsYearDTO> {
-        val tagsRef =  statsStorage.topTags(year)
-        
-        return listOf<TagsYearDTO>()
+        return statsStorage.topTags(year).map { TagsYearDTO(it._id, it.tagsCount) }
     }
 
     fun registerTagSearch(projectSearchDTO: ProjectSearchDTO) = statsStorage.insert(projectSearchDTO)
