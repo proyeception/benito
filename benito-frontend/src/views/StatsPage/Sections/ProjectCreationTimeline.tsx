@@ -31,14 +31,16 @@ type TimelineData = {
 
     function convertToTimelineData(result:ProjectCreationTimelineType) {
       let tl: TimelineData = {
-        label: result.category,
-        data: result.timeline.map(t => t.quantity)
+        label: result.categoryId,
+        data: result.quantities.map(t => t.quantity)
       }
+      console.log("tl: ", tl)
       return tl
     }
 
     const results = withProjectCreationTimeline("", (r) => {
-      setLabels(r[0].timeline.map(tl => tl.year))
+      console.log("result: ", r)
+      setLabels(r[0].quantities.map(tl => tl.year))
       setCategoriesData(r.map((result: ProjectCreationTimelineType) => convertToTimelineData(result)))
       var randomColor = require('randomcolor');
       setColors(r.map(() => randomColor()))
