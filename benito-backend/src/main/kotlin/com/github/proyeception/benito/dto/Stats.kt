@@ -32,3 +32,10 @@ data class ProjectYearsDTO(
     val year: Int,
     val quantity: Int
 )
+
+data class ProjectInfoDTO(
+    val title: String,
+    val pictureUrl: String?,
+    val projectId: String,
+    val views: Int
+)

@@ -78,4 +78,8 @@ open class StatsService(
 
         return result
     }
+
+    fun topprojects(categoryId: String?, organizationId: String?, year: Int?): List<ProjectInfoDTO> {
+        return statsStorage.topProjectsByCriteria(categoryId, organizationId, year)
+    }
 }
