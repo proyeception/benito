@@ -27,17 +27,29 @@ open class StatsService(
     fun projectsXyearWcategory(categoryIds: List<String>?): List<ProjectCreationTimelineDTO> {
         val projects = medusaClient.findProjects()
 
-        var years = listOf<Int>()
+        var years: IntRange
+        var minYear: Int? = 0
+        var maxYear: Int? = 0
         if(categoryIds.isNullOrEmpty()){
-            val minYear = projects.map { it.creationDate.year }.distinct().min()
-            val maxYear = projects.map { it.creationDate.year }.distinct().max()
-
+            println("is null!!")
+            minYear = projects.map { it.creationDate.year }.distinct().min()
+            maxYear = projects.map { it.creationDate.year }.distinct().max()
         } else {
-            years = projects.filter { categoryIds!!.contains(it.category.id) }
-                .map { it.creationDate.year }.distinct()
+            minYear  = projects.filter { categoryIds!!.contains(it.category.id) }
+                                    .map { it.creationDate.year }.distinct()
+                                    .min()
+            maxYear  = projects.filter { categoryIds!!.contains(it.category.id) }
+                                    .map { it.creationDate.year }.distinct()
+                                    .max()
         }
+        years = IntRange(minYear!!, maxYear!!)
 
-        var result = categoryIds!!.map {
+        var categories = listOf<String>()
+        if(categoryIds.isNullOrEmpty()){
+            categories = projects.map { it.category.id }.distinct()
+        } else { categories = categoryIds }
+
+        var result = categories.map {
             val categoryId = it;
             val a = ProjectCreationTimelineDTO(categoryId, projects.filter { it.category.id == categoryId }
                 .groupingBy { it.creationDate.year }
@@ -57,8 +69,6 @@ open class StatsService(
                 }
             }
         }
-
-        println(result)
 
         return result
     }
