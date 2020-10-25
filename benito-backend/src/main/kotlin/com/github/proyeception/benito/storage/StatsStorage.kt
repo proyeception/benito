@@ -59,7 +59,7 @@ class StatsStorage(
                                                 .count()
                                                 .`as`("viewsCount")
 
-        val sortByViewsCount: SortOperation = sort(Sort.by(Sort.Direction.ASC, "viewsCount"))
+        val sortByViewsCount: SortOperation = sort(Sort.by(Sort.Direction.DESC, "viewsCount"))
 
         val projectToMatchModel = project()
             .andExpression("projectId").`as`("projectId")
@@ -99,5 +99,17 @@ class StatsStorage(
         println(a)
         return a.mappedResults
         //return listOf<TagsSearchDTO>()
+    }
+
+    fun searchCount(): SearchCountDTO {
+        val searchCount: GroupOperation = group("_id")
+            .count()
+            .`as`("searchCount")
+
+        val aggregation: Aggregation = newAggregation(
+            searchCount)
+
+        val size = mongoTemplate.aggregate(aggregation, "project_search", SearchCountDTO::class.java).mappedResults.size
+        return SearchCountDTO(size)
     }
 }

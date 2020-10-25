@@ -113,4 +113,8 @@ open class StatsService(
     }
 
     fun registerTagSearch(projectSearchDTO: ProjectSearchDTO) = statsStorage.insert(projectSearchDTO)
+
+    fun searchCount(): SearchCountDTO {
+        return statsStorage.searchCount()
+    }
 }
