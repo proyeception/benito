@@ -23,6 +23,11 @@ data class OrganizationQuantityDTO(
     val quantity: Int
 )
 
+data class CategoryQuantityDTO(
+    val category: String,
+    val quantity: Int
+)
+
 data class ProjectCreationTimelineDTO(
     val category: String,
     var quantities: List<ProjectYearsDTO>

@@ -16,6 +16,7 @@ import { ChartOptions } from 'chart.js'
 import { Autocomplete } from "@material-ui/lab";
 import { Category } from "../../types";
 import OrganizationQuantity from "./Sections/OrganizationQuantity"
+import CategoryQuantity from "./Sections/CategoryQuantity"
 import ProjectCreationTimeline from "./Sections/ProjectCreationTimeline"
 import MostPopularProjects from "./Sections/MostPopularProjects";
 
@@ -63,7 +64,7 @@ const StatsPage = (props: StatsPageProps) => {
               <OrganizationQuantity />
             </GridItem>
             <GridItem xs={12} sm={12} md={12} lg={6}>
-              <OrganizationQuantity />
+              <CategoryQuantity />
             </GridItem>
             <GridItem xs={12} sm={12} md={12} lg={12}>
               <MostPopularProjects />

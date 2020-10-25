@@ -132,3 +132,15 @@ export type QuantityPerYear = {
   year: string,
   quantity: number
 }
+
+export type TopProject = {
+  projectId: string,
+  title: string,
+  pictureUrl: string | null | undefined,
+  views: number
+}
+
+export type CategoryQuantityType = {
+  category: string,
+  quantity: number
+}

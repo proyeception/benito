@@ -25,7 +25,9 @@ type ProjectCreationTimelineProps = {
 
 type TimelineData = {
   label: string,
-  data: Array<number>
+  data: Array<number>,
+  borderColor: string,
+  backgroundColor: string,
 }
 
 const useStyles = makeStyles(styles);
@@ -38,9 +40,13 @@ const useStyles = makeStyles(styles);
     const [selectedCategories, setSelectedCategories] = useState<Array<string>>([]);
 
     function convertToTimelineData(result:ProjectCreationTimelineType) {
+      var randomColor = require('randomcolor');
+      var color:string = randomColor({format:"rgb"})
       let tl: TimelineData = {
         label: result.category,
-        data: result.quantities.map(t => t.quantity)
+        data: result.quantities.map(t => t.quantity),
+        borderColor: color.replace(")", ", 1)"),
+        backgroundColor: color.replace(")", ", 0.4)")
       }
       console.log("tl: ", tl)
       return tl
@@ -78,6 +84,7 @@ const useStyles = makeStyles(styles);
 
     return (
     <div>
+      <div className={classes.title} style={{paddingTop: "20px"}}>Cantidad de proyectos por categoría</div>
       {selectedCategories.map((s, idx) => (
         <div
           key={idx}
@@ -106,7 +113,7 @@ const useStyles = makeStyles(styles);
           <RemoveCircle /> {s}
         </div>
       ))}
-      <GridContainer style={{ display: "flex", alignItems: "center" }}>
+      <GridContainer style={{ display: "flex", alignItems: "center", paddingBottom: "20px" }}>
         <GridItem xs={12}>
           <Autocomplete
             fullWidth

@@ -21,6 +21,12 @@ class StatsController (
         @RequestParam(required = false) categoryId: String?
     ): List<OrganizationQuantityDTO> = statsService.projectsXorganization(categoryId)
 
+    @RequestMapping("/benito/stats/projectsxcategory", method = [RequestMethod.GET])
+    @ResponseBody
+    private fun projectsXcategoryWorganization(
+        @RequestParam(required = false) organizationId: String?
+    ): List<CategoryQuantityDTO> = statsService.projectsXcategory(organizationId)
+
     @RequestMapping("/benito/stats/projectsxcategoryxyear", method = [RequestMethod.GET])
     @ResponseBody
     private fun projectsXyearWcategory(
