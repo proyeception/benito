@@ -31,7 +31,7 @@ type TimelineData = {
 
     function convertToTimelineData(result:ProjectCreationTimelineType) {
       let tl: TimelineData = {
-        label: result.categoryId,
+        label: result.category,
         data: result.quantities.map(t => t.quantity)
       }
       console.log("tl: ", tl)
