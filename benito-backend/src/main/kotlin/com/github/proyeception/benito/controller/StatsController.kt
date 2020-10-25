@@ -40,4 +40,10 @@ class StatsController (
         @RequestParam(required = false) organizationId: String?,
         @RequestParam(required = false) year: Int?
     ): List<ProjectInfoDTO> = statsService.topProjects(categoryId, organizationId, year)
+
+    @RequestMapping("/benito/stats/toptags", method = [RequestMethod.GET])
+    @ResponseBody
+    private fun topTags(
+        @RequestParam(required = false) year: Int?
+    ): List<TagsYearDTO> = statsService.topTags(year)
 }

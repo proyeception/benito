@@ -1,8 +1,6 @@
 package com.github.proyeception.benito.storage
 
-import com.github.proyeception.benito.dto.ProjectInfoDTO
-import com.github.proyeception.benito.dto.ProjectViewsDTO
-import com.github.proyeception.benito.dto.ProjectVisitDTO
+import com.github.proyeception.benito.dto.*
 import org.joda.time.LocalDate
 import org.springframework.data.domain.Sort
 import org.springframework.data.mongodb.core.MongoTemplate
@@ -24,6 +22,10 @@ class StatsStorage(
 
     fun insert(visit: ProjectVisitDTO) {
         mongoTemplate.insert(visit)
+    }
+
+    fun insert(search: ProjectSearchDTO) {
+        mongoTemplate.insert(search)
     }
 
     fun topProjectsByCriteria(categoryId: String?, organizationId: String?, year: Int?): List<ProjectViewsDTO> {
@@ -68,5 +70,34 @@ class StatsStorage(
             viewsCount, sortByViewsCount, projectToMatchModel)
 
         return mongoTemplate.aggregate(aggregation, "project_visit", ProjectViewsDTO::class.java).mappedResults
+    }
+
+    fun topTags(year: Int?): List<TagsSearchDTO> {
+
+        val filters = mutableListOf<MatchOperation>()
+
+        if(year != null) {
+            val firstDate = LocalDate.parse(year.toString() + "-01-01")
+            val lastDate = LocalDate.parse(year.toString() + "-12-31")
+            val matchYear = Aggregation.match(
+                Criteria.where("visitedOn").gte(firstDate).lte(lastDate)
+            )
+            filters.add(matchYear)
+        }
+
+        val searchCount: GroupOperation = group("tag")
+            .count()
+            .`as`("tagsCount")
+
+        val sortBySearchCount: SortOperation = sort(Sort.by(Sort.Direction.DESC, "tagsCount"))
+
+        val aggregation: Aggregation = newAggregation(
+            *filters.toTypedArray(),
+            searchCount, sortBySearchCount)
+
+        val a = mongoTemplate.aggregate(aggregation, "project_search", TagsSearchDTO::class.java)
+        println(a)
+        return a.mappedResults
+        //return listOf<TagsSearchDTO>()
     }
 }

@@ -139,6 +139,7 @@ open class MedusaGraphClient(
                   name
                   score
                 }
+                drive_folder_id
               }
             }
         """.trimIndent()

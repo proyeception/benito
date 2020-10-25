@@ -36,7 +36,7 @@ const useStyles = makeStyles(styles);
       setLabels(r.map((result: CategoryQuantityType) => result.category))
       setQuantity(r.map((result: CategoryQuantityType) => result.quantity))
       var randomColor = require('randomcolor');
-      setColors(r.map(() => randomColor()))
+      setColors(r.map(() => randomColor({luminosity: 'light'})))
     });
 
     if (results.type == PENDING) {
