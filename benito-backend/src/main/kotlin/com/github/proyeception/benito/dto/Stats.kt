@@ -22,3 +22,13 @@ data class OrganizationQuantityDTO(
     val organization: String,
     val quantity: Int
 )
+
+data class ProjectCreationTimelineDTO(
+    val categoryId: String,
+    var quantities: List<ProjectYearsDTO>
+)
+
+data class ProjectYearsDTO(
+    val year: Int,
+    val quantity: Int
+)
