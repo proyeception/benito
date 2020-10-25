@@ -31,19 +31,15 @@ open class StatsService(
             .map {CategoryQuantityDTO(it.key, it.value)}
     }
 
-    fun projectsXyearWcategory(categoryIds: List<String>?): List<ProjectCreationTimelineDTO> {
+    fun projectsXyearWcategory(categoryIds: List<String>?, since: Int?, to: Int?): List<ProjectCreationTimelineDTO> {
         val projects = medusaClient.findProjects()
 
         var years: IntRange
         var minYear: Int? = 0
         var maxYear: Int? = 0
         if(categoryIds.isNullOrEmpty()){
-            println("is null!!")
             minYear = projects.map { it.creationDate.year }.distinct().min()
             maxYear = projects.map { it.creationDate.year }.distinct().max()
-            if(minYear == maxYear){
-                minYear = minYear!! - 1
-            }
         } else {
             minYear  = projects.filter { categoryIds!!.contains(it.category.id) }
                                     .map { it.creationDate.year }.distinct()
@@ -52,6 +48,17 @@ open class StatsService(
                                     .map { it.creationDate.year }.distinct()
                                     .max()
         }
+        if(since != null){
+            minYear = since
+        }
+        if(to != null){
+            maxYear = to
+        }
+
+        if(minYear == maxYear){
+            minYear = minYear!! - 1
+        }
+
         years = IntRange(minYear!!, maxYear!!)
         val allCategories = categoriesService.categories()
 
