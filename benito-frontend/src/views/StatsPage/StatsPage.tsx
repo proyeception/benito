@@ -16,6 +16,7 @@ import { ChartOptions } from 'chart.js'
 import { Autocomplete } from "@material-ui/lab";
 import { Category } from "../../types";
 import OrganizationQuantity from "./Sections/OrganizationQuantity"
+import ProjectCreationTimeline from "./Sections/ProjectCreationTimeline"
 
 const useStyles = makeStyles(styles);
 
@@ -54,6 +55,9 @@ const StatsPage = (props: StatsPageProps) => {
             <h1 className={classes.bigTitle}>ESTADÍSTICAS</h1>
             <p>En esta página vas a poder ver dinámicamente estadísticas que recolectamos de los proyectos que tenemos en Proyectate.</p>
             </GridItem >
+            <GridItem xs={12} sm={12} md={12} lg={12}>
+              <ProjectCreationTimeline />
+            </GridItem>
             <GridItem xs={12} sm={12} md={12} lg={6}>
               <OrganizationQuantity />
             </GridItem>
