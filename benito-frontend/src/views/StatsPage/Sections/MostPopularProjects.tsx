@@ -20,6 +20,7 @@ import moment from "moment"
 type OrganizationQuantityProps = {
   categories: Array<Category>;
   organizations: Array<Organization>;
+  years: Array<number>;
   category?: Category;
   variant?: "standard" | "outlined" | "filled" | undefined;
 };
@@ -31,6 +32,7 @@ const OrganizationQuantity = (props: OrganizationQuantityProps) => {
   const classes = useStyles();
   
   const [labels, setLabels] = useState<Array<string>>([]);
+  
 
   const results = withProjectxOrganizations("", (r) => {
   });
@@ -43,7 +45,7 @@ const OrganizationQuantity = (props: OrganizationQuantityProps) => {
   <div>
     <div className={classes.title} style={{paddingTop: "20px"}}>Proyectos más populares</div>
     <GridContainer>
-      <GridItem xs={12} sm={12} md={4} lg={4} id="search-box">
+      <GridItem xs={12} sm={12} md={4} lg={4} id="category-select">
         <Autocomplete
           fullWidth
           options={props.categories}
@@ -66,33 +68,41 @@ const OrganizationQuantity = (props: OrganizationQuantityProps) => {
           )}
         />
       </GridItem>
-      <GridItem xs={12} sm={12} md={4} lg={4} id="search-box">
-        <TextField
-            label="Año"
-            fullWidth
-            type="number"
-            InputProps={{ inputProps: { min: 2010, max: moment().year() } }}
-            onChange={(e) => console.error(e)}
-          />
+      <GridItem xs={12} sm={12} md={4} lg={4} id="year-select">
+        <Autocomplete
+          fullWidth
+          options={props.years}
+          getOptionLabel={(option) => option.toString()}
+          onChange={(e, a) => {
+            console.error(a)
+          }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              fullWidth
+              label="Año"
+              variant={props.variant}
+            />
+          )}
+        />
       </GridItem>
-      <GridItem xs={12} sm={12} md={4} lg={4} id="search-box">
-          <Autocomplete
-            fullWidth
-            options={props.organizations}
-            getOptionLabel={(option) =>
-              option.displayName
-            }
-            onChange={(e, o) => console.error(o)}
-            renderInput={(params) => (
-              <TextField
-                label="Organización"
-                {...params}
-                fullWidth
-              />
-            )}
-          />
-        </GridItem>
-      </GridContainer>
+      <GridItem xs={12} sm={12} md={4} lg={4} id="organization-select">
+        <Autocomplete
+          fullWidth
+          options={props.organizations}
+          getOptionLabel={(option) =>
+            option.displayName
+          }
+          onChange={(e, o) => console.error(o)}
+          renderInput={(params) => (
+            <TextField
+              label="Organización"
+              {...params}
+              fullWidth
+            />
+          )}
+        />
+      </GridItem>
       <div style={{paddingTop: "20px", paddingBottom: "20px"}}>
         {labels.length == 0 ? (
           <div>
@@ -105,19 +115,34 @@ const OrganizationQuantity = (props: OrganizationQuantityProps) => {
               <GridItem xs={12} sm={12} md={12} lg={6} id="search-box">
               <img src={exclamation} style={{maxWidth:"100%"}}/>
               </GridItem>
-              </GridContainer>
+            </GridContainer>
           </div>) : (
             <div>Holi</div>
-          )}
-        </div>
-    </div>
-    )
+          )
+        }
+      </div>
+    </GridContainer>
+  </div>
+  )
 }
 
 const mapStateToProps = (rootState: RootState) => {
+
+  const minYear = 2010
+  const maxYear = moment().year();
+
+  let years: Array<number> = []
+  let counter = maxYear
+
+  while(counter >= minYear){
+    years.push(counter)
+    counter = counter - 1
+  }
+
   return {
     categories: rootState.common.categories,
     organizations: rootState.common.organizations,
+    years: years
   };
 };
 
