@@ -10,7 +10,7 @@ import { Category, Organization, OrganizationQuantityType, TopProject } from "..
 import { ChartOptions } from "chart.js";
 import { Pie } from 'react-chartjs-2';
 import withProjectxOrganizations from '../../../hooks/withProjectsxOrganizations';
-import { updateProjectxQuantity } from "../../../functions/project";
+import { updateProjectxQuantity, updateTopProjects } from "../../../functions/project";
 import Spinner from "../../../components/Spinner/Spinner";
 import { PENDING } from "../../../hooks/withFetch";
 import exclamation from "../../../assets/img/proyectate/exclamation.jpg"
@@ -44,6 +44,9 @@ const OrganizationQuantity = (props: OrganizationQuantityProps) => {
   const classes = useStyles();
   
   const [projects, setProjects] = useState<Array<TopProject>>([]);
+  const [category, setCategory] = useState<string | null>("");
+  const [organization, setOrganization] = useState<string | null>("");
+  const [year, setYear] = useState<number | null>();
   
 
   const results = withTopProjects((r) => {
@@ -65,11 +68,14 @@ const OrganizationQuantity = (props: OrganizationQuantityProps) => {
           getOptionLabel={(option) => option.name}
           defaultValue={props.category}
           onChange={(e, c) => {
-            let category = ""
-            if(c) {
-              category = c!.id
-            }
-            console.error(category)
+            let cat: string | null | undefined = null
+            if(c != null){
+              cat = c.id
+            } 
+            setCategory(cat)
+            updateTopProjects(cat, organization, year).then((r) => {
+              setProjects(r.data)
+            })
           }}
           renderInput={(params) => (
             <TextField
@@ -87,7 +93,14 @@ const OrganizationQuantity = (props: OrganizationQuantityProps) => {
           options={props.years}
           getOptionLabel={(option) => option.toString()}
           onChange={(e, a) => {
-            console.error(a)
+            let y: number | null = null
+            if(a != null){
+              y = a
+            } 
+            setYear(y)
+            updateTopProjects(category, organization, y).then((r) => {
+              setProjects(r.data)
+            })
           }}
           renderInput={(params) => (
             <TextField
@@ -106,7 +119,16 @@ const OrganizationQuantity = (props: OrganizationQuantityProps) => {
           getOptionLabel={(option) =>
             option.displayName
           }
-          onChange={(e, o) => console.error(o)}
+          onChange={(e, o) => {
+            let org: string | null | undefined = null
+            if(o != null){
+              org = o.id
+            } 
+            setOrganization(org)
+            updateTopProjects(category, org, year).then((r) => {
+              setProjects(r.data)
+            })
+          }}
           renderInput={(params) => (
             <TextField
               label="Organización"

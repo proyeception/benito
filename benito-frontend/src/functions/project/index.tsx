@@ -1,4 +1,4 @@
-import { Project, Role, Person, OrganizationQuantityType, ProjectCreationTimelineType, CategoryQuantityType } from "../../types";
+import { Project, Role, Person, OrganizationQuantityType, ProjectCreationTimelineType, CategoryQuantityType, TopProject } from "../../types";
 import { benitoHost } from "../../config";
 import axios, { AxiosRequestConfig, AxiosPromise } from "axios";
 import { signRequest } from "../http";
@@ -207,4 +207,29 @@ export function updateProjectCreationTimeline(
     method: "GET"
   };
   return axios.request<Array<ProjectCreationTimelineType>>(signRequest(results));
+}
+
+export function updateTopProjects(
+  categoryId: string | null,
+  organizationId: string | null,
+  year: number | null | undefined
+): AxiosPromise<Array<TopProject>> {
+  
+  let queryParams = "?"
+  if(categoryId != null) {
+    queryParams = queryParams + "categoryId=" + categoryId + "&"
+  }
+  if(organizationId != null) {
+    queryParams = queryParams + "organizationId=" + organizationId + "&"
+  }
+  if(year != null) {
+    queryParams = queryParams + "year=" + year + "&"
+  }
+  queryParams = queryParams.slice(0, -1);
+
+  let results: AxiosRequestConfig = {
+    url: `${benitoHost}/benito/stats/topprojects${queryParams}` ,
+    method: "GET"
+  };
+  return axios.request<Array<TopProject>>(signRequest(results));
 }
