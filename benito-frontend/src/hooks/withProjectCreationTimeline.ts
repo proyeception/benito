@@ -6,15 +6,13 @@ const withProjectCreationTimeline = (
   category: string,
   andThen?: (p: Array<ProjectCreationTimelineType>) => void
 ): FetchStatus<Array<ProjectCreationTimelineType>> => {
-  let url = "stats/projectsxorganization"
-  if(category != "") {
-    url = "stats/projectsxorganization?category=" + category
-  }
-  const [result] = withFetch<Array<ProjectCreationTimelineType>>("stats/projectsxorganization", (e) => {
+  let url = "stats/projectsxcategoryxyear"
+  const [result] = withFetch<Array<ProjectCreationTimelineType>>("stats/projectsxcategoryxyear", (e) => {
     if (andThen) {
       andThen(e);
     }
   });
+
   return result;
 };
 

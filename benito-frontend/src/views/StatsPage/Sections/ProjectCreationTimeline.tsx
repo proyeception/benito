@@ -17,16 +17,29 @@ type ProjectCreationTimelineProps = {
   category?: Category;
   variant?: "standard" | "outlined" | "filled" | undefined;
 };
+
+type TimelineData = {
+  label: string,
+  data: Array<number>
+}
   
   const ProjectCreationTimeline = (props: ProjectCreationTimelineProps) => {
     
     const [labels, setLabels] = useState<Array<string>>([]);
-    const [quantity, setQuantity] = useState<Array<number>>([]);
+    const [categoriesData, setCategoriesData] = useState<Array<TimelineData>>([]);
     const [colors, setColors] = useState<Array<string>>([]);
 
+    function convertToTimelineData(result:ProjectCreationTimelineType) {
+      let tl: TimelineData = {
+        label: result.category,
+        data: result.timeline.map(t => t.quantity)
+      }
+      return tl
+    }
+
     const results = withProjectCreationTimeline("", (r) => {
-      setLabels(r.map((result: ProjectCreationTimelineType) => result.organization))
-      setQuantity(r.map((result: ProjectCreationTimelineType) => result.quantity))
+      setLabels(r[0].timeline.map(tl => tl.year))
+      setCategoriesData(r.map((result: ProjectCreationTimelineType) => convertToTimelineData(result)))
       var randomColor = require('randomcolor');
       setColors(r.map(() => randomColor()))
     });
@@ -37,12 +50,8 @@ type ProjectCreationTimelineProps = {
 
     const data = {
       labels: labels,
-      datasets: [{
-        data: quantity,
-        backgroundColor: colors,
-        hoverBackgroundColor: colors
-        }]
-      };
+      datasets: categoriesData
+    };
       
       let options: ChartOptions = {
         legend: {
@@ -58,14 +67,7 @@ type ProjectCreationTimelineProps = {
         getOptionLabel={(option) => option.name}
         defaultValue={props.category}
         onChange={(e, c: Category | null) => {
-          let category: string = ""
-          if(c) {
-            category = c.id
-          }
-          updateProjectCreationTimeline(category).then((r) => {
-            setLabels(r.data.map((result: ProjectCreationTimelineType) => result.organization))
-            setQuantity(r.data.map((result: ProjectCreationTimelineType) => result.quantity))
-          })
+
         }}
         renderInput={(params) => (
           <TextField

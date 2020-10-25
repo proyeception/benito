@@ -183,7 +183,7 @@ export function updateProjectCreationTimeline(
   id: string
 ): AxiosPromise<Array<ProjectCreationTimelineType>> {
   let results: AxiosRequestConfig = {
-    url: `${benitoHost}/benito/stats/projectsxorganization?categoryId=${id}`,
+    url: `${benitoHost}/benito/stats/projectsxcategoryxyear`,
     method: "GET"
   };
   return axios.request<Array<ProjectCreationTimelineType>>(signRequest(results));
