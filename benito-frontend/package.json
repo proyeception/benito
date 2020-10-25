@@ -68,6 +68,7 @@
     "react-share": "^4.3.1",
     "react-slick": "^0.27.10",
     "react-swipeable-views": "^0.13.9",
+    "react-wordcloud": "^1.2.7",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",

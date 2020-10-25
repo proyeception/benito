@@ -19,6 +19,7 @@ import OrganizationQuantity from "./Sections/OrganizationQuantity"
 import CategoryQuantity from "./Sections/CategoryQuantity"
 import ProjectCreationTimeline from "./Sections/ProjectCreationTimeline"
 import MostPopularProjects from "./Sections/MostPopularProjects";
+import MostPopularTags from "./Sections/MostPopularTags";
 
 const useStyles = makeStyles(styles);
 
@@ -68,6 +69,9 @@ const StatsPage = (props: StatsPageProps) => {
             </GridItem>
             <GridItem xs={12} sm={12} md={12} lg={12}>
               <MostPopularProjects />
+            </GridItem>
+            <GridItem xs={12} sm={12} md={12} lg={9}>
+              <MostPopularTags />
             </GridItem>
           </GridContainer>
         </div>
