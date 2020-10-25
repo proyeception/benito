@@ -124,7 +124,7 @@ export type OrganizationQuantityType = {
 }
 
 export type ProjectCreationTimelineType = {
-  categoryId: string,
+  category: string,
   quantities: Array<QuantityPerYear>
 }
 

@@ -124,7 +124,8 @@ open class ServiceModule {
     @Bean
     open fun statsService(
         statsStorage: StatsStorage,
-        medusaClient: MedusaClient
-    ): StatsService = StatsService(statsStorage, medusaClient)
+        medusaClient: MedusaClient,
+        categoriesService: CategoriesService
+    ): StatsService = StatsService(statsStorage, medusaClient, categoriesService)
 
 }

@@ -7,7 +7,8 @@ import com.github.proyeception.benito.storage.StatsStorage
 
 open class StatsService(
     private val statsStorage: StatsStorage,
-    private val medusaClient: MedusaClient
+    private val medusaClient: MedusaClient,
+    private val categoriesService: CategoriesService
 ) {
 
     fun findAll(): List<ProjectVisitDTO> = statsStorage
@@ -43,6 +44,7 @@ open class StatsService(
                                     .max()
         }
         years = IntRange(minYear!!, maxYear!!)
+        val allCategories = categoriesService.categories()
 
         var categories = listOf<String>()
         if(categoryIds.isNullOrEmpty()){
@@ -51,15 +53,16 @@ open class StatsService(
 
         var result = categories.map {
             val categoryId = it;
-            val a = ProjectCreationTimelineDTO(categoryId, projects.filter { it.category.id == categoryId }
+            ProjectCreationTimelineDTO(categoryId, projects.filter { it.category.id == categoryId }
                 .groupingBy { it.creationDate.year }
                 .eachCount()
                 .map { ProjectYearsDTO(it.key, it.value) }
                 .sortedBy { it.year }
-                 );
-            println(it)
-            a
-        }
+                 )
+        }.map{
+            val c = it.category
+            ProjectCreationTimelineDTO(allCategories
+                .find{it.id == c}!!.name, it.quantities)}
 
         for (year in years) {
             for (category in result) {
