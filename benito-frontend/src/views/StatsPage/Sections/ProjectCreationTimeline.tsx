@@ -21,6 +21,7 @@ type ProjectCreationTimelineProps = {
   categories: Array<Category>;
   category?: Category;
   variant?: "standard" | "outlined" | "filled" | undefined;
+  hue: string;
 };
 
 type TimelineData = {
@@ -36,17 +37,17 @@ const useStyles = makeStyles(styles);
     const classes = useStyles();
     const [labels, setLabels] = useState<Array<string>>([]);
     const [categoriesData, setCategoriesData] = useState<Array<TimelineData>>([]);
-    const [colors, setColors] = useState<Array<string>>([]);
     const [selectedCategories, setSelectedCategories] = useState<Array<string>>([]);
 
     function convertToTimelineData(result:ProjectCreationTimelineType) {
+      
       var randomColor = require('randomcolor');
-      var color:string = randomColor({format:"rgb"})
+      var color:string = randomColor({format:"rgb", luminosity: 'light'})
       let tl: TimelineData = {
         label: result.category,
         data: result.quantities.map(t => t.quantity),
         borderColor: color.replace(")", ", 1)"),
-        backgroundColor: color.replace(")", ", 0.4)")
+        backgroundColor: color.replace(")", ", 0.2)")
       }
       console.log("tl: ", tl)
       return tl
@@ -61,10 +62,9 @@ const useStyles = makeStyles(styles);
     }
 
     const results = withProjectCreationTimeline("", (r) => {
+      
       setLabels(r[0].quantities.map(tl => tl.year))
       setCategoriesData(r.map((result: ProjectCreationTimelineType) => convertToTimelineData(result)))
-      var randomColor = require('randomcolor');
-      setColors(r.map(() => randomColor()))
     });
 
     if (results.type == PENDING) {
@@ -105,8 +105,6 @@ const useStyles = makeStyles(styles);
               setSelectedCategories(scids.map(sc => convertCategoryIdToName(sc)))
               setLabels(r.data[0].quantities.map(tl => tl.year))
               setCategoriesData(r.data.map((result: ProjectCreationTimelineType) => convertToTimelineData(result)))
-              var randomColor = require('randomcolor');
-              setColors(r.data.map(() => randomColor()))
             })
           }}
         >
@@ -133,8 +131,6 @@ const useStyles = makeStyles(styles);
                 setSelectedCategories(scids.map(sc => convertCategoryIdToName(sc)))
                 setLabels(r.data[0].quantities.map(tl => tl.year))
                 setCategoriesData(r.data.map((result: ProjectCreationTimelineType) => convertToTimelineData(result)))
-                var randomColor = require('randomcolor');
-                setColors(r.data.map(() => randomColor()))
               })
             }}
             renderInput={(params) => <TextField {...params} fullWidth />}
@@ -148,8 +144,14 @@ const useStyles = makeStyles(styles);
 }
 
 const mapStateToProps = (rootState: RootState) => {
+  
+  var hues = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink']
+    const randomHue = hues[Math.floor((Math.random() * 6))]
+    console.error(randomHue)
+
   return {
     categories: rootState.common.categories,
+    hue: randomHue
   };
 };
 
