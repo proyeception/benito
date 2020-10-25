@@ -1,4 +1,4 @@
-import { InputLabel, Select, TextField } from "@material-ui/core";
+import { InputLabel, Select, TextField, makeStyles } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import React, { useState } from "react";
 import { hot } from "react-hot-loader";
@@ -11,6 +11,11 @@ import withProjectCreationTimeline from "../../../hooks/withProjectCreationTimel
 import { updateProjectCreationTimeline } from "../../../functions/project";
 import Spinner from "../../../components/Spinner/Spinner";
 import { PENDING } from "../../../hooks/withFetch";
+import GridContainer from "../../../components/Grid/GridContainer";
+import GridItem from "../../../components/Grid/GridItem";
+import { RemoveCircle } from "@material-ui/icons";
+import styles from "../../../assets/jss/material-kit-react/views/stats/statsStyle";
+import classNames from "classnames";
 
 type ProjectCreationTimelineProps = {
   categories: Array<Category>;
@@ -22,12 +27,15 @@ type TimelineData = {
   label: string,
   data: Array<number>
 }
+
+const useStyles = makeStyles(styles);
   
   const ProjectCreationTimeline = (props: ProjectCreationTimelineProps) => {
-    
+    const classes = useStyles();
     const [labels, setLabels] = useState<Array<string>>([]);
     const [categoriesData, setCategoriesData] = useState<Array<TimelineData>>([]);
     const [colors, setColors] = useState<Array<string>>([]);
+    const [selectedCategories, setSelectedCategories] = useState<Array<string>>([]);
 
     function convertToTimelineData(result:ProjectCreationTimelineType) {
       let tl: TimelineData = {
@@ -38,8 +46,15 @@ type TimelineData = {
       return tl
     }
 
+    function convertCategoryNameToId(categoryName:string) {
+      return props.categories.filter(c => c.name === categoryName)[0].id
+    }
+
+    function convertCategoryIdToName(categoryId:string) {
+      return props.categories.filter(c => c.id === categoryId)[0].name
+    }
+
     const results = withProjectCreationTimeline("", (r) => {
-      console.log("result: ", r)
       setLabels(r[0].quantities.map(tl => tl.year))
       setCategoriesData(r.map((result: ProjectCreationTimelineType) => convertToTimelineData(result)))
       var randomColor = require('randomcolor');
@@ -63,25 +78,65 @@ type TimelineData = {
 
     return (
     <div>
-      <Autocomplete
-        fullWidth
-        options={props.categories}
-        getOptionLabel={(option) => option.name}
-        defaultValue={props.category}
-        onChange={(e, c: Category | null) => {
+      {selectedCategories.map((s, idx) => (
+        <div
+          key={idx}
+          className={classNames(
+            classes.bullet,
+            "underline-hover",
+            "cursor-pointer"
+          )}
+          onClick={() => {
 
-        }}
-        renderInput={(params) => (
-          <TextField
-            {...params}
+            let scids: Array<string> = selectedCategories.map(sc => convertCategoryNameToId(sc))
+            if (scids) {
+              scids = scids.filter((sc) => sc != convertCategoryNameToId(s))
+            }
+
+            updateProjectCreationTimeline(scids).then((r) => {
+              console.log(r)
+              setSelectedCategories(scids.map(sc => convertCategoryIdToName(sc)))
+              setLabels(r.data[0].quantities.map(tl => tl.year))
+              setCategoriesData(r.data.map((result: ProjectCreationTimelineType) => convertToTimelineData(result)))
+              var randomColor = require('randomcolor');
+              setColors(r.data.map(() => randomColor()))
+            })
+          }}
+        >
+          <RemoveCircle /> {s}
+        </div>
+      ))}
+      <GridContainer style={{ display: "flex", alignItems: "center" }}>
+        <GridItem xs={12}>
+          <Autocomplete
             fullWidth
-            label="Categoría"
-            variant={props.variant}
+            clearOnBlur
+            options={props.categories.map(c => c.name).filter(
+              (c) => !selectedCategories.includes(c)
+            )}
+            getOptionLabel={(option) => option}
+            onChange={(e, c) => {
+              let scids: Array<string> = selectedCategories.map(sc => convertCategoryNameToId(sc))
+              if (c) {
+                scids = scids.concat(convertCategoryNameToId(c))
+              }
+ 
+              updateProjectCreationTimeline(scids).then((r) => {
+                console.log(r)
+                setSelectedCategories(scids.map(sc => convertCategoryIdToName(sc)))
+                setLabels(r.data[0].quantities.map(tl => tl.year))
+                setCategoriesData(r.data.map((result: ProjectCreationTimelineType) => convertToTimelineData(result)))
+                var randomColor = require('randomcolor');
+                setColors(r.data.map(() => randomColor()))
+              })
+            }}
+            renderInput={(params) => <TextField {...params} fullWidth />}
           />
-        )}
-      />
+        </GridItem>
+      </GridContainer>
       {labels.length == 0 ? (<h1>No se encontraron resultados</h1>) : (<Line data={data} options={options} />)}
     </div>
+    
     )
 }
 
