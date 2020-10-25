@@ -139,3 +139,8 @@ export type TopProject = {
   pictureUrl: string | null | undefined,
   views: number
 }
+
+export type CategoryQuantityType = {
+  category: string,
+  quantity: number
+}

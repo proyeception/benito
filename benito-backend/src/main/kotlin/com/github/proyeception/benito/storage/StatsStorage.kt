@@ -1,11 +1,16 @@
 package com.github.proyeception.benito.storage
 
 import com.github.proyeception.benito.dto.ProjectInfoDTO
+import com.github.proyeception.benito.dto.ProjectViewsDTO
 import com.github.proyeception.benito.dto.ProjectVisitDTO
-import com.mongodb.client.model.Aggregates.group
-import com.mongodb.client.model.Aggregates.match
+import org.joda.time.LocalDate
+import org.springframework.data.domain.Sort
 import org.springframework.data.mongodb.core.MongoTemplate
-import org.springframework.data.mongodb.core.aggregation.*
+import org.springframework.data.mongodb.core.aggregation.Aggregation
+import org.springframework.data.mongodb.core.aggregation.Aggregation.*
+import org.springframework.data.mongodb.core.aggregation.GroupOperation
+import org.springframework.data.mongodb.core.aggregation.MatchOperation
+import org.springframework.data.mongodb.core.aggregation.SortOperation
 import org.springframework.data.mongodb.core.query.Criteria
 
 
@@ -21,17 +26,47 @@ class StatsStorage(
         mongoTemplate.insert(visit)
     }
 
-    fun topProjectsByCriteria(categoryId: String?, organizationId: String?, year: Int?): List<ProjectInfoDTO> {
-        val matchCategory = Aggregation.match(
-            Criteria.where("category").elemMatch(Criteria.where("id").`is`(categoryId))
-        )
-        val matchOrganization = Aggregation.match(
-            Criteria.where("organization").elemMatch(Criteria.where("id").`is`(organizationId))
-        )
-        val matchYear = Aggregation.match(
-            Criteria.where("creation_date").`is`(year)
-        )
+    fun topProjectsByCriteria(categoryId: String?, organizationId: String?, year: Int?): List<ProjectViewsDTO> {
 
-        return listOf<ProjectInfoDTO>()
+        val filters = mutableListOf<MatchOperation>()
+
+        if(!categoryId.isNullOrBlank()) {
+            val matchCategory = Aggregation.match(
+                Criteria.where("categoryId").`is`(categoryId)
+            )
+            filters.add(matchCategory)
+        }
+
+        if(!organizationId.isNullOrBlank()) {
+            val matchOrganization = Aggregation.match(
+                Criteria.where("organizationId").`is`(organizationId)
+            )
+            filters.add(matchOrganization)
+        }
+
+        if(year != null) {
+            val firstDate = LocalDate.parse(year.toString() + "-01-01")
+            val lastDate = LocalDate.parse(year.toString() + "-12-31")
+            val matchYear = Aggregation.match(
+                Criteria.where("visitedOn").gte(firstDate).lte(lastDate)
+            )
+            filters.add(matchYear)
+        }
+
+        val viewsCount: GroupOperation = group("projectId")
+                                                .count()
+                                                .`as`("viewsCount")
+
+        val sortByViewsCount: SortOperation = sort(Sort.by(Sort.Direction.ASC, "viewsCount"))
+
+        val projectToMatchModel = project()
+            .andExpression("projectId").`as`("projectId")
+            .andExpression("viewsCount").`as`("viewsCount")
+
+        val aggregation: Aggregation = newAggregation(
+            *filters.toTypedArray(),
+            viewsCount, sortByViewsCount, projectToMatchModel)
+
+        return mongoTemplate.aggregate(aggregation, "project_visit", ProjectViewsDTO::class.java).mappedResults
     }
 }
