@@ -71,6 +71,7 @@ open class StatsService(
             val categoryId = it;
             ProjectCreationTimelineDTO(categoryId,
                 projects.filter { it.category.id == categoryId }
+                .filter {it.creationDate.year in years}
                 .groupingBy { it.creationDate.year }
                 .eachCount()
                 .map { ProjectYearsDTO(it.key, it.value) }
@@ -90,9 +91,7 @@ open class StatsService(
             }
         }
 
-        result = result.map{ ProjectCreationTimelineDTO(it.category, it.quantities.sortedBy { it.year}) }
-        
-        return result
+        return result.map{ ProjectCreationTimelineDTO(it.category, it.quantities.sortedBy { it.year}) }
     }
 
     fun topProjects(categoryId: String?, organizationId: String?, year: Int?): List<ProjectInfoDTO> {
