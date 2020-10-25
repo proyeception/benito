@@ -1,4 +1,4 @@
-import { container } from "../../material-kit-react";
+import { container, title } from "../../material-kit-react";
 import { createStyles, Theme } from '@material-ui/core/styles';
 
 const homePage = (theme: Theme) => createStyles({
@@ -45,6 +45,23 @@ const homePage = (theme: Theme) => createStyles({
   section: {
     background: "#EEEEEE",
     padding: "70px 0"
+  },
+  bigTitle: {
+    ...title,
+    marginBottom: "1rem",
+    marginTop: "30px",
+    minHeight: "32px",
+    textDecoration: "none",
+    overflow: "hidden",
+    overflowWrap: "anywhere",
+    textAlign: "center",
+    lineHeight: "initial",
+    [theme.breakpoints.down("md")]: {
+        fontSize: "5vw"
+    },
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "7vw"
+    },
   },
 });
 

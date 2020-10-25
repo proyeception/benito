@@ -1,4 +1,4 @@
-import { title } from "../../../material-kit-react";
+import { container, title } from "../../../material-kit-react";
 import { Theme, createStyles } from "@material-ui/core/styles";
 
 const productStyle = (theme: Theme) => createStyles({
@@ -17,7 +17,6 @@ const productStyle = (theme: Theme) => createStyles({
     textDecoration: "none",
     overflow: "hidden",
     overflowWrap: "anywhere",
-    textTransform: "uppercase",
     fontSize: "30px",
     textAlign: "center",
     lineHeight: "initial",

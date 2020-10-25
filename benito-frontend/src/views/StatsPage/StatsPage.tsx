@@ -49,7 +49,18 @@ const StatsPage = (props: StatsPageProps) => {
       </Parallax>
       <div className={classNames(classes.main, classes.mainRaised)}>
         <div className={classes.container}>
-          <OrganizationQuantity />
+          <GridContainer>
+          <GridItem xs={12} sm={12} md={12} lg={12}>
+            <h1 className={classes.bigTitle}>ESTADÍSTICAS</h1>
+            <p>En esta página vas a poder ver dinámicamente estadísticas que recolectamos de los proyectos que tenemos en Proyectate.</p>
+            </GridItem >
+            <GridItem xs={12} sm={12} md={12} lg={6}>
+              <OrganizationQuantity />
+            </GridItem>
+            <GridItem xs={12} sm={12} md={12} lg={6}>
+              <OrganizationQuantity />
+            </GridItem>
+          </GridContainer>
         </div>
       </div>
       <Footer />
