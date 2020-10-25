@@ -1,4 +1,4 @@
-import { Card, GridList, GridListTile, GridListTileBar, makeStyles, TextField, Theme } from "@material-ui/core";
+import { Card, GridList, GridListTile, GridListTileBar, Icon, IconButton, makeStyles, TextField, Theme } from "@material-ui/core";
 import Button from "../../../components/CustomButtons/Button";
 import { Link } from "react-router-dom";
 import Autocomplete from "@material-ui/lab/Autocomplete";
@@ -139,6 +139,13 @@ const OrganizationQuantity = (props: OrganizationQuantityProps) => {
                     <GridListTileBar
                       title={project.title}
                       subtitle={<p>Vistas: {project.views}</p>}
+                      actionIcon={
+                        <IconButton aria-label={`info about ${project.title}`} className={classes.icon}>
+                          <a href={`/projects/${project.projectId}`}>
+                            <Icon className={classes.icon}>read_more</Icon>
+                          </a>
+                        </IconButton>
+                      }
                     />
                 </GridListTile>
               ))}

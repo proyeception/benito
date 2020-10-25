@@ -67,6 +67,9 @@ const productStyle = (theme: Theme) => createStyles({
     width: "100%",
     height: 450,
   },
+  icon: {
+    color: 'rgba(255, 255, 255, 0.54) !important',
+  },
 });
 
 export default productStyle;
