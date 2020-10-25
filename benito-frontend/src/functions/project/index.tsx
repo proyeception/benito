@@ -195,12 +195,21 @@ export function updateCategoryxQuantity(
 }
 
 export function updateProjectCreationTimeline(
-  ids: Array<string>
+  ids: Array<string>,
+  startYear: number | null | undefined,
+  endYear: number | null | undefined
 ): AxiosPromise<Array<ProjectCreationTimelineType>> {
-  let queryParams = ""
+  let queryParams = "?"
   if(ids.length != 0) {
-    queryParams = "?categoryIds=" + ids.join(",")
+    queryParams = queryParams + "categoryIds=" + ids.join(",") + "&"
   }
+  if(startYear != null) {
+    queryParams = queryParams + "since=" + startYear + "&"
+  }
+  if(endYear != null) {
+    queryParams = queryParams + "to=" + endYear + "&"
+  }
+  queryParams = queryParams.slice(0, -1);
 
   let results: AxiosRequestConfig = {
     url: `${benitoHost}/benito/stats/projectsxcategoryxyear${queryParams}`,
