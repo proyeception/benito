@@ -48,4 +48,8 @@ class StatsController (
     private fun topTags(
         @RequestParam(required = false) year: Int?
     ): List<TagsYearDTO> = statsService.topTags(year)
+
+    @RequestMapping("/benito/stats/searchcount", method = [RequestMethod.GET])
+    @ResponseBody
+    private fun searchCount(): SearchCountDTO = statsService.searchCount()
 }

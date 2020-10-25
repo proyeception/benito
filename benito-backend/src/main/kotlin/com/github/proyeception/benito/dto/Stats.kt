@@ -59,3 +59,7 @@ data class TagsYearDTO(
     val tag: String,
     val searchCount: Int
 )
+
+data class SearchCountDTO(
+    val searchCount: Int
+)
