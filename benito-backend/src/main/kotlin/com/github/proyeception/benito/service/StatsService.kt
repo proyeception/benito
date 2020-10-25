@@ -62,7 +62,7 @@ open class StatsService(
         }.map{
             val c = it.category
             ProjectCreationTimelineDTO(allCategories
-                .find{it.id == c}!!.name, it.quantities)}
+                .find{it.id == c}!!.name, it.quantities)}.take(10)
 
         for (year in years) {
             for (category in result) {
