@@ -140,6 +140,11 @@ export type TopProject = {
   views: number
 }
 
+export type TopTag = {
+  tag: string,
+  searchCount: number
+}
+
 export type CategoryQuantityType = {
   category: string,
   quantity: number

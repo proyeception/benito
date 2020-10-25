@@ -6,25 +6,26 @@ import React, { useState } from "react";
 import { hot } from "react-hot-loader";
 import { connect } from "react-redux";
 import { RootState } from "../../../reducers";
-import { Category, Organization, OrganizationQuantityType, TopProject } from "../../../types";
+import { Category, Organization, OrganizationQuantityType, TopProject, TopTag } from "../../../types";
 import { ChartOptions } from "chart.js";
 import { Pie } from 'react-chartjs-2';
 import withProjectxOrganizations from '../../../hooks/withProjectsxOrganizations';
 import { updateProjectxQuantity, updateTopProjects } from "../../../functions/project";
 import Spinner from "../../../components/Spinner/Spinner";
-import { PENDING } from "../../../hooks/withFetch";
+import { PENDING, ERROR } from "../../../hooks/withFetch";
 import exclamation from "../../../assets/img/proyectate/exclamation.jpg"
 import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
 import statsStyle from "../../../assets/jss/material-kit-react/views/stats/statsStyle";
 import moment from "moment"
-import withTopProjects from "../../../hooks/withTopProjects";
+import withTopTags from "../../../hooks/withTopTags";
 import pictureNotFound from "../../../assets/img/proyectate/picture.svg"
 import CardBody from "../../../components/Card/CardBody";
 import imagesStyles from "../../../assets/jss/material-kit-react/imagesStyles";
 import classNames from "classnames";
 import { cardTitle } from "../../../assets/jss/material-kit-react";
 import ReactWordcloud from "react-wordcloud";
+import ErrorPage from "../../ErrorPage/ErrorPage";
 
 type MostPopularTagsProps = {
 
@@ -51,93 +52,23 @@ const styles = (theme: Theme) => {
 
 const useStyles = makeStyles(styles);
 
-const words = [
-    {
-      text: 'told',
-      value: 64000,
-    },
-    {
-      text: 'mistake',
-      value: 11000,
-    },
-    {
-      text: 'thought',
-      value: 16000,
-    },
-    {
-      text: 'bad',
-      value: 17000,
-    },
-    {
-        text: 'cold',
-        value: 64000,
-      },
-      {
-        text: 'ristake',
-        value: 11000,
-      },
-      {
-        text: 'ghought',
-        value: 16000,
-      },
-      {
-        text: 'cad',
-        value: 17000,
-      },
-      {
-        text: 'zold',
-        value: 64000,
-      },
-      {
-        text: 'ristake',
-        value: 11000,
-      },
-      {
-        text: 'xuhought',
-        value: 16000,
-      },
-      {
-        text: 'xiad',
-        value: 17000,
-      },
-      {
-        text: 'xghought',
-        value: 16000,
-      },
-      {
-        text: 'xcad',
-        value: 17000,
-      },
-      {
-        text: 'xzold',
-        value: 64000,
-      },
-      {
-        text: 'xristake',
-        value: 11000,
-      },
-      {
-        text: 'ñuhought',
-        value: 16000,
-      },
-      {
-        text: 'xiad',
-        value: 17000,
-      },
-  ]
-  
+
 const MostPopularTags = (props: MostPopularTagsProps) => {
 
   const classes = useStyles();
   
-  const [projects, setProjects] = useState<Array<TopProject>>([]);
-  const [category, setCategory] = useState<string | null>("");
-  const [organization, setOrganization] = useState<string | null>("");
-  const [year, setYear] = useState<number | null>();
-  
+  const [tags, setTags] = useState<Array<TopTag>>([]);  
 
-  const results = withTopProjects((r) => {
-    setProjects(r)
+  function convertTagToWord(tag: TopTag) {
+      let word = {
+        text: tag.tag,
+        value: tag.searchCount
+      }
+      return word
+  }
+
+  const results = withTopTags((r) => {
+    setTags(r)
   });
 
   if (results.type == PENDING) {
@@ -146,8 +77,8 @@ const MostPopularTags = (props: MostPopularTagsProps) => {
 
   return (
   <div>
-    <div className={classes.title} style={{paddingTop: "20px"}}>Proyectos más populares</div>
-    <ReactWordcloud words={words} options={options}/>
+    <div className={classes.title} style={{paddingTop: "20px"}}>Tags más populares</div>
+    <ReactWordcloud words={tags.map(convertTagToWord)} options={options}/>
   </div>
   )
 }
