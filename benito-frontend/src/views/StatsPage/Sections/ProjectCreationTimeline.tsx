@@ -16,12 +16,14 @@ import GridItem from "../../../components/Grid/GridItem";
 import { RemoveCircle } from "@material-ui/icons";
 import styles from "../../../assets/jss/material-kit-react/views/stats/statsStyle";
 import classNames from "classnames";
+import moment from "moment";
 
 type ProjectCreationTimelineProps = {
   categories: Array<Category>;
   category?: Category;
   variant?: "standard" | "outlined" | "filled" | undefined;
   hue: string;
+  years: Array<number>,
 };
 
 type TimelineData = {
@@ -38,6 +40,9 @@ const useStyles = makeStyles(styles);
     const [labels, setLabels] = useState<Array<string>>([]);
     const [categoriesData, setCategoriesData] = useState<Array<TimelineData>>([]);
     const [selectedCategories, setSelectedCategories] = useState<Array<string>>([]);
+    const [endYear, setEndYear] = useState<number | null>();
+    const [startYear, setStartYear] = useState<number | null>();
+    const [invalidYears, setInvalidYear] = useState<boolean>(false);
 
     function convertToTimelineData(result:ProjectCreationTimelineType) {
       
@@ -100,8 +105,8 @@ const useStyles = makeStyles(styles);
               scids = scids.filter((sc) => sc != convertCategoryNameToId(s))
             }
 
-            updateProjectCreationTimeline(scids).then((r) => {
-              console.log(r)
+            updateProjectCreationTimeline(scids, startYear, endYear).then((r) => {
+
               setSelectedCategories(scids.map(sc => convertCategoryIdToName(sc)))
               setLabels(r.data[0].quantities.map(tl => tl.year))
               setCategoriesData(r.data.map((result: ProjectCreationTimelineType) => convertToTimelineData(result)))
@@ -112,7 +117,7 @@ const useStyles = makeStyles(styles);
         </div>
       ))}
       <GridContainer style={{ display: "flex", alignItems: "center", paddingBottom: "20px" }}>
-        <GridItem xs={12}>
+        <GridItem xs={12} sm={12} md={4} lg={4}>
           <Autocomplete
             fullWidth
             clearOnBlur
@@ -124,16 +129,87 @@ const useStyles = makeStyles(styles);
               let scids: Array<string> = selectedCategories.map(sc => convertCategoryNameToId(sc))
               if (c) {
                 scids = scids.concat(convertCategoryNameToId(c))
-              }
+              }              
  
-              updateProjectCreationTimeline(scids).then((r) => {
-                console.log(r)
-                setSelectedCategories(scids.map(sc => convertCategoryIdToName(sc)))
-                setLabels(r.data[0].quantities.map(tl => tl.year))
-                setCategoriesData(r.data.map((result: ProjectCreationTimelineType) => convertToTimelineData(result)))
-              })
+              setSelectedCategories(scids.map(sc => convertCategoryIdToName(sc)))
+
+              if(!invalidYears){
+                updateProjectCreationTimeline(scids, startYear, endYear).then((r) => {
+                  setLabels(r.data[0].quantities.map(tl => tl.year))
+                  setCategoriesData(r.data.map((result: ProjectCreationTimelineType) => convertToTimelineData(result)))
+                })
+            }
             }}
-            renderInput={(params) => <TextField {...params} fullWidth />}
+            renderInput={(params) => <TextField {...params} fullWidth label="Categoría" />}
+          />
+        </GridItem>
+        <GridItem xs={12} sm={12} md={4} lg={4} id="year-select-start">
+          <Autocomplete
+            fullWidth
+            options={props.years}
+            getOptionLabel={(option) => option.toString()}
+            onChange={(e, a) => {
+              let y: number | null = null
+              if(a != null){
+                y = a
+              } 
+              setStartYear(y)
+
+              if(y && endYear && y >= endYear){
+                setInvalidYear(true)
+              } else {
+                setInvalidYear(false)
+                let scids: Array<string> = selectedCategories.map(sc => convertCategoryNameToId(sc))
+                updateProjectCreationTimeline(scids, y, endYear).then((r) => {
+
+                  setLabels(r.data[0].quantities.map(tl => tl.year))
+                  setCategoriesData(r.data.map((result: ProjectCreationTimelineType) => convertToTimelineData(result)))
+                })
+              }
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                fullWidth
+                error={invalidYears}
+                label="Año inicio"
+                variant={props.variant}
+              />
+            )}
+          />
+        </GridItem>
+        <GridItem xs={12} sm={12} md={4} lg={4} id="year-select-end">
+          <Autocomplete
+            fullWidth
+            options={props.years}
+            getOptionLabel={(option) => option.toString()}
+            onChange={(e, a) => {
+              let y: number | null = null
+              if(a != null){
+                y = a
+              } 
+              setEndYear(y)
+              if(y && startYear && y <= startYear){
+                setInvalidYear(true)
+              } else {
+                setInvalidYear(false)
+                let scids: Array<string> = selectedCategories.map(sc => convertCategoryNameToId(sc))
+                updateProjectCreationTimeline(scids, startYear, y).then((r) => {
+
+                  setLabels(r.data[0].quantities.map(tl => tl.year))
+                  setCategoriesData(r.data.map((result: ProjectCreationTimelineType) => convertToTimelineData(result)))
+                })
+              }
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                fullWidth
+                error={invalidYears}
+                label="Año fin"
+                variant={props.variant}
+              />
+            )}
           />
         </GridItem>
       </GridContainer>
@@ -146,12 +222,24 @@ const useStyles = makeStyles(styles);
 const mapStateToProps = (rootState: RootState) => {
   
   var hues = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink']
-    const randomHue = hues[Math.floor((Math.random() * 6))]
-    console.error(randomHue)
+  const randomHue = hues[Math.floor((Math.random() * 6))]
+  console.error(randomHue)
+
+  const minYear = 2010
+  const maxYear = moment().year();
+
+  let years: Array<number> = []
+  let counter = maxYear
+
+  while(counter >= minYear){
+    years.push(counter)
+    counter = counter - 1
+  }
 
   return {
     categories: rootState.common.categories,
-    hue: randomHue
+    hue: randomHue,
+    years: years
   };
 };
 
