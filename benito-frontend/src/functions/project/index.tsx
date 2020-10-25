@@ -1,4 +1,4 @@
-import { Project, Role, Person, OrganizationQuantityType, ProjectCreationTimelineType } from "../../types";
+import { Project, Role, Person, OrganizationQuantityType, ProjectCreationTimelineType, CategoryQuantityType } from "../../types";
 import { benitoHost } from "../../config";
 import axios, { AxiosRequestConfig, AxiosPromise } from "axios";
 import { signRequest } from "../http";
@@ -177,6 +177,21 @@ export function updateProjectxQuantity(
     method: "GET"
   };
   return axios.request<Array<OrganizationQuantityType>>(signRequest(results));
+}
+
+export function updateCategoryxQuantity(
+  id: string
+): AxiosPromise<Array<CategoryQuantityType>> {
+  let queryParams = ""
+  if(id != "") {
+    queryParams = "?organizationId=" + id
+  }
+  console.log(queryParams)
+  let results: AxiosRequestConfig = {
+    url: `${benitoHost}/benito/stats/projectsxcategory${queryParams}` ,
+    method: "GET"
+  };
+  return axios.request<Array<CategoryQuantityType>>(signRequest(results));
 }
 
 export function updateProjectCreationTimeline(

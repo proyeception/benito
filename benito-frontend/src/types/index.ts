@@ -132,3 +132,8 @@ export type QuantityPerYear = {
   year: string,
   quantity: number
 }
+
+export type CategoryQuantityType = {
+  category: string,
+  quantity: number
+}
