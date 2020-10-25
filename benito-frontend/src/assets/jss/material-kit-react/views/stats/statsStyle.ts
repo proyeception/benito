@@ -20,11 +20,15 @@ const productStyle = (theme: Theme) => createStyles({
     fontSize: "30px",
     textAlign: "center",
     lineHeight: "initial",
+    [theme.breakpoints.up("md")]: {
+        height: "90px"
+    },
     [theme.breakpoints.down("md")]: {
         fontSize: "4vw"
     },
     [theme.breakpoints.down("sm")]: {
-      fontSize: "6vw"
+      fontSize: "6vw",
+      
   },
   },
   description: {
