@@ -1,9 +1,6 @@
 package com.github.proyeception.benito.controller;
 
-import com.github.proyeception.benito.dto.OrganizationQuantityDTO
-import com.github.proyeception.benito.dto.ProjectCreationTimelineDTO
-import com.github.proyeception.benito.dto.ProjectInfoDTO
-import com.github.proyeception.benito.dto.ProjectVisitDTO
+import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.service.*
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*
@@ -37,4 +34,10 @@ class StatsController (
         @RequestParam(required = false) organizationId: String?,
         @RequestParam(required = false) year: Int?
     ): List<ProjectInfoDTO> = statsService.topProjects(categoryId, organizationId, year)
+
+    @RequestMapping("/benito/stats/toptags", method = [RequestMethod.GET])
+    @ResponseBody
+    private fun topTags(
+        @RequestParam(required = false) year: Int?
+    ): List<TagsYearDTO> = statsService.topTags(year)
 }

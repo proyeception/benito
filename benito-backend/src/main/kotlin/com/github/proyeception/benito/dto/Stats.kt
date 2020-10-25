@@ -13,8 +13,8 @@ data class ProjectVisitDTO(
 
 @Document(collection="project_search")
 data class ProjectSearchDTO(
-    val tag: String,
-    val categoryId: String,
+    val tag: String?,
+    val categoryId: String?,
     val visitedOn: LocalDate
 )
 
@@ -43,4 +43,14 @@ data class ProjectInfoDTO(
 data class ProjectViewsDTO(
     val _id: String,
     val viewsCount: Int
+)
+
+data class TagsSearchDTO(
+    val _id: String,
+    val tagsCount: Int
+)
+
+data class TagsYearDTO(
+    val tag: String,
+    val searchCount: Int
 )
