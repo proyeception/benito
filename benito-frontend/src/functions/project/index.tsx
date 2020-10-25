@@ -180,10 +180,15 @@ export function updateProjectxQuantity(
 }
 
 export function updateProjectCreationTimeline(
-  id: string
+  ids: Array<string>
 ): AxiosPromise<Array<ProjectCreationTimelineType>> {
+  let queryParams = ""
+  if(ids.length != 0) {
+    queryParams = "?categoryIds=" + ids.join(",")
+  }
+
   let results: AxiosRequestConfig = {
-    url: `${benitoHost}/benito/stats/projectsxcategoryxyear`,
+    url: `${benitoHost}/benito/stats/projectsxcategoryxyear${queryParams}`,
     method: "GET"
   };
   return axios.request<Array<ProjectCreationTimelineType>>(signRequest(results));

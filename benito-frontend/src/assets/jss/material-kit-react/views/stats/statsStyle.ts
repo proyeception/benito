@@ -38,7 +38,10 @@ const productStyle = (theme: Theme) => createStyles({
     display: "-webkit-box",
     boxOrient: "vertical",
     overflow: "hidden"
-  }
+  },
+  bullet: {
+    display: "flex",
+  },
 });
 
 export default productStyle;

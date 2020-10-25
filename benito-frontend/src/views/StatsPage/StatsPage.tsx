@@ -17,6 +17,7 @@ import { Autocomplete } from "@material-ui/lab";
 import { Category } from "../../types";
 import OrganizationQuantity from "./Sections/OrganizationQuantity"
 import ProjectCreationTimeline from "./Sections/ProjectCreationTimeline"
+import MostPopularProjects from "./Sections/MostPopularProjects";
 
 const useStyles = makeStyles(styles);
 
@@ -63,6 +64,9 @@ const StatsPage = (props: StatsPageProps) => {
             </GridItem>
             <GridItem xs={12} sm={12} md={12} lg={6}>
               <OrganizationQuantity />
+            </GridItem>
+            <GridItem xs={12} sm={12} md={12} lg={12}>
+              <MostPopularProjects />
             </GridItem>
           </GridContainer>
         </div>
