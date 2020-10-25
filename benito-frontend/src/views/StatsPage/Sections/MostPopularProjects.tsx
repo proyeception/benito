@@ -1,10 +1,12 @@
-import { InputLabel, makeStyles, Select, TextField } from "@material-ui/core";
+import { Card, GridList, GridListTile, GridListTileBar, makeStyles, TextField, Theme } from "@material-ui/core";
+import Button from "../../../components/CustomButtons/Button";
+import { Link } from "react-router-dom";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import React, { useState } from "react";
 import { hot } from "react-hot-loader";
 import { connect } from "react-redux";
 import { RootState } from "../../../reducers";
-import { Category, Organization, OrganizationQuantityType } from "../../../types";
+import { Category, Organization, OrganizationQuantityType, TopProject } from "../../../types";
 import { ChartOptions } from "chart.js";
 import { Pie } from 'react-chartjs-2';
 import withProjectxOrganizations from '../../../hooks/withProjectsxOrganizations';
@@ -14,8 +16,14 @@ import { PENDING } from "../../../hooks/withFetch";
 import exclamation from "../../../assets/img/proyectate/exclamation.jpg"
 import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
-import styles from "../../../assets/jss/material-kit-react/views/stats/statsStyle";
+import statsStyle from "../../../assets/jss/material-kit-react/views/stats/statsStyle";
 import moment from "moment"
+import withTopProjects from "../../../hooks/withTopProjects";
+import pictureNotFound from "../../../assets/img/proyectate/picture.svg"
+import CardBody from "../../../components/Card/CardBody";
+import imagesStyles from "../../../assets/jss/material-kit-react/imagesStyles";
+import classNames from "classnames";
+import { cardTitle } from "../../../assets/jss/material-kit-react";
 
 type OrganizationQuantityProps = {
   categories: Array<Category>;
@@ -25,16 +33,21 @@ type OrganizationQuantityProps = {
   variant?: "standard" | "outlined" | "filled" | undefined;
 };
 
+const styles = (theme: Theme) => {
+  return { ...statsStyle(theme), ...imagesStyles, cardTitle };
+};
+
 const useStyles = makeStyles(styles);
   
 const OrganizationQuantity = (props: OrganizationQuantityProps) => {
 
   const classes = useStyles();
   
-  const [labels, setLabels] = useState<Array<string>>([]);
+  const [projects, setProjects] = useState<Array<TopProject>>([]);
   
 
-  const results = withProjectxOrganizations("", (r) => {
+  const results = withTopProjects((r) => {
+    setProjects(r)
   });
 
   if (results.type == PENDING) {
@@ -104,7 +117,7 @@ const OrganizationQuantity = (props: OrganizationQuantityProps) => {
         />
       </GridItem>
       <div style={{paddingTop: "20px", paddingBottom: "20px"}}>
-        {labels.length == 0 ? (
+        {projects.length == 0 ? (
           <div>
             <GridContainer >
               <GridItem xs={12} sm={12} md={12} lg={6} id="search-box">
@@ -117,7 +130,21 @@ const OrganizationQuantity = (props: OrganizationQuantityProps) => {
               </GridItem>
             </GridContainer>
           </div>) : (
-            <div>Holi</div>
+            <div>
+            <GridContainer>
+            <GridList cellHeight={180} className={classes.gridList}>
+              {projects.map((project) => (
+                <GridListTile key={project.projectId} className={classes.fiveColumns}>
+                    <img src={project.pictureUrl || pictureNotFound} alt={project.title}/>
+                    <GridListTileBar
+                      title={project.title}
+                      subtitle={<p>Vistas: {project.views}</p>}
+                    />
+                </GridListTile>
+              ))}
+            </GridList>
+          </GridContainer>
+          </div>
           )
         }
       </div>

@@ -1,4 +1,4 @@
-import { container, title } from "../../../material-kit-react";
+import { container, darkGrayColor, title } from "../../../material-kit-react";
 import { Theme, createStyles } from "@material-ui/core/styles";
 
 const productStyle = (theme: Theme) => createStyles({
@@ -37,10 +37,35 @@ const productStyle = (theme: Theme) => createStyles({
     lineClamp: 4,
     display: "-webkit-box",
     boxOrient: "vertical",
-    overflow: "hidden"
+    overflow: "hidden",
+    color: darkGrayColor,
+    fontSize: "15px",
+    fontWeight: "bold"
   },
   bullet: {
     display: "flex",
+  },
+  card: {
+    [theme.breakpoints.up("md")]: {
+      paddingLeft: "5px",
+      paddingRight: "5px"
+    },
+    [theme.breakpoints.up("lg")]: {
+      paddingLeft: "5px",
+      paddingRight: "5px"
+    },
+  },
+  fiveColumns: {
+    [theme.breakpoints.up("md")]: {
+        width: "20% !important"
+    },
+    [theme.breakpoints.down("md")]: {
+        width: "100% !important"
+    },
+  },
+  gridList: {
+    width: "100%",
+    height: 450,
   },
 });
 
