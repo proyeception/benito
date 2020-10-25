@@ -35,6 +35,9 @@ open class StatsService(
             println("is null!!")
             minYear = projects.map { it.creationDate.year }.distinct().min()
             maxYear = projects.map { it.creationDate.year }.distinct().max()
+            if(minYear == maxYear){
+                minYear = minYear!! - 1
+            }
         } else {
             minYear  = projects.filter { categoryIds!!.contains(it.category.id) }
                                     .map { it.creationDate.year }.distinct()
