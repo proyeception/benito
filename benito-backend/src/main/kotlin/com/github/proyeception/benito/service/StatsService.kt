@@ -62,7 +62,8 @@ open class StatsService(
 
         var result = categories.map {
             val categoryId = it;
-            ProjectCreationTimelineDTO(categoryId, projects.filter { it.category.id == categoryId }
+            ProjectCreationTimelineDTO(categoryId,
+                projects.filter { it.category.id == categoryId }
                 .groupingBy { it.creationDate.year }
                 .eachCount()
                 .map { ProjectYearsDTO(it.key, it.value) }
@@ -76,12 +77,14 @@ open class StatsService(
         for (year in years) {
             for (category in result) {
                 val categoryYears = category.quantities.map {it.year}
-                if(!categoryYears.contains(year)){
+                if(!categoryYears.contains(year)) {
                     category.quantities += (ProjectYearsDTO(year, 0))
                 }
             }
         }
 
+        result = result.map{ ProjectCreationTimelineDTO(it.category, it.quantities.sortedBy { it.year}) }
+        
         return result
     }
 
@@ -97,4 +100,12 @@ open class StatsService(
             )
         }
     }
+
+    fun topTags(year: Int?): List<TagsYearDTO> {
+        val tagsRef =  statsStorage.topTags(year)
+        
+        return listOf<TagsYearDTO>()
+    }
+
+    fun registerTagSearch(projectSearchDTO: ProjectSearchDTO) = statsStorage.insert(projectSearchDTO)
 }
