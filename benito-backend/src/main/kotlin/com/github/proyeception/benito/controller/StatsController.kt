@@ -51,5 +51,5 @@ class StatsController (
 
     @RequestMapping("/benito/stats/searchcount", method = [RequestMethod.GET])
     @ResponseBody
-    private fun searchCount(): SearchCountDTO = statsService.searchCount()
+    private fun searchCount(): CountDTO = statsService.searchCount()
 }

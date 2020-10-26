@@ -17,10 +17,16 @@ open class StatsService(
 
     fun projectsXorganization(categoryId: String?): List<OrganizationQuantityDTO> {
         val projects = medusaClient.findProjects()
-        return projects.filter {it.category.id == categoryId || categoryId.isNullOrBlank()}
+        val allOrganization = projects.filter {it.category.id == categoryId || categoryId.isNullOrBlank()}
                     .groupingBy { it.organization.displayName }
                     .eachCount()
-                    .map {OrganizationQuantityDTO(it.key, it.value)}
+                    .map {OrganizationQuantityDTO(it.key, it.value)
+                    }
+        val size = allOrganization.size - 1
+        val others = allOrganization.slice(4..size)
+        //val
+        return listOf<OrganizationQuantityDTO>()
+
     }
 
     fun projectsXcategory(organizationId: String?): List<CategoryQuantityDTO> {
@@ -117,7 +123,7 @@ open class StatsService(
 
     fun registerTagSearch(projectSearchDTO: ProjectSearchDTO) = statsStorage.insert(projectSearchDTO)
 
-    fun searchCount(): SearchCountDTO {
+    fun searchCount(): CountDTO {
         return statsStorage.searchCount()
     }
 }
