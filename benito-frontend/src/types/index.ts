@@ -149,3 +149,7 @@ export type CategoryQuantityType = {
   category: string,
   quantity: number
 }
+
+export type ProjectCount = {
+  total: number
+}

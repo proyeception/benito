@@ -1,4 +1,4 @@
-import { container, darkGrayColor, title } from "../../../material-kit-react";
+import { darkGrayColor, title, subtitle } from "../../../material-kit-react";
 import { Theme, createStyles } from "@material-ui/core/styles";
 
 const productStyle = (theme: Theme) => createStyles({
@@ -27,9 +27,50 @@ const productStyle = (theme: Theme) => createStyles({
         fontSize: "4vw"
     },
     [theme.breakpoints.down("sm")]: {
-      fontSize: "6vw",
-      
+      fontSize: "6vw",  
+    },
+  }, 
+  subtitle: {
+    ...subtitle,
+    marginBottom: "1rem",
+    marginTop: "0px",
+    minHeight: "auto",
+    textDecoration: "none",
+    overflow: "hidden",
+    overflowWrap: "anywhere",
+    fontSize: "15px",
+    textAlign: "center",
+    lineHeight: "initial",
+    [theme.breakpoints.up("md")]: {
+        height: "60px"
+    },
+    [theme.breakpoints.down("md")]: {
+        fontSize: "2vw"
+    },
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "4vw",
+    },
   },
+  numbers: {
+    ...title,
+    marginBottom: "1rem",
+    textDecoration: "none",
+    overflow: "hidden",
+    marginTop: "0px",
+    minHeight: "auto",
+    overflowWrap: "anywhere",
+    fontSize: "40px",
+    textAlign: "center",
+    lineHeight: "initial",
+    [theme.breakpoints.up("md")]: {
+        height: "60px"
+    },
+    [theme.breakpoints.down("md")]: {
+        fontSize: "4vw"
+    },
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "6vw",
+    },
   },
   description: {
     color: "#999",
