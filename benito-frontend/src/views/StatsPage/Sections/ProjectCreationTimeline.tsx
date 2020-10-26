@@ -110,12 +110,15 @@ const useStyles = makeStyles(styles);
               setMaxCategoriesSelected(false)
             } 
 
-            updateProjectCreationTimeline(scids, startYear, endYear).then((r) => {
+            setSelectedCategories(scids.map(sc => convertCategoryIdToName(sc)))
 
-              setSelectedCategories(scids.map(sc => convertCategoryIdToName(sc)))
-              setLabels(r.data[0].quantities.map(tl => tl.year))
-              setCategoriesData(r.data.map((result: ProjectCreationTimelineType) => convertToTimelineData(result)))
-            })
+            if(!invalidYears){
+              updateProjectCreationTimeline(scids, startYear, endYear).then((r) => {
+
+                setLabels(r.data[0].quantities.map(tl => tl.year))
+                setCategoriesData(r.data.map((result: ProjectCreationTimelineType) => convertToTimelineData(result)))
+              })
+            }
           }}
         >
           <RemoveCircle /> {s}
