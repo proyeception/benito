@@ -101,15 +101,15 @@ class StatsStorage(
         //return listOf<TagsSearchDTO>()
     }
 
-    fun searchCount(): SearchCountDTO {
+    fun searchCount(): CountDTO {
         val searchCount: GroupOperation = group("_id")
             .count()
-            .`as`("searchCount")
+            .`as`("total")
 
         val aggregation: Aggregation = newAggregation(
             searchCount)
 
-        val size = mongoTemplate.aggregate(aggregation, "project_search", SearchCountDTO::class.java).mappedResults.size
-        return SearchCountDTO(size)
+        val size = mongoTemplate.aggregate(aggregation, "project_search", CountDTO::class.java).mappedResults.size
+        return CountDTO(size)
     }
 }

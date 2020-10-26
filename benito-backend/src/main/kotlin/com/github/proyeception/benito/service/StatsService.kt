@@ -17,10 +17,16 @@ open class StatsService(
 
     fun projectsXorganization(categoryId: String?): List<OrganizationQuantityDTO> {
         val projects = medusaClient.findProjects()
-        return projects.filter {it.category.id == categoryId || categoryId.isNullOrBlank()}
+        val allOrganization = projects.filter {it.category.id == categoryId || categoryId.isNullOrBlank()}
                     .groupingBy { it.organization.displayName }
                     .eachCount()
-                    .map {OrganizationQuantityDTO(it.key, it.value)}
+                    .map {OrganizationQuantityDTO(it.key, it.value)
+                    }
+        val size = allOrganization.size - 1
+        val others = allOrganization.slice(4..size)
+        //val
+        return listOf<OrganizationQuantityDTO>()
+
     }
 
     fun projectsXcategory(organizationId: String?): List<CategoryQuantityDTO> {
@@ -71,6 +77,7 @@ open class StatsService(
             val categoryId = it;
             ProjectCreationTimelineDTO(categoryId,
                 projects.filter { it.category.id == categoryId }
+                .filter {it.creationDate.year in years}
                 .groupingBy { it.creationDate.year }
                 .eachCount()
                 .map { ProjectYearsDTO(it.key, it.value) }
@@ -79,7 +86,11 @@ open class StatsService(
         }.map{
             val c = it.category
             ProjectCreationTimelineDTO(allCategories
-                .find{it.id == c}!!.name, it.quantities)}.take(10)
+                .find{it.id == c}!!.name, it.quantities)}
+            .sortedByDescending {
+                it.quantities.map { it.quantity }.sum()
+            }
+            .take(5)
 
         for (year in years) {
             for (category in result) {
@@ -90,9 +101,7 @@ open class StatsService(
             }
         }
 
-        result = result.map{ ProjectCreationTimelineDTO(it.category, it.quantities.sortedBy { it.year}) }
-        
-        return result
+        return result.map{ ProjectCreationTimelineDTO(it.category, it.quantities.sortedBy { it.year}) }
     }
 
     fun topProjects(categoryId: String?, organizationId: String?, year: Int?): List<ProjectInfoDTO> {
@@ -114,7 +123,7 @@ open class StatsService(
 
     fun registerTagSearch(projectSearchDTO: ProjectSearchDTO) = statsStorage.insert(projectSearchDTO)
 
-    fun searchCount(): SearchCountDTO {
+    fun searchCount(): CountDTO {
         return statsStorage.searchCount()
     }
 }
