@@ -43,6 +43,7 @@ const useStyles = makeStyles(styles);
     const [endYear, setEndYear] = useState<number | null>();
     const [startYear, setStartYear] = useState<number | null>();
     const [invalidYears, setInvalidYear] = useState<boolean>(false);
+    const [maxCategoriesSelected, setMaxCategoriesSelected] = useState<boolean>(false);
 
     function convertToTimelineData(result:ProjectCreationTimelineType) {
       
@@ -105,6 +106,10 @@ const useStyles = makeStyles(styles);
               scids = scids.filter((sc) => sc != convertCategoryNameToId(s))
             }
 
+            if(selectedCategories.length <= 5){
+              setMaxCategoriesSelected(false)
+            } 
+
             updateProjectCreationTimeline(scids, startYear, endYear).then((r) => {
 
               setSelectedCategories(scids.map(sc => convertCategoryIdToName(sc)))
@@ -125,20 +130,27 @@ const useStyles = makeStyles(styles);
               (c) => !selectedCategories.includes(c)
             )}
             getOptionLabel={(option) => option}
+            getOptionDisabled={(option) => maxCategoriesSelected}
             onChange={(e, c) => {
-              let scids: Array<string> = selectedCategories.map(sc => convertCategoryNameToId(sc))
-              if (c) {
-                scids = scids.concat(convertCategoryNameToId(c))
-              }              
- 
-              setSelectedCategories(scids.map(sc => convertCategoryIdToName(sc)))
+              if(selectedCategories.length < 5) {
+                if(c && selectedCategories.length == 4){
+                  setMaxCategoriesSelected(true)
+                }
 
-              if(!invalidYears){
-                updateProjectCreationTimeline(scids, startYear, endYear).then((r) => {
-                  setLabels(r.data[0].quantities.map(tl => tl.year))
-                  setCategoriesData(r.data.map((result: ProjectCreationTimelineType) => convertToTimelineData(result)))
-                })
-            }
+                let scids: Array<string> = selectedCategories.map(sc => convertCategoryNameToId(sc))
+                if (c) {
+                  scids = scids.concat(convertCategoryNameToId(c))
+                }              
+  
+                setSelectedCategories(scids.map(sc => convertCategoryIdToName(sc)))
+
+                if(!invalidYears){
+                  updateProjectCreationTimeline(scids, startYear, endYear).then((r) => {
+                    setLabels(r.data[0].quantities.map(tl => tl.year))
+                    setCategoriesData(r.data.map((result: ProjectCreationTimelineType) => convertToTimelineData(result)))
+                  })
+              }
+              }
             }}
             renderInput={(params) => <TextField {...params} fullWidth label="Categoría" />}
           />
