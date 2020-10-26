@@ -17,24 +17,45 @@ open class StatsService(
 
     fun projectsXorganization(categoryId: String?): List<OrganizationQuantityDTO> {
         val projects = medusaClient.findProjects()
-        val allOrganization = projects.filter {it.category.id == categoryId || categoryId.isNullOrBlank()}
+        val allOrganizations = projects.filter {it.category.id == categoryId || categoryId.isNullOrBlank()}
                     .groupingBy { it.organization.displayName }
                     .eachCount()
-                    .map {OrganizationQuantityDTO(it.key, it.value)
-                    }
-        val size = allOrganization.size - 1
-        val others = allOrganization.slice(4..size)
-        //val
-        return listOf<OrganizationQuantityDTO>()
+                    .map {OrganizationQuantityDTO(it.key, it.value) }
+                    .sortedByDescending{ it.quantity }
+
+        val maxElements = 5
+        var result = allOrganizations
+        if (allOrganizations.size > maxElements){
+            result = allOrganizations.slice(0..maxElements).toMutableList()
+            val size = allOrganizations.size - 1
+            val others = allOrganizations.slice(5..size)
+            val otherElement = OrganizationQuantityDTO("Otros", others.map { it.quantity }.sum())
+            result.add(otherElement)
+        }
+
+        return result
 
     }
 
     fun projectsXcategory(organizationId: String?): List<CategoryQuantityDTO> {
         val projects = medusaClient.findProjects()
-        return projects.filter {it.organization.id == organizationId || organizationId.isNullOrBlank()}
+        val allCategories = projects.filter {it.organization.id == organizationId || organizationId.isNullOrBlank()}
             .groupingBy { it.category.name }
             .eachCount()
-            .map {CategoryQuantityDTO(it.key, it.value)}
+            .map {CategoryQuantityDTO(it.key, it.value) }
+            .sortedByDescending{ it.quantity }
+
+        val maxElements = 5
+        var result = allCategories
+        if (allCategories.size > maxElements){
+            result = allCategories.slice(0..maxElements).toMutableList()
+            val size = allCategories.size - 1
+            val others = allCategories.slice(5..size)
+            val otherElement = CategoryQuantityDTO("Otros", others.map { it.quantity }.sum())
+            result.add(otherElement)
+        }
+
+        return result
     }
 
     fun projectsXyearWcategory(categoryIds: List<String>?, since: Int?, to: Int?): List<ProjectCreationTimelineDTO> {
