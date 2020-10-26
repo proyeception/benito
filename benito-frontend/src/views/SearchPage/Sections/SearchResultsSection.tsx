@@ -155,25 +155,27 @@ const SearchResultsSection = (props: SearchResultsSectionProps) => {
                 </ProjectLink>
               </GridItem>
             </GridContainer>
-            {p.keywordMatchingDocs.length > 0 && (
-              <Alert
-                severity="info"
-                icon={false}
-                style={{
-                  marginTop: "30px",
-                  backgroundColor: "#ececec",
-                }}
-              >
-                <AlertTitle>
-                  Los siguientes documentos son relevantes para tu búsqueda:
-                </AlertTitle>
+            <Alert
+              severity="info"
+              icon={false}
+              style={{
+                marginTop: "30px",
+                backgroundColor: "#ececec",
+              }}
+            >
+              <AlertTitle>
+                {p.keywordMatchingDocs.length > 0
+                  ? "Los siguientes documentos son relevantes para tu búsqueda:"
+                  : "Inicia sesión para ver este contenido!"}
+              </AlertTitle>
+              {p.keywordMatchingDocs.length > 0 && (
                 <ul>
                   {p.keywordMatchingDocs.map((d, idx) => (
                     <li key={idx}>{d.fileName}</li>
                   ))}
                 </ul>
-              </Alert>
-            )}
+              )}
+            </Alert>
           </GridItem>
         ))}
         <GridContainer justify="center" xs={12} sm={12} md={12}>

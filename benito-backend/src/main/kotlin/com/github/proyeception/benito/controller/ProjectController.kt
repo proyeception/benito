@@ -253,7 +253,6 @@ open class ProjectController(
         project: ProjectDTO
     ): ProjectDTO = sessionToken?.let { st -> sessionService[st] }
         ?.userId
-        ?.takeIf { uid -> project.authors.any { a -> a.id == uid } || project.supervisors.any { s -> s.id == uid } }
-        ?.let { _ -> project }
+        ?.let { project }
         ?: project.copy(documentation = null, keywordMatchingDocs = emptyList())
 }
