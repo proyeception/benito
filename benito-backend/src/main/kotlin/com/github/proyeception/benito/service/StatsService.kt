@@ -80,7 +80,11 @@ open class StatsService(
         }.map{
             val c = it.category
             ProjectCreationTimelineDTO(allCategories
-                .find{it.id == c}!!.name, it.quantities)}.take(10)
+                .find{it.id == c}!!.name, it.quantities)}
+            .sortedByDescending {
+                it.quantities.map { it.quantity }.sum()
+            }
+            .take(5)
 
         for (year in years) {
             for (category in result) {
