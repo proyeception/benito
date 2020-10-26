@@ -130,7 +130,7 @@ const useStyles = makeStyles(styles);
               (c) => !selectedCategories.includes(c)
             )}
             getOptionLabel={(option) => option}
-            disabled={maxCategoriesSelected}
+            getOptionDisabled={(option) => maxCategoriesSelected}
             onChange={(e, c) => {
               if(selectedCategories.length < 5) {
                 if(c && selectedCategories.length == 4){
