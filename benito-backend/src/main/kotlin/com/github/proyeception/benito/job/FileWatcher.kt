@@ -38,6 +38,7 @@ class FileWatcher(
 
     private fun poll() {
         LOGGER.info("Polling for file changes...")
+        val start = LocalDateTime.now()
         kotlin.runCatching {
             driveFolders.forEach {
                 googleDriveClient
@@ -63,7 +64,7 @@ class FileWatcher(
                 LOGGER.warn("There was an error checking for updates", it)
             }
             .onSuccess {
-                lastNotification = LocalDateTime.now()
+                lastNotification = start
                 LOGGER.info("Done. Will check again in $refreshRate seconds")
             }
     }
