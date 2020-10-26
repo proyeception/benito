@@ -23,24 +23,29 @@ const theme = createMuiTheme({
 
 const ToDateInput = (props: ToDateInputProps) => (
   <ThemeProvider theme={theme}>
-  <KeyboardDatePicker
-    clearable={true}
-    placeholder="08/04/2016"
-    variant={props.variant}
-    format="dd/MM/yyyy"
-    label="Fin"
-    value={props.to || null}
-    onChange={(e) => {
-      if (e && moment(e).format("yyyy-MM-DD").toString() != 'Invalid date') {
-        store.dispatch(updateToDate(moment(e).add(1, 'days').format("yyyy-MM-DD").toString()));
-      } else {
-        store.dispatch(updateToDate(""));
-      }
-    }}
-    inputProps={{
-      variant: props.inputVariant,
-    }}
-  />
+    <KeyboardDatePicker
+      clearable={true}
+      placeholder="2016"
+      variant={props.variant}
+      format="yyyy"
+      label="Fin"
+      value={props.to || null}
+      views={["year"]}
+      onChange={(e) => {
+        if (e && moment(e).format("yyyy-MM-DD").toString() != "Invalid date") {
+          store.dispatch(
+            updateToDate(
+              moment(e).add(1, "days").format("yyyy-MM-DD").toString()
+            )
+          );
+        } else {
+          store.dispatch(updateToDate(""));
+        }
+      }}
+      inputProps={{
+        variant: props.inputVariant,
+      }}
+    />
   </ThemeProvider>
 );
 

@@ -93,7 +93,7 @@
   font-weight: 700;
   font-size: 13px;
   text-transform: capitalize;
-} 
+}
 
 .carrousel-button-project {
   text-align: right;
@@ -101,7 +101,6 @@
 
 .carousel-item {
   text-align: -webkit-center;
-  
 }
 
 .react-multi-carousel-list {
@@ -111,17 +110,21 @@
 .description {
   color: #999;
   overflow: auto;
-  @media only screen and (min-width: 992px){
+  @media only screen and (min-width: 992px) {
     h1 {
-      font-size: 2vw
+      font-size: 2vw;
     }
   }
-  @media only screen and (max-width: 600px){
+  @media only screen and (max-width: 600px) {
     h1 {
-      font-size: 6vw
+      font-size: 6vw;
     }
   }
   p {
     font-size: 100%;
   }
+}
+
+.MuiAccordion-root::before {
+  background-color: transparent !important;
 }

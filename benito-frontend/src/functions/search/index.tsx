@@ -22,15 +22,22 @@ export function buildQueryParams({
     .concat(buildQueryParamProperty("title", title))
     .concat(buildQueryParamProperty("tag", tag))
     .concat(buildQueryParamProperty("category", category))
-    .concat(buildQueryParamProperty("from", from))
-    .concat(buildQueryParamProperty("to", to))
+    .concat(
+      buildQueryParamProperty(
+        "from",
+        from ? from.slice(0, 4) + "-01-01" : undefined
+      )
+    )
+    .concat(
+      buildQueryParamProperty("to", to ? to.slice(0, 4) + "-01-01" : undefined)
+    )
     .concat(buildQueryParamProperty("orderBy", orderBy))
     .concat(buildQueryParamProperty("keyword", keyword))
     .concat(buildQueryParamProperty("organizationName", organization))
     .concat(buildQueryParamProperty("page", page))
     .slice(0, -1);
 
-    return query;
+  return query;
 }
 
 function buildQueryParamProperty(key: string, value?: string) {
@@ -41,12 +48,8 @@ export function syncParamsToState(params: SearchParams) {
   let state: SearchState = {
     title: params.title || "",
     category: fromCategoryName(params.category),
-    from: params.from
-      ? params.from
-      : undefined,
-    to: params.to
-      ? params.to
-      : undefined,
+    from: params.from ? params.from : undefined,
+    to: params.to ? params.to : undefined,
     documentation: params.documentation || "",
     keyword: params.keyword || "",
     orderBy: params.orderBy || SortMethod.DateDesc,
