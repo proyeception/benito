@@ -85,7 +85,22 @@ const useStyles = makeStyles(styles);
       let options: ChartOptions = {
         legend: {
           position: 'bottom',
-        }
+        },
+        responsive:true,
+        scales: {
+          yAxes: [{
+              ticks: {
+                  beginAtZero: true,
+                  callback: function(label, index, labels) {
+                      // when the floored value is the same as the value we have a whole number
+                      if (Math.floor(+label) === label) {
+                          return label;
+                      }
+ 
+                  },
+              }
+          }],
+      },
       };
 
     return (
