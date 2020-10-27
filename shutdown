@@ -2,7 +2,7 @@
 
 set -e
 
-if [ ! -f process ];
+if [ -f process ];
 then
   PID=$(cat process)
 
