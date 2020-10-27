@@ -9,6 +9,7 @@ import com.github.proyeception.benito.extension.launchIOAsync
 import com.github.proyeception.benito.job.FileWatcher
 import com.github.proyeception.benito.service.ProjectService
 import com.github.proyeception.benito.service.SessionService
+import com.github.proyeception.benito.service.StatsService
 import com.github.proyeception.benito.service.UserService
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

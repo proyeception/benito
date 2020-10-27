@@ -117,3 +117,39 @@ export type SearchParams = {
   orderBy?: SortMethod;
   page?: string;
 };
+
+export type OrganizationQuantityType = {
+  organization: string,
+  quantity: number
+}
+
+export type ProjectCreationTimelineType = {
+  category: string,
+  quantities: Array<QuantityPerYear>
+}
+
+export type QuantityPerYear = {
+  year: string,
+  quantity: number
+}
+
+export type TopProject = {
+  projectId: string,
+  title: string,
+  pictureUrl: string | null | undefined,
+  views: number
+}
+
+export type TopTag = {
+  tag: string,
+  searchCount: number
+}
+
+export type CategoryQuantityType = {
+  category: string,
+  quantity: number
+}
+
+export type ProjectCount = {
+  total: number
+}

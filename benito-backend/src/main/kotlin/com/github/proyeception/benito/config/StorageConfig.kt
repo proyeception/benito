@@ -28,6 +28,11 @@ open class StorageConfig {
     ) = DriveStorage(mongoTemplate)
 
     @Bean
+    open fun statsStorage(
+        mongoTemplate: MongoTemplate
+    ) = StatsStorage(mongoTemplate)
+
+    @Bean
     open fun permissionsStorage(
         mongoTemplate: MongoTemplate
     ) = PermissionsStorage(mongoTemplate)
