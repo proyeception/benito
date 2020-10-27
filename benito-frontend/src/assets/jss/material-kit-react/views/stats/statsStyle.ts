@@ -115,6 +115,14 @@ const productStyle = (theme: Theme) => createStyles({
   icon: {
     color: 'rgba(255, 255, 255, 0.54) !important',
   },
+  chart:{
+    [theme.breakpoints.down("sm")]: {
+      height: "230px !important",
+    },
+    [theme.breakpoints.up("sm")]: {
+      height: "500px !important",
+    },
+  }
 });
 
 export default productStyle;

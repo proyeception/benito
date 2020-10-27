@@ -88,6 +88,7 @@ const useStyles = makeStyles(styles);
           position: 'bottom',
         },
         responsive:true,
+        maintainAspectRatio: false,
         scales: {
           yAxes: [{
               ticks: {
@@ -245,17 +246,17 @@ const useStyles = makeStyles(styles);
         </GridItem>
       </GridContainer>
       {labels.length == 0 ? (<div>
-                      <GridContainer >
-                        <GridItem xs={12} sm={12} md={12} lg={6} id="search-box">
-                          <div style={{font: '"Roboto", "Helvetica", "Arial", sans-serif', textAlign: "center", verticalAlign: "middle", color: "#c41234", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", fontSize: "30px", lineHeight: "initial", height: "90%"}}> 
-                            No se encontraron resultados
-                          </div>
-                        </GridItem>
-                        <GridItem xs={12} sm={12} md={12} lg={6} id="search-box">
-                        <img src={exclamation} style={{maxWidth:"100%"}}/>
-                        </GridItem>
-                        </GridContainer>
-                    </div>) : (<Line data={data} options={options} />)}
+        <GridContainer >
+          <GridItem xs={12} sm={12} md={12} lg={6} id="search-box">
+            <div style={{font: '"Roboto", "Helvetica", "Arial", sans-serif', textAlign: "center", verticalAlign: "middle", color: "#c41234", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", fontSize: "30px", lineHeight: "initial", height: "90%"}}> 
+              No se encontraron resultados
+            </div>
+          </GridItem>
+          <GridItem xs={12} sm={12} md={12} lg={6} id="search-box">
+          <img src={exclamation} style={{maxWidth:"100%"}}/>
+          </GridItem>
+          </GridContainer>
+      </div>) : (<div className={classes.chart}><Line data={data} options={options}/> </div>)}
     </div>
     
     )
