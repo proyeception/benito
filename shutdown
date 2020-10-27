@@ -2,8 +2,11 @@
 
 set -e
 
-PID=$(cat process)
+if [ ! -f process ];
+then
+  PID=$(cat process)
 
-kill -9 $PID
-echo "Server down"
+  kill -9 $PID
+  echo "Server down"
+fi
 
