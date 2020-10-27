@@ -8,17 +8,18 @@ import com.github.proyeception.benito.exception.FailedDependencyException
 import com.github.proyeception.benito.exception.NotFoundException
 import com.github.proyeception.benito.extension.asyncIO
 import com.github.proyeception.benito.extension.launchIOAsync
-import com.github.proyeception.benito.job.FileWatcher
 import com.github.proyeception.benito.oauth.GoogleDriveClient
 import com.github.proyeception.benito.parser.DocumentParser
 import com.github.proyeception.benito.storage.DriveStorage
 import com.github.proyeception.benito.storage.PermissionsStorage
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
+import org.apache.commons.lang3.StringUtils
 import org.apache.http.entity.ContentType
 import org.slf4j.LoggerFactory
 import org.springframework.web.multipart.MultipartFile
 import java.io.File
+import java.nio.charset.StandardCharsets
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -45,7 +46,7 @@ open class ProjectService(
                         asyncIO {
                             googleDriveClient.deletePermission(
                                 fileId = it.driveFolderId,
-                                permissionId =  p.permissionId
+                                permissionId = p.permissionId
                             )
                         }
                     }.awaitAll()
@@ -112,7 +113,7 @@ open class ProjectService(
                 tag = tag,
                 visitedOn = LocalDate.now(),
                 categoryId = null
-                )
+            )
             )
             val projects = medusaGraphClient.findProjects(
                 orderBy = orderBy,
@@ -218,14 +219,15 @@ open class ProjectService(
                 ?: throw NotFoundException("No drive for project $projectId")
             files.map { f ->
                 asyncIO {
+                    val originalFilename: String? = String(f.originalFilename.toByteArray(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8)
                     val driveId = documentService.saveFile(folderId = driveFolderId, file = f)
                     val fileStream = f.inputStream
-                    val content = documentParser.parse(fileStream, f.originalFilename ?: f.name) ?: ""
+                    val content = documentParser.parse(fileStream, originalFilename ?: f.name) ?: ""
 
                     CreateDocumentDTO(
                         driveId = driveId,
                         content = content,
-                        fileName = f.originalFilename ?: f.name
+                        fileName = originalFilename ?: f.name
                     )
                 }
             }.awaitAll()
