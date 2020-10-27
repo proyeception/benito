@@ -1,7 +1,9 @@
 #!/bin/bash
 
+set -e
+
 echo "Starting server..."
-./run.sh prod &
+benito/run.sh prod &
 PID=$!
 sleep 30
 
