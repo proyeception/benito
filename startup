@@ -3,15 +3,15 @@
 set -e
 
 echo "Starting server..."
-nohup java -Dconfig.file=benito/benito-backend/environments/"$ENVIRONMENT"/application.conf -Dlogback.configurationFile=benito/benito-backend/environments/"$ENVIRONMENT"/logback.xml -jar benito/benito-backend/target/benito.jar & > startup.log
-PID=$(ps faux | grep \$ARTIFACT_ID | grep -v \"grep\" | awk '{print $2}' | head -1) 
+nohup java -Dconfig.file=benito/benito-backend/environments/prod/application.conf -Dlogback.configurationFile=benito/benito-backend/environments/prod/logback.xml -jar benito/benito-backend/target/benito.jar & > startup.log
+PID=$(ps faux | grep "benito.jar" | grep -v \"grep\" | awk '{print $2}' | head -1)
 echo $PID > process
 echo "Waiting for app to be ready to health-check..."
 sleep 30
 
 curl localhost:80/heart-beat
 
-if [ $? -eq 0];
+if [ $? -eq 0 ];
 then
   echo "Server started correctly!"
 else
