@@ -122,6 +122,9 @@ const productStyle = (theme: Theme) => createStyles({
     [theme.breakpoints.up("sm")]: {
       height: "500px !important",
     },
+  },
+  wordCloud: {
+    font: `"oswald", "helvetica", "arial", "verdana", sans-serif`
   }
 });
 

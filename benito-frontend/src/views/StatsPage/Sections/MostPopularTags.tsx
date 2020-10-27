@@ -39,7 +39,8 @@ const options = {
     enableTooltip: true,
     deterministic: true,
     fontStyle: "normal",
-    padding: 0,
+    fontFamily: `"oswald", "helvetica", "arial", "verdana", sans-serif`,
+    padding: 1,
     rotations: 3,
     spiral: spiral,
     transitionDuration: 1000,
@@ -78,7 +79,7 @@ const MostPopularTags = (props: MostPopularTagsProps) => {
   return (
   <div>
     <div className={classes.title} style={{paddingTop: "20px"}}>Tags más populares</div>
-    <ReactWordcloud words={tags.map(convertTagToWord)} options={options}/>
+    <div className={classes.wordCloud}><ReactWordcloud words={tags.map(convertTagToWord)} options={options}/></div>
   </div>
   )
 }
