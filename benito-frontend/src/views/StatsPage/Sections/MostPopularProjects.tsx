@@ -153,7 +153,7 @@ const OrganizationQuantity = (props: OrganizationQuantityProps) => {
             </GridContainer>
           </div>) : (
             <div>
-            <GridContainer>
+            <GridContainer justify="center" style={{margin:"auto"}}>
             <GridList cellHeight={180} className={classes.gridList}>
               {projects.map((project) => (
                 <GridListTile key={project.projectId} className={classes.fiveColumns}>

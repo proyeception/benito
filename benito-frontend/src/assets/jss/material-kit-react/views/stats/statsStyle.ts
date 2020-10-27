@@ -101,10 +101,10 @@ const productStyle = (theme: Theme) => createStyles({
     },
   },
   fiveColumns: {
-    [theme.breakpoints.up("md")]: {
+    [theme.breakpoints.up("xs")]: {
         width: "20% !important"
     },
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down("xs")]: {
         width: "100% !important"
     },
   },
