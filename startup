@@ -1,6 +1,18 @@
 #!/bin/bash
 
+echo "Starting server..."
 ./run.sh prod &
 PID=$!
-echo $PID >> process
+sleep 30
+
+curl localhost:9290/heart-beat
+
+if [ $? -eq 0];
+then
+  echo "Server started correctly!"
+  echo $PID > process
+else
+  echo "Server failed to start"
+  exit -1
+fi
 

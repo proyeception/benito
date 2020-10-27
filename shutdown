@@ -3,4 +3,5 @@
 PID=$(cat process)
 
 kill -9 $PID
+echo "Server down"
 
