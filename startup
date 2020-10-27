@@ -7,7 +7,7 @@ benito/run.sh prod &
 PID=$!
 sleep 30
 
-curl localhost:9290/heart-beat
+curl localhost:80/heart-beat
 
 if [ $? -eq 0];
 then
