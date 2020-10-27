@@ -18,11 +18,31 @@ jobs:
       - name: Run tests
         run: mvn --batch-mode clean test -f benito-backend/pom.xml
       - name: Kill server
-        run: sshpass -p ${{secrets.REMOTE_PASSWORD}} ssh root@proyectate.tk -f "benito/shutdown"
+        uses: appleboy/ssh-action@master
+        with:
+          host: proyectate.tk
+          username: root
+          password: ${{secrets.REMOTE_PASSWORD}}
+          script: benito/shutdown
       - name: Checkout changes
-        run: sshpass -p ${{secrets.REMOTE_PASSWORD}} ssh root@proyectate.tk -f "git -C /root/benito pull origin master"
+        uses: appleboy/ssh-action@master
+        with:
+          host: proyectate.tk
+          username: root
+          password: ${{secrets.REMOTE_PASSWORD}}
+          script: git -C /root/benito pull origin master
       - name: Build
-        run: sshpass -p ${{secrets.REMOTE_PASSWORD}} ssh root@proyectate.tk -f "benito/build prod"
+        uses: appleboy/ssh-action@master
+        with:
+          host: proyectate.tk
+          username: root
+          password: ${{secrets.REMOTE_PASSWORD}}
+          script: benito/build prod
       - name: Start server
-        run: sshpass -p ${{secrets.REMOTE_PASSWORD}} ssh root@proyectate.tk -f "benito/startup"
+        uses: appleboy/ssh-action@master
+        with:
+          host: proyectate.tk
+          username: root
+          password: ${{secrets.REMOTE_PASSWORD}}
+          script: benito/startup
 
