@@ -80,8 +80,7 @@ open class ProjectController(
         @RequestHeader(value = X_CUSTOMIZATION_TOKEN, required = false) customizationToken: String?,
         @RequestHeader(value = X_QUI_TOKEN, required = false) sessionToken: String?,
         httpResponse: HttpServletResponse
-    ): ProjectDTO = projectService.findProject(id)
-        .let { removeSensitiveIfNotAuthorized(sessionToken, it) }
+    ): ProjectDTO = removeSensitiveIfNotAuthorized(sessionToken, projectService.findProject(id))
         .also { p ->
             val token = customizationToken ?: userService.createCustomizationId()
 

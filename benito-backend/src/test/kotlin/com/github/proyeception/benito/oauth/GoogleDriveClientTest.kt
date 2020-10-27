@@ -99,7 +99,7 @@ class GoogleDriveClientTest : Spec() {
                 actual shouldBe expected
 
                 verify(connectorMock).post(
-                    eq("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart"),
+                    eq("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,name,mimeType,createdTime"),
                     eq(Pair("application/json", metadataBytes)),
                     eq(Pair("multipart/form-data", multipartBytes))
                 )
@@ -139,7 +139,7 @@ class GoogleDriveClientTest : Spec() {
                 actual shouldBe expected
 
                 verify(connectorMock).post(
-                    eq("https://www.googleapis.com/drive/v3/files"),
+                    eq("https://www.googleapis.com/drive/v3/files?fields=id,name,mimeType,createdTimeg"),
                     eq(CreateFolderDTO(
                         name = "folder"
                     ))
