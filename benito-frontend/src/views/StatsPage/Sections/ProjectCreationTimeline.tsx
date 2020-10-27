@@ -17,6 +17,7 @@ import { RemoveCircle } from "@material-ui/icons";
 import styles from "../../../assets/jss/material-kit-react/views/stats/statsStyle";
 import classNames from "classnames";
 import moment from "moment";
+import exclamation from "../../../assets/img/proyectate/exclamation.jpg"
 
 type ProjectCreationTimelineProps = {
   categories: Array<Category>;
@@ -243,7 +244,18 @@ const useStyles = makeStyles(styles);
           />
         </GridItem>
       </GridContainer>
-      {labels.length == 0 ? (<h1>No se encontraron resultados</h1>) : (<Line data={data} options={options} />)}
+      {labels.length == 0 ? (<div>
+                      <GridContainer >
+                        <GridItem xs={12} sm={12} md={12} lg={6} id="search-box">
+                          <div style={{font: '"Roboto", "Helvetica", "Arial", sans-serif', textAlign: "center", verticalAlign: "middle", color: "#c41234", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", fontSize: "30px", lineHeight: "initial", height: "90%"}}> 
+                            No se encontraron resultados
+                          </div>
+                        </GridItem>
+                        <GridItem xs={12} sm={12} md={12} lg={6} id="search-box">
+                        <img src={exclamation} style={{maxWidth:"100%"}}/>
+                        </GridItem>
+                        </GridContainer>
+                    </div>) : (<Line data={data} options={options} />)}
     </div>
     
     )
