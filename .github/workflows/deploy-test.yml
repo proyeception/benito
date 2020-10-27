@@ -22,7 +22,7 @@ jobs:
       - name: Run tests
         run: mvn --batch-mode clean test -f benito-backend/pom.xml
       - name: Build
-        run: ./build test
+        run: ./build-heroku test
       - name: Install
         run: mvn --batch-mode install -f benito-backend/pom.xml -Dmaven.test.skip=true
       - name: Deploy to heroku
