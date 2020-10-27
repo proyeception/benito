@@ -3,6 +3,8 @@ package com.github.proyeception.benito;
 import com.github.proyeception.benito.config.ServiceContext;
 import com.github.proyeception.benito.http.TrackingFilter;
 import com.github.proyeception.benito.utils.LoggingFilter;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 import org.eclipse.jetty.jmx.MBeanContainer;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.gzip.GzipHandler;
@@ -120,6 +122,12 @@ public class Benito {
     }
 
     private int port(String[] args) {
+        Config config = ConfigFactory.load();
+
+        if (config.hasPath("server.port")) {
+            return config.getInt("server.port");
+        }
+
         ProcessBuilder processBuilder = new ProcessBuilder();
         if (processBuilder.environment().get("PORT") != null) {
             return Integer.parseInt(processBuilder.environment().get("PORT"));

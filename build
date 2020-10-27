@@ -9,8 +9,8 @@ fi
 set -e
 
 ENVIRONMENT=$1
-FRONTEND="benito-frontend"
-BACKEND="benito-backend"
+FRONTEND="benito/benito-frontend"
+BACKEND="benito/benito-backend"
 BACKEND_RESOURCES=$BACKEND/src/main/resources
 BACKEND_ENVIRONMENTS=$BACKEND/environments
 ARTIFACT="benito"
