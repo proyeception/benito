@@ -19,6 +19,7 @@ import org.apache.http.entity.ContentType
 import org.slf4j.LoggerFactory
 import org.springframework.web.multipart.MultipartFile
 import java.io.File
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 open class ProjectService(
@@ -28,6 +29,7 @@ open class ProjectService(
     private val documentParser: DocumentParser,
     private val fileService: FileService,
     private val keywordService: KeywordService,
+    private val statsService: StatsService,
     private val recommendationService: RecommendationService,
     private val googleDriveClient: GoogleDriveClient,
     private val driveStorage: DriveStorage,
@@ -64,7 +66,10 @@ open class ProjectService(
         page: Int?,
         tag: String?
     ): SearchProjectDTO {
+
+
         return if (tag.isNullOrEmpty()) {
+
             val projects = medusaGraphClient.findProjects(
                 orderBy = orderBy,
                 from = from,
@@ -103,7 +108,12 @@ open class ProjectService(
 
             SearchProjectDTO(projects, count)
         } else {
-
+            statsService.registerTagSearch(ProjectSearchDTO(
+                tag = tag,
+                visitedOn = LocalDate.now(),
+                categoryId = null
+                )
+            )
             val projects = medusaGraphClient.findProjects(
                 orderBy = orderBy,
                 from = from,
@@ -149,7 +159,14 @@ open class ProjectService(
     fun count(): CountDTO = CountDTO(medusaClient.projectCount())
 
     open fun findProject(id: String): ProjectDTO = mappingFromMedusa {
-        medusaClient.findProject(projectId = id)
+        val project = medusaClient.findProject(projectId = id)
+        statsService.registerVisit(ProjectVisitDTO(
+            projectId = project.id,
+            categoryId = project.category.id,
+            organizationId = project.organization.id,
+            visitedOn = LocalDate.now()
+        ))
+        project
     }
 
     fun updateProjectContent(content: UpdateContentDTO, projectId: String): ProjectDTO = mappingFromMedusa {
@@ -341,6 +358,7 @@ open class ProjectService(
             tags = MedusaSetTagsDTO(tags.tags.map { TagDTO(it, it) })
         )
     }
+
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(ProjectService::class.java)
