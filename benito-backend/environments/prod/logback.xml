@@ -3,7 +3,7 @@
 <configuration scan="false">
 
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>logs</file>
+        <file>log</file>
         <append>true</append>
         <encoder>
             <pattern>

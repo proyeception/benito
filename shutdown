@@ -1,0 +1,6 @@
+#!/bin/bash
+
+PID=$(cat process)
+
+kill -9 $PID
+

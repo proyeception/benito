@@ -1,0 +1,6 @@
+#!/bin/bash
+
+./run.sh prod &
+PID=$!
+echo $PID >> process
+
