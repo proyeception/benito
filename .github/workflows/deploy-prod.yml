@@ -18,11 +18,11 @@ jobs:
       - name: Run tests
         run: mvn --batch-mode clean test -f benito-backend/pom.xml
       - name: Kill server
-        run: sshpass -p ${{secrets.REMOTE_PASSWORD}} ssh -f "benito/shutdown"
+        run: sshpass -p ${{secrets.REMOTE_PASSWORD}} ssh root@proyectate.tk -f "benito/shutdown"
       - name: Checkout changes
-        run: sshpass -p ${{secrets.REMOTE_PASSWORD}} ssh -f "git -C /root/benito pull origin master"
+        run: sshpass -p ${{secrets.REMOTE_PASSWORD}} ssh root@proyectate.tk -f "git -C /root/benito pull origin master"
       - name: Build
-        run: sshpass -p ${{secrets.REMOTE_PASSWORD}} ssh -f "benito/build prod"
+        run: sshpass -p ${{secrets.REMOTE_PASSWORD}} ssh root@proyectate.tk -f "benito/build prod"
       - name: Start server
-        run: sshpass -p ${{secrets.REMOTE_PASSWORD}} ssh -f "benito/startup"
+        run: sshpass -p ${{secrets.REMOTE_PASSWORD}} ssh root@proyectate.tk -f "benito/startup"
 
