@@ -160,12 +160,14 @@ open class ProjectService(
 
     open fun findProject(id: String): ProjectDTO = mappingFromMedusa {
         val project = medusaClient.findProject(projectId = id)
-        statsService.registerVisit(ProjectVisitDTO(
-            projectId = project.id,
-            categoryId = project.category.id,
-            organizationId = project.organization.id,
-            visitedOn = LocalDate.now()
-        ))
+        launchIOAsync {
+            statsService.registerVisit(ProjectVisitDTO(
+                projectId = project.id,
+                categoryId = project.category.id,
+                organizationId = project.organization.id,
+                visitedOn = LocalDate.now()
+            ))
+        }
         project
     }
 

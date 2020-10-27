@@ -10,18 +10,17 @@ open class StatsService(
     private val categoriesService: CategoriesService
 ) {
 
-    fun findAll(): List<ProjectVisitDTO> = statsStorage
-        .findAll()
+    open fun findAll(): List<ProjectVisitDTO> = statsStorage.findAll()
 
-    fun registerVisit(projectVisitDTO: ProjectVisitDTO) = statsStorage.insert(projectVisitDTO)
+    open fun registerVisit(projectVisitDTO: ProjectVisitDTO) = statsStorage.insert(projectVisitDTO)
 
-    fun projectsXorganization(categoryId: String?): List<OrganizationQuantityDTO> {
+    open fun projectsXorganization(categoryId: String?): List<OrganizationQuantityDTO> {
         val projects = medusaClient.findProjects()
-        val allOrganizations = projects.filter {it.category.id == categoryId || categoryId.isNullOrBlank()}
-                    .groupingBy { it.organization.displayName }
-                    .eachCount()
-                    .map {OrganizationQuantityDTO(it.key, it.value) }
-                    .sortedByDescending{ it.quantity }
+        val allOrganizations = projects.filter { it.category.id == categoryId || categoryId.isNullOrBlank() }
+            .groupingBy { it.organization.displayName }
+            .eachCount()
+            .map { OrganizationQuantityDTO(it.key, it.value) }
+            .sortedByDescending{ it.quantity }
 
         val maxElements = 5
         var result = allOrganizations

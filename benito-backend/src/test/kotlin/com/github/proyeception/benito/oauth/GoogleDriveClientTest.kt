@@ -139,7 +139,7 @@ class GoogleDriveClientTest : Spec() {
                 actual shouldBe expected
 
                 verify(connectorMock).post(
-                    eq("https://www.googleapis.com/drive/v3/files?fields=id,name,mimeType,createdTimeg"),
+                    eq("https://www.googleapis.com/drive/v3/files?fields=id,name,mimeType,createdTime"),
                     eq(CreateFolderDTO(
                         name = "folder"
                     ))
