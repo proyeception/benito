@@ -3,16 +3,16 @@
 set -e
 
 echo "Starting server..."
-benito/run.sh prod &
+nohup benito/run.sh local &
 PID=$!
 sleep 30
+echo $PID > process
 
 curl localhost:80/heart-beat
 
 if [ $? -eq 0];
 then
   echo "Server started correctly!"
-  echo $PID > process
 else
   echo "Server failed to start"
   exit -1
