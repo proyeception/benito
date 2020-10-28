@@ -62,7 +62,7 @@ open class CustomizationStorage(
         mongoTemplate.updateMulti(
             Query(where("customizationToken").isEqualTo(customizationToken)),
             update("userId", userId),
-            Any::class.java
+            Tracking::class.java
         )
     }
 }
