@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
+import DownloadDocument from "./DownloadDocument";
 
 import styles from "../../../assets/jss/material-kit-react/views/landingPageSections/documentsStyle";
 import { benitoHost } from "../../../config";
@@ -20,8 +21,6 @@ type DocumentsSectionProps = {
 
 const DocumentsSection = ({ project }: DocumentsSectionProps) => {
   const classes = useStyles();
-
-  console.error("tags " + project.tags)
 
   return (
     <div className={classes.section}>
@@ -59,16 +58,7 @@ const DocumentsSection = ({ project }: DocumentsSectionProps) => {
         <GridItem xs={12} md={6} className={classes.documentsContainer}>
           {project.documentation != undefined ? (
             project.documentation?.map((d, idx) => (
-              <a
-                key={idx}
-                href={`${benitoHost}/benito/documents/${d.driveId}`}
-                className={classes.document}
-              >
-                <div>
-                  <GetAppIcon />
-                </div>
-                <div>{d.fileName}</div>
-              </a>
+              <DownloadDocument document={d} idx={idx}></DownloadDocument>
             ))
           ) : (
             <div></div>
