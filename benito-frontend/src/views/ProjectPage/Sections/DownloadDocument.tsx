@@ -21,19 +21,13 @@ export default function DownloadDocument({ document, idx }: DownloadDocumentProp
 
   const downloadLink = withDownloadLink(document.driveId);
 
-  console.log(downloadLink)
-
   if (downloadLink.type == PENDING) {
-    return <Spinner />;
+    return <div className={classes.document}>Cargando documento...</div>;
   }
-
-  console.log(downloadLink)
 
   if (downloadLink.type == ERROR) {
     return <Redirect to={{ pathname: "/error" }} />;
   }
-
-  console.log(downloadLink)
 
   return (              
   <a

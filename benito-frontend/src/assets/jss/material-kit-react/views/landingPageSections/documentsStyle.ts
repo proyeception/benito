@@ -26,8 +26,10 @@ const documentsStyle = (theme: Theme) => createStyles({
     color: "#999",
   },
   documentsContainer: {
-    maxHeight: "360px",
+    maxHeight: "200px",
     overflow: "scroll",
+    overflowY: "auto",
+    overflowX: "auto",
     [theme.breakpoints.down("sm")]: {
       paddingTop: "20px"
   }
