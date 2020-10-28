@@ -26,7 +26,7 @@ export default function DownloadDocument({ document, idx }: DownloadDocumentProp
   }
 
   if (downloadLink.type == ERROR) {
-    return <Redirect to={{ pathname: "/error" }} />;
+    return <div className={classes.document}>Error cargando documento</div>;
   }
 
   return (              
