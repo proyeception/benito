@@ -2,15 +2,14 @@ import React from "react";
 import { hot } from "react-hot-loader";
 import { Project } from "../../../types";
 import { makeStyles } from "@material-ui/core/styles";
-
 import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
-
 import styles from "../../../assets/jss/material-kit-react/views/landingPageSections/documentsStyle";
 import { benitoHost } from "../../../config";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import moment from "moment";
 import { Link } from "react-router-dom";
+import { Alert, AlertTitle } from "@material-ui/lab";
 
 const useStyles = makeStyles(styles);
 
@@ -21,7 +20,7 @@ type DocumentsSectionProps = {
 const DocumentsSection = ({ project }: DocumentsSectionProps) => {
   const classes = useStyles();
 
-  console.error("tags " + project.tags)
+  console.error("tags " + project.tags);
 
   return (
     <div className={classes.section}>
@@ -36,22 +35,26 @@ const DocumentsSection = ({ project }: DocumentsSectionProps) => {
             <GridItem xs={6} md={6}>
               Fecha de publicación
             </GridItem>
-            <GridItem xs={6} md={6} style={{textAlign: "right"}}>
-              {moment(project.creationDate).add(1, 'days').format("yyyy-MM-DD").toString()}
+            <GridItem xs={6} md={6} style={{ textAlign: "right" }}>
+              {moment(project.creationDate)
+                .add(1, "days")
+                .format("yyyy-MM-DD")
+                .toString()}
             </GridItem>
             <GridItem xs={6} md={6}>
               Tags
             </GridItem>
-            <GridItem xs={6} md={6} style={{textAlign: "right"}}>
-              
+            <GridItem xs={6} md={6} style={{ textAlign: "right" }}>
               {project.tags.map((tag: string) => {
-                return(<Link
-                  to={`/search?tag=${tag}`}
-                  className="normalize-link"
-                  style={{color:"#c41234"}}
-                >
-                  {"#" + tag + " "} 
-                </Link>)
+                return (
+                  <Link
+                    to={`/search?tag=${tag}`}
+                    className="normalize-link"
+                    style={{ color: "#c41234" }}
+                  >
+                    {"#" + tag + " "}
+                  </Link>
+                );
               })}
             </GridItem>
           </GridContainer>
@@ -71,7 +74,16 @@ const DocumentsSection = ({ project }: DocumentsSectionProps) => {
               </a>
             ))
           ) : (
-            <div></div>
+            <Alert
+              severity="info"
+              icon={false}
+              style={{
+                marginTop: "30px",
+                backgroundColor: "#ececec",
+              }}
+            >
+              <AlertTitle>Inicia sesión para ver este contenido!</AlertTitle>
+            </Alert>
           )}
         </GridItem>
       </GridContainer>
