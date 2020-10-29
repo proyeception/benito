@@ -189,22 +189,20 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
 
   const open5 = Boolean(anchorEl5);
 
-  console.log(props.session);
   if (!props.session.isLoggedIn) {
     return <Redirect to="/login" />;
   }
 
   if (!(props.session.role == "SUPERVISOR")) {
-    console.log("Usuario sin permisos de supervisor");
+    console.error("Usuario sin permisos de supervisor");
     return <Redirect to={{ pathname: "/error" }} />;
   }
 
   const user = withUser(props.session.role, props.session.userId, (p) => {
     if (p.organizations[0] == undefined) {
-      console.log("Usuario sin organizaciones");
+      console.error("Usuario sin organizaciones");
       return <Redirect to={{ pathname: "/error" }} />;
     }
-    console.log("fetch org: " + p.organizations[0].id);
     fetchOrganization(p.organizations[0].id)
       .then((res) => res.data)
       .then((o) => setOrganization(o))
@@ -219,7 +217,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
   }
 
   if (user.type == ERROR) {
-    console.log("Usuario con error");
+    console.error("Usuario con error");
     return <Redirect to={{ pathname: "/error" }} />;
   }
 
@@ -248,7 +246,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
   }
 
   if (organization == "ERROR") {
-    console.log("Organizacion con error");
+    console.error("Organizacion con error");
     return <Redirect to={{ pathname: "/error" }} />;
   }
 
@@ -623,6 +621,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
         </GridContainer>
         <GridContainer className={classes.container}>
           <GridItem>
+          <h4 className={classes.subtitle}>Categoría</h4>
             <div>
               <Autocomplete
                 fullWidth
