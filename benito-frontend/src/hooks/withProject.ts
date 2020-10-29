@@ -5,18 +5,23 @@ import { X_CUSTOMIZATION_TOKEN } from "../functions/session";
 
 const withProject = (
   projectId: string,
-  andThen?: (p: Project) => void
+  andThen?: (p: Project) => void,
+  listener?: string
 ): FetchStatus<Project> => {
-  const [project] = withFetch<Project>(`projects/${projectId}`, (e) => {
-    if (andThen) {
-      andThen(e);
-    }
-    const customizationToken = Cookies.get(X_CUSTOMIZATION_TOKEN);
+  const [project] = withFetch<Project>(
+    `projects/${projectId}`,
+    (e) => {
+      if (andThen) {
+        andThen(e);
+      }
+      const customizationToken = Cookies.get(X_CUSTOMIZATION_TOKEN);
 
-    if (customizationToken) {
-      localStorage.setItem(X_CUSTOMIZATION_TOKEN, customizationToken);
-    }
-  });
+      if (customizationToken) {
+        localStorage.setItem(X_CUSTOMIZATION_TOKEN, customizationToken);
+      }
+    },
+    listener ? [listener] : []
+  );
   return project;
 };
 

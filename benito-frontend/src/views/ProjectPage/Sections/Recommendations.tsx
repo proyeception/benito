@@ -17,9 +17,9 @@ import store from "../../../store";
 import { updateFetchStatus } from "../../../actions/search";
 import ProjectLink from "../../../components/Links/ProjectLink";
 import { RouteComponentProps } from "react-router-dom";
-import withRecommendations from '../../../hooks/withRecommendations';
+import withRecommendations from "../../../hooks/withRecommendations";
 import Spinner from "../../../components/Spinner/Spinner";
-import pictureNotFound from "../../../assets/img/proyectate/picture.svg"
+import pictureNotFound from "../../../assets/img/proyectate/picture.svg";
 
 type Any = any;
 
@@ -47,25 +47,35 @@ const SearchResultsSection = (props: Props) => {
   const classes = useStyles();
 
   if (recommendations.type == ERROR) {
-    return  <GridContainer justify="center">
-              <GridItem xs={12} sm={12} md={12}>
-                <div className={classes.subtitle}> Proyectos similares</div>
-                <div className={classes.text}> No pudimos encontrar proyectos similares a este</div>
-              </GridItem>
-            </GridContainer>
+    return (
+      <GridContainer justify="center">
+        <GridItem xs={12} sm={12} md={12}>
+          <div className={classes.subtitle}> Proyectos similares</div>
+          <div className={classes.text}>
+            {" "}
+            No pudimos encontrar proyectos similares a este
+          </div>
+        </GridItem>
+      </GridContainer>
+    );
   }
 
   if (recommendations.type == PENDING) {
-    return <Spinner/>;
+    return <Spinner />;
   }
 
   if (recommendations.value.length == 0) {
-    return  <GridContainer justify="center">
-              <GridItem xs={12} sm={12} md={12}>
-                <div className={classes.subtitle}> Proyectos similares</div>
-                <div className={classes.text}> No pudimos encontrar proyectos similares a este. Es único!</div>
-              </GridItem>
-            </GridContainer>
+    return (
+      <GridContainer justify="center">
+        <GridItem xs={12} sm={12} md={12}>
+          <div className={classes.subtitle}> Proyectos similares</div>
+          <div className={classes.text}>
+            {" "}
+            No pudimos encontrar proyectos similares a este. Es único!
+          </div>
+        </GridItem>
+      </GridContainer>
+    );
   }
 
   return (
@@ -75,18 +85,18 @@ const SearchResultsSection = (props: Props) => {
         {recommendations.value.map((p, idx) => (
           <GridItem key={idx} xs={12} sm={12} md={12}>
             <GridContainer className={classes.result}>
-                <ProjectLink id={p.id}>
-                    <div>
-                      <img
-                        src={p.pictureUrl?.valueOf() || pictureNotFound}
-                        alt={p.title.valueOf()}
-                        className={classes.picture}
-                      />
-                    </div>
-                    <div className={classes.title + " underline-hover"}>
-                      {p.title}
-                    </div>
-                </ProjectLink>
+              <ProjectLink id={p.id}>
+                <div>
+                  <img
+                    src={p.pictureUrl?.valueOf() || pictureNotFound}
+                    alt={p.title.valueOf()}
+                    className={classes.picture}
+                  />
+                </div>
+                <div className={classes.title + " underline-hover"}>
+                  {p.title}
+                </div>
+              </ProjectLink>
             </GridContainer>
           </GridItem>
         ))}
