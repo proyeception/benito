@@ -14,7 +14,6 @@ import com.github.proyeception.benito.storage.DriveStorage
 import com.github.proyeception.benito.storage.PermissionsStorage
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
-import org.apache.commons.lang3.StringUtils
 import org.apache.http.entity.ContentType
 import org.slf4j.LoggerFactory
 import org.springframework.web.multipart.MultipartFile
@@ -192,6 +191,17 @@ open class ProjectService(
         }
     }
 
+    open fun addTagsToProjectKeywords(project: ProjectDTO, tags: SetTagsDTO) {
+        try {
+            val keywordsDeTags = tags.tags.map { KeywordDTO(null, it, 10.0) }
+            val updatedKeywords = medusaClient.updateProjectKeywords(keywordsDeTags, project)
+            LOGGER.info("Creating Recommendations for project: ${project.id}")
+            recommendationService.recalculateRecommendations(project.id, project.recommendations, updatedKeywords)
+        } catch (e: Exception) {
+            LOGGER.error("There was an error updating keywords for project ${project.id}")
+        }
+    }
+
     fun saveDriveDocuments(projectId: String, files: List<Pair<File, String>>) = mappingFromMedusa {
         val docs = runBlocking {
             val (_, driveFolderId) = driveStorage.findOne(projectId)
@@ -357,11 +367,12 @@ open class ProjectService(
     }
 
     fun setTags(projectId: String, tags: SetTagsDTO): ProjectDTO = mappingFromMedusa {
-        medusaClient.modifyProjectTags(
-            projectId = projectId,
-            tags = MedusaSetTagsDTO(tags.tags.map { TagDTO(it, it) })
-        )
-    }
+            medusaClient.modifyProjectTags(
+                projectId = projectId,
+                tags = MedusaSetTagsDTO(tags.tags.map { TagDTO(it, it) })
+            )
+        }
+        .also { launchIOAsync { addTagsToProjectKeywords(it, tags) } }
 
 
     companion object {
