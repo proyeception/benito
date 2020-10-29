@@ -58,7 +58,7 @@ open class ProjectController(
         organizationName = organizationName,
         tag = tag
     ).let { sp ->
-        sp.copy(projects = sp.projects.map { removeSensitiveIfNotAuthorized(sessionToken, it) })
+        sp.copy(projects = sp.projects)
     }
 
     @RequestMapping("/benito/projects/featured", method = [RequestMethod.GET])

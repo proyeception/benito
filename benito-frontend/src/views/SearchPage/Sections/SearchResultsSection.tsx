@@ -166,9 +166,7 @@ const SearchResultsSection = (props: SearchResultsSectionProps) => {
                 }}
               >
                 <AlertTitle>
-                  {p.keywordMatchingDocs.length > 0
-                    ? "Los siguientes documentos son relevantes para tu búsqueda:"
-                    : "Inicia sesión para ver este contenido!"}
+                  Los siguientes documentos son relevantes para tu búsqueda:
                 </AlertTitle>
                 {p.keywordMatchingDocs.length > 0 && (
                   <ul>

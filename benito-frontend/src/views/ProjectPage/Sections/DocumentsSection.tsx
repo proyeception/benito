@@ -70,7 +70,7 @@ const DocumentsSection = ({ project }: DocumentsSectionProps) => {
                 backgroundColor: "#ececec",
               }}
             >
-              <AlertTitle>Inicia sesión para ver este contenido!</AlertTitle>
+              <AlertTitle>Inicia sesión para descargar la documentación del proyecto!</AlertTitle>
             </Alert>
           )}
         </GridItem>
