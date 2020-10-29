@@ -74,7 +74,11 @@ const ProjectPage = (props: Props) => {
   const classes = useStyles();
   const { ...rest } = props;
 
-  const project = withProject(props.match.params.id);
+  const project = withProject(
+    props.match.params.id,
+    () => {},
+    props.match.params.id
+  );
 
   if (project.type == PENDING) {
     return <Spinner />;
@@ -102,7 +106,9 @@ const ProjectPage = (props: Props) => {
         <div className={classes.container}>
           <GridContainer>
             <GridItem xs={12} sm={12} md={6}>
-              <h1 className={classNames(classes.title, classes.longTitle)}>{project.value.title}</h1>
+              <h1 className={classNames(classes.title, classes.longTitle)}>
+                {project.value.title}
+              </h1>
               <br />
               <div
                 style={{
@@ -165,19 +171,24 @@ const ProjectPage = (props: Props) => {
             <Recommendations />
           </GridItem>
           <Hidden only={["xs", "sm"]}>
-          <GridItem xs={12} sm={12} md={12} className={classNames(classes.project, classes.actions)}>
-          <Button
-              className={classes.goback}
-              onClick={() => {
-                props.history.goBack();
-              }}
-              variant="outlined"
-              size="large"
-              startIcon={<ArrowBackIos />}
+            <GridItem
+              xs={12}
+              sm={12}
+              md={12}
+              className={classNames(classes.project, classes.actions)}
             >
-              Volver
-            </Button>
-          </GridItem>
+              <Button
+                className={classes.goback}
+                onClick={() => {
+                  props.history.goBack();
+                }}
+                variant="outlined"
+                size="large"
+                startIcon={<ArrowBackIos />}
+              >
+                Volver
+              </Button>
+            </GridItem>
           </Hidden>
         </GridContainer>
       </div>

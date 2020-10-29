@@ -30,6 +30,7 @@ import classNames from "classnames";
 
 interface SearchResultsSectionProps extends RouteChildrenProps<SearchParams> {
   status: Fetch;
+  keywordSearch?: boolean;
 }
 
 const theme = createMuiTheme({
@@ -155,27 +156,29 @@ const SearchResultsSection = (props: SearchResultsSectionProps) => {
                 </ProjectLink>
               </GridItem>
             </GridContainer>
-            <Alert
-              severity="info"
-              icon={false}
-              style={{
-                marginTop: "30px",
-                backgroundColor: "#ececec",
-              }}
-            >
-              <AlertTitle>
-                {p.keywordMatchingDocs.length > 0
-                  ? "Los siguientes documentos son relevantes para tu búsqueda:"
-                  : "Inicia sesión para ver este contenido!"}
-              </AlertTitle>
-              {p.keywordMatchingDocs.length > 0 && (
-                <ul>
-                  {p.keywordMatchingDocs.map((d, idx) => (
-                    <li key={idx}>{d.fileName}</li>
-                  ))}
-                </ul>
-              )}
-            </Alert>
+            {props.keywordSearch && (
+              <Alert
+                severity="info"
+                icon={false}
+                style={{
+                  marginTop: "30px",
+                  backgroundColor: "#ececec",
+                }}
+              >
+                <AlertTitle>
+                  {p.keywordMatchingDocs.length > 0
+                    ? "Los siguientes documentos son relevantes para tu búsqueda:"
+                    : "Inicia sesión para ver este contenido!"}
+                </AlertTitle>
+                {p.keywordMatchingDocs.length > 0 && (
+                  <ul>
+                    {p.keywordMatchingDocs.map((d, idx) => (
+                      <li key={idx}>{d.fileName}</li>
+                    ))}
+                  </ul>
+                )}
+              </Alert>
+            )}
           </GridItem>
         ))}
         <GridContainer justify="center" xs={12} sm={12} md={12}>
@@ -201,6 +204,7 @@ const SearchResultsSection = (props: SearchResultsSectionProps) => {
 const mapStateToProps = (rootState: RootState) => {
   return {
     status: rootState.search.status,
+    keywordSearch: rootState.search.keywordSearch,
   };
 };
 

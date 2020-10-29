@@ -22,7 +22,7 @@ import StatsPage from "./views/StatsPage/StatsPage";
 import ErrorPage from "./views/ErrorPage/ErrorPage";
 import NotFoundPage from "./views/NotFoundPage/NotFoundPage";
 import EditProjectPage from "./views/EditProjectPage/EditProjectPage";
-import ComingSoon from './views/ComingSoon/ComingSoon';
+import ComingSoon from "./views/ComingSoon/ComingSoon";
 import CreateProjectPage from "./views/CreateProjectPage/CreateProjectPage";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import { grey } from "@material-ui/core/colors";
@@ -61,25 +61,25 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
-    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      <BrowserRouter>
-        <Switch>
-          <Route path="/projects/create" component={CreateProjectPage} />
-          <Route path="/projects/:id/edit" component={EditProjectPage} />
-          <Route path="/projects/:id" component={ProjectPage} />
-          <Route path="/search" component={SearchPage} />
-          <Route path="/authors/:id" component={AuthorPage} />
-          <Route path="/supervisors/:id" component={SupervisorPage} />
-          <Route path="/login" component={LoginPage} />
-          <Route path="/error" component={ErrorPage} />
-          <Route path="/stats" component={StatsPage} />
-          <Route path="/comingSoon" component={ComingSoon} />
-          <Route path="/me/:tab" component={MePage} />
-          <Route path="/" exact component={HomePage} />
-          <Route component={NotFoundPage} />
-        </Switch>
-      </BrowserRouter>
-    </MuiPickersUtilsProvider>
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <BrowserRouter>
+          <Switch>
+            <Route path="/projects/create" component={CreateProjectPage} />
+            <Route path="/projects/:id/edit" component={EditProjectPage} />
+            <Route path="/projects/:id" component={ProjectPage} />
+            <Route path="/search" component={SearchPage} />
+            <Route path="/authors/:id" component={AuthorPage} />
+            <Route path="/supervisors/:id" component={SupervisorPage} />
+            <Route path="/login" component={LoginPage} />
+            <Route path="/error" component={ErrorPage} />
+            <Route path="/stats" component={StatsPage} />
+            <Route path="/comingSoon" component={ComingSoon} />
+            <Route path="/me/:tab" component={MePage} />
+            <Route path="/" exact component={HomePage} />
+            <Route component={NotFoundPage} />
+          </Switch>
+        </BrowserRouter>
+      </MuiPickersUtilsProvider>
     </ThemeProvider>
   );
 };

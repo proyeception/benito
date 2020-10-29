@@ -25,7 +25,9 @@ import { clearSession } from "../../functions/session";
 import { LoggedInState, SessionState } from "../../store/session/types";
 import classNames from "classnames";
 import { Hidden } from "@material-ui/core";
-import MG from "../../assets/img/proyectate/magnifying-glass.png"
+import MG from "../../assets/img/proyectate/magnifying-glass.png";
+import store from "../../store";
+import { invalidateSession } from "../../actions/session";
 
 const useStyles = makeStyles(styles);
 
@@ -72,8 +74,7 @@ const HeaderLinks = (props: Props) => {
         className={classes.alignCenter}
         onClick={() => {
           clearSession(session.token);
-          props.history.push("/");
-          props.history.go(0);
+          store.dispatch(invalidateSession());
         }}
       >
         <MeetingRoom />{" "}
@@ -83,14 +84,14 @@ const HeaderLinks = (props: Props) => {
 
     return (
       <List className={classes.list}>
-      <ListItem className={classes.listItem}>
-        <CustomDropdown
-          buttonProps={{
-            color: "transparent",
-          }}
-          buttonText={session.fullName}
-          dropdownList={drop}
-        />
+        <ListItem className={classes.listItem}>
+          <CustomDropdown
+            buttonProps={{
+              color: "transparent",
+            }}
+            buttonText={session.fullName}
+            dropdownList={drop}
+          />
         </ListItem>
       </List>
     );
@@ -99,11 +100,11 @@ const HeaderLinks = (props: Props) => {
   return (
     <List className={classes.list}>
       <ListItem className={classes.listItem}>
-          <Link to="/search">
-            <Button color="transparent" className={classes.navLink}>
-            <img src={MG} style={{height: "25px", margin:"0"}} />
-            </Button>
-          </Link>
+        <Link to="/search">
+          <Button color="transparent" className={classes.navLink}>
+            <img src={MG} style={{ height: "25px", margin: "0" }} />
+          </Button>
+        </Link>
       </ListItem>
       <ListItem className={classes.listItem}>
         {props.session.isLoggedIn ? (

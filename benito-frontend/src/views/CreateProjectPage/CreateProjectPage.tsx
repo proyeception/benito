@@ -338,7 +338,6 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
         Promise.all(promises)
           .catch(console.error)
           .then(() => props.history.push(`/projects/${projectId}`));
-        //.then(() => props.history.go(0));
       })
       .catch(() => {
         return <Redirect to={{ pathname: "/error" }} />;

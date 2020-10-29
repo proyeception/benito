@@ -25,7 +25,8 @@ export type FetchStatus<T> = FetchSuccess<T> | FetchError | FetchPending;
 
 export default function withFetch<T>(
   path: string,
-  onSuccess?: (arg0: T) => void
+  onSuccess?: (arg0: T) => void,
+  updateListener?: Array<string>
 ): [FetchStatus<T>, (path: string) => void] {
   const [status, setStatus] = useState<FetchStatus<T>>({ type: PENDING });
   const [isFetching, setIsFetching] = useState(false);
@@ -57,7 +58,7 @@ export default function withFetch<T>(
     }
   };
 
-  useEffect(fetch, []);
+  useEffect(fetch, updateListener || []);
 
   return [status, fetch];
 }

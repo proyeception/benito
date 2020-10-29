@@ -136,15 +136,10 @@ const LoginPage = (props: LoginPageProps) => {
                                     mail: googleInfo.profileObj.email,
                                     token: googleInfo.tokenId,
                                   };
-                                  startLogin(
-                                    loginData,
-                                    props.history,
-                                    "author",
-                                    () => {
-                                      setError(true);
-                                      setDisabled(true);
-                                    }
-                                  );
+                                  startLogin(loginData, "author", () => {
+                                    setError(true);
+                                    setDisabled(true);
+                                  });
                                 }}
                                 onFailure={console.warn}
                               />
@@ -152,7 +147,6 @@ const LoginPage = (props: LoginPageProps) => {
                             <Snackbar
                               open={error}
                               autoHideDuration={6000}
-                              
                               onClose={() => {
                                 setError(false);
                                 setDisabled(false);
@@ -164,7 +158,7 @@ const LoginPage = (props: LoginPageProps) => {
                                   setDisabled(false);
                                 }}
                                 severity="error"
-                                style={{zIndex: 999, opacity: 1}}
+                                style={{ zIndex: 999, opacity: 1 }}
                               >
                                 ¡Lo sentimos! Salió algo mal procesando la
                                 solicitud. Nuestros ingenieros ya están
@@ -204,15 +198,10 @@ const LoginPage = (props: LoginPageProps) => {
                                     mail: googleInfo.profileObj.email,
                                     token: googleInfo.tokenId,
                                   };
-                                  startLogin(
-                                    loginData,
-                                    props.history,
-                                    "supervisor",
-                                    () => {
-                                      setError(true);
-                                      setDisabled(true);
-                                    }
-                                  );
+                                  startLogin(loginData, "supervisor", () => {
+                                    setError(true);
+                                    setDisabled(true);
+                                  });
                                 }}
                                 onFailure={console.warn}
                               />
@@ -295,7 +284,7 @@ const LoginPage = (props: LoginPageProps) => {
                               >
                                 <Alert
                                   onClose={() => setSuccess(false)}
-                                  style={{zIndex: 999, opacity: 1}}
+                                  style={{ zIndex: 999, opacity: 1 }}
                                   severity="success"
                                 >
                                   ¡Listo! Un administrador revisará tu solicitud
@@ -317,7 +306,10 @@ const LoginPage = (props: LoginPageProps) => {
                                     setDisabled(false);
                                   }}
                                   severity="error"
-                                  style={{zIndex: 999, opacity: "1 !important"}}
+                                  style={{
+                                    zIndex: 999,
+                                    opacity: "1 !important",
+                                  }}
                                 >
                                   ¡Lo sentimos! Salió algo mal procesando la
                                   solicitud. Nuestros ingenieros ya están
@@ -336,7 +328,9 @@ const LoginPage = (props: LoginPageProps) => {
             </GridItem>
           </GridContainer>
         </div>
-        <Hidden smDown><Footer whiteFont /></Hidden>
+        <Hidden smDown>
+          <Footer whiteFont />
+        </Hidden>
       </div>
     </div>
   );

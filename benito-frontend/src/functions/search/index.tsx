@@ -52,6 +52,7 @@ export function syncParamsToState(params: SearchParams) {
     to: params.to ? params.to : undefined,
     documentation: params.documentation || "",
     keyword: params.keyword || "",
+    keywordSearch: params.keyword != undefined,
     orderBy: params.orderBy || SortMethod.DateDesc,
     organization: fromOrganizationName(params.organizationName),
     status: NOTHING,

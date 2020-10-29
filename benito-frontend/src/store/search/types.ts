@@ -1,10 +1,4 @@
-import {
-  Category,
-  Organization,
-  Project,
-  SearchParams,
-  SortMethod,
-} from "../../types";
+import { Category, Organization, Project, SortMethod } from "../../types";
 
 export const UPDATE_TITLE = "UPDATE_TITLE";
 export const UPDATE_TAG = "UPDATE_TAG";
@@ -19,6 +13,7 @@ export const RESET_SEARCH_PARAMETERS = "RESET_SEARCH_PARAMETERS";
 export const UPDATE_ORGANIZATION = "UPDATE_ORGANIZATION";
 export const UPDATE_SEARCH_PARAMS = "UPDATE_SEARCH_PARAMS";
 export const UPDATE_FETCH_STATUS = "UPDATE_FETCH_STATUS";
+export const UPDATE_KEYWORD_SEARCH = "UPDATE_KEYWORD_SEARCH";
 
 interface UpdateTitleAction {
   type: typeof UPDATE_TITLE;
@@ -84,6 +79,11 @@ interface UpdateFetchStatusAction {
   payload: Fetch;
 }
 
+interface UpdateKeywordSearch {
+  type: typeof UPDATE_KEYWORD_SEARCH;
+  payload: boolean;
+}
+
 export const NOTHING = "NOTHING";
 export const REFRESH = "REFRESH";
 
@@ -115,4 +115,5 @@ export type SearchState = {
   orderBy: SortMethod;
   organization?: Organization;
   status: Fetch;
+  keywordSearch?: boolean;
 };

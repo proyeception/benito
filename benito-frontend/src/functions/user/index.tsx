@@ -1,14 +1,7 @@
 import axios, { AxiosPromise, AxiosRequestConfig } from "axios";
 import { benitoHost } from "../../config";
-import { Person, UpdateUser, Role, Social } from "../../types";
+import { Person, UpdateUser, Role } from "../../types";
 import { signRequest } from "../http";
-import psl, { ParsedDomain, ParseError } from "psl";
-import { Icon } from "@material-ui/core";
-import React from "react";
-import GithubIcon from "@material-ui/icons/GitHub";
-import TwitterIcon from "@material-ui/icons/Twitter";
-import FacebookIcon from "@material-ui/icons/Facebook";
-import LinkedinIcon from "@material-ui/icons/LinkedIn";
 
 export async function fetchUser(collection: string, userId: string) {
   let config: AxiosRequestConfig = {
@@ -41,7 +34,7 @@ export async function updateUser(
     data: user,
   };
 
-  return axios.request(signRequest(config));
+  return axios.request<Person>(signRequest(config));
 }
 
 export function createGhostUser(

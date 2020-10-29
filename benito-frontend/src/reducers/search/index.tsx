@@ -34,10 +34,10 @@ function searchReducer(
         title: action.payload,
       };
     case UPDATE_TAG:
-    return {
-      ...state,
-      tag: action.payload,
-    };
+      return {
+        ...state,
+        tag: action.payload,
+      };
     case UPDATE_CATEGORY:
       return {
         ...state,
@@ -89,6 +89,7 @@ function searchReducer(
           ? moment(action.payload.to, "yyyy-MM-DD").toString()
           : state.to,
         keyword: action.payload.keyword || state.keyword,
+        keywordSearch: action.payload.keywordSearch,
         organization: action.payload.organization || state.organization,
         title: action.payload.title || state.title,
         category: action.payload.category || state.category,

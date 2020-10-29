@@ -129,10 +129,11 @@ const EditProjectPage = (props: EditProjectPageProps) => {
   const [selectedTags, setSelectedTags] = useState<Array<string>>([]);
   const [initialTags, setInitialTags] = useState<Array<string>>([]);
 
-  
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
 
-  const handlePopoverOpen = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  const handlePopoverOpen = (
+    event: React.MouseEvent<HTMLElement, MouseEvent>
+  ) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -142,7 +143,9 @@ const EditProjectPage = (props: EditProjectPageProps) => {
 
   const [anchorEl2, setAnchorEl2] = React.useState<HTMLElement | null>(null);
 
-  const handlePopoverOpen2 = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  const handlePopoverOpen2 = (
+    event: React.MouseEvent<HTMLElement, MouseEvent>
+  ) => {
     setAnchorEl2(event.currentTarget);
   };
 
@@ -152,7 +155,9 @@ const EditProjectPage = (props: EditProjectPageProps) => {
 
   const [anchorEl3, setAnchorEl3] = React.useState<HTMLElement | null>(null);
 
-  const handlePopoverOpen3 = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  const handlePopoverOpen3 = (
+    event: React.MouseEvent<HTMLElement, MouseEvent>
+  ) => {
     setAnchorEl3(event.currentTarget);
   };
 
@@ -162,7 +167,9 @@ const EditProjectPage = (props: EditProjectPageProps) => {
 
   const [anchorEl4, setAnchorEl4] = React.useState<HTMLElement | null>(null);
 
-  const handlePopoverOpen4 = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  const handlePopoverOpen4 = (
+    event: React.MouseEvent<HTMLElement, MouseEvent>
+  ) => {
     setAnchorEl4(event.currentTarget);
   };
 
@@ -172,7 +179,9 @@ const EditProjectPage = (props: EditProjectPageProps) => {
 
   const [anchorEl5, setAnchorEl5] = React.useState<HTMLElement | null>(null);
 
-  const handlePopoverOpen5 = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  const handlePopoverOpen5 = (
+    event: React.MouseEvent<HTMLElement, MouseEvent>
+  ) => {
     setAnchorEl5(event.currentTarget);
   };
 
@@ -185,17 +194,17 @@ const EditProjectPage = (props: EditProjectPageProps) => {
   const open2 = Boolean(anchorEl2);
 
   const open3 = Boolean(anchorEl3);
-  
+
   const open4 = Boolean(anchorEl4);
 
   const open5 = Boolean(anchorEl5);
 
   function generateTags() {
-    let text =  title + " . " + description + " . " + readme
-    if(text.length > 100){
-      generateTagsFromText(text).then(tags => setGeneratedTags(tags.data))
+    let text = title + " . " + description + " . " + readme;
+    if (text.length > 100) {
+      generateTagsFromText(text).then((tags) => setGeneratedTags(tags.data));
     }
-  };
+  }
 
   const project = withProject(props.match.params.id, (p) => {
     setTitle(p.title);
@@ -222,7 +231,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
       });
     setAuthors(authors.concat(p.authors));
     setSupervisors(supervisors.concat(p.supervisors));
-    setInitialTags(p.tags)
+    setInitialTags(p.tags);
   });
 
   const theme = createMuiTheme({
@@ -302,8 +311,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
     );
     selectedTags.forEach((s) =>
       changes.push({
-        undo: () =>
-          setSelectedTags(selectedTags.filter((sta) => sta != s)),
+        undo: () => setSelectedTags(selectedTags.filter((sta) => sta != s)),
         render: () => <p>Agregar tag {s}</p>,
       })
     );
@@ -395,8 +403,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
 
     Promise.all(promises)
       .catch(console.error)
-      .then(() => props.history.push(`/projects/${projectId}`))
-      .then(() => props.history.go(0));
+      .then(() => props.history.push(`/projects/${projectId}`));
   }
 
   return (
@@ -432,7 +439,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                 placeholder="Título"
                 value={title}
                 onBlur={(e) => {
-                  generateTags()
+                  generateTags();
                 }}
                 onChange={(e) => {
                   if (e.currentTarget.value.trim() == "") {
@@ -455,7 +462,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
               rows="3"
               value={description}
               onBlur={(e) => {
-                generateTags()
+                generateTags();
               }}
               onChange={(e) => {
                 if (e.currentTarget.value.trim() == "") {
@@ -468,8 +475,16 @@ const EditProjectPage = (props: EditProjectPageProps) => {
             />
           </GridItem>
           <GridItem>
-          <h4 className={classes.subtitle}>
-              Contenido extra <Icon onMouseEnter={handlePopoverOpen2} onMouseLeave={handlePopoverClose2} style={{color:"#c41234", verticalAlign: "middle"}}>help</Icon></h4>
+            <h4 className={classes.subtitle}>
+              Contenido extra{" "}
+              <Icon
+                onMouseEnter={handlePopoverOpen2}
+                onMouseLeave={handlePopoverClose2}
+                style={{ color: "#c41234", verticalAlign: "middle" }}
+              >
+                help
+              </Icon>
+            </h4>
             <Popover
               id="mouse-over-popover"
               className={classes.popover}
@@ -479,23 +494,40 @@ const EditProjectPage = (props: EditProjectPageProps) => {
               open={open2}
               anchorEl={anchorEl2}
               anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
+                vertical: "bottom",
+                horizontal: "left",
               }}
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
+                vertical: "top",
+                horizontal: "left",
               }}
               onClose={handlePopoverClose2}
               disableRestoreFocus
             >
-              <Typography>Podés agregar más información sobre tu proyecto para la gente que lo visite. Podés formatear el contenido y cargar imágenes.</Typography>
+              <Typography>
+                Podés agregar más información sobre tu proyecto para la gente
+                que lo visite. Podés formatear el contenido y cargar imágenes.
+              </Typography>
             </Popover>
-            <MEDitor value={readme} style={{overflow:"hidden"}} onChange={(e) => setReadme(e)} onBlur={(e) => generateTags()} />
+            <MEDitor
+              value={readme}
+              style={{ overflow: "hidden" }}
+              onChange={(e) => setReadme(e)}
+              onBlur={(e) => generateTags()}
+            />
           </GridItem>
-          <br/> 
+          <br />
           <GridItem>
-            <h4 className={classes.subtitle} >Tags <Icon onMouseEnter={handlePopoverOpen} onMouseLeave={handlePopoverClose} style={{color:"#c41234", verticalAlign: "middle"}}>help</Icon></h4>
+            <h4 className={classes.subtitle}>
+              Tags{" "}
+              <Icon
+                onMouseEnter={handlePopoverOpen}
+                onMouseLeave={handlePopoverClose}
+                style={{ color: "#c41234", verticalAlign: "middle" }}
+              >
+                help
+              </Icon>
+            </h4>
             <Popover
               id="mouse-over-popover"
               className={classes.popover}
@@ -505,17 +537,21 @@ const EditProjectPage = (props: EditProjectPageProps) => {
               open={open}
               anchorEl={anchorEl}
               anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
+                vertical: "bottom",
+                horizontal: "left",
               }}
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
+                vertical: "top",
+                horizontal: "left",
               }}
               onClose={handlePopoverClose}
               disableRestoreFocus
             >
-              <Typography>Te recomendamos algunos tags generados a partir del contenido que cargaste en los campos anteriores. Los tags sirven para que más gente pueda encontrar tu proyecto!</Typography>
+              <Typography>
+                Te recomendamos algunos tags generados a partir del contenido
+                que cargaste en los campos anteriores. Los tags sirven para que
+                más gente pueda encontrar tu proyecto!
+              </Typography>
             </Popover>
             {selectedTags.concat(initialTags).map((s, idx) => (
               <div
@@ -526,9 +562,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                   "cursor-pointer"
                 )}
                 onClick={() =>
-                  setSelectedTags(
-                    selectedTags.filter((sta) => sta != s)
-                  )
+                  setSelectedTags(selectedTags.filter((sta) => sta != s))
                 }
               >
                 <RemoveCircle /> {s}
@@ -553,7 +587,16 @@ const EditProjectPage = (props: EditProjectPageProps) => {
             </GridContainer>
           </GridItem>
           <GridItem>
-          <h4 className={classes.subtitle}>Imagen <Icon onMouseEnter={handlePopoverOpen3} onMouseLeave={handlePopoverClose3} style={{color:"#c41234", verticalAlign: "middle"}}>help</Icon></h4>
+            <h4 className={classes.subtitle}>
+              Imagen{" "}
+              <Icon
+                onMouseEnter={handlePopoverOpen3}
+                onMouseLeave={handlePopoverClose3}
+                style={{ color: "#c41234", verticalAlign: "middle" }}
+              >
+                help
+              </Icon>
+            </h4>
             <Popover
               id="mouse-over-popover"
               className={classes.popover}
@@ -563,17 +606,20 @@ const EditProjectPage = (props: EditProjectPageProps) => {
               open={open3}
               anchorEl={anchorEl3}
               anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
+                vertical: "bottom",
+                horizontal: "left",
               }}
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
+                vertical: "top",
+                horizontal: "left",
               }}
               onClose={handlePopoverClose3}
               disableRestoreFocus
             >
-            <Typography>Esta será la imagen de tu proyecto: en la página principal y en las búsquedas. También se verá en el encabezado!</Typography>
+              <Typography>
+                Esta será la imagen de tu proyecto: en la página principal y en
+                las búsquedas. También se verá en el encabezado!
+              </Typography>
             </Popover>
             <ImageUploader
               withIcon={true}
@@ -633,7 +679,16 @@ const EditProjectPage = (props: EditProjectPageProps) => {
         {role == "SUPERVISOR" ? (
           <GridContainer className={classes.container}>
             <GridItem>
-              <h4 className={classes.subtitle}>Autores <Icon onMouseEnter={handlePopoverOpen4} onMouseLeave={handlePopoverClose4} style={{color:"#c41234", verticalAlign: "middle"}}>help</Icon></h4>
+              <h4 className={classes.subtitle}>
+                Autores{" "}
+                <Icon
+                  onMouseEnter={handlePopoverOpen4}
+                  onMouseLeave={handlePopoverClose4}
+                  style={{ color: "#c41234", verticalAlign: "middle" }}
+                >
+                  help
+                </Icon>
+              </h4>
               <Popover
                 id="mouse-over-popover"
                 className={classes.popover}
@@ -643,20 +698,26 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                 open={open4}
                 anchorEl={anchorEl4}
                 anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'left',
+                  vertical: "bottom",
+                  horizontal: "left",
                 }}
                 transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left',
+                  vertical: "top",
+                  horizontal: "left",
                 }}
                 onClose={handlePopoverClose4}
                 disableRestoreFocus
               >
-              <Typography>Acá podés agregar autores al proyecto. Se ofrecen aquellos que tengan un usuario registrado y que pertenezcan a la organización.<br></br>
-                También se pueden agregar colaboradores sin usuarios asignados, ingresando su nombre y mail con la opción: "Crear nuevo autor"</Typography>
+                <Typography>
+                  Acá podés agregar autores al proyecto. Se ofrecen aquellos que
+                  tengan un usuario registrado y que pertenezcan a la
+                  organización.<br></br>
+                  También se pueden agregar colaboradores sin usuarios
+                  asignados, ingresando su nombre y mail con la opción: "Crear
+                  nuevo autor"
+                </Typography>
               </Popover>
-            {project.value.authors
+              {project.value.authors
                 .concat(justCreatedAuthors)
                 .concat(authorsToAdd)
                 .filter((a) => !authorsToRemove.some((atr) => atr == a))
@@ -712,7 +773,16 @@ const EditProjectPage = (props: EditProjectPageProps) => {
               </GridContainer>
             </GridItem>
             <GridItem>
-              <h4 className={classes.subtitle}>Supervisores <Icon onMouseEnter={handlePopoverOpen5} onMouseLeave={handlePopoverClose5} style={{color:"#c41234", verticalAlign: "middle"}}>help</Icon></h4>
+              <h4 className={classes.subtitle}>
+                Supervisores{" "}
+                <Icon
+                  onMouseEnter={handlePopoverOpen5}
+                  onMouseLeave={handlePopoverClose5}
+                  style={{ color: "#c41234", verticalAlign: "middle" }}
+                >
+                  help
+                </Icon>
+              </h4>
               <Popover
                 id="mouse-over-popover"
                 className={classes.popover}
@@ -722,18 +792,24 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                 open={open5}
                 anchorEl={anchorEl5}
                 anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'left',
+                  vertical: "bottom",
+                  horizontal: "left",
                 }}
                 transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left',
+                  vertical: "top",
+                  horizontal: "left",
                 }}
                 onClose={handlePopoverClose5}
                 disableRestoreFocus
               >
-              <Typography>Acá podés agregar supervisores al proyecto. Se ofrecen aquellos que tengan un usuario registrado y que pertenezcan a la organización.<br></br>
-                También se pueden agregar colaboradores sin usuarios asignados, ingresando su nombre y mail con la opción: "Crear nuevo supervisor"</Typography>
+                <Typography>
+                  Acá podés agregar supervisores al proyecto. Se ofrecen
+                  aquellos que tengan un usuario registrado y que pertenezcan a
+                  la organización.<br></br>
+                  También se pueden agregar colaboradores sin usuarios
+                  asignados, ingresando su nombre y mail con la opción: "Crear
+                  nuevo supervisor"
+                </Typography>
               </Popover>
               {project.value.supervisors
                 .concat(justCreatedSupervisors)
