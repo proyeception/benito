@@ -66,11 +66,10 @@ const DocumentsSection = ({ project }: DocumentsSectionProps) => {
               severity="info"
               icon={false}
               style={{
-                marginTop: "30px",
                 backgroundColor: "#ececec",
               }}
             >
-              <AlertTitle><Link to={`/login`} className="normalize-link" style={{ color: "#c41234" }}>Inicia sesión</Link> para descargar la documentación del proyecto!</AlertTitle>
+              <AlertTitle style={{ color: "#3c4858" }}><Link to={`/login`} style={{ color: "#c41234", textDecoration: "underline" }}>Inicia sesión</Link> para descargar la documentación del proyecto!</AlertTitle>
             </Alert>
           )}
         </GridItem>
