@@ -70,7 +70,7 @@ const DocumentsSection = ({ project }: DocumentsSectionProps) => {
                 backgroundColor: "#ececec",
               }}
             >
-              <AlertTitle>Inicia sesión para descargar la documentación del proyecto!</AlertTitle>
+              <AlertTitle><Link to={`/login`} className="normalize-link" style={{ color: "#c41234" }}>Inicia sesión</Link> para descargar la documentación del proyecto!</AlertTitle>
             </Alert>
           )}
         </GridItem>
