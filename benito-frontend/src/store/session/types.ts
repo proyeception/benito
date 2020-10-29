@@ -2,6 +2,7 @@ import { Role } from "../../types";
 
 export const INVALIDATE_SESSION = "INVALIDATE_SESSION";
 export const UPDATE_SESSION_STATE = "UPDATE_SESSION_STATE";
+export const UPDATE_SESSION_FULL_NAME = "UPDATE_SESSION_FULL_NAME";
 
 interface InvalidateSessionAction {
   type: typeof INVALIDATE_SESSION;
@@ -12,7 +13,15 @@ interface UpdateSessionStateAction {
   payload: SessionState;
 }
 
-export type SessionAction = InvalidateSessionAction | UpdateSessionStateAction;
+interface UpdateSessionFullName {
+  type: typeof UPDATE_SESSION_FULL_NAME;
+  payload: string;
+}
+
+export type SessionAction =
+  | InvalidateSessionAction
+  | UpdateSessionStateAction
+  | UpdateSessionFullName;
 
 export interface LoggedInState {
   token: string;

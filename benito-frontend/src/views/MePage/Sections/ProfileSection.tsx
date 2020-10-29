@@ -20,6 +20,8 @@ import { RouteComponentProps, withRouter } from "react-router-dom";
 import { grey } from "@material-ui/core/colors";
 import Switch from "@material-ui/core/Switch";
 import Spinner from "../../../components/Spinner/Spinner";
+import store from "../../../store";
+import { updateSessionFullName } from "../../../actions/session";
 
 const useStyles = makeStyles(styles);
 
@@ -124,8 +126,8 @@ const ProfileSection = (props: ProfileSectionProps) => {
             <RedSwitch
               checked={twitterEnabled}
               onChange={() => {
-                if(!lastTwitter){
-                  setLastTwitter("https://www.twitter.com/")
+                if (!lastTwitter) {
+                  setLastTwitter("https://www.twitter.com/");
                 }
                 if (twitterEnabled) {
                   setLastTwitter(twitter);
@@ -147,10 +149,10 @@ const ProfileSection = (props: ProfileSectionProps) => {
           disabled={!twitterEnabled}
           value={twitter || lastTwitter}
           onChange={(e) => {
-            if(e.currentTarget.value.startsWith("https://www.twitter.com/")){
-              setTwitter(e.currentTarget.value)
-              }
-            }}
+            if (e.currentTarget.value.startsWith("https://www.twitter.com/")) {
+              setTwitter(e.currentTarget.value);
+            }
+          }}
           id="twitterField"
         />
       </GridItem>
@@ -167,8 +169,8 @@ const ProfileSection = (props: ProfileSectionProps) => {
               checked={linkedinEnabled}
               color="primary"
               onChange={() => {
-                if(!lastLinkedin){
-                  setLastLinkedin("https://www.linkedin.com/")
+                if (!lastLinkedin) {
+                  setLastLinkedin("https://www.linkedin.com/");
                 }
                 if (linkedinEnabled) {
                   setLastLinkedin(linkedin);
@@ -190,10 +192,10 @@ const ProfileSection = (props: ProfileSectionProps) => {
           disabled={!linkedinEnabled}
           value={linkedin || lastLinkedin}
           onChange={(e) => {
-            if(e.currentTarget.value.startsWith("https://www.linkedin.com/")){
-              setLinkedin(e.currentTarget.value)
+            if (e.currentTarget.value.startsWith("https://www.linkedin.com/")) {
+              setLinkedin(e.currentTarget.value);
             }
-            }}
+          }}
         />
       </GridItem>
       <GridItem
@@ -208,8 +210,8 @@ const ProfileSection = (props: ProfileSectionProps) => {
             <RedSwitch
               checked={facebookEnabled}
               onChange={() => {
-                if(!lastFacebook){
-                  setLastFacebook("https://www.facebook.com/")
+                if (!lastFacebook) {
+                  setLastFacebook("https://www.facebook.com/");
                 }
                 if (facebookEnabled) {
                   setLastFacebook(facebook);
@@ -231,10 +233,10 @@ const ProfileSection = (props: ProfileSectionProps) => {
           disabled={!facebookEnabled}
           value={facebook || lastFacebook}
           onChange={(e) => {
-            if(e.currentTarget.value.startsWith("https://www.facebook.com/")){
-              setFacebook(e.currentTarget.value)
+            if (e.currentTarget.value.startsWith("https://www.facebook.com/")) {
+              setFacebook(e.currentTarget.value);
             }
-            }}
+          }}
         />
       </GridItem>
       <GridItem
@@ -259,10 +261,9 @@ const ProfileSection = (props: ProfileSectionProps) => {
               phone: phone,
               mail: mail,
             })
-              .catch(console.error)
-              .then(() => {
-                props.history.go(0);
-              });
+              .then((res) => res.data)
+              .then((p) => store.dispatch(updateSessionFullName(p.fullName)))
+              .catch(console.error);
           }}
         >
           Guardar cambios

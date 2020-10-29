@@ -3,6 +3,7 @@ import {
   SessionAction,
   INVALIDATE_SESSION,
   UPDATE_SESSION_STATE,
+  UPDATE_SESSION_FULL_NAME,
 } from "../../store/session/types";
 
 const defaultSessionState: SessionState = {
@@ -19,6 +20,16 @@ function sessionReducer(
     }
     case INVALIDATE_SESSION: {
       return defaultSessionState;
+    }
+    case UPDATE_SESSION_FULL_NAME: {
+      if (state.isLoggedIn) {
+        return {
+          ...state,
+          fullName: action.payload,
+        };
+      } else {
+        return state;
+      }
     }
     default:
       return state;

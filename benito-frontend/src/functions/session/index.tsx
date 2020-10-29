@@ -4,13 +4,12 @@ import Cookies from "js-cookie";
 import axios, { AxiosRequestConfig } from "axios";
 import { benitoHost } from "../../config";
 import { LoginData, Session } from "../../types";
-import { History } from "history";
 import { fetchUser, mapRoleToCollection } from "../user";
 
 const X_QUI_TOKEN = "x-qui-token";
 export const X_CUSTOMIZATION_TOKEN = "x-customization-token";
 
-export async function openLocalStoredSession(cb: () => void) {
+export async function openLocalStoredSession(cb?: () => void) {
   const quiTokenCookie = Cookies.get(X_QUI_TOKEN);
 
   if (quiTokenCookie) {
@@ -49,12 +48,13 @@ export async function openLocalStoredSession(cb: () => void) {
     }
   }
 
-  cb();
+  if (cb) {
+    cb();
+  }
 }
 
 export function startLogin(
   login: LoginData,
-  history: History,
   loginPath: "author" | "supervisor",
   onError: () => void
 ) {
@@ -66,7 +66,7 @@ export function startLogin(
   };
   axios
     .request(config)
-    .then(() => history.go(0))
+    .then(() => openLocalStoredSession())
     .catch(onError);
 }
 
