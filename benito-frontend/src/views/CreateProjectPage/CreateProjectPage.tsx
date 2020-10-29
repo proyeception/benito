@@ -62,11 +62,13 @@ import classNames from "classnames";
 import CreateGhostUser from "../../components/CreateGhostUser/CreateGhostUser";
 import { SSL_OP_EPHEMERAL_RSA } from "constants";
 import SelectInput from "@material-ui/core/Select/SelectInput";
+import NavPills from "../../components/NavPills/NavPills";
 
 const useStyles = makeStyles(styles);
 
 type MatchParams = {
   id: string;
+  tab: string;
 };
 
 interface Change {
@@ -189,6 +191,25 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
 
   const open5 = Boolean(anchorEl5);
 
+  const tabs = [
+    {
+      tabButton: "Imagen",
+      tabContent: (
+        <div>imagen aqui!</div>
+      ),
+      key: "profile",
+    },
+    {
+      tabButton: "Organizaciones",
+      tabContent: (
+        <div>pdf aqui!</div>
+      ),
+      key: "organizations",
+    },
+  ];
+
+  const activeTab = tabs.findIndex((t) => t.key === props.match.params.tab) || 0;
+  
   if (!props.session.isLoggedIn) {
     return <Redirect to="/login" />;
   }
@@ -598,6 +619,17 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
               singleImage={true}
               withPreview={true}
             />
+          </GridItem>
+          <GridItem xs={12} sm={12} md={12}>
+              <NavPills
+                onChange={(_: any, s: any) => {
+                  
+                }}
+                active={activeTab}
+                color="primary"
+                alignCenter={true}
+                tabs={tabs}
+              />
           </GridItem>
           <GridItem>
             <h4 className={classes.subtitle}>Documentos</h4>
