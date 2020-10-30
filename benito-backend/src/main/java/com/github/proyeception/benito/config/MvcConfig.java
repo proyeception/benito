@@ -10,7 +10,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import java.util.List;
 
 @Configuration
-@PropertySource("classpath:application.properties")
+@PropertySource({
+    "classpath:application.properties",
+    "classpath:sensitive.properties"
+})
 public class MvcConfig implements WebMvcConfigurer {
     private List<String> allowedOrigins;
 
