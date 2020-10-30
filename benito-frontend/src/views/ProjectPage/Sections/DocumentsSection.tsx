@@ -4,9 +4,8 @@ import { Project } from "../../../types";
 import { makeStyles } from "@material-ui/core/styles";
 import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
+import DownloadDocument from "./DownloadDocument";
 import styles from "../../../assets/jss/material-kit-react/views/landingPageSections/documentsStyle";
-import { benitoHost } from "../../../config";
-import GetAppIcon from "@material-ui/icons/GetApp";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import { Alert, AlertTitle } from "@material-ui/lab";
@@ -19,8 +18,6 @@ type DocumentsSectionProps = {
 
 const DocumentsSection = ({ project }: DocumentsSectionProps) => {
   const classes = useStyles();
-
-  console.error("tags " + project.tags);
 
   return (
     <div className={classes.section}>
@@ -62,27 +59,17 @@ const DocumentsSection = ({ project }: DocumentsSectionProps) => {
         <GridItem xs={12} md={6} className={classes.documentsContainer}>
           {project.documentation != undefined ? (
             project.documentation?.map((d, idx) => (
-              <a
-                key={idx}
-                href={`${benitoHost}/benito/documents/${d.driveId}`}
-                className={classes.document}
-              >
-                <div>
-                  <GetAppIcon />
-                </div>
-                <div>{d.fileName}</div>
-              </a>
+              <DownloadDocument document={d} idx={idx}></DownloadDocument>
             ))
           ) : (
             <Alert
               severity="info"
               icon={false}
               style={{
-                marginTop: "30px",
                 backgroundColor: "#ececec",
               }}
             >
-              <AlertTitle>Inicia sesión para ver este contenido!</AlertTitle>
+              <AlertTitle style={{ color: "#3c4858" }}><Link to={`/login`} style={{ color: "#c41234", textDecoration: "underline" }}>Inicia sesión</Link> para descargar la documentación del proyecto!</AlertTitle>
             </Alert>
           )}
         </GridItem>

@@ -161,19 +161,18 @@ const SearchResultsSection = (props: SearchResultsSectionProps) => {
                 severity="info"
                 icon={false}
                 style={{
-                  marginTop: "30px",
+                  marginBottom: "30px",
+                  marginTop: "10px",
                   backgroundColor: "#ececec",
                 }}
               >
-                <AlertTitle>
-                  {p.keywordMatchingDocs.length > 0
-                    ? "Los siguientes documentos son relevantes para tu búsqueda:"
-                    : "Inicia sesión para ver este contenido!"}
+                <AlertTitle style={{ color: "#3c4858" }}>
+                  Los siguientes documentos son relevantes para tu búsqueda:
                 </AlertTitle>
                 {p.keywordMatchingDocs.length > 0 && (
                   <ul>
                     {p.keywordMatchingDocs.map((d, idx) => (
-                      <li key={idx}>{d.fileName}</li>
+                      <li style={{ color: "#3c4858" }} key={idx}>{d.fileName}</li>
                     ))}
                   </ul>
                 )}

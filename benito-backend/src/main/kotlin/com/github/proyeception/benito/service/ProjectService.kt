@@ -8,7 +8,6 @@ import com.github.proyeception.benito.exception.FailedDependencyException
 import com.github.proyeception.benito.exception.NotFoundException
 import com.github.proyeception.benito.extension.asyncIO
 import com.github.proyeception.benito.extension.launchIOAsync
-import com.github.proyeception.benito.job.FileWatcher
 import com.github.proyeception.benito.oauth.GoogleDriveClient
 import com.github.proyeception.benito.parser.DocumentParser
 import com.github.proyeception.benito.storage.DriveStorage
@@ -19,6 +18,7 @@ import org.apache.http.entity.ContentType
 import org.slf4j.LoggerFactory
 import org.springframework.web.multipart.MultipartFile
 import java.io.File
+import java.nio.charset.StandardCharsets
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -45,7 +45,7 @@ open class ProjectService(
                         asyncIO {
                             googleDriveClient.deletePermission(
                                 fileId = it.driveFolderId,
-                                permissionId =  p.permissionId
+                                permissionId = p.permissionId
                             )
                         }
                     }.awaitAll()
@@ -112,7 +112,7 @@ open class ProjectService(
                 tag = tag,
                 visitedOn = LocalDate.now(),
                 categoryId = null
-                )
+            )
             )
             val projects = medusaGraphClient.findProjects(
                 orderBy = orderBy,
@@ -191,6 +191,17 @@ open class ProjectService(
         }
     }
 
+    open fun addTagsToProjectKeywords(project: ProjectDTO, tags: SetTagsDTO) {
+        try {
+            val keywordsDeTags = tags.tags.map { KeywordDTO(null, it, 10.0) }
+            val updatedKeywords = medusaClient.updateProjectKeywords(keywordsDeTags, project)
+            LOGGER.info("Creating Recommendations for project: ${project.id}")
+            recommendationService.recalculateRecommendations(project.id, project.recommendations, updatedKeywords)
+        } catch (e: Exception) {
+            LOGGER.error("There was an error updating keywords for project ${project.id}")
+        }
+    }
+
     fun saveDriveDocuments(projectId: String, files: List<Pair<File, String>>) = mappingFromMedusa {
         val docs = runBlocking {
             val (_, driveFolderId) = driveStorage.findOne(projectId)
@@ -218,14 +229,15 @@ open class ProjectService(
                 ?: throw NotFoundException("No drive for project $projectId")
             files.map { f ->
                 asyncIO {
+                    val originalFilename: String? = String(f.originalFilename.toByteArray(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8)
                     val driveId = documentService.saveFile(folderId = driveFolderId, file = f)
                     val fileStream = f.inputStream
-                    val content = documentParser.parse(fileStream, f.originalFilename ?: f.name) ?: ""
+                    val content = documentParser.parse(fileStream, originalFilename ?: f.name) ?: ""
 
                     CreateDocumentDTO(
                         driveId = driveId,
                         content = content,
-                        fileName = f.originalFilename ?: f.name
+                        fileName = originalFilename ?: f.name
                     )
                 }
             }.awaitAll()
@@ -355,11 +367,12 @@ open class ProjectService(
     }
 
     fun setTags(projectId: String, tags: SetTagsDTO): ProjectDTO = mappingFromMedusa {
-        medusaClient.modifyProjectTags(
-            projectId = projectId,
-            tags = MedusaSetTagsDTO(tags.tags.map { TagDTO(it, it) })
-        )
-    }
+            medusaClient.modifyProjectTags(
+                projectId = projectId,
+                tags = MedusaSetTagsDTO(tags.tags.map { TagDTO(it, it) })
+            )
+        }
+        .also { launchIOAsync { addTagsToProjectKeywords(it, tags) } }
 
 
     companion object {
