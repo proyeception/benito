@@ -1,9 +1,17 @@
 #!/bin/bash
 
+if [ $# -eq 0 ]
+then
+  echo "Usage: ./build <env>"
+  exit -1
+fi
+
+ENV=$1
+
 set -e
 
 echo "Starting server..."
-nohup java -Dconfig.file=benito/benito-backend/environments/prod/application.conf -Dlogback.configurationFile=benito/benito-backend/environments/prod/logback.xml -jar benito/benito-backend/target/benito.jar > startup.log &
+nohup java -Dconfig.file=benito/benito-backend/environments/$ENV/application.conf -Dlogback.configurationFile=benito/benito-backend/environments/$ENV/logback.xml -jar benito/benito-backend/target/benito.jar > startup.log &
 PID=$(ps faux | grep "benito.jar" | grep -v \"grep\" | awk '{print $2}' | head -1)
 echo $PID > process
 echo "Waiting for app to be ready to health-check..."

@@ -44,5 +44,5 @@ jobs:
           host: proyectate.tk
           username: root
           password: ${{secrets.REMOTE_PASSWORD}}
-          script: benito/startup
+          script: benito/startup prod
 
