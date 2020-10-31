@@ -102,7 +102,7 @@ const ProjectPage = (props: Props) => {
         fixed
         {...rest}
       />
-      <Parallax filter image={project.value.pictureUrl || image}>
+      <Parallax filter image={project.value.organization.header || image} style={{backgroundPosition: "70% 50%"}}>
         <div className={classes.container}>
           <GridContainer>
             <GridItem xs={12} sm={12} md={6}>
