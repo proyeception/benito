@@ -3,7 +3,7 @@ import { hot } from "react-hot-loader";
 import { RouteChildrenProps, withRouter } from "react-router-dom";
 import { ERROR, PENDING } from "../../../hooks/withFetch";
 import withProjects from "../../../hooks/withProjects";
-import { SearchParams } from "../../../types";
+import { Project, SearchParams } from "../../../types";
 import styles from "../../../assets/jss/material-kit-react/views/landingPageSections/recommendationStyles";
 import { Hidden, makeStyles } from "@material-ui/core";
 import GridContainer from "../../../components/Grid/GridContainer";
@@ -21,28 +21,17 @@ import withRecommendations from "../../../hooks/withRecommendations";
 import Spinner from "../../../components/Spinner/Spinner";
 import pictureNotFound from "../../../assets/img/proyectate/picture.svg";
 
-type Any = any;
-
-type MatchParams = {
-  id: string;
-};
-
-interface Props extends RouteComponentProps<MatchParams>, Any {}
-
 const useStyles = makeStyles(styles);
 
-const SearchResultsSection = (props: Props) => {
-  let queryParams: SearchParams = qs.parse(props.location.search, {
-    ignoreQueryPrefix: true,
-  });
+type RecommendationSectionProps = {
+  project: Project;
+};
 
-  syncParamsToState(queryParams);
+const SearchResultsSection = ({ project }: RecommendationSectionProps) => {
 
-  const recommendations = withRecommendations(props.match.params.id);
+  console.error(project.organization.color)
 
-  if (props.status == REFRESH) {
-    store.dispatch(updateFetchStatus(NOTHING));
-  }
+  const recommendations = withRecommendations(project.id);
 
   const classes = useStyles();
 
@@ -61,7 +50,7 @@ const SearchResultsSection = (props: Props) => {
   }
 
   if (recommendations.type == PENDING) {
-    return <Spinner />;
+    return <Spinner color={project.organization.color}/>;
   }
 
   if (recommendations.value.length == 0) {
@@ -93,7 +82,7 @@ const SearchResultsSection = (props: Props) => {
                     className={classes.picture}
                   />
                 </div>
-                <div className={classes.title + " underline-hover"}>
+                <div className={classes.title + " underline-hover"} style={{color: project.organization.color}}>
                   {p.title}
                 </div>
               </ProjectLink>
@@ -105,12 +94,4 @@ const SearchResultsSection = (props: Props) => {
   );
 };
 
-const mapStateToProps = (rootState: RootState) => {
-  return {
-    status: rootState.search.status,
-  };
-};
-
-export default hot(module)(
-  withRouter(connect(mapStateToProps)(SearchResultsSection))
-);
+export default hot(module)(SearchResultsSection);

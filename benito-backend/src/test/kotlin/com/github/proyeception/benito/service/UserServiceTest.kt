@@ -53,6 +53,11 @@ class UserServiceTest : Spec() {
                                     id = "icon",
                                     url = "https://icon.com"
                                 ),
+                                header =  MedusaFileDTO(
+                                        url = "",
+                                        id = "123"
+                                ),
+                                color = "",
                                 authors = emptyList(),
                                 supervisors = emptyList()
                             )

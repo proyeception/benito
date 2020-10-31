@@ -80,6 +80,11 @@ open class MedusaGraphClient(
                     id
                     url
                   }
+                  header {
+                    id
+                    url
+                  }
+                  color
                 }
                 tags {
                   tag_name
