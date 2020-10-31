@@ -4,11 +4,8 @@ import com.github.proyeception.benito.dto.*
 import org.joda.time.LocalDate
 import org.springframework.data.domain.Sort
 import org.springframework.data.mongodb.core.MongoTemplate
-import org.springframework.data.mongodb.core.aggregation.Aggregation
+import org.springframework.data.mongodb.core.aggregation.*
 import org.springframework.data.mongodb.core.aggregation.Aggregation.*
-import org.springframework.data.mongodb.core.aggregation.GroupOperation
-import org.springframework.data.mongodb.core.aggregation.MatchOperation
-import org.springframework.data.mongodb.core.aggregation.SortOperation
 import org.springframework.data.mongodb.core.query.Criteria
 
 
@@ -65,9 +62,11 @@ class StatsStorage(
             .andExpression("projectId").`as`("projectId")
             .andExpression("viewsCount").`as`("viewsCount")
 
+        val limit: LimitOperation = limit(10)
+
         val aggregation: Aggregation = newAggregation(
             *filters.toTypedArray(),
-            viewsCount, sortByViewsCount, projectToMatchModel)
+            viewsCount, sortByViewsCount, projectToMatchModel, limit)
 
         return mongoTemplate.aggregate(aggregation, "project_visit", ProjectViewsDTO::class.java).mappedResults
     }
