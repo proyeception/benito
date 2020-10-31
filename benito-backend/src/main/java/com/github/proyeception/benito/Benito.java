@@ -16,7 +16,7 @@ public class Benito {
         Config config = ConfigFactory.load();
         app.setDefaultProperties(
             Collections.singletonMap(
-                SERVER_PORT, config.hasPath(SERVER_PORT) ? config.getString(SERVER_PORT) : 8080
+                SERVER_PORT, config.hasPath(SERVER_PORT) ? config.getString(SERVER_PORT) : "9290"
             )
         );
         app.run(args);
