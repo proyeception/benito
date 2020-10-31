@@ -50,7 +50,7 @@ const SearchResultsSection = ({ project }: RecommendationSectionProps) => {
   }
 
   if (recommendations.type == PENDING) {
-    return <Spinner />;
+    return <Spinner color={project.organization.color}/>;
   }
 
   if (recommendations.value.length == 0) {
