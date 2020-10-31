@@ -9,15 +9,16 @@ import java.util.Collections;
 
 @SpringBootApplication
 public class Benito {
+    private static final String SERVER_PORT = "server.port";
+
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(Benito.class);
         Config config = ConfigFactory.load();
         app.setDefaultProperties(
             Collections.singletonMap(
-                "server.port", config.hasPath("server.port") ? config.getString("server.port") : 8080
+                SERVER_PORT, config.hasPath(SERVER_PORT) ? config.getString(SERVER_PORT) : 8080
             )
         );
-
-        SpringApplication.run(Benito.class);
+        app.run(args);
     }
 }

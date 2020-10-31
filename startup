@@ -2,7 +2,7 @@
 
 if [ $# -eq 0 ]
 then
-  echo "Usage: ./build <env>"
+  echo "Usage: ./startup <env>"
   exit -1
 fi
 
