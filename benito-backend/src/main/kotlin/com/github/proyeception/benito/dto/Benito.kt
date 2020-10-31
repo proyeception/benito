@@ -78,11 +78,15 @@ data class PersonDTO(
 
 data class OrganizationRefDTO(
     val id: String,
-    val displayName: String
+    val displayName: String,
+    val header: String?,
+    val color: String?
 ) {
     constructor(medusa: MedusaOrganizationDTO) : this(
         id = medusa.id,
-        displayName = medusa.displayName
+        displayName = medusa.displayName,
+        header = medusa.header.url,
+        color = medusa.color
     )
 }
 
