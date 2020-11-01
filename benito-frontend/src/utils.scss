@@ -136,7 +136,7 @@
 .image-preview-enter-active {
   opacity: 1;
   transform: translateX(0);
-  transition: opacity 3000ms, transform 300ms;
+  transition: opacity 300ms, transform 3000ms;
 }
 .image-preview-exit {
   opacity: 1;

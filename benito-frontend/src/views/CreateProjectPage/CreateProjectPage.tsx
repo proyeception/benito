@@ -68,6 +68,7 @@ import FilePreview from "react-preview-file/dist/filePreview";
 import ImageUploading, { ImageListType } from "react-images-uploading";
 import { Document, Page } from 'react-pdf';
 import { CSSTransition } from 'react-transition-group';
+import spinner from '../../assets/img/proyectate/spinner.gif';
 
 
 
@@ -641,15 +642,15 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                   id="contained-button-image"
                   type="file"
                   onChange={(e) => {
-                    setPicture(e.target.files![0])
                     setPdfPicture(undefined)
                     setPictureUrl(undefined)
+                    setPicture(e.target.files![0])
                     setShowPicture(true)
                   }}
                 />
                 <label htmlFor="contained-button-image">
                   <Button variant="contained" color="primary" component="span">
-                    Upload Image
+                    Subir jpg, jpeg or png
                   </Button>
                 </label>
                 
@@ -659,15 +660,17 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                   id="contained-button-pdf"
                   type="file"
                   onChange={(e) => {
+                    setPictureUrl(undefined)
+                    setPosterIsLoading(true)
+                    setPicture(undefined)
                     setPdfPicture(e.target.files![0])
                     getPdfAsPicture(e.target.files![0])
-                    setPicture(undefined)
-                    setPosterIsLoading(true)
+                    setShowPicture(true)
                   }}
                 />
                 <label htmlFor="contained-button-pdf">
                   <Button variant="contained" color="primary" component="span">
-                    Upload PDF
+                    Subir PDF
                   </Button>
                 </label>
               </div>
@@ -686,11 +689,20 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                     </FilePreview>
                 </GridItem>
               ):(<div></div>)}
+            </CSSTransition>
 
-              {(posterIsLoading)? (
-                <Spinner/>
+              {(posterIsLoading && pdfPicture != undefined)? (
+                <GridItem xs={12} style={{ display: "flex", justifyContent: "center"}} >
+                  <img src={spinner} className="spinner" />
+                </GridItem>
               ):(<div style={{display:"none"}}></div>)}
 
+            <CSSTransition
+              in={showPicture}
+              timeout={300}
+              classNames="image-preview"
+              unmountOnExit
+            >
               {(pictureUrl != undefined)? (
                 <GridItem xs={12} style={{ display: "flex", alignItems: "center"}} >
                 <div className="image-preview">
@@ -698,7 +710,6 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                 </div>
                 </GridItem>
               ):(<div style={{display:"none"}}></div>)}
-
             </CSSTransition>
 
           <GridItem>
