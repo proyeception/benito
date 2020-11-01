@@ -84,13 +84,14 @@ const HeaderLinks = (props: Props) => {
 
     return (
       <List className={classes.list}>
-        <ListItem className={classes.listItem}>
+        <ListItem className={classes.listItem} style={{color: "white !important"}}>
           <CustomDropdown
             buttonProps={{
               color: "transparent",
             }}
             buttonText={session.fullName}
             dropdownList={drop}
+            style={{color: "white !important"}}
           />
         </ListItem>
       </List>
@@ -98,7 +99,7 @@ const HeaderLinks = (props: Props) => {
   };
 
   return (
-    <List className={classes.list}>
+    <List className={classes.list} style={{color: "white !important"}}>
       <ListItem className={classes.listItem}>
         <Link to="/search">
           <Button color="transparent" className={classes.navLink}>
