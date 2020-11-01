@@ -73,10 +73,10 @@ export default function CustomDropdown(props: any) {
   let icon = null;
   switch (typeof buttonIcon) {
     case "object":
-      icon = <props.buttonIcon className={classes.buttonIcon} />;
+      icon = <props.buttonIcon/>;
       break;
     case "string":
-      icon = <Icon className={classes.buttonIcon}>{props.buttonIcon}</Icon>;
+      icon = <Icon>{props.buttonIcon}</Icon>;
       break;
     default:
       icon = null;
@@ -93,8 +93,8 @@ export default function CustomDropdown(props: any) {
           onClick={handleClick}
         >
           {icon}
-          {buttonText !== undefined ? buttonText : null}
-          {caret ? <b className={caretClasses} /> : null}
+          {buttonText !== undefined ? <span style={{ color: "white" }}>{buttonText}</span> : null}
+          {caret ? <b className={caretClasses} style={{ color: "white" }}/> : null}
         </Button>
       </div>
       <Popper

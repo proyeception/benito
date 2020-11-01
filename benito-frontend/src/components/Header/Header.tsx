@@ -39,7 +39,7 @@ const Header = (props: HeaderProps) => {
   const brand = (
     <span className={classes.logoContainer}>
       <img src={logo} className={classes.brandLogo} />
-      <span style={{ fontWeight: "normal" }}>Proyectate</span>
+      <span style={{ fontWeight: "normal", color: "white" }}>Proyectate</span>
     </span>
   );
 
@@ -68,8 +68,8 @@ const Header = (props: HeaderProps) => {
                 brandComponent
               )}
           </div>
-            <Hidden smDown implementation="css">
-              {rightLinks}
+            <Hidden smDown implementation="css" >
+            <span style={{color: "white"}}>{rightLinks}</span>
             </Hidden>
             <Hidden mdUp>
               <IconButton
@@ -86,6 +86,7 @@ const Header = (props: HeaderProps) => {
           variant="temporary"
           anchor={"right"}
           open={mobileOpen}
+          style={{color: "white"}}
           classes={{
             paper: classes.drawerPaper,
           }}
