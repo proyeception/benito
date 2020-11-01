@@ -47,7 +47,7 @@ const DocumentsSection = ({ project }: DocumentsSectionProps) => {
                   <Link
                     to={`/search?tag=${tag}`}
                     className="normalize-link"
-                    style={{ color: "#c41234" }}
+                    style={{ color: project.organization.color }}
                   >
                     {"#" + tag + " "}
                   </Link>
@@ -69,7 +69,7 @@ const DocumentsSection = ({ project }: DocumentsSectionProps) => {
                 backgroundColor: "#ececec",
               }}
             >
-              <AlertTitle style={{ color: "#3c4858" }}><Link to={`/login`} style={{ color: "#c41234", textDecoration: "underline" }}>Inicia sesión</Link> para descargar la documentación del proyecto!</AlertTitle>
+              <AlertTitle style={{ color: "#3c4858" }}><Link to={`/login`} style={{ color: project.organization.color, textDecoration: "underline" }}>Inicia sesión</Link> para descargar la documentación del proyecto!</AlertTitle>
             </Alert>
           )}
         </GridItem>

@@ -51,6 +51,8 @@ export type Organization = {
   iconUrl: string;
   authors: Array<Person>;
   supervisors: Array<Person>;
+  header: string;
+  color: string;
 };
 
 export type Social = {
