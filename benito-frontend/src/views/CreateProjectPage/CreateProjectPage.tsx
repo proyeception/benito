@@ -106,6 +106,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
   );
   const [dateIncompleted, setDateIncompleted] = React.useState(true);
   const [categoryIncompleted, setCategoryIncompleted] = React.useState(true);
+  const [isLoading, setIsLoading] = React.useState(false);
   const [supervisorsIncompleted, setSupervisorsIncompleted] = React.useState(
     true
   );
@@ -212,7 +213,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
       });
   });
 
-  if (user.type == PENDING) {
+  if (user.type == PENDING || isLoading) {
     return <Spinner />;
   }
 
@@ -907,6 +908,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
           <Button
             onClick={() => {
               setLoading(true);
+              setIsLoading(true)
               setIsModalOpen(false);
               updateProject(project);
             }}
