@@ -56,10 +56,10 @@ const DocumentsSection = ({ project }: DocumentsSectionProps) => {
             </GridItem>
           </GridContainer>
         </GridItem>
-        <GridItem xs={12} md={6} className={classes.documentsContainer}>
+        <GridItem xs={12} md={6} className={classes.documentsContainer} >
           {project.documentation != undefined ? (
             project.documentation?.map((d, idx) => (
-              <DownloadDocument document={d} idx={idx}></DownloadDocument>
+              <DownloadDocument document={d} idx={idx} color={project.organization.color}></DownloadDocument>
             ))
           ) : (
             <Alert
