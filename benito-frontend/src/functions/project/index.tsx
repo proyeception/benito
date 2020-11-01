@@ -156,6 +156,19 @@ export function generateTagsFromText(text: string) {
   return axios.request(signRequest(config));
 }
 
+export function generatePdfUrl(file: File) {
+  const pictureForm = new FormData();
+  pictureForm.set("file", file);
+
+  let pictureConfig: AxiosRequestConfig = {
+    url: `${benitoHost}/benito/pdf-to-image`,
+    method: "POST",
+    data: pictureForm,
+  };
+
+  return axios.request(signRequest(pictureConfig));
+}
+
 export function closeProject(projectId: string) {
   let config: AxiosRequestConfig = {
     url: `${benitoHost}/benito/projects/${projectId}/close`,

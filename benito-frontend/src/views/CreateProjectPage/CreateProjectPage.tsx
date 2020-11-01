@@ -48,6 +48,7 @@ import {
   updateTags,
   setProjectUsers,
   generateTagsFromText,
+  generatePdfUrl
 } from "../../functions/project";
 import image from "../../assets/img/proyectate/pattern.jpg";
 import { SET_LOGIN_TRUE } from "../../store/login/types";
@@ -63,6 +64,11 @@ import CreateGhostUser from "../../components/CreateGhostUser/CreateGhostUser";
 import { SSL_OP_EPHEMERAL_RSA } from "constants";
 import SelectInput from "@material-ui/core/Select/SelectInput";
 import NavPills from "../../components/NavPills/NavPills";
+import FilePreview from "react-preview-file/dist/filePreview";
+import ImageUploading, { ImageListType } from "react-images-uploading";
+import { Document, Page } from 'react-pdf';
+
+
 
 const useStyles = makeStyles(styles);
 
@@ -85,6 +91,8 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
   const classes = useStyles();
   const { ...rest } = props;
 
+  const [numPages, setNumPages] = useState<number | undefined>();;
+  const [pageNumber, setPageNumber] = useState(1);
   const [title, setTitle] = useState<string | undefined>();
   const [creationDate, setCreationDate] = useState<string | undefined>();
   const [description, setDescription] = useState<string | undefined>();
@@ -92,9 +100,10 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
   const [authorsToAdd, setAuthorsToAdd] = useState<Array<Person>>([]);
   const [supervisorsToAdd, setSupervisorsToAdd] = useState<Array<Person>>([]);
   const [picture, setPicture] = useState<File | undefined>();
+  const [pdfPicture, setPdfPicture] = useState<File | undefined>();
+  const [pictureUrl, setPictureUrl] = useState<string | undefined>();
   const [category, setCategory] = useState<Category | undefined>();
   const [documentsToUpload, setDocumentsToUpload] = useState<Array<File>>([]);
-  const onPictureDrop = useCallback((file) => setPicture(file[0]), []);
   const onDrop = useCallback((files) => setDocumentsToUpload(files), []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -197,19 +206,19 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
       tabContent: (
         <div>imagen aqui!</div>
       ),
-      key: "profile",
+      key: "jpg",
     },
     {
-      tabButton: "Organizaciones",
+      tabButton: "PDF",
       tabContent: (
         <div>pdf aqui!</div>
       ),
-      key: "organizations",
+      key: "pdf",
     },
   ];
 
   const activeTab = tabs.findIndex((t) => t.key === props.match.params.tab) || 0;
-  
+
   if (!props.session.isLoggedIn) {
     return <Redirect to="/login" />;
   }
@@ -311,6 +320,10 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
     }
   }
 
+  function getPdfAsPicture(file: File) {
+    generatePdfUrl(file).then((pictureUrl) => setPictureUrl(pictureUrl.data.url));
+  }
+
   function updateProject(project: Project) {
     createProject(title!, category!.id, project.organization.id, creationDate!)
       .then((res) => {
@@ -333,9 +346,14 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
 
         promises.push(contentPromise);
 
-        //picture
+        //picture as img
         if (picture != undefined) {
           promises.push(updatePicture(projectId, picture));
+        }
+
+        //picture as pdf
+        if (pdfPicture != undefined) {
+          promises.push(updatePicture(projectId, pdfPicture));
         }
 
         //tags
@@ -606,31 +624,69 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                 las búsquedas. También se verá en el encabezado!
               </Typography>
             </Popover>
-            <ImageUploader
-              withIcon={true}
-              name="pictureUrl"
-              buttonText="Elegí una imagen para el proyecto"
-              onChange={onPictureDrop}
-              label={
-                "Te recomendamos que sea de buena calidad para que el proyecto se vea mejor"
-              }
-              imgExtension={[".jpg", ".jpeg", ".png"]}
-              maxFileSize={5242880}
-              singleImage={true}
-              withPreview={true}
-            />
           </GridItem>
-          <GridItem xs={12} sm={12} md={12}>
-              <NavPills
-                onChange={(_: any, s: any) => {
-                  
-                }}
-                active={activeTab}
-                color="primary"
-                alignCenter={true}
-                tabs={tabs}
-              />
-          </GridItem>
+
+          <GridContainer style={{ display: "flex", alignItems: "center", paddingLeft: "8px"}}>
+            <GridItem xs={12}>
+              <div className={classes.root}>
+                <input
+                  accept="image/*"
+                  className={classes.input}
+                  id="contained-button-image"
+                  type="file"
+                  onChange={(e) => {
+                    setPicture(e.target.files![0])
+                    setPdfPicture(undefined)
+                    setPictureUrl(undefined)
+                  }}
+                />
+                <label htmlFor="contained-button-image">
+                  <Button variant="contained" color="primary" component="span">
+                    Upload Image
+                  </Button>
+                </label>
+                
+                <input
+                  accept="application/pdf"
+                  className={classes.input}
+                  id="contained-button-pdf"
+                  type="file"
+                  onChange={(e) => {
+                    setPdfPicture(e.target.files![0])
+                    getPdfAsPicture(e.target.files![0])
+                    setPicture(undefined)
+                  }}
+                />
+                <label htmlFor="contained-button-pdf">
+                  <Button variant="contained" color="primary" component="span">
+                    Upload PDF
+                  </Button>
+                </label>
+              </div>
+            </GridItem>
+
+
+            {(picture != undefined)? (
+              <GridItem xs={12} style={{ display: "flex", alignItems: "center", paddingTop: "10px", paddingBottom: "10px"}}>
+                Preview
+                <div className={classes.imagePreview}>
+                  <FilePreview file={picture!!}>
+                      {(preview) => <img src={preview} />}
+                  </FilePreview>
+                </div>
+              </GridItem>
+            ):(<div></div>)}
+
+            {(pictureUrl != undefined)? (
+              <GridItem xs={12} style={{ display: "flex", alignItems: "center", paddingTop: "10px", paddingBottom: "10px"}}>
+                Preview
+                <div className={classes.imagePreview}>
+                  <img src={pictureUrl}></img>
+                </div>
+              </GridItem>
+            ):(<div></div>)}
+          </GridContainer>
+
           <GridItem>
             <h4 className={classes.subtitle}>Documentos</h4>
             <section

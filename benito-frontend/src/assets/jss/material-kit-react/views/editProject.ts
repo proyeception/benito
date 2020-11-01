@@ -64,6 +64,18 @@ const editProjectStyle = (theme: Theme) =>
       [theme.breakpoints.up("md")]: {
         width: "15%"
       },
+    },
+    root: {
+      '& > *': {
+        margin: theme.spacing(1),
+      },
+    },
+    input: {
+      display: 'none',
+    },
+
+    imagePreview: {
+      
     }
 
   });

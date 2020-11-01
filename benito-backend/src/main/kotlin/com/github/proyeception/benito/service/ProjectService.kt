@@ -12,16 +12,27 @@ import com.github.proyeception.benito.oauth.GoogleDriveClient
 import com.github.proyeception.benito.parser.DocumentParser
 import com.github.proyeception.benito.storage.DriveStorage
 import com.github.proyeception.benito.storage.PermissionsStorage
+import com.github.proyeception.benito.utils.FileHelper
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
-import org.apache.commons.lang3.StringUtils
 import org.apache.http.entity.ContentType
+import org.apache.pdfbox.pdmodel.PDDocument
+import org.apache.pdfbox.rendering.ImageType
+import org.apache.pdfbox.rendering.PDFRenderer
 import org.slf4j.LoggerFactory
+import org.springframework.mock.web.MockMultipartFile
 import org.springframework.web.multipart.MultipartFile
 import java.io.File
+import java.io.IOException
 import java.nio.charset.StandardCharsets
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.*
+import javax.imageio.ImageIO
+
 
 open class ProjectService(
     private val medusaClient: MedusaClient,
@@ -219,7 +230,7 @@ open class ProjectService(
                 ?: throw NotFoundException("No drive for project $projectId")
             files.map { f ->
                 asyncIO {
-                    val originalFilename: String? = String(f.originalFilename.toByteArray(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8)
+                    val originalFilename: String? = fixMarks(f.originalFilename)
                     val driveId = documentService.saveFile(folderId = driveFolderId, file = f)
                     val fileStream = f.inputStream
                     val content = documentParser.parse(fileStream, originalFilename ?: f.name) ?: ""
@@ -237,13 +248,30 @@ open class ProjectService(
     }
 
     fun updateProjectImage(id: String, multipart: MultipartFile): ProjectDTO = mappingFromMedusa {
+        var medusaFile: MedusaFileDTO
+        if(multipart.contentType == "application/pdf"){
+            val random = UUID.randomUUID().toString()
+            medusaFile = turnPdfIntoJpg(multipart, random, id)
+        } else {
+            medusaFile = fileService.createMedusaFileFromUpload(
+                multipart = multipart,
+                contentType = ContentType.IMAGE_JPEG,
+                filePath = "/tmp/$id.jpg",
+                fileName = multipart.originalFilename ?: "$id.jpg"
+            )
+        }
+        medusaClient.updateProjectImage(id, UpdatePictureDTO(medusaFile))
+    }
+
+    fun uploadPictureToMedusa(multipart: MultipartFile): MedusaFileDTO {
+        val random = UUID.randomUUID()
         val file = fileService.createMedusaFileFromUpload(
             multipart = multipart,
             contentType = ContentType.IMAGE_JPEG,
-            filePath = "/tmp/$id.jpg",
-            fileName = multipart.originalFilename ?: "$id.jpg"
+            filePath = "/tmp/$random.jpg",
+            fileName = multipart.originalFilename ?: "$random.jpg"
         )
-        medusaClient.updateProjectImage(id, UpdatePictureDTO(file))
+        return file
     }
 
     fun canAuthorEdit(authorId: String, projectId: String): Boolean = findProject(projectId)
@@ -361,6 +389,55 @@ open class ProjectService(
             projectId = projectId,
             tags = MedusaSetTagsDTO(tags.tags.map { TagDTO(it, it) })
         )
+    }
+
+    fun fixMarks(string: String?): String{
+        return String(string!!.toByteArray(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8)
+    }
+
+    fun getPdfAsJpgUrl(image: MultipartFile): MedusaFileDTO{
+        val randomOrigin = UUID.randomUUID()
+        val randomDestination = UUID.randomUUID()
+        return turnPdfIntoJpg(image, randomOrigin.toString(), randomDestination.toString())
+    }
+
+    fun turnPdfIntoJpg(image: MultipartFile, randomOrigin: String, randomDestination: String): MedusaFileDTO {
+        val sourceDir = "/tmp/${fixMarks(image.originalFilename)}${randomOrigin}original.jpg"
+        val destinationDir = "/tmp/${fixMarks(image.originalFilename)}${randomDestination}converted.jpg"
+        val file = fileService.downloadMultipartFile(image, sourceDir)
+
+        val destinationFile = File(destinationDir)
+        if (!destinationFile.exists()) {
+            destinationFile.mkdir()
+        }
+        if (file.exists()) {
+            val document = PDDocument.load(file)
+            val pdfRenderer = PDFRenderer(document)
+            val fileName = file.name.replace(".pdf", "")
+            val fileExtension = "png"
+            val dpi = 300
+            val outputUrl = destinationDir + fileName + "_" + (1) + "." + fileExtension
+            val outPutFile = File(outputUrl)
+            val bImage = pdfRenderer.renderImageWithDPI(0, dpi.toFloat(), ImageType.RGB)
+            ImageIO.write(bImage, fileExtension, outPutFile)
+
+            val path: Path = Paths.get(outputUrl)
+            val contentType = "image/jpeg"
+            var content: ByteArray? = null
+            try {
+                content = Files.readAllBytes(path)
+            } catch (e: IOException) {
+            }
+            val result: MultipartFile = MockMultipartFile(fileName,
+                fileName, contentType, content)
+            document.close()
+
+            return uploadPictureToMedusa(result)
+
+        } else {
+            System.err.println(file.name + " File not exists")
+            throw FailedDependencyException("Error uploading pdf as jpg to Medusa")
+        }
     }
 
 

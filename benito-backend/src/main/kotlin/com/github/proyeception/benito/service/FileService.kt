@@ -12,6 +12,11 @@ open class FileService(
     private val medusaClient: MedusaClient,
     private val fileHelper: FileHelper
 ) {
+
+    open fun downloadMultipartFile(multipart: MultipartFile, filePath: String): File{
+        return fileHelper.downloadMultipartFile(multipart, filePath)
+    }
+
     open fun createMedusaFileFromUpload(
         multipart: MultipartFile,
         filePath: String,

@@ -141,6 +141,16 @@ open class ProjectController(
         projectService.updateProjectImage(id, image)
     }
 
+    @RequestMapping(
+        value = ["/benito/pdf-to-image"],
+        method = [RequestMethod.POST], // should be a PUT, but it seems PUT doesn't work with multipart
+        consumes = [MediaType.MULTIPART_FORM_DATA_VALUE]
+    )
+    @ResponseBody
+    fun getPdfAsJpgUrl(
+        @RequestParam("file") image: MultipartFile
+    ): MedusaFileDTO = projectService.getPdfAsJpgUrl(image)
+
     @RequestMapping(value = ["/benito/projects/{projectId}/documents/{documentId}"], method = [RequestMethod.DELETE])
     @ResponseBody
     fun deleteDocument(
