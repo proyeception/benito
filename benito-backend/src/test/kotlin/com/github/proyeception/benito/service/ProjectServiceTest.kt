@@ -94,7 +94,9 @@ class ProjectServiceTest : Spec() {
                     documentation = listOf(documentation),
                     organization = OrganizationRefDTO(
                         id = "123",
-                        displayName = "UTN FRBA"
+                        displayName = "UTN FRBA",
+                        header = "",
+                        color = ""
                     ),
                     recommendations = emptyList(),
                     project_keywords = emptyList(),
@@ -125,6 +127,11 @@ class ProjectServiceTest : Spec() {
                             url = "icon"
                         ),
                         id = "123",
+                        header =  MedusaFileDTO(
+                                url = "",
+                                id = "123"
+                        ),
+                        color = "",
                         authors = emptyList(),
                         supervisors = emptyList()
                     ),
@@ -204,7 +211,9 @@ class ProjectServiceTest : Spec() {
                     documentation = listOf(documentation),
                     organization = OrganizationRefDTO(
                         id = "123",
-                        displayName = "UTN FRBA"
+                        displayName = "UTN FRBA",
+                        header = "",
+                        color = ""
                     ),
                     recommendations = emptyList(),
                     project_keywords = emptyList(),
@@ -229,6 +238,11 @@ class ProjectServiceTest : Spec() {
                             id = "icon",
                             url = "icon"
                         ),
+                        header =  MedusaFileDTO(
+                                url = "",
+                                id = "123"
+                        ),
+                        color = "",
                         id = "123",
                         authors = emptyList(),
                         supervisors = emptyList()
@@ -275,6 +289,11 @@ class ProjectServiceTest : Spec() {
                             url = "https://icon.ico",
                             id = "123"
                         ),
+                        header =  MedusaFileDTO(
+                                url = "",
+                                id = "123"
+                        ),
+                        color = "",
                         supervisors = emptyList(),
                         authors = emptyList()
                     ),
@@ -334,6 +353,11 @@ class ProjectServiceTest : Spec() {
                             url = "https://icon.ico",
                             id = "123"
                         ),
+                        header =  MedusaFileDTO(
+                                url = "",
+                                id = "123"
+                        ),
+                        color = "",
                         supervisors = emptyList(),
                         authors = emptyList()
                     ),
@@ -388,6 +412,11 @@ class ProjectServiceTest : Spec() {
                             url = "https://icon.ico",
                             id = "123"
                         ),
+                        header =  MedusaFileDTO(
+                                url = "",
+                                id = "123"
+                        ),
+                        color = "",
                         supervisors = emptyList(),
                         authors = emptyList()
                     ),

@@ -109,6 +109,8 @@ data class MedusaOrganizationDTO(
     val displayName: String,
     val name: String,
     val icon: MedusaFileDTO,
+    val header: MedusaFileDTO,
+    val color: String,
     val supervisors: List<MedusaPersonRefDTO> = emptyList(),
     val authors: List<MedusaPersonRefDTO> = emptyList()
 )

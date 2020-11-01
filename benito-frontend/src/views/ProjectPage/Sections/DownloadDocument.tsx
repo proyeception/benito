@@ -14,9 +14,10 @@ const useStyles = makeStyles(styles);
 type DownloadDocumentProps = {
   document: Documentation;
   idx: number;
+  color: string
 };
 
-export default function DownloadDocument({ document, idx }: DownloadDocumentProps) {
+export default function DownloadDocument({ document, idx, color }: DownloadDocumentProps) {
   const classes = useStyles();
 
   const downloadLink = withDownloadLink(document.driveId);
@@ -34,6 +35,7 @@ export default function DownloadDocument({ document, idx }: DownloadDocumentProp
     key={idx}
     href={downloadLink.value}
     className={classes.document}
+    style={{color: color}}
   >
     <div>
       <GetAppIcon />

@@ -129,6 +129,8 @@ const EditProjectPage = (props: EditProjectPageProps) => {
   const [selectedTags, setSelectedTags] = useState<Array<string>>([]);
   const [initialTags, setInitialTags] = useState<Array<string>>([]);
 
+  const [isLoading, setIsLoading] = React.useState(false);
+
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
 
   const handlePopoverOpen = (
@@ -240,7 +242,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
     },
   });
 
-  if (project.type == PENDING || organization == undefined) {
+  if (project.type == PENDING || organization == undefined || isLoading) {
     return <Spinner />;
   }
 
@@ -956,6 +958,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
             <Button
               onClick={() => {
                 setLoading(true);
+                setIsLoading(true)
                 updateProject(project.value);
               }}
               color="primary"

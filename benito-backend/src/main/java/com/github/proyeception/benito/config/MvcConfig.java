@@ -2,6 +2,8 @@ package com.github.proyeception.benito.config;
 
 import com.typesafe.config.Config;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -9,6 +11,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import java.util.List;
 
 @Configuration
+@PropertySources({
+    @PropertySource("classpath:application.properties"),
+    @PropertySource("classpath:sensitive.properties")
+})
 public class MvcConfig implements WebMvcConfigurer {
     private List<String> allowedOrigins;
 

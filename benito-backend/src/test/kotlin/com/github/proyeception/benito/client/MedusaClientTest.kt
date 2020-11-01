@@ -56,7 +56,9 @@ class MedusaClientTest : Spec() {
                 documentation = listOf(documentation),
                 organization = OrganizationRefDTO(
                     id = "123",
-                    displayName = "Proyectate"
+                    displayName = "Proyectate",
+                    color = "",
+                    header = ""
                 ),
                 recommendations = emptyList(),
                 project_keywords = emptyList(),
@@ -324,6 +326,8 @@ class MedusaClientTest : Spec() {
                     displayName = "UTN FRBA",
                     name = "utnfrba",
                     icon = MedusaFileDTO("icon", "icon"),
+                    color = "",
+                    header = MedusaFileDTO("", "icon"),
                     id = "123",
                     authors = emptyList(),
                     supervisors = emptyList()

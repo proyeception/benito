@@ -31,6 +31,10 @@ public class LoggingFilter implements Filter {
         ".*[.]woff",
         ".*[.]ttf",
         ".*[.]html",
+        ".*[.]svg",
+        ".*[.]jpg",
+        ".*[.]png",
+        ".*[.]gif",
         "[/]"
     );
 
@@ -45,7 +49,8 @@ public class LoggingFilter implements Filter {
 
     private static final List<String> EXCLUDED_URIS_RESPONSE_BODY = ImmutableList.of(
         "/benito/projects/featured",
-        "/benito/projects?.*",
+        "/benito/projects.*",
+        "/benito/featured-projects",
         "/benito/session",
         "/benito/author/login",
         "/benito/supervisor/login"

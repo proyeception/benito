@@ -102,7 +102,7 @@ const ProjectPage = (props: Props) => {
         fixed
         {...rest}
       />
-      <Parallax filter image={project.value.pictureUrl || image}>
+      <Parallax filter image={project.value.organization.header || image} style={{backgroundPosition: "70% 50%"}}>
         <div className={classes.container}>
           <GridContainer>
             <GridItem xs={12} sm={12} md={6}>
@@ -168,7 +168,7 @@ const ProjectPage = (props: Props) => {
           </GridItem>
           <Divider orientation="vertical" flexItem />
           <GridItem xs={12} sm={12} md={2} className={classes.recommendations}>
-            <Recommendations />
+            <Recommendations project={project.value}/>
           </GridItem>
           <Hidden only={["xs", "sm"]}>
             <GridItem
@@ -182,9 +182,10 @@ const ProjectPage = (props: Props) => {
                 onClick={() => {
                   props.history.goBack();
                 }}
+                style={{color: project.value.organization.color}}
                 variant="outlined"
                 size="large"
-                startIcon={<ArrowBackIos />}
+                startIcon={<ArrowBackIos style={{color: project.value.organization.color}}/>}
               >
                 Volver
               </Button>
