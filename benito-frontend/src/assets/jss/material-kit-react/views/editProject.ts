@@ -74,10 +74,6 @@ const editProjectStyle = (theme: Theme) =>
       display: 'none',
     },
 
-    imagePreview: {
-      
-    }
-
   });
 
 export default editProjectStyle;

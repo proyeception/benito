@@ -67,6 +67,7 @@ import NavPills from "../../components/NavPills/NavPills";
 import FilePreview from "react-preview-file/dist/filePreview";
 import ImageUploading, { ImageListType } from "react-images-uploading";
 import { Document, Page } from 'react-pdf';
+import { CSSTransition } from 'react-transition-group';
 
 
 
@@ -108,6 +109,8 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [posterIsLoading, setPosterIsLoading] = useState(false);
+  const [showPicture, setShowPicture] = useState(false);
   const [organization, setOrganization] = useState<
     Organization | undefined | "ERROR"
   >();
@@ -321,7 +324,11 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
   }
 
   function getPdfAsPicture(file: File) {
-    generatePdfUrl(file).then((pictureUrl) => setPictureUrl(pictureUrl.data.url));
+    generatePdfUrl(file).then((pictureUrl) => { 
+        setPictureUrl(pictureUrl.data.url)
+        setPosterIsLoading(false)
+     }
+    );
   }
 
   function updateProject(project: Project) {
@@ -626,7 +633,6 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
             </Popover>
           </GridItem>
 
-          <GridContainer style={{ display: "flex", alignItems: "center", paddingLeft: "8px"}}>
             <GridItem xs={12}>
               <div className={classes.root}>
                 <input
@@ -638,6 +644,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                     setPicture(e.target.files![0])
                     setPdfPicture(undefined)
                     setPictureUrl(undefined)
+                    setShowPicture(true)
                   }}
                 />
                 <label htmlFor="contained-button-image">
@@ -655,6 +662,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                     setPdfPicture(e.target.files![0])
                     getPdfAsPicture(e.target.files![0])
                     setPicture(undefined)
+                    setPosterIsLoading(true)
                   }}
                 />
                 <label htmlFor="contained-button-pdf">
@@ -665,27 +673,33 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
               </div>
             </GridItem>
 
+            <CSSTransition
+              in={showPicture}
+              timeout={300}
+              classNames="image-preview"
+              unmountOnExit
+            >
+              {(picture != undefined)? (
+                <GridItem xs={12} style={{ display: "flex", alignItems: "center"}} >
+                    <FilePreview file={picture!!}>
+                        {(preview) => <img src={preview} className="image-preview" />}
+                    </FilePreview>
+                </GridItem>
+              ):(<div></div>)}
 
-            {(picture != undefined)? (
-              <GridItem xs={12} style={{ display: "flex", alignItems: "center", paddingTop: "10px", paddingBottom: "10px"}}>
-                Preview
-                <div className={classes.imagePreview}>
-                  <FilePreview file={picture!!}>
-                      {(preview) => <img src={preview} />}
-                  </FilePreview>
-                </div>
-              </GridItem>
-            ):(<div></div>)}
+              {(posterIsLoading)? (
+                <Spinner/>
+              ):(<div style={{display:"none"}}></div>)}
 
-            {(pictureUrl != undefined)? (
-              <GridItem xs={12} style={{ display: "flex", alignItems: "center", paddingTop: "10px", paddingBottom: "10px"}}>
-                Preview
-                <div className={classes.imagePreview}>
-                  <img src={pictureUrl}></img>
+              {(pictureUrl != undefined)? (
+                <GridItem xs={12} style={{ display: "flex", alignItems: "center"}} >
+                <div className="image-preview">
+                  <img src={pictureUrl} className="image-preview"/>
                 </div>
-              </GridItem>
-            ):(<div></div>)}
-          </GridContainer>
+                </GridItem>
+              ):(<div style={{display:"none"}}></div>)}
+
+            </CSSTransition>
 
           <GridItem>
             <h4 className={classes.subtitle}>Documentos</h4>
