@@ -328,9 +328,6 @@ const LoginPage = (props: LoginPageProps) => {
             </GridItem>
           </GridContainer>
         </div>
-        <Hidden smDown>
-          <Footer whiteFont />
-        </Hidden>
       </div>
     </div>
   );
