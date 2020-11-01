@@ -27,7 +27,7 @@ const useStyles = makeStyles(styles);
 
 type Any = any;
 
-interface HeaderProps extends RouteComponentProps, Any {}
+interface HeaderProps extends RouteComponentProps, Any { }
 
 const Header = (props: HeaderProps) => {
   const classes = useStyles();
@@ -37,12 +37,12 @@ const Header = (props: HeaderProps) => {
   };
 
   const brand = (
-    <div className={classes.logoContainer}>
+    <span className={classes.logoContainer}>
       <img src={logo} className={classes.brandLogo} />
-      <img src={utnLogo} className={classes.organizationLogo} />
-    </div>
+      <span style={{ fontWeight: "normal" }}>Proyectate</span>
+    </span>
   );
-  
+
   const { color, rightLinks, leftLinks, fixed, absolute } = props;
   const appBarClasses = classNames({
     [classes.appBar]: true,
@@ -57,30 +57,30 @@ const Header = (props: HeaderProps) => {
   );
   return (
     <AppBar className={appBarClasses}>
-      <Toolbar className={classes.container}>
-        {leftLinks !== undefined ? brandComponent : null}
-        <div className={classes.flex}>
-          {leftLinks !== undefined ? (
+        <Toolbar style={{ marginLeft: "30px", marginRight: "30px", width: "-webkit-fill-available" }}>
+          {leftLinks !== undefined ? brandComponent : null}
+          <div className={classes.flex}>
+            {leftLinks !== undefined ? (
+              <Hidden smDown implementation="css">
+                {leftLinks}
+              </Hidden>
+            ) : (
+                brandComponent
+              )}
+          </div>
             <Hidden smDown implementation="css">
-              {leftLinks}
+              {rightLinks}
             </Hidden>
-          ) : (
-            brandComponent
-          )}
-        </div>
-        <Hidden smDown implementation="css">
-          {rightLinks}
-        </Hidden>
-        <Hidden mdUp>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerToggle}
-          >
-            <Menu />
-          </IconButton>
-        </Hidden>
-      </Toolbar>
+            <Hidden mdUp>
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                onClick={handleDrawerToggle}
+              >
+                <Menu />
+              </IconButton>
+            </Hidden>
+        </Toolbar>
       <Hidden mdUp implementation="js">
         <Drawer
           variant="temporary"
