@@ -451,11 +451,12 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
               <KeyboardDatePicker
                 className={classes.datePicker}
                 clearable={true}
-                placeholder="08/04/2016"
-                format="dd/MM/yyyy"
+                placeholder="2020"
+                format="yyyy"
                 error={dateIncompleted}
                 fullWidth
-                label="Fecha de publicacion"
+                label="Año de publicacion"
+                views={["year"]}
                 value={creationDate || null}
                 onChange={(e) => {
                   if (
