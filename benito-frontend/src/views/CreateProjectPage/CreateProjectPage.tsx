@@ -48,7 +48,7 @@ import {
   updateTags,
   setProjectUsers,
   generateTagsFromText,
-  generatePdfUrl
+  generatePdfUrl,
 } from "../../functions/project";
 import image from "../../assets/img/proyectate/pattern.jpg";
 import { SET_LOGIN_TRUE } from "../../store/login/types";
@@ -65,10 +65,8 @@ import { SSL_OP_EPHEMERAL_RSA } from "constants";
 import SelectInput from "@material-ui/core/Select/SelectInput";
 import FilePreview from "react-preview-file/dist/filePreview";
 import ImageUploading, { ImageListType } from "react-images-uploading";
-import { CSSTransition } from 'react-transition-group';
-import spinner from '../../assets/img/proyectate/spinner.gif';
-
-
+import { CSSTransition } from "react-transition-group";
+import spinner from "../../assets/img/proyectate/spinner.gif";
 
 const useStyles = makeStyles(styles);
 
@@ -91,7 +89,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
   const classes = useStyles();
   const { ...rest } = props;
 
-  const [numPages, setNumPages] = useState<number | undefined>();;
+  const [numPages, setNumPages] = useState<number | undefined>();
   const [pageNumber, setPageNumber] = useState(1);
   const [title, setTitle] = useState<string | undefined>();
   const [creationDate, setCreationDate] = useState<string | undefined>();
@@ -120,9 +118,6 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
   const [dateIncompleted, setDateIncompleted] = React.useState(true);
   const [categoryIncompleted, setCategoryIncompleted] = React.useState(true);
   const [isLoading, setIsLoading] = React.useState(false);
-  const [supervisorsIncompleted, setSupervisorsIncompleted] = React.useState(
-    true
-  );
   const [
     createGhostSupervisorFormOpen,
     setCreateGhostSupervisorFormOpen,
@@ -206,21 +201,18 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
   const tabs = [
     {
       tabButton: "Imagen",
-      tabContent: (
-        <div>imagen aqui!</div>
-      ),
+      tabContent: <div>imagen aqui!</div>,
       key: "jpg",
     },
     {
       tabButton: "PDF",
-      tabContent: (
-        <div>pdf aqui!</div>
-      ),
+      tabContent: <div>pdf aqui!</div>,
       key: "pdf",
     },
   ];
 
-  const activeTab = tabs.findIndex((t) => t.key === props.match.params.tab) || 0;
+  const activeTab =
+    tabs.findIndex((t) => t.key === props.match.params.tab) || 0;
 
   if (!props.session.isLoggedIn) {
     return <Redirect to="/login" />;
@@ -294,8 +286,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
     if (pdfPicture)
       changes.push({
         undo: () => {
-          setPictureUrl(undefined),
-          setPdfPicture(undefined)
+          setPictureUrl(undefined), setPdfPicture(undefined);
         },
         render: () => <p>Actualizar la imagen del proyecto</p>,
       });
@@ -337,11 +328,10 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
   }
 
   function getPdfAsPicture(file: File) {
-    generatePdfUrl(file).then((pictureUrl) => { 
-        setPictureUrl(pictureUrl.data.url)
-        setPosterIsLoading(false)
-     }
-    );
+    generatePdfUrl(file).then((pictureUrl) => {
+      setPictureUrl(pictureUrl.data.url);
+      setPosterIsLoading(false);
+    });
   }
 
   function updateProject(project: Project) {
@@ -400,6 +390,8 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
         return <Redirect to={{ pathname: "/error" }} />;
       });
   }
+
+  console.log("aaaaaaaaaaaaaaa");
 
   return (
     <div>
@@ -647,83 +639,98 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
             </Popover>
           </GridItem>
 
-            <GridItem xs={12}>
-              <div className={classes.root}>
-                <input
-                  accept="image/*"
-                  className={classes.input}
-                  id="contained-button-image"
-                  type="file"
-                  onChange={(e) => {
-                    setPdfPicture(undefined)
-                    setPictureUrl(undefined)
-                    setPicture(e.target.files![0])
-                    setShowPicture(true)
-                  }}
-                />
-                <label htmlFor="contained-button-image">
-                  <Button variant="contained" color="primary" component="span">
-                    Subir jpg, jpeg or png
-                  </Button>
-                </label>
-                
-                <input
-                  accept="application/pdf"
-                  className={classes.input}
-                  id="contained-button-pdf"
-                  type="file"
-                  onChange={(e) => {
-                    setPictureUrl(undefined)
-                    setPosterIsLoading(true)
-                    setPicture(undefined)
-                    setPdfPicture(e.target.files![0])
-                    getPdfAsPicture(e.target.files![0])
-                    setShowPicture(true)
-                  }}
-                />
-                <label htmlFor="contained-button-pdf">
-                  <Button variant="contained" color="primary" component="span">
-                    Subir PDF
-                  </Button>
-                </label>
-              </div>
+          <GridItem xs={12}>
+            <div className={classes.root}>
+              <input
+                accept="image/*"
+                className={classes.input}
+                id="contained-button-image"
+                type="file"
+                onChange={(e) => {
+                  setPdfPicture(undefined);
+                  setPictureUrl(undefined);
+                  setPicture(e.target.files![0]);
+                  setShowPicture(true);
+                }}
+              />
+              <label htmlFor="contained-button-image">
+                <Button variant="contained" color="primary" component="span">
+                  Subir jpg, jpeg or png
+                </Button>
+              </label>
+
+              <input
+                accept="application/pdf"
+                className={classes.input}
+                id="contained-button-pdf"
+                type="file"
+                onChange={(e) => {
+                  setPictureUrl(undefined);
+                  setPosterIsLoading(true);
+                  setPicture(undefined);
+                  setPdfPicture(e.target.files![0]);
+                  getPdfAsPicture(e.target.files![0]);
+                  setShowPicture(true);
+                }}
+              />
+              <label htmlFor="contained-button-pdf">
+                <Button variant="contained" color="primary" component="span">
+                  Subir PDF
+                </Button>
+              </label>
+            </div>
+          </GridItem>
+
+          <CSSTransition
+            in={showPicture}
+            timeout={300}
+            classNames="image-preview"
+            unmountOnExit
+          >
+            {picture != undefined ? (
+              <GridItem
+                xs={12}
+                style={{ display: "flex", alignItems: "center" }}
+              >
+                <FilePreview file={picture!!}>
+                  {(preview) => <img src={preview} className="image-preview" />}
+                </FilePreview>
+              </GridItem>
+            ) : (
+              <div></div>
+            )}
+          </CSSTransition>
+
+          {posterIsLoading && pdfPicture != undefined ? (
+            <GridItem
+              xs={12}
+              style={{ display: "flex", justifyContent: "center" }}
+            >
+              <Spinner />
             </GridItem>
+          ) : (
+            <div style={{ display: "none" }}></div>
+          )}
 
-            <CSSTransition
-              in={showPicture}
-              timeout={300}
-              classNames="image-preview"
-              unmountOnExit
-            >
-              {(picture != undefined)? (
-                <GridItem xs={12} style={{ display: "flex", alignItems: "center"}} >
-                    <FilePreview file={picture!!}>
-                        {(preview) => <img src={preview} className="image-preview" />}
-                    </FilePreview>
-                </GridItem>
-              ):(<div></div>)}
-            </CSSTransition>
-
-              {(posterIsLoading && pdfPicture != undefined)? (
-                <GridItem xs={12} style={{ display: "flex", justifyContent: "center"}} >
-                  <Spinner/>
-                </GridItem>
-              ):(<div style={{display:"none"}}></div>)}
-
-            <CSSTransition
-              in={showPicture}
-              timeout={300}
-              classNames="image-preview"
-              unmountOnExit
-            >
-              {(pictureUrl != undefined)? (
-                <GridItem xs={12} style={{ display: "flex", alignItems: "center"}} >
+          <CSSTransition
+            in={showPicture}
+            timeout={300}
+            classNames="image-preview"
+            unmountOnExit
+          >
+            {pictureUrl != undefined ? (
+              <GridItem
+                xs={12}
+                style={{ display: "flex", alignItems: "center" }}
+              >
                 <div className="image-preview">
-                  <img src={pictureUrl} className="image-preview"/>
+                  <img src={pictureUrl} className="image-preview" />
                 </div>
-                </GridItem>
-              ):(<div style={{display:"none"}}></div>)}
-            </CSSTransition>
+              </GridItem>
+            ) : (
+              <div style={{ display: "none" }}></div>
+            )}
+          </CSSTransition>
 
           <GridItem>
             <h4 className={classes.subtitle}>Documentos</h4>
@@ -747,7 +754,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
         </GridContainer>
         <GridContainer className={classes.container}>
           <GridItem>
-          <h4 className={classes.subtitle}>Categoría</h4>
+            <h4 className={classes.subtitle}>Categoría</h4>
             <div>
               <Autocomplete
                 fullWidth
@@ -921,25 +928,12 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                     (s) => !supervisorsToAdd.includes(s)
                   )}
                   getOptionLabel={(option) => option.fullName}
-                  onPointerLeave={(e) => {
-                    if (supervisorsToAdd.length > 0) {
-                      setSupervisorsIncompleted(false);
-                    } else {
-                      setSupervisorsIncompleted(true);
-                    }
-                  }}
                   onChange={(e, s) => {
                     if (s) {
                       setSupervisorsToAdd(supervisorsToAdd.concat(s!));
                     }
                   }}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      fullWidth
-                      error={supervisorsIncompleted}
-                    />
-                  )}
+                  renderInput={(params) => <TextField {...params} fullWidth />}
                 />
               </GridItem>
               <GridItem xs={3}>
@@ -984,10 +978,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
               color="secondary"
               style={{ textAlign: "right" }}
               className={classes.button}
-              onClick={
-                () => {}
-                //props.history.push(`/projects/${project.id}`)
-              }
+              onClick={props.history.push(`/projects/${project.id}`)}
             >
               Descartar y volver
             </CustomButton>
@@ -1002,14 +993,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
               }
               style={{ textAlign: "right" }}
               className={classes.button}
-              onClick={() => {
-                if (supervisorsToAdd.length > 0) {
-                  setIsModalOpen(true);
-                  setSupervisorsIncompleted(false);
-                } else {
-                  setSupervisorsIncompleted(true);
-                }
-              }}
+              onClick={() => setIsModalOpen(true)}
             >
               Guardar cambios
             </CustomButton>
@@ -1033,7 +1017,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
           <Button
             onClick={() => {
               setLoading(true);
-              setIsLoading(true)
+              setIsLoading(true);
               setIsModalOpen(false);
               updateProject(project);
             }}
