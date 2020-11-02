@@ -27,26 +27,34 @@ import pictureNotFound from "../../../assets/img/proyectate/picture.svg";
 import Pagination from "@material-ui/lab/Pagination";
 import { Alert, AlertTitle } from "@material-ui/lab";
 import classNames from "classnames";
+import { SessionState } from "../../../store/session/types";
 
 interface SearchResultsSectionProps extends RouteChildrenProps<SearchParams> {
   status: Fetch;
   keywordSearch?: boolean;
+  session?: SessionState;
 }
-
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      light: "#c41234",
-      main: "#c41234",
-      dark: "#c41234",
-      contrastText: "#fff",
-    },
-  },
-});
 
 const useStyles = makeStyles(styles);
 
 const SearchResultsSection = (props: SearchResultsSectionProps) => {
+
+  let color: string = "#c41234"
+  if(props.session && props.session.isLoggedIn){
+    color = props.session.selectedOrganization.color
+  }
+
+  const theme = createMuiTheme({
+    palette: {
+      primary: {
+        light: color,
+        main: color,
+        dark: color,
+        contrastText: "#fff",
+      },
+    },
+  });
+
   const itemsPerPage = 10;
   const [page, setPage] = React.useState(1);
 
@@ -93,7 +101,7 @@ const SearchResultsSection = (props: SearchResultsSectionProps) => {
   }
 
   if (search.type == PENDING) {
-    return <Spinner />;
+    return <Spinner color={color}/>;
   }
 
   if (search.value.projects.length == 0) {
@@ -101,7 +109,7 @@ const SearchResultsSection = (props: SearchResultsSectionProps) => {
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
           <div className={classes.text}>
-            <div className={classes.message}> NO SE ENCONTRARON PROYECTOS</div>
+            <div className={classes.message} style={{color:color}}> NO SE ENCONTRARON PROYECTOS</div>
             <div className={classes.submessage}>
               {" "}
               Probá con otros criterios de búsqueda!
@@ -125,6 +133,7 @@ const SearchResultsSection = (props: SearchResultsSectionProps) => {
                 <div className={classes.contentContainer}>
                   <ProjectLink id={p.id}>
                     <div
+                      style={{color:color}}
                       className={classNames(classes.title, " underline-hover")}
                     >
                       {p.title}
@@ -204,6 +213,7 @@ const mapStateToProps = (rootState: RootState) => {
   return {
     status: rootState.search.status,
     keywordSearch: rootState.search.keywordSearch,
+    session: rootState.session,
   };
 };
 
