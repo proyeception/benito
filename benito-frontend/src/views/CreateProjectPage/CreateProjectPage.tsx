@@ -694,7 +694,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
 
               {(posterIsLoading && pdfPicture != undefined)? (
                 <GridItem xs={12} style={{ display: "flex", justifyContent: "center"}} >
-                  <img src={spinner} className="spinner" />
+                  <Spinner/>
                 </GridItem>
               ):(<div style={{display:"none"}}></div>)}
 
