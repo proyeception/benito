@@ -10,7 +10,7 @@ import Card from "../../../components/Card/Card";
 import imagesStyles from "../../../assets/jss/material-kit-react/imagesStyles";
 import { cardTitle, container } from "../../../assets/jss/material-kit-react";
 import Button from "../../../components/CustomButtons/Button";
-import { Link, Redirect } from "react-router-dom";
+import { Link, Redirect, RouteComponentProps, withRouter } from "react-router-dom";
 import featuredStyle from "../../../assets/jss/material-kit-react/views/homeSections/featuredSection";
 import classNames from "classnames";
 import pictureNotFound from "../../../assets/img/proyectate/picture.svg";
@@ -35,13 +35,23 @@ const responsive = {
   },
 };
 
+interface RecommendationSectionProps extends RouteComponentProps {
+  session?: SessionState;
+}
+
 const styles = (theme: Theme) => {
   return { ...featuredStyle(theme), ...imagesStyles, cardTitle, container };
 };
 
 const useStyles = makeStyles(styles);
 
-const RecommendationsSection = () => {
+const RecommendationsSection = (props: RecommendationSectionProps) => {
+
+  let color: string = "#c41234"
+  if(props.session && props.session.isLoggedIn){
+    color = props.session.selectedOrganization.color
+  }
+
   const featured = withCustomizedRecommendations();
   const classes = useStyles();
 
@@ -50,7 +60,7 @@ const RecommendationsSection = () => {
   }
 
   if (featured.type == "PENDING") {
-    return <Spinner />;
+    return <Spinner color={color}/>;
   }
 
   if (featured.value.length == 0) {
@@ -61,9 +71,9 @@ const RecommendationsSection = () => {
     <div style={{ marginLeft: "10%", marginRight: "10%" }}>
       <h2
         className={classes.title}
-        style={{ textAlign: "center", paddingTop: "20px" }}
+        style={{ textAlign: "center", paddingTop: "20px", color:color }}
       >
-        Especialmente para vos
+        ESPECIALMENTE PARA VOS
       </h2>
       <Carousel
         responsive={responsive}
@@ -93,10 +103,10 @@ const RecommendationsSection = () => {
               alt={project.title}
             />
             <CardBody className="read-more-container">
-              <div className="organization">
+              <div className="organization" style={{ color:color }}>
                 {project.organization.displayName}
               </div>
-              <p className={classNames(classes.cardTitle, classes.longTitle)}>
+              <p className={classNames(classes.cardTitle, classes.longTitle)} style={{ color:color }}>
                 {project.title}
               </p>
               <div className="read-more-container">
@@ -105,7 +115,7 @@ const RecommendationsSection = () => {
               </div>
               <div className="carrousel-button-project">
                 <Link to={`/projects/${project.id}`} className="normalize-link">
-                  <Button color="primary">Ver más</Button>
+                  <Button color={color}>Ver más</Button>
                 </Link>
               </div>
             </CardBody>
@@ -122,4 +132,4 @@ const mapStateToProps = (rootState: RootState) => {
   };
 };
 
-export default hot(module)(connect(mapStateToProps)(RecommendationsSection));
+export default hot(module)(connect(mapStateToProps)(withRouter(RecommendationsSection)));

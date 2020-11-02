@@ -16,6 +16,7 @@ import CategoriesSection from "./Sections/CategoriesSection";
 import FeaturedSection from "./Sections/FeaturedSection";
 import image from "../../assets/img/proyectate/pattern.jpg";
 import RecommendationsSection from "./Sections/RecommendationsSection";
+import { SessionState } from "../../store/session/types";
 
 const useStyles = makeStyles(styles);
 
@@ -45,7 +46,7 @@ const HomePage = (props: HomePageProps) => {
       </Parallax>
       <div className={classNames(classes.main, classes.mainRaised)}>
         <Hidden smDown>
-          <SearchBoxSection />
+          <SearchBoxSection/>
         </Hidden>
         <FeaturedSection />
         <CategoriesSection />

@@ -1,4 +1,4 @@
-import { Role } from "../../types";
+import { Organization, Role } from "../../types";
 
 export const INVALIDATE_SESSION = "INVALIDATE_SESSION";
 export const UPDATE_SESSION_STATE = "UPDATE_SESSION_STATE";
@@ -31,6 +31,8 @@ export interface LoggedInState {
   fullName: string;
   username?: string;
   isLoggedIn: true;
+  selectedOrganization: Organization;
+  organizations: Array<Organization>;
 }
 
 export interface NotLoggedInState {

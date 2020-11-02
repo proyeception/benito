@@ -10,14 +10,20 @@ import Card from "../../../components/Card/Card";
 import imagesStyles from "../../../assets/jss/material-kit-react/imagesStyles";
 import { cardTitle, container } from "../../../assets/jss/material-kit-react";
 import Button from "../../../components/CustomButtons/Button";
-import { Link, Redirect } from "react-router-dom";
+import { Link, Redirect, RouteComponentProps } from "react-router-dom";
 import featuredStyle from "../../../assets/jss/material-kit-react/views/homeSections/featuredSection";
 import { Height } from "@material-ui/icons";
 import classNames from "classnames";
 import pictureNotFound from "../../../assets/img/proyectate/picture.svg"
 import ProjectLink from "../../../components/Links/ProjectLink";
+import { RootState } from "../../../reducers";
+import { SessionState } from "../../../store/session/types";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 
-type FeaturedSectionProps = {};
+interface FeaturedSectionProps extends RouteComponentProps {
+  session?: SessionState;
+};
 
 const responsive = {
   largeDesktop: {
@@ -45,18 +51,23 @@ const FeaturedSection = (props: FeaturedSectionProps) => {
   const featured = withFeaturedProjects();
   const classes = useStyles();
 
+  let color: string = "#c41234"
+  if(props.session && props.session.isLoggedIn){
+    color = props.session.selectedOrganization.color
+  }
+
   if (featured.type == "ERROR") {
     return <Redirect to={{ pathname: "/error" }} />;
   }
 
   if (featured.type == "PENDING") {
-    return <Spinner />;
+    return <Spinner color={color}/>;
   }
 
   return (
     <div style={{ marginLeft: "10%", marginRight: "10%" }}>
-      <h2 className={classes.title} style={{ textAlign: "center", paddingTop: "20px" }}>
-        Proyectos destacados
+      <h2 className={classes.title} style={{ textAlign: "center", paddingTop: "20px", color:color }}>
+        PROYECTOS DESTACADOS
       </h2>
       <Carousel
         responsive={responsive}
@@ -78,7 +89,7 @@ const FeaturedSection = (props: FeaturedSectionProps) => {
               alt={project.title}
             />
             <CardBody className="read-more-container">
-            <div className="organization">{project.organization.displayName}</div>
+            <div className="organization" style={{ color:color }}>{project.organization.displayName}</div>
               <p style={{height:"50px"}} className={classNames(classes.cardTitle, classes.longTitle)}>{project.title}</p>
               <div className="read-more-container">
                 <p className="featured-card-text">{project.description}</p>
@@ -86,7 +97,7 @@ const FeaturedSection = (props: FeaturedSectionProps) => {
               </div>
               <div className="carrousel-button-project">
               <Link to={`/projects/${project.id}`} className="normalize-link">
-                <Button color="primary">Ver más</Button>
+                <Button color={color}>Ver más</Button>
               </Link>
               </div>
             </CardBody>
@@ -97,4 +108,10 @@ const FeaturedSection = (props: FeaturedSectionProps) => {
   );
 };
 
-export default hot(module)(FeaturedSection);
+const mapStateToProps = (rootState: RootState) => {
+  return {
+    session: rootState.session,
+  };
+};
+
+export default hot(module)(connect(mapStateToProps)(withRouter(FeaturedSection)));

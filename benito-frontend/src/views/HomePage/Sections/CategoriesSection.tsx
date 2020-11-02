@@ -3,22 +3,30 @@ import { hot } from "react-hot-loader";
 import Carousel from "react-slick";
 import Spinner from "../../../components/Spinner/Spinner";
 import { Category } from "../../../types";
-import { Link } from "react-router-dom";
+import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import { RootState } from "../../../reducers";
 import { connect } from "react-redux";
 import styles from "../../../assets/jss/material-kit-react/views/homeSections/categoriesStyle";
 import { makeStyles } from "@material-ui/core";
 import classNames from "classnames";
+import { SessionState } from "../../../store/session/types";
 
 const useStyles = makeStyles(styles);
 
-type CategoriesSectionProps = {
+interface CategoriesSectionProps extends RouteComponentProps {
   categories: Array<Category>;
+  session?: SessionState;
 };
 
 const CategoriesSection = (props: CategoriesSectionProps) => {
+
+  let color: string = "#c41234"
+  if(props.session && props.session.isLoggedIn){
+    color = props.session.selectedOrganization.color
+  }
+
   if (props.categories.length == 0) {
-    return <Spinner />;
+    return <Spinner color={color}/>;
   }
 
   const settings = {
@@ -34,8 +42,8 @@ const CategoriesSection = (props: CategoriesSectionProps) => {
 
   return (
     <div className={classes.container}>
-      <h2 className={classes.title} style={{ textAlign: "center" }}>
-        O empezá explorando por estas categorías
+      <h2 className={classes.title} style={{ textAlign: "center", color:color }}>
+        O EMPEZÁ EXPLORANDO POR ESTAS CATEGORÍAS
       </h2>
       <Carousel {...settings}>
         {props.categories.map((c, idx) => (
@@ -60,7 +68,8 @@ const CategoriesSection = (props: CategoriesSectionProps) => {
 const mapStateToProps = (rootState: RootState) => {
   return {
     categories: rootState.common.categories,
+    session: rootState.session,
   };
 };
 
-export default hot(module)(connect(mapStateToProps)(CategoriesSection));
+export default hot(module)(connect(mapStateToProps)(withRouter(CategoriesSection)));

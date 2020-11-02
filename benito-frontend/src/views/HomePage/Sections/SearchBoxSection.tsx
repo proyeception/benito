@@ -58,7 +58,7 @@ const SearchBoxSection = () => {
             <CategorySelector />
           </GridItem>
           <GridItem md={2} className={classes.row}>
-            <SearchButton />
+            <SearchButton/>
           </GridItem>
         </GridContainer>
         <Accordion

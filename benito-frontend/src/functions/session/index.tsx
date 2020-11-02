@@ -3,7 +3,7 @@ import { updateSessionState } from "../../actions/session";
 import Cookies from "js-cookie";
 import axios, { AxiosRequestConfig } from "axios";
 import { benitoHost } from "../../config";
-import { LoginData, Session } from "../../types";
+import { LoginData, Organization, Person, Session } from "../../types";
 import { fetchUser, mapRoleToCollection } from "../user";
 
 const X_QUI_TOKEN = "x-qui-token";
@@ -27,6 +27,15 @@ export async function openLocalStoredSession(cb?: () => void) {
           method: "GET",
         })
         .then((res) => res.data);
+
+        const person = await axios
+        .request<Person>({
+          url: `${benitoHost}/benito/${session.role.toLocaleLowerCase()}s/${session.userId}`,
+          headers: { "x-qui-token": quiTokenStorage },
+          method: "GET",
+        })
+        .then((res) => res.data);
+
       const user = await fetchUser(
         mapRoleToCollection(session.role),
         session.userId
@@ -40,6 +49,8 @@ export async function openLocalStoredSession(cb?: () => void) {
           token: quiTokenStorage,
           username: user.username,
           isLoggedIn: true,
+          organizations: person.organizations,
+          selectedOrganization: person.organizations[0]
         })
       );
     } catch (e) {

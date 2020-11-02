@@ -34,9 +34,6 @@ const RegularButton = React.forwardRef((props: any, ref) => {
 
   const classes = makeComponentStyles();
 
-  console.error("voy al if")
-  console.error(color)
-
   if(color == undefined || !color.startsWith("#")){
     const btnClasses = classNames({
       [classes.button]: true,
