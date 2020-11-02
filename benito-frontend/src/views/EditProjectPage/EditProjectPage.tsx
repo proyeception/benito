@@ -448,7 +448,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
         fixed
         {...rest}
       />
-      <Parallax filter image={project.value.pictureUrl} small />
+      <Parallax filter image={organization.header} small />
       <div className={classes.main}>
         <GridContainer className={classes.container}>
           <GridItem xs={12} sm={12} md={12}>

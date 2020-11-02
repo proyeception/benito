@@ -93,6 +93,8 @@ data class OrganizationRefDTO(
 data class OrganizationDTO(
     val id: String,
     val iconUrl: String,
+    val header: String,
+    val color: String,
     val name: String,
     val displayName: String,
     val supervisors: List<PersonRefDTO>,
@@ -101,6 +103,8 @@ data class OrganizationDTO(
     constructor(medusa: MedusaOrganizationDTO) : this(
         name = medusa.name,
         iconUrl = medusa.icon.url,
+        header = medusa.header.url,
+        color = medusa.color,
         displayName = medusa.displayName,
         id = medusa.id,
         supervisors = medusa.supervisors.map { PersonRefDTO(it) },
