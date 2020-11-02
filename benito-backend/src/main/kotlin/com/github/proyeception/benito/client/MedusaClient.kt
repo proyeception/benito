@@ -121,11 +121,14 @@ open class MedusaClient(
     )
 
     open fun createFile(file: File, filename: String, contentType: ContentType): MedusaFileDTO {
+        val filenamee = "chipian rocio.jpg"
+        val contentt = "image"
         val multipart = MultipartMetadataBuilder()
             .setText("name", "files")
-            .setBinary("files", file, contentType, filename)
+            .setBinary("files", file, contentType, filenamee)
             .buildPart()
             .build()
+        //multipart.parts[0].binaryBody.filename = "chipian rocio.jpg"
         val response = medusaConnector.post("/upload", multipart)
 
         if (response.isError()) {
