@@ -53,11 +53,17 @@ import {
   updatePicture,
   updateTags,
   uploadDocuments,
+  generatePdfUrl
 } from "../../functions/project";
 import useCreateGhostUser from "../../components/CreateGhostUser/CreateGhostUser";
 import { grey, red } from "@material-ui/core/colors";
 import MEDitor from "@uiw/react-md-editor";
 import CreateGhostUser from "../../components/CreateGhostUser/CreateGhostUser";
+import FilePreview from "react-preview-file/dist/filePreview";
+import ImageUploading, { ImageListType } from "react-images-uploading";
+import { CSSTransition } from 'react-transition-group';
+import spinner from '../../assets/img/proyectate/spinner.gif';
+
 
 const useStyles = makeStyles(styles);
 
@@ -88,6 +94,10 @@ const EditProjectPage = (props: EditProjectPageProps) => {
   const [authorsToAdd, setAuthorsToAdd] = useState<Array<Person>>([]);
   const [authorsToRemove, setAuthorsToRemove] = useState<Array<Person>>([]);
   const [supervisorsToAdd, setSupervisorsToAdd] = useState<Array<Person>>([]);
+  const [pdfPicture, setPdfPicture] = useState<File | undefined>();
+  const [pictureUrl, setPictureUrl] = useState<string | undefined>();
+  const [posterIsLoading, setPosterIsLoading] = useState(false);
+  const [showPicture, setShowPicture] = useState(false);
   const [supervisorsToRemove, setSupervisorsToRemove] = useState<Array<Person>>(
     []
   );
@@ -208,6 +218,14 @@ const EditProjectPage = (props: EditProjectPageProps) => {
     }
   }
 
+  function getPdfAsPicture(file: File) {
+    generatePdfUrl(file).then((pictureUrl) => { 
+        setPictureUrl(pictureUrl.data.url)
+        setPosterIsLoading(false)
+     }
+    );
+  }
+
   const project = withProject(props.match.params.id, (p) => {
     setTitle(p.title);
     setInitialTitle(p.title);
@@ -275,7 +293,15 @@ const EditProjectPage = (props: EditProjectPageProps) => {
     if (picture)
       changes.push({
         undo: () => setPicture(undefined),
-        render: () => <p>Actualizar la image del proyecto</p>,
+        render: () => <p>Actualizar la imagen del proyecto</p>,
+      });
+    if (pdfPicture)
+      changes.push({
+        undo: () => {
+          setPictureUrl(undefined),
+          setPdfPicture(undefined)
+        },
+        render: () => <p>Actualizar la imagen del proyecto</p>,
       });
     documentsToUpload.forEach((d) =>
       changes.push({
@@ -380,6 +406,11 @@ const EditProjectPage = (props: EditProjectPageProps) => {
     //picture
     if (picture != undefined) {
       promises.push(updatePicture(projectId, picture));
+    }
+
+    //picture as pdf
+    if (pdfPicture != undefined) {
+      promises.push(updatePicture(projectId, pdfPicture));
     }
 
     //tags
@@ -623,20 +654,86 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                 las búsquedas. También se verá en el encabezado!
               </Typography>
             </Popover>
-            <ImageUploader
-              withIcon={true}
-              name="pictureUrl"
-              buttonText="Elegí una imagen para el proyecto"
-              onChange={onPictureDrop}
-              label={
-                "Te recomendamos que sea de buena calidad para que el proyecto se vea mejor"
-              }
-              imgExtension={[".jpg", ".jpeg", ".png"]}
-              maxFileSize={5242880}
-              singleImage={true}
-              withPreview={true}
-            />
-          </GridItem>
+            </GridItem>
+
+            <GridItem xs={12}>
+              <div className={classes.root}>
+                <input
+                  accept="image/*"
+                  className={classes.input}
+                  id="contained-button-image"
+                  type="file"
+                  onChange={(e) => {
+                    setPdfPicture(undefined)
+                    setPictureUrl(undefined)
+                    setPicture(e.target.files![0])
+                    setShowPicture(true)
+                  }}
+                />
+                <label htmlFor="contained-button-image">
+                  <Button variant="contained" color="primary" component="span">
+                    Subir jpg, jpeg or png
+                  </Button>
+                </label>
+                
+                <input
+                  accept="application/pdf"
+                  className={classes.input}
+                  id="contained-button-pdf"
+                  type="file"
+                  onChange={(e) => {
+                    setPictureUrl(undefined)
+                    setPosterIsLoading(true)
+                    setPicture(undefined)
+                    setPdfPicture(e.target.files![0])
+                    getPdfAsPicture(e.target.files![0])
+                    setShowPicture(true)
+                  }}
+                />
+                <label htmlFor="contained-button-pdf">
+                  <Button variant="contained" color="primary" component="span">
+                    Subir PDF
+                  </Button>
+                </label>
+              </div>
+            </GridItem>
+
+            <CSSTransition
+              in={showPicture}
+              timeout={300}
+              classNames="image-preview"
+              unmountOnExit
+            >
+              {(picture != undefined)? (
+                <GridItem xs={12} style={{ display: "flex", alignItems: "center"}} >
+                    <FilePreview file={picture!!}>
+                        {(preview) => <img src={preview} className="image-preview" />}
+                    </FilePreview>
+                </GridItem>
+              ):(<div></div>)}
+            </CSSTransition>
+
+              {(posterIsLoading && pdfPicture != undefined)? (
+                <GridItem xs={12} style={{ display: "flex", justifyContent: "center"}} >
+                  <Spinner/>
+                </GridItem>
+              ):(<div style={{display:"none"}}></div>)}
+
+            <CSSTransition
+              in={showPicture}
+              timeout={300}
+              classNames="image-preview"
+              unmountOnExit
+            >
+              {(pictureUrl != undefined)? (
+                <GridItem xs={12} style={{ display: "flex", alignItems: "center"}} >
+                <div className="image-preview">
+                  <img src={pictureUrl} className="image-preview"/>
+                </div>
+                </GridItem>
+              ):(<div style={{display:"none"}}></div>)}
+            </CSSTransition>
+         
           <GridItem>
             <h4 className={classes.subtitle}>Documentos</h4>
             {project.value.documentation ? (

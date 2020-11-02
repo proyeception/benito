@@ -63,10 +63,8 @@ import classNames from "classnames";
 import CreateGhostUser from "../../components/CreateGhostUser/CreateGhostUser";
 import { SSL_OP_EPHEMERAL_RSA } from "constants";
 import SelectInput from "@material-ui/core/Select/SelectInput";
-import NavPills from "../../components/NavPills/NavPills";
 import FilePreview from "react-preview-file/dist/filePreview";
 import ImageUploading, { ImageListType } from "react-images-uploading";
-import { Document, Page } from 'react-pdf';
 import { CSSTransition } from 'react-transition-group';
 import spinner from '../../assets/img/proyectate/spinner.gif';
 
@@ -288,6 +286,19 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
   function Changes() {
     const changes: Array<Change> = [];
 
+    if (picture)
+      changes.push({
+        undo: () => setPicture(undefined),
+        render: () => <p>Actualizar la imagen del proyecto</p>,
+      });
+    if (pdfPicture)
+      changes.push({
+        undo: () => {
+          setPictureUrl(undefined),
+          setPdfPicture(undefined)
+        },
+        render: () => <p>Actualizar la imagen del proyecto</p>,
+      });
     documentsToUpload.forEach((d) =>
       changes.push({
         undo: () =>
