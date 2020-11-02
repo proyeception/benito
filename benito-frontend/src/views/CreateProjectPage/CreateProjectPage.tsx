@@ -118,6 +118,9 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
   const [dateIncompleted, setDateIncompleted] = React.useState(true);
   const [categoryIncompleted, setCategoryIncompleted] = React.useState(true);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [supervisorsIncompleted, setSupervisorsIncompleted] = React.useState(
+    true
+  );
   const [
     createGhostSupervisorFormOpen,
     setCreateGhostSupervisorFormOpen,
@@ -390,8 +393,6 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
         return <Redirect to={{ pathname: "/error" }} />;
       });
   }
-
-  console.log("aaaaaaaaaaaaaaa");
 
   return (
     <div>
@@ -928,6 +929,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                     (s) => !supervisorsToAdd.includes(s)
                   )}
                   getOptionLabel={(option) => option.fullName}
+                  onPointerLeave={() => {}}
                   onChange={(e, s) => {
                     if (s) {
                       setSupervisorsToAdd(supervisorsToAdd.concat(s!));
@@ -978,7 +980,10 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
               color="secondary"
               style={{ textAlign: "right" }}
               className={classes.button}
-              onClick={props.history.push(`/projects/${project.id}`)}
+              onClick={
+                () => {}
+                //props.history.push(`/projects/${project.id}`)
+              }
             >
               Descartar y volver
             </CustomButton>
@@ -993,7 +998,14 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
               }
               style={{ textAlign: "right" }}
               className={classes.button}
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => {
+                if (supervisorsToAdd.length > 0) {
+                  setIsModalOpen(true);
+                  setSupervisorsIncompleted(false);
+                } else {
+                  setSupervisorsIncompleted(true);
+                }
+              }}
             >
               Guardar cambios
             </CustomButton>
