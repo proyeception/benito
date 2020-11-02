@@ -34,24 +34,48 @@ const RegularButton = React.forwardRef((props: any, ref) => {
 
   const classes = makeComponentStyles();
 
-  const btnClasses = classNames({
-    [classes.button]: true,
-    [getKeyValue(classes)(size)]: size,
-    [getKeyValue(classes)(color)]: color,
-    [classes.round]: round,
-    [classes.fullWidth]: fullWidth,
-    [classes.disabled]: disabled,
-    [classes.simple]: simple,
-    [classes.block]: block,
-    [classes.link]: link,
-    [classes.justIcon]: justIcon,
-    [className]: className
-  });
-  return (
-    <Button {...rest} ref={ref} className={btnClasses}>
-      {children}
-    </Button>
-  );
+  console.error("voy al if")
+  console.error(color)
+
+  if(color == undefined || !color.startsWith("#")){
+    const btnClasses = classNames({
+      [classes.button]: true,
+      [getKeyValue(classes)(size)]: size,
+      [getKeyValue(classes)(color)]: color,
+      [classes.round]: round,
+      [classes.fullWidth]: fullWidth,
+      [classes.disabled]: disabled,
+      [classes.simple]: simple,
+      [classes.block]: block,
+      [classes.link]: link,
+      [classes.justIcon]: justIcon,
+      [className]: className
+    });
+    return (
+      <Button {...rest} ref={ref} className={btnClasses}>
+        {children}
+      </Button>
+    );
+  } else {
+    const btnClasses = classNames({
+      [classes.button]: true,
+      [getKeyValue(classes)(size)]: size,
+      [classes.round]: round,
+      [classes.fullWidth]: fullWidth,
+      [classes.disabled]: disabled,
+      [classes.simple]: simple,
+      [classes.block]: block,
+      [classes.link]: link,
+      [classes.justIcon]: justIcon,
+      [className]: className
+    });
+    return (
+      <Button {...rest} ref={ref} className={btnClasses} style={{backgroundColor:color, boxShadow:
+        "0 5px 15px -8px rgba(0, 0, 0, 0.24), 0 8px 10px -5px rgba(0, 0, 0, 0.2)"}}>
+        {children}
+      </Button>
+    );
+  }
 });
 
 export default RegularButton;

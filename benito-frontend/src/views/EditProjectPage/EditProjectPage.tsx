@@ -452,7 +452,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
       <div className={classes.main}>
         <GridContainer className={classes.container}>
           <GridItem xs={12} sm={12} md={12}>
-            <h2 className={classes.title} style={{ textAlign: "center" }}>
+            <h2 className={classes.title} style={{ textAlign: "center", color: organization.color }}>
               EDITAR UN PROYECTO
             </h2>
             <h4
@@ -513,7 +513,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
               <Icon
                 onMouseEnter={handlePopoverOpen2}
                 onMouseLeave={handlePopoverClose2}
-                style={{ color: "#c41234", verticalAlign: "middle" }}
+                style={{ color: organization.color, verticalAlign: "middle" }}
               >
                 help
               </Icon>
@@ -556,7 +556,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
               <Icon
                 onMouseEnter={handlePopoverOpen}
                 onMouseLeave={handlePopoverClose}
-                style={{ color: "#c41234", verticalAlign: "middle" }}
+                style={{ color: organization.color, verticalAlign: "middle" }}
               >
                 help
               </Icon>
@@ -625,7 +625,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
               <Icon
                 onMouseEnter={handlePopoverOpen3}
                 onMouseLeave={handlePopoverClose3}
-                style={{ color: "#c41234", verticalAlign: "middle" }}
+                style={{ color: organization.color, verticalAlign: "middle" }}
               >
                 help
               </Icon>
@@ -783,7 +783,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                 <Icon
                   onMouseEnter={handlePopoverOpen4}
                   onMouseLeave={handlePopoverClose4}
-                  style={{ color: "#c41234", verticalAlign: "middle" }}
+                  style={{ color: organization.color, verticalAlign: "middle" }}
                 >
                   help
                 </Icon>
@@ -862,7 +862,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                   <CustomButton
                     fullWidth
                     type="button"
-                    color="primary"
+                    color={organization.color}
                     onClick={() => setCreateGhostAuthorFormOpen(true)}
                   >
                     <AddCircle />
@@ -877,7 +877,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                 <Icon
                   onMouseEnter={handlePopoverOpen5}
                   onMouseLeave={handlePopoverClose5}
-                  style={{ color: "#c41234", verticalAlign: "middle" }}
+                  style={{ color: organization.color, verticalAlign: "middle" }}
                 >
                   help
                 </Icon>
@@ -958,7 +958,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                   <CustomButton
                     fullWidth
                     type="button"
-                    color="primary"
+                    color={organization.color}
                     onClick={() => setCreateGhostSupervisorFormOpen(true)}
                   >
                     <AddCircle />
@@ -1006,7 +1006,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
             </CustomButton>
             <CustomButton
               type="button"
-              color="primary"
+              color={organization.color}
               className={classes.button}
               disabled={titleIncompleted || descriptionIncompleted}
               style={{ textAlign: "right" }}
