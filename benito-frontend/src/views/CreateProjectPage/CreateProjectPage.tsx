@@ -235,19 +235,31 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
     console.error("Usuario sin permisos de supervisor");
     return <Redirect to={{ pathname: "/error" }} />;
   }
-
-  const user = withUser(props.session.role, props.session.userId, (p) => {
-    if (p.organizations[0] == undefined) {
-      console.error("Usuario sin organizaciones");
-      return <Redirect to={{ pathname: "/error" }} />;
-    }
-    fetchOrganization(p.organizations[0].id)
+  
+  if(props.session.isLoggedIn){
+    fetchOrganization(props.session.selectedOrganization.id)
       .then((res) => res.data)
       .then((o) => setOrganization(o))
       .catch((e) => {
         console.error(e);
         setOrganization("ERROR");
       });
+  }
+
+  const user = withUser(props.session.role, props.session.userId, (p) => {
+    if (p.organizations[0] == undefined) {
+      console.error("Usuario sin organizaciones");
+      return <Redirect to={{ pathname: "/error" }} />;
+    }
+    if(props.session.isLoggedIn){
+      fetchOrganization(props.session.selectedOrganization.id)
+        .then((res) => res.data)
+        .then((o) => setOrganization(o))
+        .catch((e) => {
+          console.error(e);
+          setOrganization("ERROR");
+        });
+    }
   });
 
   if (user.type == PENDING || isLoading) {
@@ -839,7 +851,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                 <Autocomplete
                   fullWidth
                   clearOnBlur
-                  options={organization.supervisors.filter(
+                  options={organization.authors.filter(
                     (s) => !authorsToAdd.includes(s)
                   )}
                   getOptionLabel={(option) => option.fullName}
