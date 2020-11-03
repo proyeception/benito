@@ -251,7 +251,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
   });
 
   if (user.type == PENDING || isLoading) {
-    return <Spinner />;
+    return <Spinner color={color}/>;
   }
 
   if (user.type == ERROR) {
@@ -280,7 +280,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
   };
 
   if (organization == undefined) {
-    return <Spinner />;
+    return <Spinner color={color}/>;
   }
 
   if (organization == "ERROR") {
@@ -711,7 +711,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
 
               {(posterIsLoading && pdfPicture != undefined)? (
                 <GridItem xs={12} style={{ display: "flex", justifyContent: "center"}} >
-                  <Spinner/>
+                  <Spinner color={color}/>
                 </GridItem>
               ):(<div style={{display:"none"}}></div>)}
 
