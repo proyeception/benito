@@ -72,6 +72,9 @@ const DocumentsSection = ({ project }: DocumentsSectionProps) => {
               <AlertTitle style={{ color: "#3c4858" }}><Link to={`/login`} style={{ color: project.organization.color, textDecoration: "underline" }}>Inicia sesión</Link> para descargar la documentación del proyecto!</AlertTitle>
             </Alert>
           )}
+          {project.documentation != undefined && project.documentation.length == 0 ? (
+            <div> El proyecto no cuenta con documentación</div>
+            ) : (<div style={{display: "none"}}></div>)}
         </GridItem>
       </GridContainer>
     </div>
