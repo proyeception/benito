@@ -926,25 +926,13 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                     (s) => !supervisorsToAdd.includes(s)
                   )}
                   getOptionLabel={(option) => option.fullName}
-                  onPointerLeave={(e) => {
-                    if (supervisorsToAdd.length > 0) {
-                      setSupervisorsIncompleted(false);
-                    } else {
-                      setSupervisorsIncompleted(true);
-                    }
-                  }}
+                  onPointerLeave={() => {}}
                   onChange={(e, s) => {
                     if (s) {
                       setSupervisorsToAdd(supervisorsToAdd.concat(s!));
                     }
                   }}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      fullWidth
-                      error={supervisorsIncompleted}
-                    />
-                  )}
+                  renderInput={(params) => <TextField {...params} fullWidth />}
                 />
               </GridItem>
               <GridItem xs={3}>

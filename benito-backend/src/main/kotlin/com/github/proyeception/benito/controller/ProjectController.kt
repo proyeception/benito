@@ -9,7 +9,6 @@ import com.github.proyeception.benito.extension.launchIOAsync
 import com.github.proyeception.benito.job.FileWatcher
 import com.github.proyeception.benito.service.ProjectService
 import com.github.proyeception.benito.service.SessionService
-import com.github.proyeception.benito.service.StatsService
 import com.github.proyeception.benito.service.UserService
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -183,7 +182,12 @@ open class ProjectController(
         @PathVariable projectId: String,
         @RequestBody users: SetUsersDTO,
         @RequestHeader(value = X_QUI_TOKEN, required = true) token: String
-    ): ProjectDTO = doSupervisorAuthorized(projectId, token) { projectService.setUsers(projectId, users) }
+    ): ProjectDTO = doSupervisorAuthorized(projectId, token) {
+        projectService.setUsers(
+            projectId,
+            users.copy(supervisors = users.supervisors.plus(sessionService[token]!!.userId).distinct())
+        )
+    }
 
     @RequestMapping(value = ["/benito/projects/{projectId}/authors"], method = [RequestMethod.DELETE])
     @ResponseBody

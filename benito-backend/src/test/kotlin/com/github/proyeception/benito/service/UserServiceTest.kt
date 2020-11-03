@@ -54,10 +54,10 @@ class UserServiceTest : Spec() {
                                     url = "https://icon.com"
                                 ),
                                 header =  MedusaFileDTO(
-                                        url = "",
+                                        url = "header",
                                         id = "123"
                                 ),
-                                color = "",
+                                color = "color",
                                 authors = emptyList(),
                                 supervisors = emptyList()
                             )
@@ -83,7 +83,9 @@ class UserServiceTest : Spec() {
                         id = "123",
                         iconUrl = "https://icon.com",
                         authors = emptyList(),
-                        supervisors = emptyList()
+                        supervisors = emptyList(),
+                        header = "header",
+                        color = "color"
                     )
                 )
 
@@ -99,7 +101,9 @@ class UserServiceTest : Spec() {
                             id = "123",
                             iconUrl = "https://icon.com",
                             authors = emptyList(),
-                            supervisors = emptyList()
+                            supervisors = emptyList(),
+                            header = "header",
+                            color = "color"
                         )
                     ),
                     projects = listOf(
@@ -114,7 +118,9 @@ class UserServiceTest : Spec() {
                                 id = "123",
                                 iconUrl = "https://icon.com",
                                 authors = emptyList(),
-                                supervisors = emptyList()
+                                supervisors = emptyList(),
+                                header = "header",
+                                color = "color"
                             )
                         )
                     ),

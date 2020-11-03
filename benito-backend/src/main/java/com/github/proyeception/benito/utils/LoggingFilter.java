@@ -6,6 +6,8 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
 import javax.servlet.*;
@@ -19,6 +21,8 @@ import java.util.List;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
+@Component
+@Order(2)
 public class LoggingFilter implements Filter {
     private static final String AUTHORIZATION_HEADER = "authorization";
     private static final String COOKIE_HEADER = "cookie";

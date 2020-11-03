@@ -36,7 +36,8 @@ class SessionStorage(
 
     fun delete(key: String) {
         mongoTemplate.remove(
-            Query(where("key").isEqualTo(key))
+            Query(where("key").isEqualTo(key)),
+            Session::class.java
         )
     }
 
