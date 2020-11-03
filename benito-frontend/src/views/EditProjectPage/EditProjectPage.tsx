@@ -138,6 +138,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
   const [generatedTags, setGeneratedTags] = useState<Array<string>>([]);
   const [selectedTags, setSelectedTags] = useState<Array<string>>([]);
   const [initialTags, setInitialTags] = useState<Array<string>>([]);
+  const [tagsToRemove, setTagsToRemove] = useState<Array<string>>([]);
 
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -347,6 +348,13 @@ const EditProjectPage = (props: EditProjectPageProps) => {
         render: () => <p>Agregar tag {s}</p>,
       })
     );
+    tagsToRemove.forEach((tag) =>
+      changes.push({
+        undo: () =>
+          setTagsToRemove(tagsToRemove.filter((t) => t != tag)),
+        render: () => <p>Eliminar #{tag} </p>,
+      })
+    );
     justCreatedSupervisors.forEach((s) =>
       changes.push({
         undo: () =>
@@ -419,7 +427,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
 
     //tags
     if (initialTags.concat(selectedTags) != []) {
-      promises.push(updateTags(projectId, initialTags.concat(selectedTags)));
+      promises.push(updateTags(projectId, initialTags.concat(selectedTags).filter((t) => !tagsToRemove.some((tag) => tag == t))));
     }
 
     //users
@@ -590,21 +598,27 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                 más gente pueda encontrar tu proyecto!
               </Typography>
             </Popover>
-            {selectedTags.concat(initialTags).map((s, idx) => (
-              <div
-                key={idx}
-                className={classNames(
-                  classes.bullet,
-                  "underline-hover",
-                  "cursor-pointer"
-                )}
-                onClick={() =>
-                  setSelectedTags(selectedTags.filter((sta) => sta != s))
-                }
-              >
-                <RemoveCircle /> {s}
-              </div>
-            ))}
+            {selectedTags.concat(initialTags) ? (
+              selectedTags.concat(initialTags)
+                ?.filter((t) => !tagsToRemove.some((tag) => tag == t))
+                ?.map((t, idx) => (
+                  <div
+                    key={idx}
+                    className={classNames(
+                      classes.bullet,
+                      "underline-hover",
+                      "cursor-pointer"
+                    )}
+                    onClick={() =>
+                      setTagsToRemove(tagsToRemove.concat(t))
+                    }
+                  >
+                    <RemoveCircle /> {t}
+                  </div>
+                ))
+            ) : (
+              <div></div>
+            )}
             <GridContainer style={{ display: "flex", alignItems: "center" }}>
               <GridItem xs={12}>
                 <Autocomplete
