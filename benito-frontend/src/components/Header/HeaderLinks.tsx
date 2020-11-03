@@ -36,6 +36,12 @@ interface Props extends RouteComponentProps {
 }
 
 const HeaderLinks = (props: Props) => {
+
+  let color: string = "#c41234"
+  if(props.session && props.session.isLoggedIn){
+    color = props.session.selectedOrganization.color
+  }
+
   const classes = useStyles();
 
   const dropdown = (session: LoggedInState) => {
@@ -52,7 +58,7 @@ const HeaderLinks = (props: Props) => {
         to="/me/profile"
         className={classNames("normalize-link", classes.alignCenter)}
       >
-        <Settings /> <span style={{ paddingLeft: "15px" }}>Configuración</span>
+        <Settings /> <span style={{ paddingLeft: "15px" }}>Editar perfil</span>
       </Link>,
     ];
 
@@ -92,6 +98,7 @@ const HeaderLinks = (props: Props) => {
             buttonText={session.fullName}
             dropdownList={drop}
             style={{color: "white !important"}}
+            color={color}
           />
         </ListItem>
       </List>

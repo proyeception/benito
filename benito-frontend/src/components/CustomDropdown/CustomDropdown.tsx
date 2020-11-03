@@ -3,7 +3,7 @@ import React from "react";
 import classNames from "classnames";
 
 // @material-ui/core components
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, Theme } from "@material-ui/core/styles";
 import MenuItem from "@material-ui/core/MenuItem";
 import MenuList from "@material-ui/core/MenuList";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
@@ -20,7 +20,6 @@ import styles from "../../assets/jss/material-kit-react/components/customDropdow
 
 const getKeyValue = <T extends object, U extends keyof T>(obj: T) => (key: U) => obj[key];
 
-const useStyles = makeStyles(styles);
 
 const nullElement: HTMLElement| null = null;
 
@@ -45,7 +44,6 @@ export default function CustomDropdown(props: any) {
     }
     setAnchorEl(nullElement);
   };
-  const classes = useStyles();
   const {
     buttonText,
     buttonIcon,
@@ -57,8 +55,14 @@ export default function CustomDropdown(props: any) {
     hoverColor,
     left,
     rtlActive,
-    noLiPadding
+    noLiPadding,
+    color
   } = props;
+  const cutomStyles = (theme: Theme) => {
+    return { ...styles(theme, color) };
+  };
+  const useStyles = makeStyles(cutomStyles);
+  const classes = useStyles();
   const caretClasses = classNames({
     [classes.caret]: true,
     [classes.caretActive]: Boolean(anchorEl),
@@ -169,5 +173,5 @@ export default function CustomDropdown(props: any) {
 
 CustomDropdown.defaultProps = {
   caret: true,
-  hoverColor: "primary"
+  hoverColor: "secondary"
 };

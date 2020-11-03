@@ -2,6 +2,7 @@ import {
   defaultFont,
   primaryColor,
   primaryBoxShadow,
+  darkGrayColor,
   infoColor,
   infoBoxShadow,
   successColor,
@@ -16,7 +17,7 @@ import {
 
 import { Theme, createStyles } from '@material-ui/core/styles';
 
-const customDropdownStyle = (theme: Theme) => createStyles({
+const customDropdownStyle = (theme: Theme, color: string) => createStyles({
   popperClose: {
     pointerEvents: "none"
   },
@@ -79,6 +80,13 @@ const customDropdownStyle = (theme: Theme) => createStyles({
   primaryHover: {
     "&:hover": {
       backgroundColor: primaryColor,
+      color: "#FFFFFF",
+      ...primaryBoxShadow
+    }
+  },
+  secondaryHover: {
+    "&:hover": {
+      backgroundColor: color,
       color: "#FFFFFF",
       ...primaryBoxShadow
     }
