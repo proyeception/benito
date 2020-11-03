@@ -17,7 +17,7 @@ import styles from "../../assets/jss/material-kit-react/views/profilePage";
 import { hot } from "react-hot-loader";
 import { Role } from "../../types";
 import withUser from "../../hooks/withUser";
-import { Redirect, RouteComponentProps } from "react-router-dom";
+import { Redirect, RouteComponentProps, withRouter } from "react-router-dom";
 import { ERROR, PENDING } from "../../hooks/withFetch";
 import { Link } from "react-router-dom";
 import { Card, ThemeProvider, createMuiTheme, Hidden } from "@material-ui/core";
@@ -31,6 +31,9 @@ import Pagination from "@material-ui/lab/Pagination";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
+import { connect } from "react-redux";
+import { RootState } from "../../reducers";
+import { SessionState } from "../../store/session/types";
 
 const useStyles = makeStyles({
   ...styles,
@@ -40,26 +43,34 @@ const useStyles = makeStyles({
   },
 });
 
-type Props = { role: Role };
+interface ProfilePageProps extends RouteComponentProps<MatchParams> {
+  role: Role;
+  session?: SessionState;
+}
 
 type MatchParams = {
   id: string;
 };
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      light: "#c41234",
-      main: "#c41234",
-      dark: "#c41234",
-      contrastText: "#fff",
-    },
-  },
-});
-
-interface ProfilePageProps extends Props, RouteComponentProps<MatchParams> {}
 
 const ProfilePage = (props: ProfilePageProps) => {
+  
+  let color: string = "#c41234"
+  if(props.session && props.session.isLoggedIn){
+    color = props.session.selectedOrganization.color
+  }
+
+  const theme = createMuiTheme({
+    palette: {
+      primary: {
+        light: color,
+        main: color,
+        dark: color,
+        contrastText: "#fff",
+      },
+    },
+  });
+
   const classes = useStyles();
   const { ...rest } = props;
   const imageClasses = classNames(
@@ -92,7 +103,7 @@ const ProfilePage = (props: ProfilePageProps) => {
   const noProfilePic = "https://image.flaticon.com/icons/png/512/16/16363.png";
 
   if (user.type == PENDING) {
-    return <Spinner />;
+    return <Spinner color={color}/>;
   }
 
   if (user.type == ERROR) {
@@ -117,7 +128,7 @@ const ProfilePage = (props: ProfilePageProps) => {
                     />
                   </div>
                   <div className={classes.name}>
-                    <h3 className={classes.title}>{user.value.fullName}</h3>
+                    <h3 className={classes.title} style={{color:color}}>{user.value.fullName}</h3>
                     <br />
                     {user.value.socials.twitter && (
                       <a
@@ -280,7 +291,8 @@ const ProfilePage = (props: ProfilePageProps) => {
                   }}
                   variant="outlined"
                   size="large"
-                  startIcon={<ArrowBackIos />}
+                  style={{color:color}}
+                  startIcon={<ArrowBackIos style={{color:color}}/>}
                 >
                   Volver
                 </Button>
@@ -294,4 +306,10 @@ const ProfilePage = (props: ProfilePageProps) => {
   );
 };
 
-export default hot(module)(ProfilePage);
+const mapStateToProps = (rootState: RootState) => {
+  return {
+    session: rootState.session,
+  };
+};
+
+export default hot(module)(connect(mapStateToProps)(withRouter(ProfilePage)));
