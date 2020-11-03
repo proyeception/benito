@@ -261,7 +261,11 @@ const EditProjectPage = (props: EditProjectPageProps) => {
   });
 
   if (project.type == PENDING || organization == undefined || isLoading) {
-    return <Spinner />;
+    let color: string = "#c41234"
+    if(props.session && props.session.isLoggedIn && props.session.selectedOrganization){
+      color = props.session.selectedOrganization.color
+    }
+    return <Spinner color={color}/>;
   }
 
   if (project.type == ERROR || organization == "ERROR") {
@@ -715,7 +719,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
 
               {(posterIsLoading && pdfPicture != undefined)? (
                 <GridItem xs={12} style={{ display: "flex", justifyContent: "center"}} >
-                  <Spinner/>
+                  <Spinner color={organization.color}/>
                 </GridItem>
               ):(<div style={{display:"none"}}></div>)}
 

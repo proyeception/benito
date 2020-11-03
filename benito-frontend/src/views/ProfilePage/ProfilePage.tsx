@@ -56,7 +56,7 @@ type MatchParams = {
 const ProfilePage = (props: ProfilePageProps) => {
   
   let color: string = "#c41234"
-  if(props.session && props.session.isLoggedIn){
+  if(props.session && props.session.isLoggedIn && props.session.selectedOrganization){
     color = props.session.selectedOrganization.color
   }
 

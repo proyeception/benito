@@ -40,7 +40,7 @@ const useStyles = makeStyles(styles);
 const SearchResultsSection = (props: SearchResultsSectionProps) => {
 
   let color: string = "#c41234"
-  if(props.session && props.session.isLoggedIn){
+  if(props.session && props.session.isLoggedIn && props.session.selectedOrganization){
     color = props.session.selectedOrganization.color
   }
 
