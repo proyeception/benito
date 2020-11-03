@@ -102,10 +102,9 @@ const HeaderLinks = (props: Props) => {
               }}
               buttonText={session.selectedOrganization.name}
               dropdownList={userOrganizations.map((s: Organization, idx) => (
-                <span key={idx} style={{ paddingLeft: "15px" }} onClick={(s) => {
+                <div key={idx} style={{ paddingLeft: "15px", width: "-webkit-fill-available" }} onClick={(s) => {
                     if(props.session.isLoggedIn){
                       let organi: Organization = session.organizations[idx]
-                      store.dispatch(updateSessionSelectedOrganization(organi))
                       store.dispatch(
                         updateSessionState({
                           ...props.session,
@@ -113,7 +112,7 @@ const HeaderLinks = (props: Props) => {
                         })
                       ) 
                   }
-              }}>{s.name.toUpperCase()}</span>
+              }}>{s.name.toUpperCase()}</div>
               ))}
               style={{color: "white !important"}}
               color={color}
