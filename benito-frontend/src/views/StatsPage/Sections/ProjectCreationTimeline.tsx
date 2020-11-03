@@ -266,7 +266,6 @@ const mapStateToProps = (rootState: RootState) => {
   
   var hues = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink']
   const randomHue = hues[Math.floor((Math.random() * 6))]
-  console.error(randomHue)
 
   const minYear = 2010
   const maxYear = moment().year();

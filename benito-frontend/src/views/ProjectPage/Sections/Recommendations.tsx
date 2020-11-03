@@ -29,8 +29,6 @@ type RecommendationSectionProps = {
 
 const SearchResultsSection = ({ project }: RecommendationSectionProps) => {
 
-  console.error(project.organization.color)
-
   const recommendations = withRecommendations(project.id);
 
   const classes = useStyles();
