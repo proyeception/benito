@@ -4,7 +4,9 @@ import {
   UPDATE_SESSION_STATE,
   LoggedInState,
   UPDATE_SESSION_FULL_NAME,
+  UPDATE_SESSION_SELECTED_ORGANIZATION
 } from "../../store/session/types";
+import { Organization } from "../../types";
 
 export function updateSessionState(loginState: LoggedInState): SessionAction {
   return {
@@ -23,5 +25,12 @@ export function updateSessionFullName(n: string): SessionAction {
   return {
     type: UPDATE_SESSION_FULL_NAME,
     payload: n,
+  };
+}
+
+export function updateSessionSelectedOrganization(o: Organization): SessionAction {
+  return {
+    type: UPDATE_SESSION_SELECTED_ORGANIZATION,
+    payload: o,
   };
 }

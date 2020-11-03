@@ -27,7 +27,8 @@ import classNames from "classnames";
 import { Hidden } from "@material-ui/core";
 import MG from "../../assets/img/proyectate/magnifying-glass.png";
 import store from "../../store";
-import { invalidateSession } from "../../actions/session";
+import { invalidateSession, updateSessionSelectedOrganization, updateSessionState } from "../../actions/session";
+import { Organization } from "../../types";
 
 const useStyles = makeStyles(styles);
 
@@ -38,13 +39,16 @@ interface Props extends RouteComponentProps {
 const HeaderLinks = (props: Props) => {
 
   let color: string = "#c41234"
+  let userOrganizations: Array<Organization> = []
   if(props.session && props.session.isLoggedIn  && props.session.selectedOrganization){
     color = props.session.selectedOrganization.color
+    userOrganizations = props.session.organizations
   }
 
   const classes = useStyles();
 
   const dropdown = (session: LoggedInState) => {
+
     const drop: Array<any> = [
       <UserLink
         role={session.role}
@@ -90,6 +94,32 @@ const HeaderLinks = (props: Props) => {
 
     return (
       <List className={classes.list}>
+        {(userOrganizations.length > 1) ?
+          (<ListItem className={classes.listItem} style={{color: "white !important"}}>
+            <CustomDropdown
+              buttonProps={{
+                color: "transparent",
+              }}
+              buttonText={session.selectedOrganization.name}
+              dropdownList={userOrganizations.map((s: Organization, idx) => (
+                <span key={idx} style={{ paddingLeft: "15px" }} onClick={(s) => {
+                    if(props.session.isLoggedIn){
+                      let organi: Organization = session.organizations[idx]
+                      store.dispatch(updateSessionSelectedOrganization(organi))
+                      store.dispatch(
+                        updateSessionState({
+                          ...props.session,
+                          selectedOrganization: organi
+                        })
+                      ) 
+                  }
+              }}>{s.name.toUpperCase()}</span>
+              ))}
+              style={{color: "white !important"}}
+              color={color}
+            />
+          </ListItem>) : (<span style={{ display: "none" }}></span>)
+        }
         <ListItem className={classes.listItem} style={{color: "white !important"}}>
           <CustomDropdown
             buttonProps={{
