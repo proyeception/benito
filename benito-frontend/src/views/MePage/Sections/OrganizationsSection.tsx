@@ -24,6 +24,10 @@ import {
   mapRoleToCollection,
 } from "../../../functions/user";
 import { grey } from "@material-ui/core/colors";
+import { RootState } from "../../../reducers";
+import { connect } from "react-redux";
+import { RouteComponentProps, withRouter } from "react-router-dom";
+import { SessionState } from "../../../store/session/types";
 
 const styles = {
   ...organizationsStyle,
@@ -32,9 +36,10 @@ const styles = {
   cardSubtitle,
 };
 
-interface OrganizationsSectionProps {
+interface OrganizationsSectionProps extends RouteComponentProps {
   user: Person;
   role: Role;
+  session?: SessionState;
 }
 
 const theme = createMuiTheme({
@@ -46,6 +51,12 @@ const theme = createMuiTheme({
 const useStyles = makeStyles(styles);
 
 const OrganizationsSection = (props: OrganizationsSectionProps) => {
+
+  let color: string = "#c41234"
+  if(props.session && props.session.isLoggedIn){
+    color = props.session.selectedOrganization.color
+  }
+
   const classes = useStyles();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -92,7 +103,7 @@ const OrganizationsSection = (props: OrganizationsSectionProps) => {
 
                 <CustomButton
                   type="button"
-                  color="primary"
+                  color={color}
                   className={classes.cardLink}
                   onClick={() => {
                     handleOpen();
@@ -160,4 +171,10 @@ const OrganizationsSection = (props: OrganizationsSectionProps) => {
   );
 };
 
-export default hot(module)(OrganizationsSection);
+const mapStateToProps = (rootState: RootState) => {
+  return {
+    session: rootState.session,
+  };
+};
+
+export default hot(module)(connect(mapStateToProps)(withRouter(OrganizationsSection)));

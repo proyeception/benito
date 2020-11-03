@@ -22,15 +22,26 @@ import Switch from "@material-ui/core/Switch";
 import Spinner from "../../../components/Spinner/Spinner";
 import store from "../../../store";
 import { updateSessionFullName } from "../../../actions/session";
+import { RootState } from "../../../reducers";
+import { connect } from "react-redux";
+import { SessionState } from "../../../store/session/types";
 
 const useStyles = makeStyles(styles);
 
 interface ProfileSectionProps extends RouteComponentProps {
   user: Person;
   role: Role;
+  session?: SessionState;
 }
 
 const ProfileSection = (props: ProfileSectionProps) => {
+
+  let color: string = "#c41234"
+  if(props.session && props.session.isLoggedIn){
+    color = props.session.selectedOrganization.color
+  }
+
+
   const classes = useStyles();
 
   const [socials, setSocials] = useState(props.user.socials);
@@ -68,10 +79,10 @@ const ProfileSection = (props: ProfileSectionProps) => {
     switchBase: {
       color: "#999",
       "&$checked": {
-        color: "#c41234",
+        color: color,
       },
       "&$checked + $track": {
-        backgroundColor: "#c41234",
+        backgroundColor: color,
       },
     },
     checked: {},
@@ -248,7 +259,7 @@ const ProfileSection = (props: ProfileSectionProps) => {
       >
         <CustomButton
           type="button"
-          color="primary"
+          color={color}
           onClick={() => {
             updateUser(mapRoleToCollection(props.role), props.user.id, {
               socials: {
@@ -273,4 +284,10 @@ const ProfileSection = (props: ProfileSectionProps) => {
   );
 };
 
-export default hot(module)(withRouter(ProfileSection));
+const mapStateToProps = (rootState: RootState) => {
+  return {
+    session: rootState.session,
+  };
+};
+
+export default hot(module)(connect(mapStateToProps)(withRouter(ProfileSection)));

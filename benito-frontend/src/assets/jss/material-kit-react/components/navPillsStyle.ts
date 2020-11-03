@@ -8,7 +8,7 @@ import {
   dangerColor
 } from "../../material-kit-react";
 
-const navPillsStyle = (theme: Theme) => createStyles({
+const navPillsStyle = (theme: Theme, color: string) => createStyles({
   root: {
     marginTop: "20px",
     paddingLeft: "0",
@@ -79,7 +79,15 @@ const navPillsStyle = (theme: Theme) => createStyles({
       color: "#FFFFFF",
       backgroundColor: primaryColor,
       boxShadow:
-        "0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(156, 39, 176, 0.4)"
+        "0 5px 15px -8px rgba(0, 0, 0, 0.24), 0 8px 10px -5px rgba(0, 0, 0, 0.2)"
+    }
+  },
+  custom: {
+    "&,&:hover": {
+      color: "#FFFFFF",
+      backgroundColor: color,
+      boxShadow:
+        "0 5px 15px -8px rgba(0, 0, 0, 0.24), 0 8px 10px -5px rgba(0, 0, 0, 0.2)"
     }
   },
   info: {

@@ -37,6 +37,12 @@ interface MePageProps extends RouteComponentProps<MatchParams> {
 }
 
 const MePage = (props: MePageProps) => {
+
+  let color: string = "#c41234"
+  if(props.session && props.session.isLoggedIn){
+    color = props.session.selectedOrganization.color
+  }
+
   if (!props.session.isLoggedIn) {
     return <Redirect to="/login" />;
   }
@@ -59,7 +65,7 @@ const MePage = (props: MePageProps) => {
   const user = withUser(props.session.role, props.session.userId);
 
   if (user.type == PENDING) {
-    return <Spinner/>;
+    return <Spinner color={color}/>;
   }
 
   if (user.type == ERROR) {
@@ -123,7 +129,7 @@ const MePage = (props: MePageProps) => {
                   props.history.push(`/me/${tabs[s].key}`);
                 }}
                 active={activeTab}
-                color="primary"
+                color={color}
                 alignCenter={true}
                 tabs={tabs}
               />
