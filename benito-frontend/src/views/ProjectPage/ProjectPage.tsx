@@ -57,6 +57,9 @@ import {
   WhatsappShareButton,
   WorkplaceShareButton,
 } from "react-share";
+import { SessionState } from "../../store/session/types";
+import { RootState } from "../../reducers";
+import { connect } from "react-redux";
 
 const dashboardRoutes: any = [];
 
@@ -68,7 +71,9 @@ type MatchParams = {
   id: string;
 };
 
-interface Props extends RouteComponentProps<MatchParams>, Any {}
+interface Props extends RouteComponentProps<MatchParams>, Any {
+  session?: SessionState;
+}
 
 const ProjectPage = (props: Props) => {
   const classes = useStyles();
@@ -81,7 +86,11 @@ const ProjectPage = (props: Props) => {
   );
 
   if (project.type == PENDING) {
-    return <Spinner />;
+    let color: string = "#c41234"
+    if(props.session && props.session.isLoggedIn){
+      color = props.session.selectedOrganization.color
+    }
+    return <Spinner color={color}/>;
   }
 
   if (project.type == ERROR) {
@@ -93,6 +102,8 @@ const ProjectPage = (props: Props) => {
     project.value.description.length > 100
       ? project.value.description.slice(0, 97) + "..."
       : project.value.description;
+
+      
   return (
     <div>
       <Header
@@ -198,4 +209,10 @@ const ProjectPage = (props: Props) => {
   );
 };
 
-export default hot(module)(withRouter(ProjectPage));
+const mapStateToProps = (rootState: RootState) => {
+  return {
+    session: rootState.session,
+  };
+};
+
+export default hot(module)(connect(mapStateToProps)(withRouter(ProjectPage)));
