@@ -7,6 +7,7 @@ import { buildQueryParams } from "../../functions/search";
 import { RootState } from "../../reducers";
 import { Category, Organization, SortMethod } from "../../types";
 import { SessionState } from "../../store/session/types";
+import moment from "moment";
 
 interface SearchButtonProps extends RouteComponentProps {
   callback?: () => void;
@@ -60,8 +61,8 @@ const mapStateToProps = (rootState: RootState) => {
     tag: rootState.search.tag,
     category: rootState.search.category,
     orderBy: rootState.search.orderBy,
-    from: rootState.search.from,
-    to: rootState.search.to,
+    from: moment(rootState.search.from).format("yyyy-MM-DD").toString(),
+    to: moment(rootState.search.to).format("yyyy-MM-DD").toString(),
     organization: rootState.search.organization,
     keyword: rootState.search.keyword,
     session: rootState.session,
