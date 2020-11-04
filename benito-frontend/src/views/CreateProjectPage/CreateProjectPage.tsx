@@ -236,15 +236,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
     return <Redirect to={{ pathname: "/error" }} />;
   }
   
-  if(props.session.isLoggedIn){
-    fetchOrganization(props.session.selectedOrganization.id)
-      .then((res) => res.data)
-      .then((o) => setOrganization(o))
-      .catch((e) => {
-        console.error(e);
-        setOrganization("ERROR");
-      });
-  }
+
 
   const user = withUser(props.session.role, props.session.userId, (p) => {
     if (p.organizations[0] == undefined) {
@@ -277,6 +269,16 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
     },
   });
 
+  
+  if (organization == undefined) {
+    return <Spinner color={color}/>;
+  }
+  
+  if (organization == "ERROR") {
+    console.error("Organizacion con error");
+    return <Redirect to={{ pathname: "/error" }} />;
+  }
+
   const project: Project = {
     id: "",
     title: "",
@@ -291,15 +293,18 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
     keywordMatchingDocs: [],
   };
 
-  if (organization == undefined) {
-    return <Spinner color={color}/>;
-  }
+  if(props.session.isLoggedIn){
+    let loggedInSupId = props.session.userId
+    let sup: Array<Person> = organization.supervisors.filter(
+      (s) => s.id == loggedInSupId
+    )
+    console.error(sup)
+    if(!supervisorsToAdd.includes(sup[0])){
 
-  if (organization == "ERROR") {
-    console.error("Organizacion con error");
-    return <Redirect to={{ pathname: "/error" }} />;
+      setSupervisorsToAdd(sup)
+    }
   }
-
+  
   function Changes() {
     const changes: Array<Change> = [];
 
