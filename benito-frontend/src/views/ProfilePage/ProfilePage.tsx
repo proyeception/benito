@@ -130,7 +130,7 @@ const ProfilePage = (props: ProfilePageProps) => {
                   <div className={classes.name}>
                     <h3 className={classes.title} style={{color:color}}>{user.value.fullName}</h3>
                     <br />
-                    {user.value.socials.twitter && (
+                    {user.value.socials.twitter && user.value.socials.twitter != "https://www.twitter.com/" && (
                       <a
                         target="_blank"
                         href={user.value.socials.twitter}
@@ -143,7 +143,7 @@ const ProfilePage = (props: ProfilePageProps) => {
                         </Button>
                       </a>
                     )}
-                    {user.value.socials.linkedin && (
+                    {user.value.socials.linkedin && user.value.socials.linkedin != "https://www.linkedin.com/" && (
                       <a
                         target="_blank"
                         href={user.value.socials.linkedin}
@@ -156,7 +156,7 @@ const ProfilePage = (props: ProfilePageProps) => {
                         </Button>
                       </a>
                     )}
-                    {user.value.socials.facebook && (
+                    {user.value.socials.facebook && user.value.socials.facebook != "https://www.facebook.com/" && (
                       <a
                         target="_blank"
                         href={user.value.socials.facebook}
