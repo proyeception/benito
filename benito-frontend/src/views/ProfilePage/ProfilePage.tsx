@@ -186,7 +186,7 @@ const ProfilePage = (props: ProfilePageProps) => {
                 </h4>
               )}
               {user.value.organizations.map((o, idx) => (
-                <GridItem key={idx}>
+                <GridItem key={idx} xs={12} md={4}>
                   <Link
                     to={`/search?organizationName=${o.name.valueOf()}`}
                     className="normalize-link"
