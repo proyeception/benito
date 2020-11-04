@@ -70,7 +70,7 @@ export default function TeamSection({ project }: TeamSectionProps) {
           </Link>
         </h4>
         <CardFooter className={classes.justifyCenter}>
-          {props.user.socials.twitter && (
+          {props.user.socials.twitter && props.user.socials.twitter != "https://www.twitter.com/" && (
             <a
               target="_blank"
               href={props.user.socials.twitter}
@@ -81,7 +81,7 @@ export default function TeamSection({ project }: TeamSectionProps) {
               </Button>
             </a>
           )}
-          {props.user.socials.linkedin && (
+          {props.user.socials.linkedin && props.user.socials.linkedin != "https://www.linkedin.com/" && (
             <a
               target="_blank"
               href={props.user.socials.linkedin}
@@ -92,7 +92,7 @@ export default function TeamSection({ project }: TeamSectionProps) {
               </Button>
             </a>
           )}
-          {props.user.socials.facebook && (
+          {props.user.socials.facebook && props.user.socials.facebook != "https://www.facebook.com/" && (
             <a
               target="_blank"
               href={props.user.socials.facebook}
