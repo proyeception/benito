@@ -67,6 +67,8 @@ const ProfileSection = (props: ProfileSectionProps) => {
   const [lastLinkedin, setLastLinkedin] = useState(props.user.socials.linkedin);
   const [lastFacebook, setLastFacebook] = useState(props.user.socials.facebook);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   if (lastTwitter == undefined) {
     setLastTwitter("https://www.twitter.com/");
   }
@@ -98,6 +100,10 @@ const ProfileSection = (props: ProfileSectionProps) => {
     checked: {},
     track: {},
   })(Switch);
+
+  if (isLoading) {
+    return <Spinner color={color}/>;
+  }
 
   return (
     <GridContainer justify="left" className={classes.container}>
@@ -275,6 +281,7 @@ const ProfileSection = (props: ProfileSectionProps) => {
           type="button"
           color={color}
           onClick={() => {
+            setIsLoading(true)
             updateUser(mapRoleToCollection(props.role), props.user.id, {
               socials: {
                 twitter: twitter,
@@ -287,7 +294,10 @@ const ProfileSection = (props: ProfileSectionProps) => {
               mail: mail,
             })
               .then((res) => res.data)
-              .then((p) => store.dispatch(updateSessionFullName(p.fullName)))
+              .then((p) => {
+                store.dispatch(updateSessionFullName(p.fullName))
+                setIsLoading(false)
+              })
               .catch(console.error);
           }}
         >
