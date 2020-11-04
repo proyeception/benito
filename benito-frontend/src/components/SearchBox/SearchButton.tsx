@@ -38,6 +38,8 @@ const SearchButton = (props: SearchButtonProps) => {
     default
     fullWidth={props.fullWidth ? props.fullWidth : true}
     onClick={() => {
+      console.error(props.from)
+      console.error(props.to)
       const params = buildQueryParams({
         ...props,
         category: props.category?.tagName?.valueOf(),
@@ -54,6 +56,20 @@ const SearchButton = (props: SearchButtonProps) => {
 )};
 
 const mapStateToProps = (rootState: RootState) => {
+  let from
+  if (rootState.search.from && moment(rootState.search.from).format("yyyy-MM-DD").toString() != "Invalid date") {
+    from = moment(rootState.search.from).add(1, "days").format("yyyy-MM-DD").toString()
+      
+  } else {
+    from = ""
+  }
+  let to
+  if (rootState.search.to && moment(rootState.search.to).format("yyyy-MM-DD").toString() != "Invalid date") {
+    to = moment(rootState.search.to).add(1, "days").format("yyyy-MM-DD").toString()
+      
+  } else {
+    to = ""
+  }
   return {
     categories: rootState.common.categories,
     organizations: rootState.common.organizations,
@@ -61,8 +77,8 @@ const mapStateToProps = (rootState: RootState) => {
     tag: rootState.search.tag,
     category: rootState.search.category,
     orderBy: rootState.search.orderBy,
-    from: moment(rootState.search.from).format("yyyy-MM-DD").toString(),
-    to: moment(rootState.search.to).format("yyyy-MM-DD").toString(),
+    from: from,
+    to: to,
     organization: rootState.search.organization,
     keyword: rootState.search.keyword,
     session: rootState.session,
