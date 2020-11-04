@@ -19,6 +19,7 @@ import logo from "../../assets/img/proyectate/proyectate-logo-transparent.png";
 import utnLogo from "../../assets/img/proyectate/utn-logo-transparent.png";
 import HeaderSearchBox from "./HeaderSearchBox";
 import { Divider } from "@material-ui/core";
+import HeaderLinks from "./HeaderLinks";
 
 const getKeyValue = <T extends object, U extends keyof T>(obj: T) => (key: U) =>
   obj[key];
@@ -51,7 +52,7 @@ const Header = (props: HeaderProps) => {
     [classes.fixed]: fixed,
   });
   const brandComponent = (
-    <Button onClick={() => props.history.push("/")} className={classes.title}>
+    <Button onClick={() => props.history.push("/")} style={{textTransform: "capitalize", fontWeight: 500}}>
       {brand}
     </Button>
   );
@@ -69,7 +70,7 @@ const Header = (props: HeaderProps) => {
               )}
           </div>
             <Hidden smDown implementation="css" >
-            <span style={{color: "white"}}>{rightLinks}</span>
+            <span style={{color: "white"}}><HeaderLinks /></span>
             </Hidden>
             <Hidden mdUp>
               <IconButton

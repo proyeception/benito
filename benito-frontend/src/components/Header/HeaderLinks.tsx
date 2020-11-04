@@ -99,10 +99,11 @@ const HeaderLinks = (props: Props) => {
             <CustomDropdown
               buttonProps={{
                 color: "transparent",
+                size: "lg"
               }}
               buttonText={session.selectedOrganization.name}
               dropdownList={userOrganizations.map((s: Organization, idx) => (
-                <div key={idx} style={{ paddingLeft: "15px", width: "-webkit-fill-available" }} onClick={(s) => {
+                <div key={idx}  onClick={(s) => {
                     if(props.session.isLoggedIn){
                       let organi: Organization = session.organizations[idx]
                       store.dispatch(
@@ -110,11 +111,11 @@ const HeaderLinks = (props: Props) => {
                           ...props.session,
                           selectedOrganization: organi
                         })
-                      ) 
+                      )
                   }
               }}>{s.name.toUpperCase()}</div>
               ))}
-              style={{color: "white !important"}}
+              style={{color: "white !important", fontWeight: 500, fontSize: "0.875rem !important"}}
               color={color}
             />
           </ListItem>) : (<span style={{ display: "none" }}></span>)
@@ -123,6 +124,7 @@ const HeaderLinks = (props: Props) => {
           <CustomDropdown
             buttonProps={{
               color: "transparent",
+              size: "lg"
             }}
             buttonText={session.fullName}
             dropdownList={drop}
