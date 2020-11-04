@@ -18,6 +18,7 @@ import styles from "../../../assets/jss/material-kit-react/views/stats/statsStyl
 import classNames from "classnames";
 import moment from "moment";
 import exclamation from "../../../assets/img/proyectate/exclamation.jpg"
+import { SessionState } from "../../../store/session/types";
 
 type ProjectCreationTimelineProps = {
   categories: Array<Category>;
@@ -25,6 +26,7 @@ type ProjectCreationTimelineProps = {
   variant?: "standard" | "outlined" | "filled" | undefined;
   hue: string;
   years: Array<number>,
+  session?: SessionState;
 };
 
 type TimelineData = {
@@ -37,6 +39,12 @@ type TimelineData = {
 const useStyles = makeStyles(styles);
   
   const ProjectCreationTimeline = (props: ProjectCreationTimelineProps) => {
+
+    let color: string = "#c41234"
+    if(props.session && props.session.isLoggedIn  && props.session.selectedOrganization){
+      color = props.session.selectedOrganization.color
+    }
+
     const classes = useStyles();
     const [labels, setLabels] = useState<Array<string>>([]);
     const [categoriesData, setCategoriesData] = useState<Array<TimelineData>>([]);
@@ -75,7 +83,7 @@ const useStyles = makeStyles(styles);
     });
 
     if (results.type == PENDING) {
-      return <Spinner />;
+      return <Spinner color={color}/>;
     }
 
     const data = {
@@ -107,7 +115,7 @@ const useStyles = makeStyles(styles);
 
     return (
     <div>
-      <div className={classes.title} style={{paddingTop: "20px"}}>Cantidad de proyectos por categoría</div>
+      <div className={classes.title} style={{paddingTop: "20px", color: color}}>Cantidad de proyectos por categoría</div>
       {selectedCategories.map((s, idx) => (
         <div
           key={idx}
@@ -281,7 +289,8 @@ const mapStateToProps = (rootState: RootState) => {
   return {
     categories: rootState.common.categories,
     hue: randomHue,
-    years: years
+    years: years,
+    session: rootState.session,
   };
 };
 

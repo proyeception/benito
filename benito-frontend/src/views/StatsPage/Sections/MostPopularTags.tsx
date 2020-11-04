@@ -1,6 +1,6 @@
 import { Card, GridList, GridListTile, GridListTileBar, Icon, IconButton, makeStyles, TextField, Theme } from "@material-ui/core";
 import Button from "../../../components/CustomButtons/Button";
-import { Link } from "react-router-dom";
+import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import React, { useState } from "react";
 import { hot } from "react-hot-loader";
@@ -26,9 +26,10 @@ import classNames from "classnames";
 import { cardTitle } from "../../../assets/jss/material-kit-react";
 import ReactWordcloud from "react-wordcloud";
 import ErrorPage from "../../ErrorPage/ErrorPage";
+import { SessionState } from "../../../store/session/types";
 
-type MostPopularTagsProps = {
-
+interface MostPopularTagsProps extends RouteComponentProps {
+  session?: SessionState;
 };
 
 const spiral: "archimedean" | "rectangular" | undefined = "archimedean"
@@ -56,6 +57,11 @@ const useStyles = makeStyles(styles);
 
 const MostPopularTags = (props: MostPopularTagsProps) => {
 
+  let color: string = "#c41234"
+  if(props.session && props.session.isLoggedIn  && props.session.selectedOrganization){
+    color = props.session.selectedOrganization.color
+  }
+
   const classes = useStyles();
   
   const [tags, setTags] = useState<Array<TopTag>>([]);  
@@ -73,19 +79,21 @@ const MostPopularTags = (props: MostPopularTagsProps) => {
   });
 
   if (results.type == PENDING) {
-    return <Spinner />;
+    return <Spinner color={color}/>;
   }
 
   return (
   <div>
-    <div className={classes.title} style={{paddingTop: "20px"}}>Tags más populares</div>
+    <div className={classes.title} style={{paddingTop: "20px", color:color}}>Tags más populares</div>
     <div className={classes.wordCloud}><ReactWordcloud words={tags.map(convertTagToWord)} options={options}/></div>
   </div>
   )
 }
 
 const mapStateToProps = (rootState: RootState) => {
-
+  return {
+    session: rootState.session,
+  };
 };
 
-export default hot(module)(connect(mapStateToProps)(MostPopularTags));
+export default hot(module)(connect(mapStateToProps)(withRouter(MostPopularTags)));

@@ -21,19 +21,27 @@ import ProjectCreationTimeline from "./Sections/ProjectCreationTimeline"
 import MostPopularProjects from "./Sections/MostPopularProjects";
 import MostPopularTags from "./Sections/MostPopularTags";
 import ImportantNumbers from "./Sections/ImportantNumbers";
+import { RouteComponentProps, withRouter } from "react-router-dom";
+import { SessionState } from "../../store/session/types";
 
 const useStyles = makeStyles(styles);
 
-type StatsPageProps = {
+interface StatsPageProps extends RouteComponentProps {
   customizationToken?: string;
   categories: Array<Category>;
   category?: Category;
+  session?: SessionState;
 };
 
 
 const StatsPage = (props: StatsPageProps) => {
   const classes = useStyles();
   const { ...rest } = props;
+
+  let color: string = "#c41234"
+  if(props.session && props.session.isLoggedIn  && props.session.selectedOrganization){
+    color = props.session.selectedOrganization.color
+  }
 
   return (
     <div>
@@ -56,7 +64,7 @@ const StatsPage = (props: StatsPageProps) => {
         <div className={classes.container}>
           <GridContainer>
           <GridItem xs={12} sm={12} md={12} lg={12}>
-            <h1 className={classes.bigTitle}>ESTADÍSTICAS</h1>
+            <h1 className={classes.bigTitle} style={{color: color}}>ESTADÍSTICAS</h1>
             <p>En esta página vas a poder ver dinámicamente estadísticas que recolectamos de los proyectos que tenemos en Proyectate.</p>
             </GridItem >
             <GridItem xs={12} sm={12} md={12} lg={12}>
@@ -89,7 +97,8 @@ const mapStateToProps = (rootState: RootState) => {
   return {
     categories: rootState.common.categories,
     customizationToken: rootState.common.customizationToken,
+    session: rootState.session,
   };
 };
 
-export default hot(module)(connect(mapStateToProps)(StatsPage));
+export default hot(module)(connect(mapStateToProps)(withRouter(StatsPage)));

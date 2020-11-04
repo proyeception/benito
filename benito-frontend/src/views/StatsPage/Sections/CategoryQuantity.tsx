@@ -15,16 +15,23 @@ import GridItem from "../../../components/Grid/GridItem";
 import styles from "../../../assets/jss/material-kit-react/views/stats/statsStyle";
 import withProjectxCategories from "../../../hooks/withProjectsxCategory";
 import exclamation from "../../../assets/img/proyectate/exclamation.jpg"
+import { SessionState } from "../../../store/session/types";
 
 type CategoryQuantityProps = {
   organizations: Array<Organization>;
   organization?: Organization | undefined;
   variant?: "standard" | "outlined" | "filled" | undefined;
+  session?: SessionState;
 };
 
 const useStyles = makeStyles(styles);
   
   const CategoryQuantity = (props: CategoryQuantityProps) => {
+
+    let color: string = "#c41234"
+    if(props.session && props.session.isLoggedIn  && props.session.selectedOrganization){
+      color = props.session.selectedOrganization.color
+    }
 
     const classes = useStyles();
     
@@ -40,7 +47,7 @@ const useStyles = makeStyles(styles);
     });
 
     if (results.type == PENDING) {
-      return <Spinner />;
+      return <Spinner color={color}/>;
     }
 
     const data = {
@@ -60,7 +67,7 @@ const useStyles = makeStyles(styles);
 
     return (
     <div>
-        <div className={classes.title} style={{paddingTop: "20px"}}>Cantidad de proyectos por categoría</div>
+        <div className={classes.title} style={{paddingTop: "20px", color: color}}>Cantidad de proyectos por categoría</div>
         <Autocomplete
           fullWidth
           options={props.organizations}
@@ -108,6 +115,7 @@ const mapStateToProps = (rootState: RootState) => {
   return {
     categories: rootState.common.categories,
     organizations: rootState.common.organizations,
+    session: rootState.session,
   };
 };
 

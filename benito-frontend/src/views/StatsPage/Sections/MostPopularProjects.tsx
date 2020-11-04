@@ -24,6 +24,7 @@ import CardBody from "../../../components/Card/CardBody";
 import imagesStyles from "../../../assets/jss/material-kit-react/imagesStyles";
 import classNames from "classnames";
 import { cardTitle } from "../../../assets/jss/material-kit-react";
+import { SessionState } from "../../../store/session/types";
 
 type OrganizationQuantityProps = {
   categories: Array<Category>;
@@ -31,6 +32,7 @@ type OrganizationQuantityProps = {
   years: Array<number>;
   category?: Category;
   variant?: "standard" | "outlined" | "filled" | undefined;
+  session?: SessionState;
 };
 
 const styles = (theme: Theme) => {
@@ -40,6 +42,11 @@ const styles = (theme: Theme) => {
 const useStyles = makeStyles(styles);
   
 const OrganizationQuantity = (props: OrganizationQuantityProps) => {
+
+  let color: string = "#c41234"
+  if(props.session && props.session.isLoggedIn  && props.session.selectedOrganization){
+    color = props.session.selectedOrganization.color
+  }
 
   const classes = useStyles();
   
@@ -54,12 +61,12 @@ const OrganizationQuantity = (props: OrganizationQuantityProps) => {
   });
 
   if (results.type == PENDING) {
-    return <Spinner />;
+    return <Spinner color={color}/>;
   }
 
   return (
   <div>
-    <div className={classes.title} style={{paddingTop: "20px"}}>Proyectos más populares</div>
+    <div className={classes.title} style={{paddingTop: "20px", color:color}}>Proyectos más populares</div>
     <GridContainer>
       <GridItem xs={12} sm={12} md={4} lg={4} id="category-select">
         <Autocomplete
@@ -198,7 +205,8 @@ const mapStateToProps = (rootState: RootState) => {
   return {
     categories: rootState.common.categories,
     organizations: rootState.common.organizations,
-    years: years
+    years: years,
+    session: rootState.session,
   };
 };
 
