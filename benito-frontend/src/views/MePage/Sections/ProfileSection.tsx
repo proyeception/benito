@@ -54,13 +54,13 @@ const ProfileSection = (props: ProfileSectionProps) => {
   const [facebook, setFacebook] = useState(props.user.socials.facebook);
 
   const [twitterEnabled, setTwitterEnabled] = useState(
-    socials.twitter != undefined
+    socials.twitter != undefined && socials.twitter != "https://www.twitter.com/"
   );
   const [linkedinEnabled, setLinkedinEnabled] = useState(
-    socials.linkedin != undefined
+    socials.linkedin != undefined && socials.linkedin != "https://www.linkedin.com/"
   );
   const [facebookEnabled, setFacebookEnabled] = useState(
-    socials.facebook != undefined
+    socials.facebook != undefined && socials.facebook != "https://www.facebook.com/"
   );
 
   const [lastTwitter, setLastTwitter] = useState(props.user.socials.twitter);
