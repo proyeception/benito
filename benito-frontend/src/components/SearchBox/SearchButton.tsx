@@ -38,8 +38,6 @@ const SearchButton = (props: SearchButtonProps) => {
     default
     fullWidth={props.fullWidth ? props.fullWidth : true}
     onClick={() => {
-      console.error(props.from)
-      console.error(props.to)
       const params = buildQueryParams({
         ...props,
         category: props.category?.tagName?.valueOf(),

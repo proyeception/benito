@@ -92,6 +92,7 @@ function searchReducer(
         keywordSearch: action.payload.keywordSearch,
         organization: action.payload.organization || state.organization,
         title: action.payload.title || state.title,
+        tag: action.payload.tag || state.tag,
         category: action.payload.category || state.category,
       };
     case UPDATE_FETCH_STATUS: {

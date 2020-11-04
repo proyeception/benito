@@ -55,6 +55,7 @@ export function syncParamsToState(params: SearchParams) {
     keywordSearch: params.keyword != undefined,
     orderBy: params.orderBy || SortMethod.DateDesc,
     organization: fromOrganizationName(params.organizationName),
+    tag: params.tag || "",
     status: NOTHING,
   };
   store.dispatch(updateSearchParams(state));
