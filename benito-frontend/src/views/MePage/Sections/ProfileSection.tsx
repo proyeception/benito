@@ -73,8 +73,6 @@ const ProfileSection = (props: ProfileSectionProps) => {
     },
   });
 
-  console.error(socials);
-
   const RedSwitch = withStyles({
     switchBase: {
       color: "#999",
@@ -142,12 +140,14 @@ const ProfileSection = (props: ProfileSectionProps) => {
                 }
                 if (twitterEnabled) {
                   setLastTwitter(twitter);
-                  setTwitter(undefined);
+                  setTwitter("https://www.twitter.com/");
                   setTwitterEnabled(false);
                 } else {
+                  setLastTwitter(twitter)
                   setTwitter(lastTwitter);
                   setTwitterEnabled(true);
                 }
+                console.error(twitter)
               }}
               value="checkedA"
             />
@@ -185,9 +185,10 @@ const ProfileSection = (props: ProfileSectionProps) => {
                 }
                 if (linkedinEnabled) {
                   setLastLinkedin(linkedin);
-                  setLinkedin(undefined);
+                  setLinkedin("https://www.linkedin.com/");
                   setLinkedinEnabled(false);
                 } else {
+                  setLastLinkedin(linkedin)
                   setLinkedin(lastLinkedin);
                   setLinkedinEnabled(true);
                 }
@@ -226,9 +227,10 @@ const ProfileSection = (props: ProfileSectionProps) => {
                 }
                 if (facebookEnabled) {
                   setLastFacebook(facebook);
-                  setFacebook(undefined);
+                  setFacebook("https://www.facebook.com/");
                   setFacebookEnabled(false);
                 } else {
+                  setLastFacebook(facebook)
                   setFacebook(lastFacebook);
                   setFacebookEnabled(true);
                 }
