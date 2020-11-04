@@ -29,7 +29,7 @@ export function buildQueryParams({
       )
     )
     .concat(
-      buildQueryParamProperty("to", to ? to.slice(0, 4) + "-01-01" : undefined)
+      buildQueryParamProperty("to", to ? to.slice(0, 4) + "-12-31" : undefined)
     )
     .concat(buildQueryParamProperty("orderBy", orderBy))
     .concat(buildQueryParamProperty("keyword", keyword))
