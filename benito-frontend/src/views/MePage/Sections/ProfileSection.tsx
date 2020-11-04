@@ -67,6 +67,18 @@ const ProfileSection = (props: ProfileSectionProps) => {
   const [lastLinkedin, setLastLinkedin] = useState(props.user.socials.linkedin);
   const [lastFacebook, setLastFacebook] = useState(props.user.socials.facebook);
 
+  if (lastTwitter == undefined) {
+    setLastTwitter("https://www.twitter.com/");
+  }
+
+  if (lastLinkedin == undefined) {
+    setLastLinkedin("https://www.linkedin.com/");
+  }
+
+  if (lastFacebook == undefined) {
+    setLastFacebook("https://www.facebook.com/");
+  }
+
   const theme = createMuiTheme({
     palette: {
       primary: grey,
@@ -135,7 +147,7 @@ const ProfileSection = (props: ProfileSectionProps) => {
             <RedSwitch
               checked={twitterEnabled}
               onChange={() => {
-                if (!lastTwitter) {
+                if (lastTwitter == undefined) {
                   setLastTwitter("https://www.twitter.com/");
                 }
                 if (twitterEnabled) {
