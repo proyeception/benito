@@ -26,7 +26,7 @@ import Header from "../../components/Header/Header";
 import HeaderLinks from "../../components/Header/HeaderLinks";
 import Parallax from "../../components/Parallax/Parallax";
 import Spinner from "../../components/Spinner/Spinner";
-import { ERROR, PENDING } from "../../hooks/withFetch";
+import { ERROR, PENDING, SUCCESS } from "../../hooks/withFetch";
 import CustomTabs from "../../components/CustomTabs/CustomTabs";
 import { Edit, Description, RemoveCircle, AddCircle } from "@material-ui/icons";
 import MarkdownCompiler from "../../components/MarkdownCompiler/MarkdownCompiler";
@@ -67,6 +67,7 @@ import FilePreview from "react-preview-file/dist/filePreview";
 import ImageUploading, { ImageListType } from "react-images-uploading";
 import { CSSTransition } from 'react-transition-group';
 import spinner from '../../assets/img/proyectate/spinner.gif';
+import withOrganization from '../../hooks/withOrganization';
 
 
 
@@ -235,14 +236,12 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
     console.error("Usuario sin permisos de supervisor");
     return <Redirect to={{ pathname: "/error" }} />;
   }
-  
 
+  const organi = withOrganization(props.session.selectedOrganization.id, (o) => {
+    setOrganization(o)
+  })
 
-  const user = withUser(props.session.role, props.session.userId, (p) => {
-    if (p.organizations[0] == undefined) {
-      console.error("Usuario sin organizaciones");
-      return <Redirect to={{ pathname: "/error" }} />;
-    }
+  if(organization && organization != ERROR && organization.id != props.session.selectedOrganization.id){
     if(props.session.isLoggedIn){
       fetchOrganization(props.session.selectedOrganization.id)
         .then((res) => res.data)
@@ -251,6 +250,14 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
           console.error(e);
           setOrganization("ERROR");
         });
+    }
+  }
+
+  
+  const user = withUser(props.session.role, props.session.userId, (p) => {
+    if (p.organizations[0] == undefined) {
+      console.error("Usuario sin organizaciones");
+      return <Redirect to={{ pathname: "/error" }} />;
     }
   });
 
@@ -298,7 +305,6 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
     let sup: Array<Person> = organization.supervisors.filter(
       (s) => s.id == loggedInSupId
     )
-    console.error(sup)
     if(!supervisorsToAdd.includes(sup[0])){
 
       setSupervisorsToAdd(sup)
