@@ -28,6 +28,8 @@ import { RootState } from "../../../reducers";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { SessionState } from "../../../store/session/types";
+import { updateSessionState } from "../../../actions/session";
+import store from "../../../store";
 
 const styles = {
   ...organizationsStyle,
@@ -154,7 +156,27 @@ const OrganizationsSection = (props: OrganizationsSectionProps) => {
                 selectedOrganization?.id!
               )
                 .then((res) => res.data)
-                .then((p) => setOrganizations(p.organizations))
+                .then((p) => {
+                  setOrganizations(p.organizations)
+                  if(props.session && props.session.isLoggedIn){
+                    if(p.organizations.includes(props.session.selectedOrganization)){
+                      store.dispatch(
+                        updateSessionState({
+                          ...props.session,
+                          organizations: p.organizations
+                        })
+                      ) 
+                    } else {
+                      store.dispatch(
+                        updateSessionState({
+                          ...props.session,
+                          organizations: p.organizations,
+                          selectedOrganization: p.organizations[0]
+                        })
+                      ) 
+                    }
+                  }
+                })
                 .catch(console.error)
                 .then(() => handleClose())
                 .then(() => setLoading(false));
