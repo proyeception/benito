@@ -25,7 +25,7 @@ open class DocumentService(
             )
     }
 
-    open fun fileWebContentLink(id: String): String = googleClient.getFile(id)
+    open fun downloadUrl(id: String): String = googleClient.getFile(id)
         .fold(
             ifLeft = {
                 LOGGER.error("Error retrieving file $id")
@@ -33,7 +33,8 @@ open class DocumentService(
             },
             ifRight = {
                 LOGGER.info("File $id obtained correctly: ${it.webContentLink}")
-                it.webContentLink ?: it.export("application/pdf")
+                val file = it.webContentLink ?: it.export("application/pdf")
+                file
                 // For some Kotlin reason, using the ?: here will fail to compile
             }
         )

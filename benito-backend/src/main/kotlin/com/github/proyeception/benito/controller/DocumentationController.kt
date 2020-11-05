@@ -12,11 +12,11 @@ class DocumentationController(
 
     @RequestMapping("/benito/documents/{id}", method = [RequestMethod.GET])
     @ResponseStatus(HttpStatus.MULTIPLE_CHOICES)
-    fun downloadDocument(@PathVariable id: String): String = "redirect:${documentService.fileWebContentLink(id)}"
+    fun downloadDocument(@PathVariable id: String): String = "redirect:${documentService.downloadUrl(id)}"
 
     @RequestMapping("/benito/documents/download/{id}", method = [RequestMethod.GET])
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    fun downloadDocumentLink(@PathVariable id: String): String = documentService.fileWebContentLink(id)
+    fun downloadDocumentLink(@PathVariable id: String): String = documentService.downloadUrl(id)
 
 }

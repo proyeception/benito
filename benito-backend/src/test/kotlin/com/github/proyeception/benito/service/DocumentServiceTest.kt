@@ -5,6 +5,7 @@ import arrow.core.right
 import com.github.proyeception.benito.Spec
 import com.github.proyeception.benito.dto.FileCreatedDTO
 import com.github.proyeception.benito.dto.GoogleFileDTO
+import com.github.proyeception.benito.extension.export
 import com.github.proyeception.benito.mock.eq
 import com.github.proyeception.benito.mock.getMock
 import com.github.proyeception.benito.mock.on
@@ -59,7 +60,7 @@ class DocumentServiceTest : Spec() {
             }
         }
 
-        "fileWebContentLink" should {
+        "downloadUrl" should {
             "return the web content link if it's not null" {
                 forAll { id: String, webContentLink: String ->
                     on(googleMock.getFile(eq(id))).thenReturn(
@@ -72,13 +73,13 @@ class DocumentServiceTest : Spec() {
                         ).right()
                     )
                     val expected = webContentLink
-                    val actual = documentService.fileWebContentLink(id)
+                    val actual = documentService.downloadUrl(id)
 
                     expected == actual
                 }
             }
 
-            "return the fallback if the web content link is null" {
+            "export the file if the web content link is null as apdf" {
                 forAll { id: String ->
                     on(googleMock.getFile(eq(id))).thenReturn(
                         GoogleFileDTO(
@@ -89,8 +90,8 @@ class DocumentServiceTest : Spec() {
                             modifiedTime = LocalDateTime.now()
                         ).right()
                     )
-                    val expected = "https://fallback.com"
-                    val actual = documentService.fileWebContentLink(id)
+                    val expected = "https://www.googleapis.com/drive/v3/files/123/export?mimeType=application/pdf"
+                    val actual = documentService.downloadUrl(id)
 
                     expected == actual
                 }
@@ -100,7 +101,7 @@ class DocumentServiceTest : Spec() {
                 on(googleMock.getFile(anyString())).thenReturn(RuntimeException("Error").left())
 
                 shouldThrow<RuntimeException> {
-                    documentService.fileWebContentLink("123")
+                    documentService.downloadUrl("123")
                 }
             }
         }
