@@ -27,6 +27,7 @@ import image from "../../assets/img/proyectate/pattern.jpg"
 import { grey } from "@material-ui/core/colors";
 import { mapRoleToCollection, updateUserPicture } from "../../functions/user";
 import { Role } from "../../types";
+import { Edit } from "@material-ui/icons";
 
 const useStyles = makeStyles(styles);
 
@@ -133,7 +134,7 @@ const MePage = (props: MePageProps) => {
                     accept="image/*"
                     id="contained-button-image"
                     type="file"
-                    style={{display: "none"}}
+                    style={{display: "none", filter: "brightness(0.5)"}}
                     onChange={(e) => {
                       setIsLoading(true)
                       updateUserPicture(user.value.id, role, e.target.files![0]).then((h)=> {
@@ -144,6 +145,7 @@ const MePage = (props: MePageProps) => {
                   />
                   <label htmlFor="contained-button-image">
                   <img
+                  style={{position: "relative"}}
                       src={newPicture || noProfilePic}
                       alt={user.value.fullName.valueOf()}
                       className={imageClasses + " cursor-pointer"}
@@ -151,6 +153,7 @@ const MePage = (props: MePageProps) => {
 
                       }}
                     />
+                     <Edit style={{position: "absolute", top: "0", left: "0", marginLeft: "49%", color: "white"}} className={"cursor-pointer"}/>
                   </label>
                     
                   </div>
