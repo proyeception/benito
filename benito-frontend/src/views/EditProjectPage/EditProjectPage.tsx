@@ -945,7 +945,13 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                       "cursor-pointer"
                     )}
                     onClick={() =>
-                      setSupervisorsToRemove(supervisorsToRemove.concat(s))
+                      {
+                        if(props.session.isLoggedIn){
+                          if(s.id != props.session.userId){
+                            setSupervisorsToRemove(supervisorsToRemove.concat(s))
+                          }
+                        }
+                      }
                     }
                   >
                     <RemoveCircle /> {s.fullName}

@@ -933,9 +933,15 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                   "cursor-pointer"
                 )}
                 onClick={() => {
-                  setSupervisorsToAdd(
-                    supervisorsToAdd.filter((sta) => sta != s)
-                  );
+                  {
+                    if(props.session.isLoggedIn){
+                      if(s.id != props.session.userId){
+                        setSupervisorsToAdd(
+                          supervisorsToAdd.filter((sta) => sta != s)
+                        );
+                      }
+                    }
+                  }
                 }}
               >
                 <RemoveCircle /> {s.fullName}
