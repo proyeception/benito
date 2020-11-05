@@ -37,6 +37,19 @@ export async function updateUser(
   return axios.request<Person>(signRequest(config));
 }
 
+export function updateUserPicture(userId: string, role:string, picture: File) {
+  const pictureForm = new FormData();
+  pictureForm.set("file", picture);
+
+  let pictureConfig: AxiosRequestConfig = {
+    url: `${benitoHost}/benito/${role}/${userId}/picture`,
+    method: "POST",
+    data: pictureForm,
+  };
+
+  return axios.request(signRequest(pictureConfig));
+}
+
 export function createGhostUser(
   name: string,
   projects: Array<string>,
