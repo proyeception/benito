@@ -259,12 +259,11 @@ open class ProjectService(
     }
 
     fun updateProjectImage(id: String, multipart: MultipartFile): ProjectDTO = mappingFromMedusa {
-        var medusaFile: MedusaFileDTO
-        if(multipart.contentType == "application/pdf"){
+        val medusaFile = if(multipart.contentType == "application/pdf"){
             val random = UUID.randomUUID().toString()
-            medusaFile = turnPdfIntoJpg(multipart, random, id)
+            turnPdfIntoJpg(multipart, random, id)
         } else {
-            medusaFile = fileService.createMedusaFileFromUpload(
+            fileService.createMedusaFileFromUpload(
                 multipart = multipart,
                 contentType = ContentType.IMAGE_JPEG,
                 filePath = "/tmp/$id.jpg",

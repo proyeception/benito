@@ -1,5 +1,6 @@
 package com.github.proyeception.benito.service
 
+import com.github.proyeception.benito.extension.export
 import com.github.proyeception.benito.oauth.GoogleDriveClient
 import org.slf4j.LoggerFactory
 import org.springframework.web.multipart.MultipartFile
@@ -32,11 +33,10 @@ open class DocumentService(
             },
             ifRight = {
                 LOGGER.info("File $id obtained correctly: ${it.webContentLink}")
-                it.webContentLink
+                it.webContentLink ?: it.export("application/pdf")
                 // For some Kotlin reason, using the ?: here will fail to compile
             }
-        ) ?: "https://fallback.com"
-    // TODO: decide if we want to do something if no web content link is present, or just fail
+        )
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(DocumentService::class.java)
