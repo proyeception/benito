@@ -25,9 +25,9 @@ open class StatsService(
         val maxElements = 5
         var result = allOrganizations
         if (allOrganizations.size > maxElements){
-            result = allOrganizations.slice(0..maxElements).toMutableList()
-            val size = allOrganizations.size - 1
-            val others = allOrganizations.slice(5..size)
+            result = allOrganizations.slice(0 until maxElements).toMutableList()
+            val size = allOrganizations.size
+            val others = allOrganizations.slice(maxElements until size)
             val otherElement = OrganizationQuantityDTO("Otros", others.map { it.quantity }.sum())
             result.add(otherElement)
         }
@@ -47,9 +47,9 @@ open class StatsService(
         val maxElements = 5
         var result = allCategories
         if (allCategories.size > maxElements){
-            result = allCategories.slice(0..maxElements).toMutableList()
-            val size = allCategories.size - 1
-            val others = allCategories.slice(5..size)
+            result = allCategories.slice(0 until maxElements).toMutableList()
+            val size = allCategories.size
+            val others = allCategories.slice(maxElements until size)
             val otherElement = CategoryQuantityDTO("Otros", others.map { it.quantity }.sum())
             result.add(otherElement)
         }

@@ -404,7 +404,7 @@ open class ProjectService(
         .also { launchIOAsync { addTagsToProjectKeywords(it, tags) } }
 
     fun fixMarks(string: String?): String{
-        return String(string!!.toByteArray(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8)
+        return String(string!!.toByteArray(StandardCharsets.ISO_8859_1), StandardCharsets.ISO_8859_1)
     }
 
     fun getPdfAsJpgUrl(image: MultipartFile): MedusaFileDTO{
