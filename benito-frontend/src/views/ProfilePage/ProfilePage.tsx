@@ -125,6 +125,9 @@ const ProfilePage = (props: ProfilePageProps) => {
                       src={user.value.profilePicUrl?.valueOf() || noProfilePic}
                       alt={user.value.fullName.valueOf()}
                       className={imageClasses}
+                      style={{width: "160px",
+                      height: "160px",
+                      objectFit: "cover"}}
                     />
                   </div>
                   <div className={classes.name}>
