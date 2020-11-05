@@ -141,7 +141,7 @@ const HeaderLinks = (props: Props) => {
       <ListItem className={classes.listItem}>
         <Link to="/search">
           <Button color="transparent" className={classes.navLink}>
-            <img src={MG} style={{ height: "25px", margin: "0" }} />
+            <img src={MG} alt="Lupa" style={{ height: "25px", margin: "0" }} />
           </Button>
         </Link>
       </ListItem>

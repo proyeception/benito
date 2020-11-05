@@ -747,7 +747,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
               {(pictureUrl != undefined)? (
                 <GridItem xs={12} style={{ display: "flex", alignItems: "center"}} >
                 <div className="image-preview">
-                  <img src={pictureUrl} className="image-preview"/>
+                  <img src={pictureUrl} className="image-preview" alt="Preview imagen cargada"/>
                 </div>
                 </GridItem>
               ):(<div style={{display:"none"}}></div>)}

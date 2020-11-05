@@ -117,7 +117,7 @@ const SearchResultsSection = (props: SearchResultsSectionProps) => {
           </div>
         </GridItem>
         <GridItem xs={12} sm={12} md={12}>
-          <img src={image} className={classes.image} />
+          <img src={image} className={classes.image} alt="Error: no se encontraron proyectos"/>
         </GridItem>
       </GridContainer>
     );

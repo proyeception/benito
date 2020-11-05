@@ -261,7 +261,7 @@ const useStyles = makeStyles(styles);
             </div>
           </GridItem>
           <GridItem xs={12} sm={12} md={12} lg={6} id="search-box">
-          <img src={exclamation} style={{maxWidth:"100%"}}/>
+          <img src={exclamation} style={{maxWidth:"100%"}} alt="No se encontraron resultados"/>
           </GridItem>
           </GridContainer>
       </div>) : (<div className={classes.chart}><Line data={data} options={options}/> </div>)}
