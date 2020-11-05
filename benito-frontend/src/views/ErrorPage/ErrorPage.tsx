@@ -36,7 +36,7 @@ export default function ErrorPage(props: any) {
                 lg={5}
                 id="results"
             >
-                <img src={developer} className={classes.image}/>
+                <img src={developer} className={classes.image} alt="Pagina de error"/>
             </GridItem>
         </GridContainer>
         </div>

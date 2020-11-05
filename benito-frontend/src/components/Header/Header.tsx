@@ -39,7 +39,7 @@ const Header = (props: HeaderProps) => {
 
   const brand = (
     <span className={classes.logoContainer}>
-      <img src={logo} className={classes.brandLogo} />
+      <img src={logo} className={classes.brandLogo} alt="Logo Proyectate"/>
       <span style={{ fontWeight: "normal", color: "white" }}>Proyectate</span>
     </span>
   );

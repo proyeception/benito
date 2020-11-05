@@ -99,7 +99,7 @@ const OrganizationsSection = (props: OrganizationsSectionProps) => {
                 <div
                   className={classNames(classes.cardTitle, classes.orgHeader)}
                 >
-                  <img src={o.iconUrl} className={classes.orgIcon} />{" "}
+                  <img src={o.iconUrl} className={classes.orgIcon} alt="Logo organizacion"/>{" "}
                   <h4 className={classes.cardTitle}>{o.displayName}</h4>
                 </div>
 

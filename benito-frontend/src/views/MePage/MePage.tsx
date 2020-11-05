@@ -25,6 +25,9 @@ import Footer from "../../components/Footer/Footer";
 import Spinner from "../../components/Spinner/Spinner";
 import image from "../../assets/img/proyectate/pattern.jpg"
 import { grey } from "@material-ui/core/colors";
+import { mapRoleToCollection, updateUserPicture } from "../../functions/user";
+import { Role } from "../../types";
+import { Edit } from "@material-ui/icons";
 
 const useStyles = makeStyles(styles);
 
@@ -38,15 +41,26 @@ interface MePageProps extends RouteComponentProps<MatchParams> {
 
 const MePage = (props: MePageProps) => {
 
+  const [isLoading, setIsLoading] = React.useState(false);
+  
+  let role = ""
+  if(props.session.isLoggedIn){
+    if(props.session.role == "SUPERVISOR"){
+      role = "supervisors";
+    } else {
+      role = "authors";
+    }
+  }
+  
   let color: string = "#c41234"
   if(props.session && props.session.isLoggedIn && props.session.selectedOrganization){
     color = props.session.selectedOrganization.color
   }
-
+  
   if (!props.session.isLoggedIn) {
     return <Redirect to="/login" />;
   }
-
+  
   const classes = useStyles();
   const { ...rest } = props;
   const imageClasses = classNames(
@@ -60,17 +74,21 @@ const MePage = (props: MePageProps) => {
   const organizationImageClasses = classNames(
     classes.organization,
     classes.imgRoundedCircle
-  );
-
-  const user = withUser(props.session.role, props.session.userId);
-
-  if (user.type == PENDING) {
+    );
+    
+  const [newPicture, setNewPicture] = React.useState<string | undefined>("");
+  const user = withUser(props.session.role, props.session.userId, (u) => {
+    setNewPicture(u.profilePicUrl?.valueOf())
+  });
+  
+  if (user.type == PENDING || isLoading) {
     return <Spinner color={color}/>;
   }
-
+  
   if (user.type == ERROR) {
     return <Redirect to={{pathname: "/error"}}/>
   }
+
 
   const tabs = [
     {
@@ -112,11 +130,32 @@ const MePage = (props: MePageProps) => {
               <GridItem xs={12} sm={12} md={6}>
                 <div className={classes.profile}>
                   <div>
-                    <img
-                      src={user.value.profilePicUrl?.valueOf()  || noProfilePic}
+                  <input
+                    accept="image/*"
+                    id="contained-button-image"
+                    type="file"
+                    style={{display: "none", filter: "brightness(0.5)"}}
+                    onChange={(e) => {
+                      setIsLoading(true)
+                      updateUserPicture(user.value.id, role, e.target.files![0]).then((h)=> {
+                        setNewPicture(h.data.profilePicUrl)
+                        setIsLoading(false)
+                      })
+                    }}
+                  />
+                  <label htmlFor="contained-button-image">
+                  <img
+                  style={{position: "relative"}}
+                      src={newPicture || noProfilePic}
                       alt={user.value.fullName.valueOf()}
                       className={imageClasses + " cursor-pointer"}
+                      onClick={() => {
+
+                      }}
                     />
+                     <Edit style={{position: "absolute", top: "0", left: "0", marginLeft: "49%", color: "white"}} className={"cursor-pointer"}/>
+                  </label>
+                    
                   </div>
                 </div>
               </GridItem>

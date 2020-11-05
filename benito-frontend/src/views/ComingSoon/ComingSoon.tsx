@@ -34,7 +34,7 @@ export default function ComingSoon(props: any) {
                 md={5}
                 id="results"
             >
-                <img src={developer} className={classes.image}/>
+                <img src={developer} alt="Pagina en contruccion" className={classes.image}/>
             </GridItem>
         </GridContainer>
         </div>

@@ -34,7 +34,7 @@ export default function NotFoundPage(props: any) {
                 md={5}
                 id="results"
             >
-                <img src={lost} className={classes.image}/>
+                <img src={lost} className={classes.image} alt="Pagina no existe"/>
             </GridItem>
         </GridContainer>
         </div>

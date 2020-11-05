@@ -8,10 +8,11 @@ const mePageStyle = createStyles({
   profile: {
     textAlign: "center",
     "& img": {
-      maxWidth: "160px",
-      width: "100%",
+      width: "160px",
+      height: "160px",
       margin: "0 auto",
       transform: "translate3d(0, -50%, 0)",
+      objectFit: "cover"
     },
   },
   description: {
