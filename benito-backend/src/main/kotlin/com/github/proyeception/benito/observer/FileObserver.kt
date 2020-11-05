@@ -47,19 +47,28 @@ class FileObserver(
             }.awaitAll()
         }
 
-        val (updated, newDocs) = docs.splitBy {
-            it.driveId in (project.documentation?.map { d -> d.driveId } ?: emptyList())
-        }
-            .mapFirst { it.map { u -> u to alreadyExistentDocs.find { d -> d.driveId == u.driveId }?.id!! } }
+        val (updated, newDocs) = docs
+            .splitBy {
+                it.driveId in (project.documentation?.map { d -> d.driveId } ?: emptyList())
+            }
+            .mapFirst {
+                it.map { u ->
+                    u to alreadyExistentDocs.find { d ->
+                        d.driveId == u.driveId
+                    }?.id
+                }
+            }
 
         updated.forEach {
-            updateDocument(
-                content = it.first.content,
-                documentId = it.second,
-                fileName = it.first.name
-            )
+            it.second?.let { s ->
+                updateDocument(
+                    content = it.first.content,
+                    documentId = s,
+                    fileName = it.first.name
+                )
 
-            LOGGER.info("Document ${it.first.driveId} was updated")
+                LOGGER.info("Document ${it.first.driveId} was updated")
+            } ?: LOGGER.warn("Couldn't match supposedly already existent file ${it.first.driveId} in $projectId")
         }
 
         newDocs.forEach {

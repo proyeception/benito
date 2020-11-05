@@ -70,7 +70,7 @@ data class MedusaProjectRefDTO(
 )
 
 data class MedusaFileDTO(
-    var url: String,
+    val url: String,
     val id: String
 )
 

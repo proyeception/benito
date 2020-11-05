@@ -11,13 +11,13 @@ ENV=$1
 set -e
 
 echo "Starting server..."
-nohup java -Dspring.config.location=benito/benito-backend/environments/$ENV/application.properties -Dconfig.file=benito/benito-backend/environments/$ENV/application.conf -Dlogback.configurationFile=benito/benito-backend/environments/$ENV/logback.xml -jar benito/benito-backend/target/benito.jar > startup.log &
+nohup java -Dspring.config.location=benito/benito-backend/environments/$ENV/application.properties -Dconfig.file=benito/benito-backend/environments/$ENV/application.conf -Dlogback.configurationFile=benito/benito-backend/environments/$ENV/logback.xml -Dspring.profiles.active=$ENV -jar benito/benito-backend/target/benito.jar > startup.log &
 PID=$(ps faux | grep "benito.jar" | grep -v \"grep\" | awk '{print $2}' | head -1)
 echo $PID > process
 echo "Waiting for app to be ready to health-check..."
 sleep 30
 
-#curl localhost:80/heart-beat
+curl localhost:443/heart-beat
 
 if [ $? -eq 0 ];
 then

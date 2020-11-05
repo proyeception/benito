@@ -39,7 +39,8 @@ public class LoggingFilter implements Filter {
         ".*[.]jpg",
         ".*[.]png",
         ".*[.]gif",
-        "[/]"
+        "[/]",
+        "/heart-beat"
     );
 
     private static final List<String> EXCLUDED_URIS_REQUEST_BODY = ImmutableList.of(
@@ -53,11 +54,12 @@ public class LoggingFilter implements Filter {
 
     private static final List<String> EXCLUDED_URIS_RESPONSE_BODY = ImmutableList.of(
         "/benito/projects/featured",
-        "/benito/projects.*",
-        "/benito/featured-projects",
         "/benito/session",
         "/benito/author/login",
-        "/benito/supervisor/login"
+        "/benito/supervisor/login",
+        "/benito/users/recommendations",
+        "/benito/authors/.*",
+        "/benito/supervisors/.*"
     );
 
     private static final List<String> EXCLUDED_HEADERS = ImmutableList.of(

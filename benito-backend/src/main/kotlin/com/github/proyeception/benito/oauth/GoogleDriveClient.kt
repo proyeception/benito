@@ -2,16 +2,13 @@ package com.github.proyeception.benito.oauth
 
 import arrow.core.Either
 import arrow.core.extensions.fx
-import arrow.core.flatMap
-import arrow.core.left
-import arrow.core.right
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.proyeception.benito.connector.OAuthConnector
 import com.github.proyeception.benito.dto.*
-import com.github.proyeception.benito.exception.AmbiguousReferenceException
 import com.github.proyeception.benito.extension.replaceUrlSpaces
 import com.github.proyeception.benito.extension.void
+import com.github.proyeception.benito.extension.export
 import com.github.proyeception.benito.utils.FileHelper
 import org.apache.tika.mime.MimeTypes
 import org.slf4j.LoggerFactory
@@ -78,8 +75,8 @@ open class GoogleDriveClient(
         fileId: String,
         permissionId: String
     ): Either<Throwable, Unit> = googleDriveConnector.delete(
-            url = "https://www.googleapis.com/drive/v3/files/$fileId/permissions/$permissionId"
-        ).map(void)
+        url = "https://www.googleapis.com/drive/v3/files/$fileId/permissions/$permissionId"
+    ).map(void)
 
     open fun giveWriterPermission(mail: String, fileId: String): Either<Throwable, PermissionDTO> {
         return googleDriveConnector.post(
@@ -110,7 +107,7 @@ open class GoogleDriveClient(
 
     fun export(file: GoogleFileDTO): File = googleDriveConnector.downloadFile(
         // TODO: parse the mime type a bit to detect xls and ppt
-        url = "https://www.googleapis.com/drive/v3/files/${file.id}/export?mimeType=application/pdf",
+        url = file.export("application/pdf"),
         filePath = "/tmp/${file.id}.pdf"
     )
 

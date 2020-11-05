@@ -12,7 +12,6 @@ import com.github.proyeception.benito.oauth.GoogleDriveClient
 import com.github.proyeception.benito.parser.DocumentParser
 import com.github.proyeception.benito.storage.DriveStorage
 import com.github.proyeception.benito.storage.PermissionsStorage
-import com.github.proyeception.benito.utils.FileHelper
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
 import org.apache.http.entity.ContentType
@@ -184,6 +183,8 @@ open class ProjectService(
     }
 
     fun updateProjectContent(content: UpdateContentDTO, projectId: String): ProjectDTO = mappingFromMedusa {
+        LOGGER.info("Updating project $projectId: {}", content)
+
         medusaClient.updateProjectContent(
             content = content,
             id = projectId
@@ -214,27 +215,6 @@ open class ProjectService(
         }
     }
 
-    fun saveDriveDocuments(projectId: String, files: List<Pair<File, String>>) = mappingFromMedusa {
-        val docs = runBlocking {
-            val (_, driveFolderId) = driveStorage.findOne(projectId)
-                ?: throw NotFoundException("No drive for project $projectId")
-            files.map { (f, driveId) ->
-                asyncIO {
-                    val fileStream = f.inputStream()
-                    val content = documentParser.parse(fileStream, f.name) ?: ""
-
-                    CreateDocumentDTO(
-                        driveId = driveId,
-                        content = content,
-                        fileName = f.name
-                    )
-                }
-            }.awaitAll()
-        }
-
-        medusaClient.saveDocuments(CreateDocumentsDTO(docs), projectId)
-    }
-
     fun saveDocuments(projectId: String, files: List<MultipartFile>): ProjectDTO = mappingFromMedusa {
         val docs = runBlocking {
             val (_, driveFolderId) = driveStorage.findOne(projectId)
@@ -259,12 +239,11 @@ open class ProjectService(
     }
 
     fun updateProjectImage(id: String, multipart: MultipartFile): ProjectDTO = mappingFromMedusa {
-        var medusaFile: MedusaFileDTO
-        if(multipart.contentType == "application/pdf"){
+        val medusaFile = if (multipart.contentType == "application/pdf") {
             val random = UUID.randomUUID().toString()
-            medusaFile = turnPdfIntoJpg(multipart, random, id)
+            turnPdfIntoJpg(multipart, random, id)
         } else {
-            medusaFile = fileService.createMedusaFileFromUpload(
+            fileService.createMedusaFileFromUpload(
                 multipart = multipart,
                 contentType = ContentType.IMAGE_JPEG,
                 filePath = "/tmp/$id.jpg",
@@ -331,6 +310,7 @@ open class ProjectService(
     }
 
     fun createProject(supervisorId: String, project: CreateProjectDTO): ProjectDTO = mappingFromMedusa {
+        LOGGER.info("Create project: {}", project)
         val file = createDriveFolder(project.title)
         val medusaProject = CreateMedusaProjectDTO(
             organization = project.organizationId,
@@ -353,10 +333,14 @@ open class ProjectService(
             LOGGER.error("Failed to create drive folder for project $title", e)
             throw e
         },
-        ifRight = { it }
+        ifRight = {
+            LOGGER.info("Created folder $title in drive")
+            it
+        }
     )
 
     fun setUsers(projectId: String, users: SetUsersDTO) = mappingFromMedusa {
+        LOGGER.info("Set project $projectId users to {}", users)
         medusaClient.modifyProjectUsers(
             projectId = projectId,
             users = users
@@ -375,8 +359,11 @@ open class ProjectService(
                         asyncIO {
                             googleDriveClient.giveWriterPermission(u.mail!!, driveFolderId)
                                 .fold(
-                                    ifLeft = { e -> LOGGER.info("Failed to give write permission to ${u.mail}", e) },
-                                    ifRight = { p -> permissionsStorage.save(u.mail, p.id, driveFolderId) }
+                                    ifLeft = { e -> LOGGER.warn("Failed to give write permission to ${u.mail}", e) },
+                                    ifRight = { p ->
+                                        LOGGER.info("Gave write permission ${u.mail} ${it.title}")
+                                        permissionsStorage.save(u.mail, p.id, driveFolderId)
+                                    }
                                 )
                         }
                     }.awaitAll()
@@ -396,18 +383,18 @@ open class ProjectService(
     }
 
     fun setTags(projectId: String, tags: SetTagsDTO): ProjectDTO = mappingFromMedusa {
-            medusaClient.modifyProjectTags(
-                projectId = projectId,
-                tags = MedusaSetTagsDTO(tags.tags.map { TagDTO(it, it) })
-            )
-        }
+        medusaClient.modifyProjectTags(
+            projectId = projectId,
+            tags = MedusaSetTagsDTO(tags.tags.map { TagDTO(it, it) })
+        )
+    }
         .also { launchIOAsync { addTagsToProjectKeywords(it, tags) } }
 
     fun fixMarks(string: String?): String{
         return String(string!!.toByteArray(StandardCharsets.ISO_8859_1), StandardCharsets.ISO_8859_1)
     }
 
-    fun getPdfAsJpgUrl(image: MultipartFile): MedusaFileDTO{
+    fun getPdfAsJpgUrl(image: MultipartFile): MedusaFileDTO {
         val randomOrigin = UUID.randomUUID()
         val randomDestination = UUID.randomUUID()
         return turnPdfIntoJpg(image, randomOrigin.toString(), randomDestination.toString())
