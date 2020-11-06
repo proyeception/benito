@@ -62,7 +62,8 @@ class MedusaClientTest : Spec() {
                 ),
                 recommendations = emptyList(),
                 project_keywords = emptyList(),
-                driveFolderId = "123"
+                driveFolderId = "123",
+                category = ""
             )
 
             "get to /projects returns all projects" {
