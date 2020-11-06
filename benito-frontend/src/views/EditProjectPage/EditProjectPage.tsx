@@ -826,9 +826,9 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                 disableRestoreFocus
               >
                 <Typography>
-                  Acá podés agregar autores al proyecto. Se ofrecen aquellos que
+                  Acá podés agregar autores al proyecto. Se autocompleta con los que
                   tengan un usuario registrado y que pertenezcan a la
-                  organización.<br></br>
+                  organización seleccionada.<br></br>
                   También se pueden agregar colaboradores sin usuarios
                   asignados, ingresando su nombre y mail con la opción: "Crear
                   nuevo autor"
@@ -870,7 +870,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                     }}
                     renderInput={(params) => (
                       <ThemeProvider theme={theme}>
-                        <TextField {...params} fullWidth />
+                        <TextField {...params} fullWidth placeholder="Harry Po..."/>
                       </ThemeProvider>
                     )}
                   />
@@ -920,9 +920,9 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                 disableRestoreFocus
               >
                 <Typography>
-                  Acá podés agregar supervisores al proyecto. Se ofrecen
-                  aquellos que tengan un usuario registrado y que pertenezcan a
-                  la organización.<br></br>
+                  Acá podés agregar supervisores al proyecto. Se autocompleta con los 
+                  que tengan un usuario registrado y que pertenezcan a la
+                  organización.<br></br>
                   También se pueden agregar colaboradores sin usuarios
                   asignados, ingresando su nombre y mail con la opción: "Crear
                   nuevo supervisor"
@@ -974,7 +974,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                       if (s) setSupervisorsToAdd(supervisorsToAdd.concat(s!));
                     }}
                     renderInput={(params) => (
-                      <TextField {...params} fullWidth />
+                      <TextField {...params} fullWidth placeholder="Albus Dum..."/>
                     )}
                   />
                 </GridItem>

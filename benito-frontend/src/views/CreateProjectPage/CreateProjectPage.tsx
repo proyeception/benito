@@ -835,9 +835,9 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
               disableRestoreFocus
             >
               <Typography>
-                Acá podés agregar autores al proyecto. Se ofrecen aquellos que
+                Acá podés agregar autores al proyecto. Se autocompleta con los que
                 tengan un usuario registrado y que pertenezcan a la
-                organización.<br></br>
+                organización seleccionada.<br></br>
                 También se pueden agregar colaboradores sin usuarios asignados,
                 ingresando su nombre y mail con la opción: "Crear nuevo autor"
               </Typography>
@@ -869,7 +869,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                   onChange={(e, s) => {
                     if (s) setAuthorsToAdd(authorsToAdd.concat(s!));
                   }}
-                  renderInput={(params) => <TextField {...params} fullWidth />}
+                  renderInput={(params) => <TextField {...params} fullWidth placeholder="Harry Po..."/>}
                 />
               </GridItem>
               <GridItem xs={3}>
@@ -916,7 +916,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
               disableRestoreFocus
             >
               <Typography>
-                Acá podés agregar supervisores al proyecto. Se ofrecen aquellos
+                Acá podés agregar supervisores al proyecto. Se autocompleta con los 
                 que tengan un usuario registrado y que pertenezcan a la
                 organización.<br></br>
                 También se pueden agregar colaboradores sin usuarios asignados,
@@ -961,7 +961,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                       setSupervisorsToAdd(supervisorsToAdd.concat(s!));
                     }
                   }}
-                  renderInput={(params) => <TextField {...params} fullWidth />}
+                  renderInput={(params) => <TextField {...params} fullWidth placeholder="Albus Dum..."/>}
                 />
               </GridItem>
               <GridItem xs={3}>
