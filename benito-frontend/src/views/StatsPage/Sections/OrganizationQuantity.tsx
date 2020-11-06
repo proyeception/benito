@@ -74,7 +74,7 @@ const useStyles = makeStyles(styles);
 
     return (
     <div>
-        <div className={classes.title} style={{paddingTop: "20px", color: color}}>Cantidad de proyectos por institución</div>
+        <div className={classes.title} style={{paddingTop: "20px", color: color}}>Cantidad de proyectos por categoría</div>
         <Autocomplete
           fullWidth
           options={props.categories}
