@@ -2,8 +2,9 @@ import { createStyles } from "@material-ui/core/styles";
 
 const imagesStyles = createStyles({
   imgFluid: {
-    width: "100%",
-    height: "auto",
+    width: "100px",
+    height: "100px",
+    objectFit: "cover"
   },
   imgRounded: {
     borderRadius: "6px !important",

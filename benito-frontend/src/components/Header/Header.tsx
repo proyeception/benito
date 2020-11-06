@@ -15,7 +15,7 @@ import Menu from "@material-ui/icons/Menu";
 import styles from "../../assets/jss/material-kit-react/components/headerStyle";
 import { hot } from "react-hot-loader";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import logo from "../../assets/img/proyectate/proyectate-logo-transparent.png";
+import logo from "../../assets/img/proyectate/proyectate-logo-nombre.png";
 import utnLogo from "../../assets/img/proyectate/utn-logo-transparent.png";
 import HeaderSearchBox from "./HeaderSearchBox";
 import { Divider } from "@material-ui/core";
@@ -40,7 +40,6 @@ const Header = (props: HeaderProps) => {
   const brand = (
     <span className={classes.logoContainer}>
       <img src={logo} className={classes.brandLogo} alt="Logo Proyectate"/>
-      <span style={{ fontWeight: "normal", color: "white" }}>Proyectate</span>
     </span>
   );
 
@@ -87,7 +86,7 @@ const Header = (props: HeaderProps) => {
           variant="temporary"
           anchor={"right"}
           open={mobileOpen}
-          style={{color: "white"}}
+          style={{color: "black"}}
           classes={{
             paper: classes.drawerPaper,
           }}

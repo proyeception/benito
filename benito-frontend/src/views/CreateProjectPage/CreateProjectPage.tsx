@@ -58,7 +58,7 @@ import { updateFromDate } from "../../actions/search";
 import store from "../../store";
 import { grey } from "@material-ui/core/colors";
 import moment from "moment";
-import MEDitor from "@uiw/react-md-editor";
+import MEDitor, { commands } from "@uiw/react-md-editor";
 import classNames from "classnames";
 import CreateGhostUser from "../../components/CreateGhostUser/CreateGhostUser";
 import { SSL_OP_EPHEMERAL_RSA } from "constants";
@@ -565,6 +565,9 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
               style={{ overflow: "hidden" }}
               onChange={(e) => setReadme(e)}
               onBlur={(e) => generateTags()}
+              commands={[
+                commands.bold, commands.italic, commands.strikethrough, commands.hr, commands.title, commands.divider, commands.link, commands.quote, commands.code, commands.image, commands.divider, commands.unorderedListCommand, commands.orderedListCommand, commands.checkedListCommand, commands.divider, commands.codeEdit, commands.codeLive, commands.codePreview
+              ]}
             />
           </GridItem>
           <br />
@@ -835,9 +838,9 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
               disableRestoreFocus
             >
               <Typography>
-                Acá podés agregar autores al proyecto. Se ofrecen aquellos que
+                Acá podés agregar autores al proyecto. Se autocompleta con los que
                 tengan un usuario registrado y que pertenezcan a la
-                organización.<br></br>
+                organización seleccionada.<br></br>
                 También se pueden agregar colaboradores sin usuarios asignados,
                 ingresando su nombre y mail con la opción: "Crear nuevo autor"
               </Typography>
@@ -869,7 +872,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                   onChange={(e, s) => {
                     if (s) setAuthorsToAdd(authorsToAdd.concat(s!));
                   }}
-                  renderInput={(params) => <TextField {...params} fullWidth />}
+                  renderInput={(params) => <TextField {...params} fullWidth placeholder="Harry Po..."/>}
                 />
               </GridItem>
               <GridItem xs={3}>
@@ -916,7 +919,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
               disableRestoreFocus
             >
               <Typography>
-                Acá podés agregar supervisores al proyecto. Se ofrecen aquellos
+                Acá podés agregar supervisores al proyecto. Se autocompleta con los 
                 que tengan un usuario registrado y que pertenezcan a la
                 organización.<br></br>
                 También se pueden agregar colaboradores sin usuarios asignados,
@@ -933,9 +936,15 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                   "cursor-pointer"
                 )}
                 onClick={() => {
-                  setSupervisorsToAdd(
-                    supervisorsToAdd.filter((sta) => sta != s)
-                  );
+                  {
+                    if(props.session.isLoggedIn){
+                      if(s.id != props.session.userId){
+                        setSupervisorsToAdd(
+                          supervisorsToAdd.filter((sta) => sta != s)
+                        );
+                      }
+                    }
+                  }
                 }}
               >
                 <RemoveCircle /> {s.fullName}
@@ -955,7 +964,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                       setSupervisorsToAdd(supervisorsToAdd.concat(s!));
                     }
                   }}
-                  renderInput={(params) => <TextField {...params} fullWidth />}
+                  renderInput={(params) => <TextField {...params} fullWidth placeholder="Albus Dum..."/>}
                 />
               </GridItem>
               <GridItem xs={3}>

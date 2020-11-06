@@ -17,6 +17,7 @@ import FeaturedSection from "./Sections/FeaturedSection";
 import image from "../../assets/img/proyectate/pattern.jpg";
 import RecommendationsSection from "./Sections/RecommendationsSection";
 import { SessionState } from "../../store/session/types";
+import StatsSection from "./Sections/StatsSection";
 
 const useStyles = makeStyles(styles);
 
@@ -49,6 +50,7 @@ const HomePage = (props: HomePageProps) => {
           <SearchBoxSection/>
         </Hidden>
         <FeaturedSection />
+        <StatsSection />
         <CategoriesSection />
         {props.customizationToken && <RecommendationsSection />}
       </div>

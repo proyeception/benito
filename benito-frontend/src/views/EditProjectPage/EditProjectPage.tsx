@@ -57,7 +57,7 @@ import {
 } from "../../functions/project";
 import useCreateGhostUser from "../../components/CreateGhostUser/CreateGhostUser";
 import { grey, red } from "@material-ui/core/colors";
-import MEDitor from "@uiw/react-md-editor";
+import MEDitor, { commands } from "@uiw/react-md-editor";
 import CreateGhostUser from "../../components/CreateGhostUser/CreateGhostUser";
 import FilePreview from "react-preview-file/dist/filePreview";
 import ImageUploading, { ImageListType } from "react-images-uploading";
@@ -559,6 +559,9 @@ const EditProjectPage = (props: EditProjectPageProps) => {
               style={{ overflow: "hidden" }}
               onChange={(e) => setReadme(e)}
               onBlur={(e) => generateTags()}
+              commands={[
+                commands.bold, commands.italic, commands.strikethrough, commands.hr, commands.title, commands.divider, commands.link, commands.quote, commands.code, commands.image, commands.divider, commands.unorderedListCommand, commands.orderedListCommand, commands.checkedListCommand, commands.divider, commands.codeEdit, commands.codeLive, commands.codePreview
+              ]}
             />
           </GridItem>
           <br />
@@ -826,9 +829,9 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                 disableRestoreFocus
               >
                 <Typography>
-                  Acá podés agregar autores al proyecto. Se ofrecen aquellos que
+                  Acá podés agregar autores al proyecto. Se autocompleta con los que
                   tengan un usuario registrado y que pertenezcan a la
-                  organización.<br></br>
+                  organización seleccionada.<br></br>
                   También se pueden agregar colaboradores sin usuarios
                   asignados, ingresando su nombre y mail con la opción: "Crear
                   nuevo autor"
@@ -870,7 +873,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                     }}
                     renderInput={(params) => (
                       <ThemeProvider theme={theme}>
-                        <TextField {...params} fullWidth />
+                        <TextField {...params} fullWidth placeholder="Harry Po..."/>
                       </ThemeProvider>
                     )}
                   />
@@ -920,9 +923,9 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                 disableRestoreFocus
               >
                 <Typography>
-                  Acá podés agregar supervisores al proyecto. Se ofrecen
-                  aquellos que tengan un usuario registrado y que pertenezcan a
-                  la organización.<br></br>
+                  Acá podés agregar supervisores al proyecto. Se autocompleta con los 
+                  que tengan un usuario registrado y que pertenezcan a la
+                  organización.<br></br>
                   También se pueden agregar colaboradores sin usuarios
                   asignados, ingresando su nombre y mail con la opción: "Crear
                   nuevo supervisor"
@@ -945,7 +948,13 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                       "cursor-pointer"
                     )}
                     onClick={() =>
-                      setSupervisorsToRemove(supervisorsToRemove.concat(s))
+                      {
+                        if(props.session.isLoggedIn){
+                          if(s.id != props.session.userId){
+                            setSupervisorsToRemove(supervisorsToRemove.concat(s))
+                          }
+                        }
+                      }
                     }
                   >
                     <RemoveCircle /> {s.fullName}
@@ -968,7 +977,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                       if (s) setSupervisorsToAdd(supervisorsToAdd.concat(s!));
                     }}
                     renderInput={(params) => (
-                      <TextField {...params} fullWidth />
+                      <TextField {...params} fullWidth placeholder="Albus Dum..."/>
                     )}
                   />
                 </GridItem>

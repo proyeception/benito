@@ -100,7 +100,8 @@ class ProjectServiceTest : Spec() {
                     ),
                     recommendations = emptyList(),
                     project_keywords = emptyList(),
-                    driveFolderId = "123"
+                    driveFolderId = "123",
+                    category = "Systems"
                 )
 
                 val newProject = MedusaProjectDTO(
@@ -217,7 +218,8 @@ class ProjectServiceTest : Spec() {
                     ),
                     recommendations = emptyList(),
                     project_keywords = emptyList(),
-                    driveFolderId = "123"
+                    driveFolderId = "123",
+                    category = "Systems"
                 )
 
                 val newProject = MedusaProjectDTO(
