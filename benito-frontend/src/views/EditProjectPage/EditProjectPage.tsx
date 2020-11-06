@@ -57,7 +57,7 @@ import {
 } from "../../functions/project";
 import useCreateGhostUser from "../../components/CreateGhostUser/CreateGhostUser";
 import { grey, red } from "@material-ui/core/colors";
-import MEDitor from "@uiw/react-md-editor";
+import MEDitor, { commands } from "@uiw/react-md-editor";
 import CreateGhostUser from "../../components/CreateGhostUser/CreateGhostUser";
 import FilePreview from "react-preview-file/dist/filePreview";
 import ImageUploading, { ImageListType } from "react-images-uploading";
@@ -559,6 +559,9 @@ const EditProjectPage = (props: EditProjectPageProps) => {
               style={{ overflow: "hidden" }}
               onChange={(e) => setReadme(e)}
               onBlur={(e) => generateTags()}
+              commands={[
+                commands.bold, commands.italic, commands.strikethrough, commands.hr, commands.title, commands.divider, commands.link, commands.quote, commands.code, commands.image, commands.divider, commands.unorderedListCommand, commands.orderedListCommand, commands.checkedListCommand, commands.divider, commands.codeEdit, commands.codeLive, commands.codePreview
+              ]}
             />
           </GridItem>
           <br />

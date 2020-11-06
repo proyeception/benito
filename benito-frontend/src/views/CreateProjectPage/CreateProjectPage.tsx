@@ -58,7 +58,7 @@ import { updateFromDate } from "../../actions/search";
 import store from "../../store";
 import { grey } from "@material-ui/core/colors";
 import moment from "moment";
-import MEDitor from "@uiw/react-md-editor";
+import MEDitor, { commands } from "@uiw/react-md-editor";
 import classNames from "classnames";
 import CreateGhostUser from "../../components/CreateGhostUser/CreateGhostUser";
 import { SSL_OP_EPHEMERAL_RSA } from "constants";
@@ -565,6 +565,9 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
               style={{ overflow: "hidden" }}
               onChange={(e) => setReadme(e)}
               onBlur={(e) => generateTags()}
+              commands={[
+                commands.bold, commands.italic, commands.strikethrough, commands.hr, commands.title, commands.divider, commands.link, commands.quote, commands.code, commands.image, commands.divider, commands.unorderedListCommand, commands.orderedListCommand, commands.checkedListCommand, commands.divider, commands.codeEdit, commands.codeLive, commands.codePreview
+              ]}
             />
           </GridItem>
           <br />
