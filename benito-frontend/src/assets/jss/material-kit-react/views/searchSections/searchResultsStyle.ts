@@ -41,6 +41,7 @@ const searchResultsStyle = (theme: Theme) =>
       display: "block",
       width: "100%",
       height: "320px",
+      objectFit: "cover",
     },
     authors: {
       [theme.breakpoints.down("md")]: {

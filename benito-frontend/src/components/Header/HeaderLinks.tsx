@@ -95,7 +95,7 @@ const HeaderLinks = (props: Props) => {
     return (
       <List className={classes.list}>
         {(userOrganizations.length > 1) ?
-          (<ListItem className={classes.listItem} style={{color: "white !important"}}>
+          (<ListItem className={classes.listItem}>
             <CustomDropdown
               buttonProps={{
                 color: "transparent",
@@ -139,11 +139,13 @@ const HeaderLinks = (props: Props) => {
   return (
     <List className={classes.list} style={{color: "white !important"}}>
       <ListItem className={classes.listItem}>
+      <Hidden smDown>
         <Link to="/search">
           <Button color="transparent" className={classes.navLink}>
             <img src={MG} alt="Lupa" style={{ height: "25px", margin: "0" }} />
           </Button>
         </Link>
+        </Hidden>
       </ListItem>
       <ListItem className={classes.listItem}>
         {props.session.isLoggedIn ? (

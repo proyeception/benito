@@ -86,7 +86,7 @@ const Header = (props: HeaderProps) => {
           variant="temporary"
           anchor={"right"}
           open={mobileOpen}
-          style={{color: "white"}}
+          style={{color: "black"}}
           classes={{
             paper: classes.drawerPaper,
           }}
