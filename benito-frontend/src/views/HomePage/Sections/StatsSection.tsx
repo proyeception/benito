@@ -4,7 +4,7 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import withFeaturedProjects from "../../../hooks/withFeaturedProjects";
 import Spinner from "../../../components/Spinner/Spinner";
-import { makeStyles, Theme } from "@material-ui/core";
+import { Hidden, makeStyles, Theme } from "@material-ui/core";
 import CardBody from "../../../components/Card/CardBody";
 import Card from "../../../components/Card/Card";
 import imagesStyles from "../../../assets/jss/material-kit-react/imagesStyles";
@@ -78,7 +78,7 @@ const FeaturedSection = (props: FeaturedSectionProps) => {
                 lg={3}
                 id="search-box"
             >
-              <div style={{ paddingRight: "30px"}}>
+              <div style={{ paddingRight: "30px", paddingLeft: "30px"}}>
                 <h2 className={classes.title} style={{ textAlign: "center", paddingTop: "40px", color:color}}>
                   ESTADÍSTICAS
                 </h2>
@@ -86,7 +86,7 @@ const FeaturedSection = (props: FeaturedSectionProps) => {
                 <div style={{ margin: "auto", textAlign: "center", paddingBottom: "20px", paddingTop: "50px"}}>
                   <Link to="/stats" className="normalize-link">
                     <Button color={color} style={{ margin: "auto"}}>
-                      Ver más estadísticas!
+                      Ver estadísticas!
                     </Button>
                   </Link>
                 </div>
@@ -99,7 +99,9 @@ const FeaturedSection = (props: FeaturedSectionProps) => {
                 lg={8}
                 id="results"
             >
-                <ProjectCreationTimeline />
+                <Hidden mdDown>
+                  <ProjectCreationTimeline />
+                </Hidden>
             </GridItem>
         </GridContainer>
         </div>
