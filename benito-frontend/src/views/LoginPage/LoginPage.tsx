@@ -37,6 +37,7 @@ import { requestSupervisorAccount } from "../../functions/user";
 import { Alert } from "@material-ui/lab";
 import { grey } from "@material-ui/core/colors";
 import classNames from "classnames";
+import Spinner from "../../components/Spinner/Spinner";
 
 const getKeyValue = <T extends object, U extends keyof T>(obj: T) => (key: U) =>
   obj[key];
@@ -65,6 +66,7 @@ const LoginPage = (props: LoginPageProps) => {
   const [disabled, setDisabled] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [activeTab, setActiveTab] = useState(0);
 
@@ -73,6 +75,10 @@ const LoginPage = (props: LoginPageProps) => {
       primary: grey,
     },
   });
+
+  if(isLoading){
+    return (<Spinner/>)
+  }
 
   return (
     <div>
@@ -127,6 +133,7 @@ const LoginPage = (props: LoginPageProps) => {
                                   </Button>
                                 )}
                                 onSuccess={(res) => {
+                                  setIsLoading(true)
                                   let googleInfo = res as GoogleLoginResponse;
                                   let loginData: LoginData = {
                                     googleUserId: googleInfo.googleId,
@@ -189,6 +196,7 @@ const LoginPage = (props: LoginPageProps) => {
                                   </Button>
                                 )}
                                 onSuccess={(res) => {
+                                  setIsLoading(true)
                                   let googleInfo = res as GoogleLoginResponse;
                                   let loginData: LoginData = {
                                     googleUserId: googleInfo.googleId,
