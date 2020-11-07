@@ -80,22 +80,26 @@ open class ProjectController(
         @RequestHeader(value = X_CUSTOMIZATION_TOKEN, required = false) customizationToken: String?,
         @RequestHeader(value = X_QUI_TOKEN, required = false) sessionToken: String?,
         httpResponse: HttpServletResponse
-    ): ProjectDTO = removeSensitiveIfNotAuthorized(sessionToken, projectService.findProject(id))
-        .also { p ->
-            val token = customizationToken ?: userService.createCustomizationId()
+    ): ProjectDTO {
+        val project = projectService.findProject(id)
+        projectService.registerView(project)
+        return removeSensitiveIfNotAuthorized(sessionToken, project)
+            .also { p ->
+                val token = customizationToken ?: userService.createCustomizationId()
 
-            if (customizationToken == null) {
-                httpResponse.addCookie(Cookie(X_CUSTOMIZATION_TOKEN, token).also { it.path = "/" })
+                if (customizationToken == null) {
+                    httpResponse.addCookie(Cookie(X_CUSTOMIZATION_TOKEN, token).also { it.path = "/" })
+                }
+
+                GlobalScope.launch {
+                    userService.trackRecommendation(p.id, token)
+
+                    sessionToken
+                        ?.let { sessionService[it] }
+                        ?.let { userService.setCustomizationUserId(token, it.userId) }
+                }
             }
-
-            GlobalScope.launch {
-                userService.trackRecommendation(p.id, token)
-
-                sessionToken
-                    ?.let { sessionService[it] }
-                    ?.let { userService.setCustomizationUserId(token, it.userId) }
-            }
-        }
+    }
 
     @RequestMapping(
         value = ["/benito/projects/{projectId}/documents"],

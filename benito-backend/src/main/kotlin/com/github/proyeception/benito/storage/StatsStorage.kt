@@ -7,6 +7,11 @@ import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.aggregation.*
 import org.springframework.data.mongodb.core.aggregation.Aggregation.*
 import org.springframework.data.mongodb.core.query.Criteria
+import org.springframework.data.mongodb.core.query.Query
+import org.springframework.data.mongodb.core.query.Update
+
+
+
 
 
 class StatsStorage(
@@ -19,6 +24,9 @@ class StatsStorage(
 
     fun insert(visit: ProjectVisitDTO) {
         mongoTemplate.insert(visit)
+        val query = Query(Criteria.where("_id").`is`(visit.projectId))
+        val update = Update().inc("views", 1)
+        mongoTemplate.findAndModify(query, update, ProjectDTO::class.java)
     }
 
     fun insert(search: ProjectSearchDTO) {

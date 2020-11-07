@@ -44,7 +44,8 @@ open class ProjectService(
     private val recommendationService: RecommendationService,
     private val googleDriveClient: GoogleDriveClient,
     private val driveStorage: DriveStorage,
-    private val permissionsStorage: PermissionsStorage
+    private val permissionsStorage: PermissionsStorage,
+    private val categoriesService: CategoriesService
 ) {
     open fun closeProject(projectId: String) = mappingFromMedusa {
         medusaClient.updateProjectOpen(projectId, false)
@@ -170,16 +171,22 @@ open class ProjectService(
     fun count(): CountDTO = CountDTO(medusaClient.projectCount())
 
     open fun findProject(id: String): ProjectDTO = mappingFromMedusa {
-        val project = medusaClient.findProject(projectId = id)
+        medusaClient.findProject(projectId = id)
+    }
+
+    open fun registerView(project: ProjectDTO) {
         launchIOAsync {
+            val categoryId = categoriesService
+                .categories()
+                .find {it.name == project.category}!!
+                .id
             statsService.registerVisit(ProjectVisitDTO(
                 projectId = project.id,
-                categoryId = project.category.id,
+                categoryId = categoryId,
                 organizationId = project.organization.id,
                 visitedOn = LocalDate.now()
             ))
         }
-        project
     }
 
     fun updateProjectContent(content: UpdateContentDTO, projectId: String): ProjectDTO = mappingFromMedusa {
