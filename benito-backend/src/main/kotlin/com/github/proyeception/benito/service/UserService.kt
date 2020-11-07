@@ -33,7 +33,7 @@ open class UserService(
     open fun findSupervisorByGoogleId(id: String): PersonDTO? = findUserByGoogleId(id, UserType.SUPERVISOR)
 
     open fun findAuthorByEmail(mail: String): PersonDTO? = findOneUserBy(
-        UserType.SUPERVISOR,
+        UserType.AUTHOR,
         Pair("mail", mail)
     )
 

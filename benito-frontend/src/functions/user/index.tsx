@@ -37,7 +37,7 @@ export async function updateUser(
   return axios.request<Person>(signRequest(config));
 }
 
-export function updateUserPicture(userId: string, role:string, picture: File) {
+export function updateUserPicture(userId: string, role: string, picture: File) {
   const pictureForm = new FormData();
   pictureForm.set("file", picture);
 
@@ -89,7 +89,7 @@ export function requestSupervisorAccount(
   googleUserId: string,
   fullName: string,
   mail: string,
-  profilePic: string
+  profilePic?: string
 ) {
   let config: AxiosRequestConfig = {
     method: "POST",
@@ -100,6 +100,30 @@ export function requestSupervisorAccount(
       mail: mail,
       organization: organization,
       profilePic: profilePic,
+    },
+  };
+
+  return axios.request(config);
+}
+
+export function signUpAuthor(
+  organization: string,
+  googleUserId: string,
+  fullName: string,
+  mail: string,
+  token: string,
+  profilePic?: string
+) {
+  let config: AxiosRequestConfig = {
+    method: "POST",
+    url: `${benitoHost}/benito/authors/sign-up`,
+    data: {
+      googleUserId: googleUserId,
+      fullName: fullName,
+      mail: mail,
+      organizationId: organization,
+      profilePic: profilePic,
+      token: token,
     },
   };
 
