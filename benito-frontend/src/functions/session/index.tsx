@@ -28,9 +28,11 @@ export async function openLocalStoredSession(cb?: () => void) {
         })
         .then((res) => res.data);
 
-        const person = await axios
+      const person = await axios
         .request<Person>({
-          url: `${benitoHost}/benito/${session.role.toLocaleLowerCase()}s/${session.userId}`,
+          url: `${benitoHost}/benito/${session.role.toLocaleLowerCase()}s/${
+            session.userId
+          }`,
           headers: { "x-qui-token": quiTokenStorage },
           method: "GET",
         })
@@ -50,7 +52,7 @@ export async function openLocalStoredSession(cb?: () => void) {
           username: user.username,
           isLoggedIn: true,
           organizations: person.organizations,
-          selectedOrganization: person.organizations[0]
+          selectedOrganization: person.organizations[0],
         })
       );
     } catch (e) {
@@ -77,6 +79,7 @@ export function startLogin(
   };
   axios
     .request(config)
+    .then(() => console.log("asd"))
     .then(() => openLocalStoredSession())
     .catch(onError);
 }

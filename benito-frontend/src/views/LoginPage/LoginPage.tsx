@@ -33,7 +33,7 @@ import {
   Hidden,
 } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import { requestSupervisorAccount } from "../../functions/user";
+import { requestSupervisorAccount, signUpAuthor } from "../../functions/user";
 import { Alert } from "@material-ui/lab";
 import { grey } from "@material-ui/core/colors";
 import classNames from "classnames";
@@ -76,8 +76,8 @@ const LoginPage = (props: LoginPageProps) => {
     },
   });
 
-  if(isLoading){
-    return (<Spinner/>)
+  if (isLoading) {
+    return <Spinner />;
   }
 
   return (
@@ -133,7 +133,7 @@ const LoginPage = (props: LoginPageProps) => {
                                   </Button>
                                 )}
                                 onSuccess={(res) => {
-                                  setIsLoading(true)
+                                  setIsLoading(true);
                                   let googleInfo = res as GoogleLoginResponse;
                                   let loginData: LoginData = {
                                     googleUserId: googleInfo.googleId,
@@ -145,11 +145,122 @@ const LoginPage = (props: LoginPageProps) => {
                                   };
                                   startLogin(loginData, "author", () => {
                                     setError(true);
-                                    setDisabled(true);
+                                    console.log("fuck");
+                                    setIsLoading(false);
                                   });
                                 }}
                                 onFailure={console.warn}
                               />
+                            </GridItem>
+                            <GridItem>
+                              <Divider variant="fullWidth" />
+                            </GridItem>
+                            <GridItem style={{ paddingTop: "15px" }}>
+                              <div>
+                                O registrate en tu organización. Es gratis!
+                              </div>
+                              <ThemeProvider theme={theme}>
+                                <Autocomplete
+                                  fullWidth
+                                  options={props.organizations}
+                                  getOptionLabel={(option) =>
+                                    option.displayName
+                                  }
+                                  onChange={(e, o) => setOrganization(o)}
+                                  renderInput={(params) => (
+                                    <TextField
+                                      error={hasError}
+                                      label="Organización"
+                                      {...params}
+                                      fullWidth
+                                      helperText={
+                                        hasError
+                                          ? "Por favor, elegí una organización"
+                                          : undefined
+                                      }
+                                      onBlur={() => setHasError(false)}
+                                    />
+                                  )}
+                                />
+                              </ThemeProvider>
+                              <GoogleLogin
+                                clientId={googleClientId}
+                                render={(renderProps) => (
+                                  <Button
+                                    style={{ marginTop: "15px" }}
+                                    disabled={disabled}
+                                    onClick={() => {
+                                      if (organization == null) {
+                                        setHasError(true);
+                                      } else {
+                                        renderProps.onClick();
+                                        setDisabled(true);
+                                      }
+                                    }}
+                                    fullWidth
+                                    color="primary"
+                                  >
+                                    Registrar
+                                  </Button>
+                                )}
+                                onSuccess={(res) => {
+                                  let googleInfo = res as GoogleLoginResponse;
+                                  if (organization == null) {
+                                    setDisabled(false);
+                                  } else {
+                                    signUpAuthor(
+                                      organization.id,
+                                      googleInfo.googleId,
+                                      googleInfo.profileObj.name,
+                                      googleInfo.profileObj.email,
+                                      googleInfo.profileObj.imageUrl,
+                                      googleInfo.tokenId
+                                    )
+                                      .then(() => setDisabled(false))
+                                      .then(() => setSuccess(true))
+                                      .then(() => {
+                                        let loginData: LoginData = {
+                                          googleUserId: googleInfo.googleId,
+                                          fullName: googleInfo.profileObj.name,
+                                          profilePictureUrl:
+                                            googleInfo.profileObj.imageUrl,
+                                          mail: googleInfo.profileObj.email,
+                                          token: googleInfo.tokenId,
+                                        };
+                                        startLogin(loginData, "author", () => {
+                                          setError(true);
+                                          setDisabled(true);
+                                        });
+                                      })
+                                      .catch(() => setError(true));
+                                  }
+                                }}
+                                onFailure={console.warn}
+                              />
+                              <Snackbar
+                                open={error}
+                                autoHideDuration={6000}
+                                onClose={() => {
+                                  setError(false);
+                                  setDisabled(false);
+                                }}
+                              >
+                                <Alert
+                                  onClose={() => {
+                                    setError(false);
+                                    setDisabled(false);
+                                  }}
+                                  severity="error"
+                                  style={{
+                                    zIndex: 999,
+                                    opacity: "1 !important",
+                                  }}
+                                >
+                                  ¡Lo sentimos! Salió algo mal procesando la
+                                  solicitud. Nuestros ingenieros ya están
+                                  resolviéndolo.
+                                </Alert>
+                              </Snackbar>
                             </GridItem>
                             <Snackbar
                               open={error}
@@ -196,7 +307,7 @@ const LoginPage = (props: LoginPageProps) => {
                                   </Button>
                                 )}
                                 onSuccess={(res) => {
-                                  setIsLoading(true)
+                                  setIsLoading(true);
                                   let googleInfo = res as GoogleLoginResponse;
                                   let loginData: LoginData = {
                                     googleUserId: googleInfo.googleId,

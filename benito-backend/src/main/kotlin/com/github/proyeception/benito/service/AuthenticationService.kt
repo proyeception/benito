@@ -1,10 +1,9 @@
 package com.github.proyeception.benito.service
 
-import com.github.proyeception.benito.dto.LoginDTO
 import com.github.proyeception.benito.dto.RoleDTO
 import com.github.proyeception.benito.dto.SessionInfoDTO
+import com.github.proyeception.benito.exception.NotFoundException
 import com.github.proyeception.benito.exception.UnauthorizedException
-import com.github.proyeception.benito.extension.fromCamelToKebab
 import com.github.proyeception.benito.utils.HashHelper
 import org.slf4j.LoggerFactory
 
@@ -13,9 +12,9 @@ open class AuthenticationService(
     private val sessionService: SessionService,
     private val hash: HashHelper
 ) {
-    open fun authenticateSupervisor(login: LoginDTO): String = userService.findSupervisorByEmail(login.mail)
+    open fun authenticateSupervisor(mail: String, googleToken: String): String = userService.findSupervisorByEmail(mail)
         ?.let {
-            val token = hash.sha256(login.token)
+            val token = hash.sha256(googleToken)
             sessionService[token] = SessionInfoDTO(
                 RoleDTO.SUPERVISOR,
                 it.id
@@ -24,34 +23,26 @@ open class AuthenticationService(
         }
         ?: throw UnauthorizedException("You're not registered as a supervisor")
 
-    open fun authenticateOrCreateAuthor(login: LoginDTO): String {
-        val maybePerson = userService.findAuthorByGoogleId(login.googleUserId)
+    open fun authenticateAuthor(mail: String, googleToken: String): String {
+        LOGGER.info("Login from $mail")
 
-        LOGGER.info("Login from ${login.mail}")
+        return userService.findAuthorByEmail(mail)
+            ?.let {
+                LOGGER.info("User found")
 
-        val (userId, _) = if (maybePerson == null) {
-            LOGGER.info("User does not exist. Creating...")
-            val person = userService.createAuthor(
-                fullName = login.fullName,
-                profilePicUrl = login.profilePictureUrl,
-                googleUserId = login.googleUserId,
-                username = login.fullName.fromCamelToKebab(),
-                mail = login.mail,
-                googleToken = login.token
-            )
-            Pair(person.id, person.profilePicUrl)
-        } else {
-            LOGGER.info("User already exists.")
-            Pair(maybePerson.id, maybePerson.profilePicUrl)
-        }
+                val token = hash.sha256(googleToken)
 
-        val token = hash.sha256(login.token)
+                sessionService[token] = SessionInfoDTO(
+                    role = RoleDTO.AUTHOR,
+                    userId = it.id
+                )
 
-        sessionService[token] = SessionInfoDTO(
-            role = RoleDTO.AUTHOR,
-            userId = userId
-        )
-        return token
+                token
+            }
+            ?: {
+                LOGGER.error("User not found")
+                throw UnauthorizedException("User $mail not found")
+            }.invoke()
     }
 
     companion object {

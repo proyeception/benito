@@ -120,8 +120,9 @@ open class ServiceModule {
     @Bean
     open fun signUpService(
         medusaClient: MedusaClient,
-        fileService: FileService
-    ): SignUpService = SignUpService(medusaClient, fileService)
+        fileService: FileService,
+        userService: UserService
+    ): SignUpService = SignUpService(medusaClient, fileService, userService)
 
     @Bean
     open fun statsService(

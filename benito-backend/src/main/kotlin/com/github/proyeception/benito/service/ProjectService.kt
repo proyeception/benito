@@ -350,7 +350,10 @@ open class ProjectService(
         LOGGER.info("Set project $projectId users to {}", users)
         medusaClient.modifyProjectUsers(
             projectId = projectId,
-            users = users
+            users = users.copy(
+                authors = users.authors.distinct(),
+                supervisors = users.supervisors.distinct()
+            )
         )
     }
         .also {
