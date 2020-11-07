@@ -890,6 +890,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                     fullWidth
                     type="button"
                     color={organization.color}
+                    disabled={authorsToAdd.concat(authors).concat(justCreatedAuthors).length == 10}
                     onClick={() => setCreateGhostAuthorFormOpen(true)}
                   >
                     <AddCircle />
@@ -958,7 +959,6 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                         if(props.session.isLoggedIn){
                           if(s.id != props.session.userId){
                             setSupervisorsToRemove(supervisorsToRemove.concat(s))
-                            console.error("##############")
                             supervisorsToAdd.indexOf(s) > -1 ? supervisorsToAdd.splice(supervisorsToAdd.indexOf(s), 1) : false
                           }
                         }
@@ -999,6 +999,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                     fullWidth
                     type="button"
                     color={organization.color}
+                    disabled={supervisorsToAdd.concat(supervisors).concat(justCreatedSupervisors).length == 7}
                     onClick={() => setCreateGhostSupervisorFormOpen(true)}
                   >
                     <AddCircle />

@@ -882,6 +882,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                   fullWidth
                   type="button"
                   color={color}
+                  disabled={authorsToAdd.length == 10}
                   onClick={() => setCreateGhostAuthorFormOpen(true)}
                 >
                   <AddCircle />
@@ -976,6 +977,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                   fullWidth
                   type="button"
                   color={color}
+                  disabled={supervisorsToAdd.length == 7}
                   onClick={() => setCreateGhostSupervisorFormOpen(true)}
                 >
                   <AddCircle />
