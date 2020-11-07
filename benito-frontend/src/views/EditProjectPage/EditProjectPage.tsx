@@ -849,9 +849,10 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                       "underline-hover",
                       "cursor-pointer"
                     )}
-                    onClick={() =>
-                      setAuthorsToRemove(authorsToRemove.concat(a))
-                    }
+                    onClick={() => {
+                        setAuthorsToRemove(authorsToRemove.concat(a))
+                        authorsToAdd.indexOf(a) > -1 ? authorsToAdd.splice(authorsToAdd.indexOf(a), 1) : false
+                    }}
                   >
                     <RemoveCircle /> {a.fullName}
                   </div>
@@ -870,7 +871,10 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                     getOptionLabel={(option) => option.fullName}
                     onChange={(e, a) => {
                       if(authorsToAdd.concat(authors).concat(justCreatedAuthors).length < 10){
-                        if (a) setAuthorsToAdd(authorsToAdd.concat(a!));
+                        if (a) {
+                          setAuthorsToAdd(authorsToAdd.concat(a!))
+                          authorsToRemove.indexOf(a!) > -1 ? authorsToRemove.splice(authorsToRemove.indexOf(a!), 1) : false
+                        };
                       }
                     }}
                     renderInput={(params) => (
@@ -954,6 +958,8 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                         if(props.session.isLoggedIn){
                           if(s.id != props.session.userId){
                             setSupervisorsToRemove(supervisorsToRemove.concat(s))
+                            console.error("##############")
+                            supervisorsToAdd.indexOf(s) > -1 ? supervisorsToAdd.splice(supervisorsToAdd.indexOf(s), 1) : false
                           }
                         }
                       }
@@ -977,7 +983,10 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                     getOptionLabel={(option) => option.fullName}
                     onChange={(e, s) => {
                       if(supervisorsToAdd.concat(supervisors).concat(justCreatedSupervisors).length < 7){
-                        if (s) setSupervisorsToAdd(supervisorsToAdd.concat(s!));
+                        if (s) {
+                          setSupervisorsToAdd(supervisorsToAdd.concat(s!))
+                          supervisorsToRemove.indexOf(s) > -1 ? supervisorsToRemove.splice(supervisorsToRemove.indexOf(s), 1) : false
+                        };
                       }
                     }}
                     renderInput={(params) => (
