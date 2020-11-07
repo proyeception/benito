@@ -32,6 +32,11 @@ open class UserService(
 
     open fun findSupervisorByGoogleId(id: String): PersonDTO? = findUserByGoogleId(id, UserType.SUPERVISOR)
 
+    open fun findAuthorByEmail(mail: String): PersonDTO? = findOneUserBy(
+        UserType.SUPERVISOR,
+        Pair("mail", mail)
+    )
+
     open fun findAuthorByGoogleId(id: String): PersonDTO? = findUserByGoogleId(id, UserType.AUTHOR)
 
     open fun findSupervisorByEmail(mail: String): PersonDTO? = findOneUserBy(
@@ -178,7 +183,9 @@ open class UserService(
             fullName = medusa.fullName,
             organizations = medusa.organizations.map { OrganizationDTO(it) },
             profilePicUrl = medusa.profilePic?.url,
-            projects = medusa.projects.map {
+            projects = medusa.projects
+                .distinct()
+                .map {
                 ProjectRefDTO(
                     id = it.id,
                     title = it.title,

@@ -22,57 +22,21 @@ class AuthenticationServiceTest : Spec() {
             hash = hashMock
         )
 
-        "authenticateOrCreateAuthor" should {
+        "authenticateAuthor" should {
             "should create the user if it does not exist" {
                 on(hashMock.sha256(eq("456"))).thenReturn("hash456")
-                on(userServiceMock.findAuthorByGoogleId(eq("123"))).thenReturn(null)
-                on(userServiceMock.createAuthor(
-                    "benito-quinquela",
-                    "Benito Quinquela",
-                    "benito@quinquela.com",
-                    "123",
-                    "456",
-                    null
-                )).thenReturn(
-                    PersonDTO(
-                        id = "789",
-                        username = "benito-quinquela",
-                        fullName = "Benito Quinquela",
-                        organizations = emptyList(),
-                        profilePicUrl = null,
-                        projects = emptyList(),
-                        socials = SocialDTO(),
-                        contact = null
+                on(userServiceMock.findAuthorByEmail(eq("benito@quinquela.com"))).thenReturn(null)
+                shouldThrow<UnauthorizedException> {
+                    authenticationService.authenticateAuthor(
+                        googleToken = "456",
+                        mail = "benito@quinquela.com"
                     )
-                )
-
-                val expected = "hash456"
-                val actual = authenticationService.authenticateOrCreateAuthor(
-                    login = LoginDTO(
-                        googleUserId = "123",
-                        token = "456",
-                        fullName = "Benito Quinquela",
-                        mail = "benito@quinquela.com",
-                        profilePictureUrl = null
-                    )
-                )
-
-                actual shouldBe expected
-
-                verify(sessionServiceMock).set(
-                    token = eq("hash456"),
-                    info = eq(
-                        SessionInfoDTO(
-                            role = RoleDTO.AUTHOR,
-                            userId = "789"
-                        )
-                    )
-                )
+                }
             }
 
             "return the existent user if not null" {
                 on(hashMock.sha256(eq("456"))).thenReturn("hash456")
-                on(userServiceMock.findAuthorByGoogleId(eq("123"))).thenReturn(
+                on(userServiceMock.findAuthorByEmail(eq("benito@quinquela.com"))).thenReturn(
                     PersonDTO(
                         id = "789",
                         username = null,
@@ -86,14 +50,9 @@ class AuthenticationServiceTest : Spec() {
                 )
 
                 val expected = "hash456"
-                val actual = authenticationService.authenticateOrCreateAuthor(
-                    login = LoginDTO(
-                        googleUserId = "123",
-                        token = "456",
-                        fullName = "Benito Quiqnuela",
-                        mail = "benito@quinquela.com",
-                        profilePictureUrl = null
-                    )
+                val actual = authenticationService.authenticateAuthor(
+                    googleToken = "456",
+                    mail = "benito@quinquela.com"
                 )
 
                 actual shouldBe expected
@@ -126,13 +85,8 @@ class AuthenticationServiceTest : Spec() {
 
                 val expected = "123"
                 val actual = authenticationService.authenticateSupervisor(
-                    login = LoginDTO(
-                        googleUserId = "123",
-                        token = "456",
-                        fullName = "Benito Quinquela",
-                        mail = "benito@quinquela.com",
-                        profilePictureUrl = null
-                    )
+                    googleToken = "456",
+                    mail = "benito@quinquela.com"
                 )
 
                 actual shouldBe expected
@@ -150,13 +104,8 @@ class AuthenticationServiceTest : Spec() {
                 on(userServiceMock.findSupervisorByEmail(eq("benito@quinquela.com"))).thenReturn(null)
                 shouldThrow<UnauthorizedException> {
                     authenticationService.authenticateSupervisor(
-                        login = LoginDTO(
-                            googleUserId = "123",
-                            token = "456",
-                            fullName = "Benito Quinquela",
-                            mail = "benito@quinquela.com",
-                            profilePictureUrl = null
-                        )
+                        googleToken = "456",
+                        mail = "benito@quinquela.com"
                     )
                 }
             }
