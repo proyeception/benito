@@ -47,6 +47,7 @@ const headerLinksStyle = (theme: Theme) =>
       borderRadius: "3px",
       lineHeight: "20px",
       textDecoration: "none",
+      width: "100%",
       margin: "0px",
       display: "inline-flex",
       "&:hover,&:focus": {

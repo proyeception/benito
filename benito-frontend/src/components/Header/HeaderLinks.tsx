@@ -137,22 +137,22 @@ const HeaderLinks = (props: Props) => {
   };
 
   return (
-    <List className={classes.list} style={{color: "white !important"}}>
-      <ListItem className={classes.listItem}>
+    <List className={classes.list} style={{color: "white !important", display: "flex"}}>
+      <ListItem className={classes.listItem} style={{verticalAlign: "middle"}}>
       <Hidden smDown>
-        <Link to="/search">
-          <Button color="transparent" className={classes.navLink}>
+        <Link to="/search" style={{verticalAlign: "middle"}}>
+          <Button color="transparent" className={classes.navLink} >
             <img src={MG} alt="Lupa" style={{ height: "25px", margin: "0" }} />
           </Button>
         </Link>
         </Hidden>
       </ListItem>
-      <ListItem className={classes.listItem}>
+      <ListItem className={classes.listItem} style={{verticalAlign: "middle"}}>
         {props.session.isLoggedIn ? (
           dropdown(props.session)
         ) : (
-          <Link to="/login" className="normalize-link">
-            <Button color="transparent" className={classes.navLink}>
+          <Link to="/login" className="normalize-link" style={{verticalAlign: "middle"}}>
+            <Button color="transparent" className={classes.navLink} >
               <ExitToApp className={classes.socialIcons} /> Iniciar sesión
             </Button>
           </Link>
