@@ -30,12 +30,14 @@ const FromDateInput = (props: FromDateInputProps) => (
       format="yyyy"
       label="Comienzo"
       value={props.from || null}
+      maxDate={moment(moment().format("yyyy").toString() + "-12-31")}
+      minDate={moment("1/1/2000")}
       views={["year"]}
       onChange={(e) => {
         if (e && moment(e).format("yyyy-MM-DD").toString() != "Invalid date") {
           store.dispatch(
             updateFromDate(
-              moment(e).add(1, "days").format("yyyy-MM-DD").toString()
+              moment(e).format("yyyy-MM-DD").toString()
             )
           );
         } else {

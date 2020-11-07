@@ -339,6 +339,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
     extraContent: "",
     organization: user.value.organizations[0],
     keywordMatchingDocs: [],
+    views: "0"
   };
 
   if (props.session.isLoggedIn) {
@@ -529,7 +530,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                     moment(e).format("yyyy-MM-DD").toString() != "Invalid date"
                   ) {
                     setCreationDate(
-                      moment(e).add(1, "days").format("yyyy-MM-DD").toString()
+                      moment(e).format("yyyy-MM-DD").toString()
                     );
                     setDateIncompleted(false);
                   } else {

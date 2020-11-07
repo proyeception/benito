@@ -101,7 +101,8 @@ class ProjectServiceTest : Spec() {
                     recommendations = emptyList(),
                     project_keywords = emptyList(),
                     driveFolderId = "123",
-                    category = "Systems"
+                    category = "Systems",
+                    views = "2"
                 )
 
                 val newProject = MedusaProjectDTO(
@@ -139,7 +140,8 @@ class ProjectServiceTest : Spec() {
                     tags = emptyList(),
                     recommendations = emptyList(),
                     project_keywords = emptyList(),
-                    driveFolderId = "123"
+                    driveFolderId = "123",
+                    views = "2"
                 )
 
                 val projects = listOf(newProject)
@@ -219,7 +221,8 @@ class ProjectServiceTest : Spec() {
                     recommendations = emptyList(),
                     project_keywords = emptyList(),
                     driveFolderId = "123",
-                    category = "Systems"
+                    category = "Systems",
+                    views = "2"
                 )
 
                 val newProject = MedusaProjectDTO(
@@ -252,7 +255,8 @@ class ProjectServiceTest : Spec() {
                     tags = emptyList(),
                     recommendations = emptyList(),
                     project_keywords = emptyList(),
-                    driveFolderId = "123"
+                    driveFolderId = "123",
+                    views = "2"
                 )
 
                 val projectResult = newProject
@@ -302,7 +306,8 @@ class ProjectServiceTest : Spec() {
                     tags = emptyList(),
                     recommendations = emptyList(),
                     project_keywords = emptyList(),
-                    driveFolderId = "123"
+                    driveFolderId = "123",
+                    views = "2"
                 )
 
                 val inputMock: InputStream = getMock()
@@ -366,7 +371,8 @@ class ProjectServiceTest : Spec() {
                     tags = emptyList(),
                     recommendations = emptyList(),
                     project_keywords = emptyList(),
-                    driveFolderId = "123"
+                    driveFolderId = "123",
+                    views = "2"
                 )
 
                 val file = MedusaFileDTO(
@@ -425,7 +431,8 @@ class ProjectServiceTest : Spec() {
                     tags = emptyList(),
                     recommendations = emptyList(),
                     project_keywords = emptyList(),
-                    driveFolderId = "123"
+                    driveFolderId = "123",
+                    views = "2"
                 )
 
                 val file = MedusaFileDTO(

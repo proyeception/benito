@@ -36,6 +36,9 @@ const SearchButton = (props: SearchButtonProps) => {
   <Button
     color={color}
     default
+    disabled={!(!props.from || moment(props.from).isAfter(moment("1/1/2000")) && moment(props.from).isBefore(moment(moment().format("yyyy").toString() + "-12-31")))
+    || !(!props.to || moment(props.to).isAfter(moment("1/1/2000")) && moment(props.to).isBefore(moment(moment().format("yyyy").toString() + "-12-31")))
+    ||  moment(props.from).isAfter(props.to)}
     fullWidth={props.fullWidth ? props.fullWidth : true}
     onClick={() => {
       const params = buildQueryParams({
@@ -56,14 +59,14 @@ const SearchButton = (props: SearchButtonProps) => {
 const mapStateToProps = (rootState: RootState) => {
   let from
   if (rootState.search.from && moment(rootState.search.from).format("yyyy-MM-DD").toString() != "Invalid date") {
-    from = moment(rootState.search.from).add(1, "days").format("yyyy-MM-DD").toString()
+    from = moment(rootState.search.from).format("yyyy-MM-DD").toString()
       
   } else {
     from = ""
   }
   let to
   if (rootState.search.to && moment(rootState.search.to).format("yyyy-MM-DD").toString() != "Invalid date") {
-    to = moment(rootState.search.to).add(1, "days").format("yyyy-MM-DD").toString()
+    to = moment(rootState.search.to).format("yyyy-MM-DD").toString()
       
   } else {
     to = ""
