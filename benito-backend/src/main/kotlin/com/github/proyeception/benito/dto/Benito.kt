@@ -41,6 +41,7 @@ data class ProjectDTO(
     val keywordMatchingDocs: List<DocumentationDTO> = emptyList(),
     val open: Boolean = false,
     val category: String?,
+    val views: String,
     @JsonIgnore val driveFolderId: String
 ) {
     constructor(medusa: MedusaProjectDTO) : this(
@@ -60,7 +61,8 @@ data class ProjectDTO(
         keywordMatchingDocs = medusa.keywordMatchingDocs ?: emptyList(),
         open = medusa.open,
         driveFolderId = medusa.driveFolderId,
-        category = medusa.category.name
+        category = medusa.category.name,
+        views = medusa.views
     )
 }
 

@@ -339,6 +339,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
     extraContent: "",
     organization: user.value.organizations[0],
     keywordMatchingDocs: [],
+    views: "0"
   };
 
   if (props.session.isLoggedIn) {
