@@ -18,10 +18,7 @@ import image from "../../assets/img/proyectate/pattern.jpg";
 import RecommendationsSection from "./Sections/RecommendationsSection";
 import { SessionState } from "../../store/session/types";
 import StatsSection from "./Sections/StatsSection";
-import {Chatbot} from "react-chatbot-kit"
-import config from "../../components/Bot/config"
-import actionProvider from "../../components/Bot/ActionProvider"
-import messageParser from "../../components/Bot/MessageParser"
+import Proyectabot from "../../components/Bot/Proyectabot";
 
 const useStyles = makeStyles(styles);
 
@@ -34,6 +31,7 @@ const HomePage = (props: HomePageProps) => {
   const { ...rest } = props;
   return (
     <div>
+      <Proyectabot/>
       <Header rightLinks={<HeaderLinks />} fixed color="darkGray" {...rest} />
       <Parallax image={image} filter small>
         <div className={classes.container}>
@@ -58,7 +56,6 @@ const HomePage = (props: HomePageProps) => {
         <CategoriesSection />
         {props.customizationToken && <RecommendationsSection />}
       </div>
-      <Chatbot config = {config} messageParser = {messageParser} actionProvider ={actionProvider} />
       <Footer />
     </div>
   );
