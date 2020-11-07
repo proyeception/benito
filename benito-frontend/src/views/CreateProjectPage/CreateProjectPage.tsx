@@ -110,9 +110,15 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
   const [pictureUrl, setPictureUrl] = useState<string | undefined>();
   const [category, setCategory] = useState<Category | undefined>();
   const [documentsToUpload, setDocumentsToUpload] = useState<Array<File>>([]);
+  const [invalidFile, setInvalidFile] = useState<boolean>(false);
   const onDrop = useCallback((files) => setDocumentsToUpload(documentsToUpload.concat(files.filter((f: File) => {
     const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "application/pdf", "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation"]
-    return allowedTypes.includes(f.type)
+    if(allowedTypes.includes(f.type)){
+      setInvalidFile(false)
+      return allowedTypes.includes(f.type)
+    } else {
+      setInvalidFile(true)
+    }
   }))), documentsToUpload);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -778,7 +784,11 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                 <RemoveCircle /> {d.name}
               </div>
             ))}
+            {invalidFile ? (<div style={{color: "red"}}>
+                El tipo de archivo subido es inválido
+              </div>) : (<div style={{display: "none"}}></div>)}
             <section
+              id="dropper"
               className="dropzone-container"
               style={{ marginTop: "15px" }}
             >
