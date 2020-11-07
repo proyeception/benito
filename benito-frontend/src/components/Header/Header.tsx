@@ -14,7 +14,7 @@ import Menu from "@material-ui/icons/Menu";
 // core components
 import styles from "../../assets/jss/material-kit-react/components/headerStyle";
 import { hot } from "react-hot-loader";
-import { RouteComponentProps, withRouter } from "react-router-dom";
+import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import logo from "../../assets/img/proyectate/proyectate-logo-nombre.png";
 import utnLogo from "../../assets/img/proyectate/utn-logo-transparent.png";
 import HeaderSearchBox from "./HeaderSearchBox";
@@ -51,9 +51,9 @@ const Header = (props: HeaderProps) => {
     [classes.fixed]: fixed,
   });
   const brandComponent = (
-    <Button onClick={() => props.history.push("/")} style={{textTransform: "capitalize", fontWeight: 500}}>
+    <Link to={"/"}>
       {brand}
-    </Button>
+    </Link>
   );
   return (
     <AppBar className={appBarClasses}>
