@@ -51,6 +51,12 @@ const DocumentsSection = ({ project }: DocumentsSectionProps) => {
               </Link>
             </GridItem>
             <GridItem xs={6} md={6}>
+              Cantidad de visitas
+            </GridItem>
+            <GridItem xs={6} md={6} style={{ textAlign: "right" }}>
+              {project.views}
+            </GridItem>
+            <GridItem xs={6} md={6}>
               Tags
             </GridItem>
             <GridItem xs={6} md={6} style={{ textAlign: "right" }}>

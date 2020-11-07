@@ -12,6 +12,7 @@ export type Project = {
   organization: Organization;
   keywordMatchingDocs: Array<Documentation>;
   category?: string;
+  views: string;
 };
 
 export type Person = {

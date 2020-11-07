@@ -145,6 +145,7 @@ open class MedusaGraphClient(
                   score
                 }
                 drive_folder_id
+                views
               }
             }
         """.trimIndent()
