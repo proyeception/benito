@@ -183,7 +183,9 @@ open class UserService(
             fullName = medusa.fullName,
             organizations = medusa.organizations.map { OrganizationDTO(it) },
             profilePicUrl = medusa.profilePic?.url,
-            projects = medusa.projects.map {
+            projects = medusa.projects
+                .distinct()
+                .map {
                 ProjectRefDTO(
                     id = it.id,
                     title = it.title,

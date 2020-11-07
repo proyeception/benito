@@ -2,7 +2,6 @@ package com.github.proyeception.benito.dto
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDate
 
 data class ErrorDTO(
@@ -51,12 +50,12 @@ data class ProjectDTO(
         extraContent = medusa.extraContent.orEmpty(),
         creationDate = medusa.creationDate,
         pictureUrl = medusa.picture?.url,
-        authors = medusa.authors.map { PersonRefDTO(it) },
-        supervisors = medusa.supervisors.map { PersonRefDTO(it) },
-        tags = medusa.tags.map{ it.tag_name },
+        authors = medusa.authors.map { PersonRefDTO(it) }.distinct(),
+        supervisors = medusa.supervisors.map { PersonRefDTO(it) }.distinct(),
+        tags = medusa.tags.map{ it.tag_name }.distinct(),
         documentation = medusa.documentation,
         organization = OrganizationRefDTO(medusa.organization) ,
-        recommendations = medusa.recommendations.map { RecommendationDTO(it) },
+        recommendations = medusa.recommendations.map { RecommendationDTO(it) }.distinct(),
         project_keywords = medusa.project_keywords,
         keywordMatchingDocs = medusa.keywordMatchingDocs ?: emptyList(),
         open = medusa.open,
