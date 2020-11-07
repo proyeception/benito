@@ -18,6 +18,10 @@ import image from "../../assets/img/proyectate/pattern.jpg";
 import RecommendationsSection from "./Sections/RecommendationsSection";
 import { SessionState } from "../../store/session/types";
 import StatsSection from "./Sections/StatsSection";
+import {Chatbot} from "react-chatbot-kit"
+import config from "../../components/Bot/config"
+import actionProvider from "../../components/Bot/ActionProvider"
+import messageParser from "../../components/Bot/MessageParser"
 
 const useStyles = makeStyles(styles);
 
@@ -54,6 +58,7 @@ const HomePage = (props: HomePageProps) => {
         <CategoriesSection />
         {props.customizationToken && <RecommendationsSection />}
       </div>
+      <Chatbot config = {config} messageParser = {messageParser} actionProvider ={actionProvider} />
       <Footer />
     </div>
   );
