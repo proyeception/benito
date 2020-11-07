@@ -95,7 +95,6 @@ class StatsStorage(
             searchCount, sortBySearchCount)
 
         val a = mongoTemplate.aggregate(aggregation, "project_search", TagsSearchDTO::class.java)
-        println(a)
         return a.mappedResults
         //return listOf<TagsSearchDTO>()
     }

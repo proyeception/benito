@@ -53,7 +53,7 @@ import {
   updatePicture,
   updateTags,
   uploadDocuments,
-  generatePdfUrl
+  generatePdfUrl,
 } from "../../functions/project";
 import useCreateGhostUser from "../../components/CreateGhostUser/CreateGhostUser";
 import { grey, red } from "@material-ui/core/colors";
@@ -61,9 +61,8 @@ import MEDitor, { commands } from "@uiw/react-md-editor";
 import CreateGhostUser from "../../components/CreateGhostUser/CreateGhostUser";
 import FilePreview from "react-preview-file/dist/filePreview";
 import ImageUploading, { ImageListType } from "react-images-uploading";
-import { CSSTransition } from 'react-transition-group';
-import spinner from '../../assets/img/proyectate/spinner.gif';
-
+import { CSSTransition } from "react-transition-group";
+import spinner from "../../assets/img/proyectate/spinner.gif";
 
 const useStyles = makeStyles(styles);
 
@@ -108,7 +107,43 @@ const EditProjectPage = (props: EditProjectPageProps) => {
     Array<Documentation>
   >([]);
   const onPictureDrop = useCallback((file) => setPicture(file[0]), []);
-  const onDrop = useCallback((files) => setDocumentsToUpload(files), []);
+  const [invalidFile, setInvalidFile] = useState<boolean>(false);
+  const [invalidSize, setInvalidSize] = useState<boolean>(false);
+  const [invalidImageFormat, setInvalidImageFormat] = useState<boolean>(false);
+  const onDrop = useCallback((files) => {
+    setDocumentsToUpload(
+      documentsToUpload.concat(
+        files.filter((f: File) => {
+          const allowedTypes = [
+            "image/jpeg",
+            "image/jpg",
+            "image/png",
+            "application/pdf",
+            "application/vnd.ms-excel",
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            "application/msword",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            "application/vnd.ms-powerpoint",
+            "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+          ];
+          if (allowedTypes.includes(f.type)) {
+            setInvalidFile(false);
+            if (f.size > 26214400) {
+              setInvalidSize(true);
+              return false;
+            } else {
+              setInvalidSize(false);
+              return true;
+            }
+          } else {
+            setInvalidFile(true);
+            return false;
+          }
+        })
+      )
+    );
+  }, documentsToUpload);
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -220,11 +255,10 @@ const EditProjectPage = (props: EditProjectPageProps) => {
   }
 
   function getPdfAsPicture(file: File) {
-    generatePdfUrl(file).then((pictureUrl) => { 
-        setPictureUrl(pictureUrl.data.url)
-        setPosterIsLoading(false)
-     }
-    );
+    generatePdfUrl(file).then((pictureUrl) => {
+      setPictureUrl(pictureUrl.data.url);
+      setPosterIsLoading(false);
+    });
   }
 
   const project = withProject(props.match.params.id, (p) => {
@@ -262,11 +296,15 @@ const EditProjectPage = (props: EditProjectPageProps) => {
   });
 
   if (project.type == PENDING || organization == undefined || isLoading) {
-    let color: string = "#c41234"
-    if(props.session && props.session.isLoggedIn && props.session.selectedOrganization){
-      color = props.session.selectedOrganization.color
+    let color: string = "#c41234";
+    if (
+      props.session &&
+      props.session.isLoggedIn &&
+      props.session.selectedOrganization
+    ) {
+      color = props.session.selectedOrganization.color;
     }
-    return <Spinner color={color}/>;
+    return <Spinner color={color} />;
   }
 
   if (project.type == ERROR || organization == "ERROR") {
@@ -303,8 +341,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
     if (pdfPicture)
       changes.push({
         undo: () => {
-          setPictureUrl(undefined),
-          setPdfPicture(undefined)
+          setPictureUrl(undefined), setPdfPicture(undefined);
         },
         render: () => <p>Actualizar la imagen del proyecto</p>,
       });
@@ -350,8 +387,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
     );
     tagsToRemove.forEach((tag) =>
       changes.push({
-        undo: () =>
-          setTagsToRemove(tagsToRemove.filter((t) => t != tag)),
+        undo: () => setTagsToRemove(tagsToRemove.filter((t) => t != tag)),
         render: () => <p>Eliminar #{tag} </p>,
       })
     );
@@ -407,10 +443,8 @@ const EditProjectPage = (props: EditProjectPageProps) => {
       description,
       readme
     )
-      .then(console.log)
       .catch(console.error)
       .then(() => uploadDocuments(projectId, documentsToUpload))
-      .then(console.log)
       .catch(console.error);
 
     promises.push(contentPromise);
@@ -427,7 +461,14 @@ const EditProjectPage = (props: EditProjectPageProps) => {
 
     //tags
     if (initialTags.concat(selectedTags) != []) {
-      promises.push(updateTags(projectId, initialTags.concat(selectedTags).filter((t) => !tagsToRemove.some((tag) => tag == t))));
+      promises.push(
+        updateTags(
+          projectId,
+          initialTags
+            .concat(selectedTags)
+            .filter((t) => !tagsToRemove.some((tag) => tag == t))
+        )
+      );
     }
 
     //users
@@ -440,9 +481,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
           .filter((s) => !supervisorsToRemove.some((str) => str.id == s.id))
           .concat(supervisorsToAdd),
         project.id
-      )
-        .then(console.log)
-        .catch(console.error);
+      ).catch(console.error);
       promises.push(usersPromise);
     }
 
@@ -464,7 +503,10 @@ const EditProjectPage = (props: EditProjectPageProps) => {
       <div className={classes.main}>
         <GridContainer className={classes.container}>
           <GridItem xs={12} sm={12} md={12}>
-            <h2 className={classes.title} style={{ textAlign: "center", color: organization.color }}>
+            <h2
+              className={classes.title}
+              style={{ textAlign: "center", color: organization.color }}
+            >
               EDITAR UN PROYECTO
             </h2>
             <h4
@@ -560,7 +602,24 @@ const EditProjectPage = (props: EditProjectPageProps) => {
               onChange={(e) => setReadme(e)}
               onBlur={(e) => generateTags()}
               commands={[
-                commands.bold, commands.italic, commands.strikethrough, commands.hr, commands.title, commands.divider, commands.link, commands.quote, commands.code, commands.image, commands.divider, commands.unorderedListCommand, commands.orderedListCommand, commands.checkedListCommand, commands.divider, commands.codeEdit, commands.codeLive, commands.codePreview
+                commands.bold,
+                commands.italic,
+                commands.strikethrough,
+                commands.hr,
+                commands.title,
+                commands.divider,
+                commands.link,
+                commands.quote,
+                commands.code,
+                commands.image,
+                commands.divider,
+                commands.unorderedListCommand,
+                commands.orderedListCommand,
+                commands.checkedListCommand,
+                commands.divider,
+                commands.codeEdit,
+                commands.codeLive,
+                commands.codePreview,
               ]}
             />
           </GridItem>
@@ -602,7 +661,8 @@ const EditProjectPage = (props: EditProjectPageProps) => {
               </Typography>
             </Popover>
             {selectedTags.concat(initialTags) ? (
-              selectedTags.concat(initialTags)
+              selectedTags
+                .concat(initialTags)
                 ?.filter((t) => !tagsToRemove.some((tag) => tag == t))
                 ?.map((t, idx) => (
                   <div
@@ -612,9 +672,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                       "underline-hover",
                       "cursor-pointer"
                     )}
-                    onClick={() =>
-                      setTagsToRemove(tagsToRemove.concat(t))
-                    }
+                    onClick={() => setTagsToRemove(tagsToRemove.concat(t))}
                   >
                     <RemoveCircle /> {t}
                   </div>
@@ -671,90 +729,134 @@ const EditProjectPage = (props: EditProjectPageProps) => {
               disableRestoreFocus
             >
               <Typography>
-                Esta será la imagen de tu proyecto: en la página principal y en
-                las búsquedas. También se verá en el encabezado!
+                Es la imagen que va a representar a tu proyecto en la página
+                principal y en las búsquedas
               </Typography>
             </Popover>
-            </GridItem>
+          </GridItem>
 
-            <GridItem xs={12}>
-              <div className={classes.root}>
-                <input
-                  accept="image/*"
-                  className={classes.input}
-                  id="contained-button-image"
-                  type="file"
-                  onChange={(e) => {
-                    setPdfPicture(undefined)
-                    setPictureUrl(undefined)
-                    setPicture(e.target.files![0])
-                    setShowPicture(true)
-                  }}
-                />
-                <label htmlFor="contained-button-image">
-                  <Button variant="contained" color="primary" component="span">
-                    Subir jpg, jpeg or png
-                  </Button>
-                </label>
-                
-                <input
-                  accept="application/pdf"
-                  className={classes.input}
-                  id="contained-button-pdf"
-                  type="file"
-                  onChange={(e) => {
-                    setPictureUrl(undefined)
-                    setPosterIsLoading(true)
-                    setPicture(undefined)
-                    setPdfPicture(e.target.files![0])
-                    getPdfAsPicture(e.target.files![0])
-                    setShowPicture(true)
-                  }}
-                />
-                <label htmlFor="contained-button-pdf">
-                  <Button variant="contained" color="primary" component="span">
-                    Subir PDF
-                  </Button>
-                </label>
+          <GridItem xs={12}>
+            <div className={classes.root}>
+              <input
+                accept="image/*"
+                className={classes.input}
+                id="contained-button-image"
+                type="file"
+                onChange={(e) => {
+                  if (
+                    (e.target.files![0].type == "image/jpg" ||
+                      e.target.files![0].type == "image/jpeg" ||
+                      e.target.files![0].type == "image/png") &&
+                    e.target.files![0].size < 26214400
+                  ) {
+                    setInvalidImageFormat(false);
+                    setPdfPicture(undefined);
+                    setPictureUrl(undefined);
+                    setPicture(e.target.files![0]);
+                    setShowPicture(true);
+                  } else {
+                    setInvalidImageFormat(true);
+                  }
+                }}
+              />
+              <label htmlFor="contained-button-image">
+                <Button variant="contained" color="primary" component="span">
+                  Subir jpg, jpeg or png
+                </Button>
+              </label>
+
+              <input
+                accept="application/pdf"
+                className={classes.input}
+                id="contained-button-pdf"
+                type="file"
+                onChange={(e) => {
+                  if (
+                    e.target.files![0].type == "application/pdf" &&
+                    e.target.files![0].size < 26214400
+                  ) {
+                    setInvalidImageFormat(false);
+                    setPictureUrl(undefined);
+                    setPosterIsLoading(true);
+                    setPicture(undefined);
+                    setPdfPicture(e.target.files![0]);
+                    getPdfAsPicture(e.target.files![0]);
+                    setShowPicture(true);
+                  } else {
+                    setInvalidImageFormat(true);
+                  }
+                }}
+              />
+              <label htmlFor="contained-button-pdf">
+                <Button variant="contained" color="primary" component="span">
+                  Subir PDF
+                </Button>
+              </label>
+            </div>
+            {invalidImageFormat ? (
+              <div style={{ color: "red" }}>
+                No se pueden subir archivos del tipo seleccionado
               </div>
+            ) : (
+              <div style={{ display: "none" }}></div>
+            )}
+          </GridItem>
+
+          <CSSTransition
+            in={showPicture}
+            timeout={300}
+            classNames="image-preview"
+            unmountOnExit
+          >
+            {picture != undefined ? (
+              <GridItem
+                xs={12}
+                style={{ display: "flex", alignItems: "center" }}
+              >
+                <FilePreview file={picture!!}>
+                  {(preview) => <img src={preview} className="image-preview" />}
+                </FilePreview>
+              </GridItem>
+            ) : (
+              <div></div>
+            )}
+          </CSSTransition>
+
+          {posterIsLoading && pdfPicture != undefined ? (
+            <GridItem
+              xs={12}
+              style={{ display: "flex", justifyContent: "center" }}
+            >
+              <Spinner color={organization.color} />
             </GridItem>
+          ) : (
+            <div style={{ display: "none" }}></div>
+          )}
 
-            <CSSTransition
-              in={showPicture}
-              timeout={300}
-              classNames="image-preview"
-              unmountOnExit
-            >
-              {(picture != undefined)? (
-                <GridItem xs={12} style={{ display: "flex", alignItems: "center"}} >
-                    <FilePreview file={picture!!}>
-                        {(preview) => <img src={preview} className="image-preview" />}
-                    </FilePreview>
-                </GridItem>
-              ):(<div></div>)}
-            </CSSTransition>
-
-              {(posterIsLoading && pdfPicture != undefined)? (
-                <GridItem xs={12} style={{ display: "flex", justifyContent: "center"}} >
-                  <Spinner color={organization.color}/>
-                </GridItem>
-              ):(<div style={{display:"none"}}></div>)}
-
-            <CSSTransition
-              in={showPicture}
-              timeout={300}
-              classNames="image-preview"
-              unmountOnExit
-            >
-              {(pictureUrl != undefined)? (
-                <GridItem xs={12} style={{ display: "flex", alignItems: "center"}} >
+          <CSSTransition
+            in={showPicture}
+            timeout={300}
+            classNames="image-preview"
+            unmountOnExit
+          >
+            {pictureUrl != undefined ? (
+              <GridItem
+                xs={12}
+                style={{ display: "flex", alignItems: "center" }}
+              >
                 <div className="image-preview">
-                  <img src={pictureUrl} className="image-preview" alt="Preview imagen cargada"/>
+                  <img
+                    src={pictureUrl}
+                    className="image-preview"
+                    alt="Preview imagen cargada"
+                  />
                 </div>
-                </GridItem>
-              ):(<div style={{display:"none"}}></div>)}
-            </CSSTransition>
-         
+              </GridItem>
+            ) : (
+              <div style={{ display: "none" }}></div>
+            )}
+          </CSSTransition>
+
           <GridItem>
             <h4 className={classes.subtitle}>Documentos</h4>
             {project.value.documentation ? (
@@ -777,6 +879,39 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                 ))
             ) : (
               <div></div>
+            )}
+            {documentsToUpload.map((d, idx) => (
+              <div
+                key={idx}
+                className={classNames(
+                  classes.bullet,
+                  "underline-hover",
+                  "cursor-pointer"
+                )}
+                onClick={() => {
+                  if (documentsToUpload.length < 20) {
+                    setDocumentsToUpload(
+                      documentsToUpload.filter((doc) => doc != d)
+                    );
+                  }
+                }}
+              >
+                <RemoveCircle /> {d.name}
+              </div>
+            ))}
+            {invalidFile ? (
+              <div style={{ color: "red" }}>
+                El tipo de archivo subido es inválido
+              </div>
+            ) : (
+              <div style={{ display: "none" }}></div>
+            )}
+            {invalidSize ? (
+              <div style={{ color: "red" }}>
+                El archivo supera el límite de 25MB
+              </div>
+            ) : (
+              <div style={{ display: "none" }}></div>
             )}
             <section
               className="dropzone-container"
@@ -829,8 +964,8 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                 disableRestoreFocus
               >
                 <Typography>
-                  Acá podés agregar autores al proyecto. Se autocompleta con los que
-                  tengan un usuario registrado y que pertenezcan a la
+                  Acá podés agregar autores al proyecto. Se autocompleta con los
+                  que tengan un usuario registrado y que pertenezcan a la
                   organización seleccionada.<br></br>
                   También se pueden agregar colaboradores sin usuarios
                   asignados, ingresando su nombre y mail con la opción: "Crear
@@ -849,9 +984,12 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                       "underline-hover",
                       "cursor-pointer"
                     )}
-                    onClick={() =>
-                      setAuthorsToRemove(authorsToRemove.concat(a))
-                    }
+                    onClick={() => {
+                      setAuthorsToRemove(authorsToRemove.concat(a));
+                      authorsToAdd.indexOf(a) > -1
+                        ? authorsToAdd.splice(authorsToAdd.indexOf(a), 1)
+                        : false;
+                    }}
                   >
                     <RemoveCircle /> {a.fullName}
                   </div>
@@ -869,11 +1007,28 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                     )}
                     getOptionLabel={(option) => option.fullName}
                     onChange={(e, a) => {
-                      if (a) setAuthorsToAdd(authorsToAdd.concat(a!));
+                      if (
+                        authorsToAdd.concat(authors).concat(justCreatedAuthors)
+                          .length < 10
+                      ) {
+                        if (a) {
+                          setAuthorsToAdd(authorsToAdd.concat(a!));
+                          authorsToRemove.indexOf(a!) > -1
+                            ? authorsToRemove.splice(
+                                authorsToRemove.indexOf(a!),
+                                1
+                              )
+                            : false;
+                        }
+                      }
                     }}
                     renderInput={(params) => (
                       <ThemeProvider theme={theme}>
-                        <TextField {...params} fullWidth placeholder="Harry Po..."/>
+                        <TextField
+                          {...params}
+                          fullWidth
+                          placeholder="Harry Po..."
+                        />
                       </ThemeProvider>
                     )}
                   />
@@ -884,6 +1039,10 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                     fullWidth
                     type="button"
                     color={organization.color}
+                    disabled={
+                      authorsToAdd.concat(authors).concat(justCreatedAuthors)
+                        .length == 10
+                    }
                     onClick={() => setCreateGhostAuthorFormOpen(true)}
                   >
                     <AddCircle />
@@ -923,9 +1082,9 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                 disableRestoreFocus
               >
                 <Typography>
-                  Acá podés agregar supervisores al proyecto. Se autocompleta con los 
-                  que tengan un usuario registrado y que pertenezcan a la
-                  organización.<br></br>
+                  Acá podés agregar supervisores al proyecto. Se autocompleta
+                  con los que tengan un usuario registrado y que pertenezcan a
+                  la organización.<br></br>
                   También se pueden agregar colaboradores sin usuarios
                   asignados, ingresando su nombre y mail con la opción: "Crear
                   nuevo supervisor"
@@ -947,15 +1106,19 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                       "underline-hover",
                       "cursor-pointer"
                     )}
-                    onClick={() =>
-                      {
-                        if(props.session.isLoggedIn){
-                          if(s.id != props.session.userId){
-                            setSupervisorsToRemove(supervisorsToRemove.concat(s))
-                          }
+                    onClick={() => {
+                      if (props.session.isLoggedIn) {
+                        if (s.id != props.session.userId) {
+                          setSupervisorsToRemove(supervisorsToRemove.concat(s));
+                          supervisorsToAdd.indexOf(s) > -1
+                            ? supervisorsToAdd.splice(
+                                supervisorsToAdd.indexOf(s),
+                                1
+                              )
+                            : false;
                         }
                       }
-                    }
+                    }}
                   >
                     <RemoveCircle /> {s.fullName}
                   </div>
@@ -974,10 +1137,28 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                     )}
                     getOptionLabel={(option) => option.fullName}
                     onChange={(e, s) => {
-                      if (s) setSupervisorsToAdd(supervisorsToAdd.concat(s!));
+                      if (
+                        supervisorsToAdd
+                          .concat(supervisors)
+                          .concat(justCreatedSupervisors).length < 7
+                      ) {
+                        if (s) {
+                          setSupervisorsToAdd(supervisorsToAdd.concat(s!));
+                          supervisorsToRemove.indexOf(s) > -1
+                            ? supervisorsToRemove.splice(
+                                supervisorsToRemove.indexOf(s),
+                                1
+                              )
+                            : false;
+                        }
+                      }
                     }}
                     renderInput={(params) => (
-                      <TextField {...params} fullWidth placeholder="Albus Dum..."/>
+                      <TextField
+                        {...params}
+                        fullWidth
+                        placeholder="Albus Dum..."
+                      />
                     )}
                   />
                 </GridItem>
@@ -986,6 +1167,11 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                     fullWidth
                     type="button"
                     color={organization.color}
+                    disabled={
+                      supervisorsToAdd
+                        .concat(supervisors)
+                        .concat(justCreatedSupervisors).length == 7
+                    }
                     onClick={() => setCreateGhostSupervisorFormOpen(true)}
                   >
                     <AddCircle />
@@ -1082,7 +1268,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
             <Button
               onClick={() => {
                 setLoading(true);
-                setIsLoading(true)
+                setIsLoading(true);
                 updateProject(project.value);
               }}
               color="primary"

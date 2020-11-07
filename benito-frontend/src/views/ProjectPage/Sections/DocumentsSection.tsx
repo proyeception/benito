@@ -39,6 +39,18 @@ const DocumentsSection = ({ project }: DocumentsSectionProps) => {
                 .toString()}
             </GridItem>
             <GridItem xs={6} md={6}>
+              Categoría
+            </GridItem>
+            <GridItem xs={6} md={6} style={{ textAlign: "right" }}>
+              <Link
+                to={`/search?category=${project.category?.toLocaleLowerCase()}`}
+                className="normalize-link"
+                style={{ color: project.organization.color }}
+              >
+                {project.category}
+              </Link>
+            </GridItem>
+            <GridItem xs={6} md={6}>
               Tags
             </GridItem>
             <GridItem xs={6} md={6} style={{ textAlign: "right" }}>

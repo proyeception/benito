@@ -12,8 +12,7 @@ import java.util.List;
 
 @Configuration
 @PropertySources({
-    @PropertySource("classpath:application.properties"),
-    @PropertySource("classpath:sensitive.properties")
+    @PropertySource("classpath:application.properties")
 })
 public class MvcConfig implements WebMvcConfigurer {
     private List<String> allowedOrigins;

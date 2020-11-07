@@ -95,10 +95,11 @@ export default function CustomDropdown(props: any) {
           aria-haspopup="true"
           {...buttonProps}
           onClick={handleClick}
+          style={{padding: "10px", paddingTop: "15px"}}
         >
           {icon}
-          {buttonText !== undefined ? <span style={{ color: "white" }}>{buttonText}</span> : null}
-          {caret ? <b className={caretClasses} style={{ color: "white" }}/> : null}
+          {buttonText !== undefined ? <span className={classes.dropdownText}>{buttonText}</span> : null}
+          {caret ? <b className={classNames(classes.dropdownText,caretClasses)}/> : null}
         </Button>
       </div>
       <Popper

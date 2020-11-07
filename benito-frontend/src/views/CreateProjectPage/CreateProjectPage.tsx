@@ -48,7 +48,7 @@ import {
   updateTags,
   setProjectUsers,
   generateTagsFromText,
-  generatePdfUrl
+  generatePdfUrl,
 } from "../../functions/project";
 import image from "../../assets/img/proyectate/pattern.jpg";
 import { SET_LOGIN_TRUE } from "../../store/login/types";
@@ -65,11 +65,9 @@ import { SSL_OP_EPHEMERAL_RSA } from "constants";
 import SelectInput from "@material-ui/core/Select/SelectInput";
 import FilePreview from "react-preview-file/dist/filePreview";
 import ImageUploading, { ImageListType } from "react-images-uploading";
-import { CSSTransition } from 'react-transition-group';
-import spinner from '../../assets/img/proyectate/spinner.gif';
-import withOrganization from '../../hooks/withOrganization';
-
-
+import { CSSTransition } from "react-transition-group";
+import spinner from "../../assets/img/proyectate/spinner.gif";
+import withOrganization from "../../hooks/withOrganization";
 
 const useStyles = makeStyles(styles);
 
@@ -92,12 +90,16 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
   const classes = useStyles();
   const { ...rest } = props;
 
-  let color: string = "#c41234"
-  if(props.session && props.session.isLoggedIn  && props.session.selectedOrganization){
-    color = props.session.selectedOrganization.color
+  let color: string = "#c41234";
+  if (
+    props.session &&
+    props.session.isLoggedIn &&
+    props.session.selectedOrganization
+  ) {
+    color = props.session.selectedOrganization.color;
   }
 
-  const [numPages, setNumPages] = useState<number | undefined>();;
+  const [numPages, setNumPages] = useState<number | undefined>();
   const [pageNumber, setPageNumber] = useState(1);
   const [title, setTitle] = useState<string | undefined>();
   const [creationDate, setCreationDate] = useState<string | undefined>();
@@ -110,7 +112,44 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
   const [pictureUrl, setPictureUrl] = useState<string | undefined>();
   const [category, setCategory] = useState<Category | undefined>();
   const [documentsToUpload, setDocumentsToUpload] = useState<Array<File>>([]);
-  const onDrop = useCallback((files) => setDocumentsToUpload(files), []);
+  const [invalidFile, setInvalidFile] = useState<boolean>(false);
+  const [invalidSize, setInvalidSize] = useState<boolean>(false);
+  const [invalidImageFormat, setInvalidImageFormat] = useState<boolean>(false);
+  const onDrop = useCallback(
+    (files) =>
+      setDocumentsToUpload(
+        documentsToUpload.concat(
+          files.filter((f: File) => {
+            const allowedTypes = [
+              "image/jpeg",
+              "image/jpg",
+              "image/png",
+              "application/pdf",
+              "application/vnd.ms-excel",
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+              "application/msword",
+              "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+              "application/vnd.ms-powerpoint",
+              "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+            ];
+            if (allowedTypes.includes(f.type)) {
+              setInvalidFile(false);
+              if (f.size > 26214400) {
+                setInvalidSize(true);
+                return false;
+              } else {
+                setInvalidSize(false);
+                return true;
+              }
+            } else {
+              setInvalidFile(true);
+              return false;
+            }
+          })
+        )
+      ),
+    documentsToUpload
+  );
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -212,21 +251,18 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
   const tabs = [
     {
       tabButton: "Imagen",
-      tabContent: (
-        <div>imagen aqui!</div>
-      ),
+      tabContent: <div>imagen aqui!</div>,
       key: "jpg",
     },
     {
       tabButton: "PDF",
-      tabContent: (
-        <div>pdf aqui!</div>
-      ),
+      tabContent: <div>pdf aqui!</div>,
       key: "pdf",
     },
   ];
 
-  const activeTab = tabs.findIndex((t) => t.key === props.match.params.tab) || 0;
+  const activeTab =
+    tabs.findIndex((t) => t.key === props.match.params.tab) || 0;
 
   if (!props.session.isLoggedIn) {
     return <Redirect to="/login" />;
@@ -237,12 +273,19 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
     return <Redirect to={{ pathname: "/error" }} />;
   }
 
-  const organi = withOrganization(props.session.selectedOrganization.id, (o) => {
-    setOrganization(o)
-  })
+  const organi = withOrganization(
+    props.session.selectedOrganization.id,
+    (o) => {
+      setOrganization(o);
+    }
+  );
 
-  if(organization && organization != ERROR && organization.id != props.session.selectedOrganization.id){
-    if(props.session.isLoggedIn){
+  if (
+    organization &&
+    organization != ERROR &&
+    organization.id != props.session.selectedOrganization.id
+  ) {
+    if (props.session.isLoggedIn) {
       fetchOrganization(props.session.selectedOrganization.id)
         .then((res) => res.data)
         .then((o) => setOrganization(o))
@@ -253,7 +296,6 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
     }
   }
 
-  
   const user = withUser(props.session.role, props.session.userId, (p) => {
     if (p.organizations[0] == undefined) {
       console.error("Usuario sin organizaciones");
@@ -262,7 +304,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
   });
 
   if (user.type == PENDING || isLoading) {
-    return <Spinner color={color}/>;
+    return <Spinner color={color} />;
   }
 
   if (user.type == ERROR) {
@@ -276,11 +318,10 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
     },
   });
 
-  
   if (organization == undefined) {
-    return <Spinner color={color}/>;
+    return <Spinner color={color} />;
   }
-  
+
   if (organization == "ERROR") {
     console.error("Organizacion con error");
     return <Redirect to={{ pathname: "/error" }} />;
@@ -300,17 +341,16 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
     keywordMatchingDocs: [],
   };
 
-  if(props.session.isLoggedIn){
-    let loggedInSupId = props.session.userId
+  if (props.session.isLoggedIn) {
+    let loggedInSupId = props.session.userId;
     let sup: Array<Person> = organization.supervisors.filter(
       (s) => s.id == loggedInSupId
-    )
-    if(!supervisorsToAdd.includes(sup[0])){
-
-      setSupervisorsToAdd(sup)
+    );
+    if (!supervisorsToAdd.includes(sup[0])) {
+      setSupervisorsToAdd(sup);
     }
   }
-  
+
   function Changes() {
     const changes: Array<Change> = [];
 
@@ -322,8 +362,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
     if (pdfPicture)
       changes.push({
         undo: () => {
-          setPictureUrl(undefined),
-          setPdfPicture(undefined)
+          setPictureUrl(undefined), setPdfPicture(undefined);
         },
         render: () => <p>Actualizar la imagen del proyecto</p>,
       });
@@ -365,11 +404,10 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
   }
 
   function getPdfAsPicture(file: File) {
-    generatePdfUrl(file).then((pictureUrl) => { 
-        setPictureUrl(pictureUrl.data.url)
-        setPosterIsLoading(false)
-     }
-    );
+    generatePdfUrl(file).then((pictureUrl) => {
+      setPictureUrl(pictureUrl.data.url);
+      setPosterIsLoading(false);
+    });
   }
 
   function updateProject(project: Project) {
@@ -386,10 +424,8 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
           description,
           readme
         )
-          .then(console.log)
           .catch(console.error)
           .then(() => uploadDocuments(projectId, documentsToUpload))
-          .then(console.log)
           .catch(console.error);
 
         promises.push(contentPromise);
@@ -414,9 +450,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
           authorsToAdd,
           supervisorsToAdd,
           projectId
-        )
-          .then(console.log)
-          .catch(console.error);
+        ).catch(console.error);
 
         promises.push(usersPromise);
 
@@ -442,7 +476,10 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
       <div className={classes.main}>
         <GridContainer className={classes.container}>
           <GridItem xs={12} sm={12} md={12}>
-            <h2 className={classes.title} style={{ textAlign: "center", color: color }}>
+            <h2
+              className={classes.title}
+              style={{ textAlign: "center", color: color }}
+            >
               CREAR UN PROYECTO
             </h2>
             <h4
@@ -566,7 +603,24 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
               onChange={(e) => setReadme(e)}
               onBlur={(e) => generateTags()}
               commands={[
-                commands.bold, commands.italic, commands.strikethrough, commands.hr, commands.title, commands.divider, commands.link, commands.quote, commands.code, commands.image, commands.divider, commands.unorderedListCommand, commands.orderedListCommand, commands.checkedListCommand, commands.divider, commands.codeEdit, commands.codeLive, commands.codePreview
+                commands.bold,
+                commands.italic,
+                commands.strikethrough,
+                commands.hr,
+                commands.title,
+                commands.divider,
+                commands.link,
+                commands.quote,
+                commands.code,
+                commands.image,
+                commands.divider,
+                commands.unorderedListCommand,
+                commands.orderedListCommand,
+                commands.checkedListCommand,
+                commands.divider,
+                commands.codeEdit,
+                commands.codeLive,
+                commands.codePreview,
               ]}
             />
           </GridItem>
@@ -672,93 +726,171 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
               disableRestoreFocus
             >
               <Typography>
-                Esta será la imagen de tu proyecto: en la página principal y en
-                las búsquedas. También se verá en el encabezado!
+                Es la imagen que va a representar a tu proyecto en la página
+                principal y en las búsquedas
               </Typography>
             </Popover>
           </GridItem>
 
-            <GridItem xs={12}>
-              <div className={classes.root}>
-                <input
-                  accept="image/*"
-                  className={classes.input}
-                  id="contained-button-image"
-                  type="file"
-                  onChange={(e) => {
-                    setPdfPicture(undefined)
-                    setPictureUrl(undefined)
-                    setPicture(e.target.files![0])
-                    setShowPicture(true)
-                  }}
-                />
-                <label htmlFor="contained-button-image">
-                  <Button variant="contained" color="primary" component="span">
-                    Subir jpg, jpeg or png
-                  </Button>
-                </label>
-                
-                <input
-                  accept="application/pdf"
-                  className={classes.input}
-                  id="contained-button-pdf"
-                  type="file"
-                  onChange={(e) => {
-                    setPictureUrl(undefined)
-                    setPosterIsLoading(true)
-                    setPicture(undefined)
-                    setPdfPicture(e.target.files![0])
-                    getPdfAsPicture(e.target.files![0])
-                    setShowPicture(true)
-                  }}
-                />
-                <label htmlFor="contained-button-pdf">
-                  <Button variant="contained" color="primary" component="span">
-                    Subir PDF
-                  </Button>
-                </label>
+          <GridItem xs={12}>
+            <div className={classes.root}>
+              <input
+                accept="image/*"
+                className={classes.input}
+                id="contained-button-image"
+                type="file"
+                onChange={(e) => {
+                  if (
+                    (e.target.files![0].type == "image/jpg" ||
+                      e.target.files![0].type == "image/jpeg" ||
+                      e.target.files![0].type == "image/png") &&
+                    e.target.files![0].size < 26214400
+                  ) {
+                    setInvalidImageFormat(false);
+                    setPdfPicture(undefined);
+                    setPictureUrl(undefined);
+                    setPicture(e.target.files![0]);
+                    setShowPicture(true);
+                  } else {
+                    setInvalidImageFormat(true);
+                  }
+                }}
+              />
+              <label htmlFor="contained-button-image">
+                <Button variant="contained" color="primary" component="span">
+                  Subir jpg, jpeg or png
+                </Button>
+              </label>
+
+              <input
+                accept="application/pdf"
+                className={classes.input}
+                id="contained-button-pdf"
+                type="file"
+                onChange={(e) => {
+                  if (
+                    e.target.files![0].type == "application/pdf" &&
+                    e.target.files![0].size < 26214400
+                  ) {
+                    setInvalidImageFormat(false);
+                    setPictureUrl(undefined);
+                    setPosterIsLoading(true);
+                    setPicture(undefined);
+                    setPdfPicture(e.target.files![0]);
+                    getPdfAsPicture(e.target.files![0]);
+                    setShowPicture(true);
+                  } else {
+                    setInvalidImageFormat(true);
+                  }
+                }}
+              />
+              <label htmlFor="contained-button-pdf">
+                <Button variant="contained" color="primary" component="span">
+                  Subir PDF
+                </Button>
+              </label>
+            </div>
+            {invalidImageFormat ? (
+              <div style={{ color: "red" }}>
+                No se pueden subir archivos del tipo seleccionado
               </div>
+            ) : (
+              <div style={{ display: "none" }}></div>
+            )}
+          </GridItem>
+
+          <CSSTransition
+            in={showPicture}
+            timeout={300}
+            classNames="image-preview"
+            unmountOnExit
+          >
+            {picture != undefined ? (
+              <GridItem
+                xs={12}
+                style={{ display: "flex", alignItems: "center" }}
+              >
+                <FilePreview file={picture!!}>
+                  {(preview) => <img src={preview} className="image-preview" />}
+                </FilePreview>
+              </GridItem>
+            ) : (
+              <div></div>
+            )}
+          </CSSTransition>
+
+          {posterIsLoading && pdfPicture != undefined ? (
+            <GridItem
+              xs={12}
+              style={{ display: "flex", justifyContent: "center" }}
+            >
+              <Spinner color={color} />
             </GridItem>
+          ) : (
+            <div style={{ display: "none" }}></div>
+          )}
 
-            <CSSTransition
-              in={showPicture}
-              timeout={300}
-              classNames="image-preview"
-              unmountOnExit
-            >
-              {(picture != undefined)? (
-                <GridItem xs={12} style={{ display: "flex", alignItems: "center"}} >
-                    <FilePreview file={picture!!}>
-                        {(preview) => <img src={preview} className="image-preview" />}
-                    </FilePreview>
-                </GridItem>
-              ):(<div></div>)}
-            </CSSTransition>
-
-              {(posterIsLoading && pdfPicture != undefined)? (
-                <GridItem xs={12} style={{ display: "flex", justifyContent: "center"}} >
-                  <Spinner color={color}/>
-                </GridItem>
-              ):(<div style={{display:"none"}}></div>)}
-
-            <CSSTransition
-              in={showPicture}
-              timeout={300}
-              classNames="image-preview"
-              unmountOnExit
-            >
-              {(pictureUrl != undefined)? (
-                <GridItem xs={12} style={{ display: "flex", alignItems: "center"}} >
+          <CSSTransition
+            in={showPicture}
+            timeout={300}
+            classNames="image-preview"
+            unmountOnExit
+          >
+            {pictureUrl != undefined ? (
+              <GridItem
+                xs={12}
+                style={{ display: "flex", alignItems: "center" }}
+              >
                 <div className="image-preview">
-                  <img src={pictureUrl} className="image-preview" alt="Preview imagen cargada"/>
+                  <img
+                    src={pictureUrl}
+                    className="image-preview"
+                    alt="Preview imagen cargada"
+                  />
                 </div>
-                </GridItem>
-              ):(<div style={{display:"none"}}></div>)}
-            </CSSTransition>
+              </GridItem>
+            ) : (
+              <div style={{ display: "none" }}></div>
+            )}
+          </CSSTransition>
 
           <GridItem>
             <h4 className={classes.subtitle}>Documentos</h4>
+            {documentsToUpload.map((d, idx) => (
+              <div
+                key={idx}
+                className={classNames(
+                  classes.bullet,
+                  "underline-hover",
+                  "cursor-pointer"
+                )}
+                onClick={() => {
+                  if (documentsToUpload.length < 20) {
+                    setDocumentsToUpload(
+                      documentsToUpload.filter((doc) => doc != d)
+                    );
+                  }
+                }}
+              >
+                <RemoveCircle /> {d.name}
+              </div>
+            ))}
+            {invalidFile ? (
+              <div style={{ color: "red" }}>
+                El tipo de archivo subido es inválido
+              </div>
+            ) : (
+              <div style={{ display: "none" }}></div>
+            )}
+            {invalidSize ? (
+              <div style={{ color: "red" }}>
+                El archivo supera el límite de 25MB
+              </div>
+            ) : (
+              <div style={{ display: "none" }}></div>
+            )}
             <section
+              id="dropper"
               className="dropzone-container"
               style={{ marginTop: "15px" }}
             >
@@ -778,7 +910,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
         </GridContainer>
         <GridContainer className={classes.container}>
           <GridItem>
-          <h4 className={classes.subtitle}>Categoría</h4>
+            <h4 className={classes.subtitle}>Categoría</h4>
             <div>
               <Autocomplete
                 fullWidth
@@ -838,8 +970,8 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
               disableRestoreFocus
             >
               <Typography>
-                Acá podés agregar autores al proyecto. Se autocompleta con los que
-                tengan un usuario registrado y que pertenezcan a la
+                Acá podés agregar autores al proyecto. Se autocompleta con los
+                que tengan un usuario registrado y que pertenezcan a la
                 organización seleccionada.<br></br>
                 También se pueden agregar colaboradores sin usuarios asignados,
                 ingresando su nombre y mail con la opción: "Crear nuevo autor"
@@ -853,9 +985,11 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                   "underline-hover",
                   "cursor-pointer"
                 )}
-                onClick={() =>
-                  setAuthorsToAdd(authorsToAdd.filter((sta) => sta != s))
-                }
+                onClick={() => {
+                  if (authorsToAdd.length < 10) {
+                    setAuthorsToAdd(authorsToAdd.filter((sta) => sta != s));
+                  }
+                }}
               >
                 <RemoveCircle /> {s.fullName}
               </div>
@@ -872,7 +1006,13 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                   onChange={(e, s) => {
                     if (s) setAuthorsToAdd(authorsToAdd.concat(s!));
                   }}
-                  renderInput={(params) => <TextField {...params} fullWidth placeholder="Harry Po..."/>}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      fullWidth
+                      placeholder="Harry Po..."
+                    />
+                  )}
                 />
               </GridItem>
               <GridItem xs={3}>
@@ -880,6 +1020,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                   fullWidth
                   type="button"
                   color={color}
+                  disabled={authorsToAdd.length == 10}
                   onClick={() => setCreateGhostAuthorFormOpen(true)}
                 >
                   <AddCircle />
@@ -919,8 +1060,8 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
               disableRestoreFocus
             >
               <Typography>
-                Acá podés agregar supervisores al proyecto. Se autocompleta con los 
-                que tengan un usuario registrado y que pertenezcan a la
+                Acá podés agregar supervisores al proyecto. Se autocompleta con
+                los que tengan un usuario registrado y que pertenezcan a la
                 organización.<br></br>
                 También se pueden agregar colaboradores sin usuarios asignados,
                 ingresando su nombre y mail con la opción: "Crear nuevo
@@ -937,8 +1078,8 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                 )}
                 onClick={() => {
                   {
-                    if(props.session.isLoggedIn){
-                      if(s.id != props.session.userId){
+                    if (props.session.isLoggedIn) {
+                      if (s.id != props.session.userId) {
                         setSupervisorsToAdd(
                           supervisorsToAdd.filter((sta) => sta != s)
                         );
@@ -960,11 +1101,19 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                   getOptionLabel={(option) => option.fullName}
                   onPointerLeave={() => {}}
                   onChange={(e, s) => {
-                    if (s) {
-                      setSupervisorsToAdd(supervisorsToAdd.concat(s!));
+                    if (supervisorsToAdd.length < 7) {
+                      if (s) {
+                        setSupervisorsToAdd(supervisorsToAdd.concat(s!));
+                      }
                     }
                   }}
-                  renderInput={(params) => <TextField {...params} fullWidth placeholder="Albus Dum..."/>}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      fullWidth
+                      placeholder="Albus Dum..."
+                    />
+                  )}
                 />
               </GridItem>
               <GridItem xs={3}>
@@ -972,6 +1121,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                   fullWidth
                   type="button"
                   color={color}
+                  disabled={supervisorsToAdd.length == 7}
                   onClick={() => setCreateGhostSupervisorFormOpen(true)}
                 >
                   <AddCircle />
@@ -1058,7 +1208,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
           <Button
             onClick={() => {
               setLoading(true);
-              setIsLoading(true)
+              setIsLoading(true);
               setIsModalOpen(false);
               updateProject(project);
             }}

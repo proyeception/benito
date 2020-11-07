@@ -11,6 +11,7 @@ export type Project = {
   documentation?: Array<Documentation>;
   organization: Organization;
   keywordMatchingDocs: Array<Documentation>;
+  category?: string;
 };
 
 export type Person = {

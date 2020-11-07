@@ -77,6 +77,7 @@ const MePage = (props: MePageProps) => {
     );
     
   const [newPicture, setNewPicture] = React.useState<string | undefined>("");
+  const [invalidImageFormat, setInvalidImageFormat] = useState<boolean>(false);
   const user = withUser(props.session.role, props.session.userId, (u) => {
     setNewPicture(u.profilePicUrl?.valueOf())
   });
@@ -136,11 +137,16 @@ const MePage = (props: MePageProps) => {
                     type="file"
                     style={{display: "none", filter: "brightness(0.5)"}}
                     onChange={(e) => {
-                      setIsLoading(true)
-                      updateUserPicture(user.value.id, role, e.target.files![0]).then((h)=> {
+                      if((e.target.files![0].type == "image/jpg" || e.target.files![0].type == "image/jpeg" || e.target.files![0].type == "image/png") && e.target.files![0].size < 26214400){
+                        setInvalidImageFormat(false)
+                        setIsLoading(true)
+                        updateUserPicture(user.value.id, role, e.target.files![0]).then((h)=> {
                         setNewPicture(h.data.profilePicUrl)
                         setIsLoading(false)
-                      })
+                        })
+                      } else {
+                        setInvalidImageFormat(true)
+                      }  
                     }}
                   />
                   <label htmlFor="contained-button-image">
@@ -157,6 +163,9 @@ const MePage = (props: MePageProps) => {
                   </label>
                     
                   </div>
+                  {invalidImageFormat ? (<div style={{color: "red"}}>
+                    No se pueden subir archivos del tipo seleccionado
+                  </div>) : (<div style={{display: "none"}}></div>)}
                 </div>
               </GridItem>
             </GridContainer>

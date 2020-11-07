@@ -173,6 +173,14 @@ const customDropdownStyle = (theme: Theme, color: string) => createStyles({
   },
   noLiPadding: {
     padding: "0"
+  },
+  dropdownText: {
+    color: "white",
+    fontWeight: 500,
+    padding: 0,
+    [theme.breakpoints.down("sm")]: {
+      color: "#2f3336"
+    }
   }
 });
 
