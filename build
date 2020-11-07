@@ -26,6 +26,7 @@ mkdir $BACKEND_RESOURCES/templates
 mkdir $BACKEND_RESOURCES/static
 
 cp -r $FRONTEND/build/index.html $BACKEND_RESOURCES/templates/index.ftl
+cp -r $FRONTEND/build/index.html $BACKEND_RESOURCES/templates/error.ftl
 cp -r $FRONTEND/build/static/* $BACKEND_RESOURCES/static/
 
 find $BACKEND_RESOURCES -type f -print0 | xargs -0 sed -i -e 's/\/static//g'
