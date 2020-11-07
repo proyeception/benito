@@ -110,7 +110,10 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
   const [pictureUrl, setPictureUrl] = useState<string | undefined>();
   const [category, setCategory] = useState<Category | undefined>();
   const [documentsToUpload, setDocumentsToUpload] = useState<Array<File>>([]);
-  const onDrop = useCallback((files) => setDocumentsToUpload(documentsToUpload.concat(files)), documentsToUpload);
+  const onDrop = useCallback((files) => setDocumentsToUpload(documentsToUpload.concat(files.filter((f: File) => {
+    const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "application/pdf", "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation"]
+    return allowedTypes.includes(f.type)
+  }))), documentsToUpload);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
