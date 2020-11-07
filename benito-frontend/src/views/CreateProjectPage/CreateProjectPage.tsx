@@ -690,8 +690,8 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
               disableRestoreFocus
             >
               <Typography>
-                Esta será la imagen de tu proyecto: en la página principal y en
-                las búsquedas. También se verá en el encabezado!
+                Es la imagen que va a representar a tu proyecto en la página principal y en
+                las búsquedas
               </Typography>
             </Popover>
           </GridItem>
