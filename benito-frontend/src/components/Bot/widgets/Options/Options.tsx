@@ -5,7 +5,8 @@ import "./Options.css";
 interface Option {
   name:String,
   handler:any,
-  id: number
+  id: number,
+  color: string,
 }
 
 const Options = (props:any) => {
@@ -19,6 +20,7 @@ const Options = (props:any) => {
               className="option-item"
               onClick={() => option.handler(option.name)}
               key={option.id}
+              style={{color:props.color, borderColor: props.color, marginLeft: "auto"}}
             >
               {option.name}
             </div>
