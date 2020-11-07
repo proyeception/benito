@@ -1,4 +1,10 @@
-import { Card, CircularProgress, createMuiTheme, makeStyles, ThemeProvider } from "@material-ui/core";
+import {
+  Card,
+  CircularProgress,
+  createMuiTheme,
+  makeStyles,
+  ThemeProvider,
+} from "@material-ui/core";
 import React, { useState } from "react";
 import { hot } from "react-hot-loader";
 import GridContainer from "../../../components/Grid/GridContainer";
@@ -53,10 +59,13 @@ const theme = createMuiTheme({
 const useStyles = makeStyles(styles);
 
 const OrganizationsSection = (props: OrganizationsSectionProps) => {
-
-  let color: string = "#c41234"
-  if(props.session && props.session.isLoggedIn && props.session.selectedOrganization){
-    color = props.session.selectedOrganization.color
+  let color: string = "#c41234";
+  if (
+    props.session &&
+    props.session.isLoggedIn &&
+    props.session.selectedOrganization
+  ) {
+    color = props.session.selectedOrganization.color;
   }
 
   const classes = useStyles();
@@ -72,10 +81,7 @@ const OrganizationsSection = (props: OrganizationsSectionProps) => {
   const handleClose = () => setIsModalOpen(false);
   const handleOpen = () => setIsModalOpen(true);
 
-  console.log(organizations)
-
   if (organizations.length == 0) {
-    
     return (
       <GridContainer justify="center" className={classes.container}>
         <h4>Parece que no pertenecés a ninguna organización :(</h4>
@@ -99,7 +105,11 @@ const OrganizationsSection = (props: OrganizationsSectionProps) => {
                 <div
                   className={classNames(classes.cardTitle, classes.orgHeader)}
                 >
-                  <img src={o.iconUrl} className={classes.orgIcon} alt="Logo organizacion"/>{" "}
+                  <img
+                    src={o.iconUrl}
+                    className={classes.orgIcon}
+                    alt="Logo organizacion"
+                  />{" "}
                   <h4 className={classes.cardTitle}>{o.displayName}</h4>
                 </div>
 
@@ -120,74 +130,78 @@ const OrganizationsSection = (props: OrganizationsSectionProps) => {
         ))}
       </GridContainer>
       <ThemeProvider theme={theme}>
-      <Dialog
-        open={isModalOpen}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          Abandonar organización
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            {loading ? (
-              <div style={{ display: "flex", justifyContent: "center" }}>
-                <CircularProgress />
-              </div>
-            ) : (
-              `¿Estás seguro de que querés abandonar ${selectedOrganization?.displayName}? Mirá que esta acción no se
+        <Dialog
+          open={isModalOpen}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            Abandonar organización
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              {loading ? (
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  <CircularProgress />
+                </div>
+              ) : (
+                `¿Estás seguro de que querés abandonar ${selectedOrganization?.displayName}? Mirá que esta acción no se
               puede deshacer, si querés volver a formar parte de la organización,
               tendrás que contactarte con alguno de los encargados de la misma.
               `
-            )}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            No, quiero quedarme
-          </Button>
-          <Button
-            onClick={() => {
-              setLoading(true);
-              leaveOrganization(
-                props.user.id,
-                mapRoleToCollection(props.role),
-                selectedOrganization?.id!
-              )
-                .then((res) => res.data)
-                .then((p) => {
-                  setOrganizations(p.organizations)
-                  if(props.session && props.session.isLoggedIn){
-                    if(p.organizations.includes(props.session.selectedOrganization)){
-                      store.dispatch(
-                        updateSessionState({
-                          ...props.session,
-                          organizations: p.organizations
-                        })
-                      ) 
-                    } else {
-                      store.dispatch(
-                        updateSessionState({
-                          ...props.session,
-                          organizations: p.organizations,
-                          selectedOrganization: p.organizations[0]
-                        })
-                      ) 
+              )}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              No, quiero quedarme
+            </Button>
+            <Button
+              onClick={() => {
+                setLoading(true);
+                leaveOrganization(
+                  props.user.id,
+                  mapRoleToCollection(props.role),
+                  selectedOrganization?.id!
+                )
+                  .then((res) => res.data)
+                  .then((p) => {
+                    setOrganizations(p.organizations);
+                    if (props.session && props.session.isLoggedIn) {
+                      if (
+                        p.organizations.includes(
+                          props.session.selectedOrganization
+                        )
+                      ) {
+                        store.dispatch(
+                          updateSessionState({
+                            ...props.session,
+                            organizations: p.organizations,
+                          })
+                        );
+                      } else {
+                        store.dispatch(
+                          updateSessionState({
+                            ...props.session,
+                            organizations: p.organizations,
+                            selectedOrganization: p.organizations[0],
+                          })
+                        );
+                      }
                     }
-                  }
-                })
-                .catch(console.error)
-                .then(() => handleClose())
-                .then(() => setLoading(false));
-            }}
-            color="primary"
-            autoFocus
-          >
-            Sí, estoy seguro
-          </Button>
-        </DialogActions>
-      </Dialog>
+                  })
+                  .catch(console.error)
+                  .then(() => handleClose())
+                  .then(() => setLoading(false));
+              }}
+              color="primary"
+              autoFocus
+            >
+              Sí, estoy seguro
+            </Button>
+          </DialogActions>
+        </Dialog>
       </ThemeProvider>
     </div>
   );
@@ -199,4 +213,6 @@ const mapStateToProps = (rootState: RootState) => {
   };
 };
 
-export default hot(module)(connect(mapStateToProps)(withRouter(OrganizationsSection)));
+export default hot(module)(
+  connect(mapStateToProps)(withRouter(OrganizationsSection))
+);
