@@ -704,7 +704,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                   id="contained-button-image"
                   type="file"
                   onChange={(e) => {
-                    if(e.target.files![0].type == "image/jpg" || e.target.files![0].type == "image/jpeg" || e.target.files![0].type == "image/png"){
+                    if((e.target.files![0].type == "image/jpg" || e.target.files![0].type == "image/jpeg" || e.target.files![0].type == "image/png") && e.target.files![0].size < 26214400){
                       setInvalidImageFormat(false)
                       setPdfPicture(undefined)
                       setPictureUrl(undefined)
@@ -727,7 +727,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                   id="contained-button-pdf"
                   type="file"
                   onChange={(e) => {
-                    if(e.target.files![0].type == "application/pdf"){
+                    if(e.target.files![0].type == "application/pdf" && e.target.files![0].size < 26214400){
                       setInvalidImageFormat(false)
                       setPictureUrl(undefined)
                       setPosterIsLoading(true)
