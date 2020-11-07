@@ -18,7 +18,7 @@ open class LoginController(
     @ResponseStatus(HttpStatus.OK)
     open fun authorLogin(@RequestBody login: LoginDTO, response: HttpServletResponse) {
         LOGGER.info("New author login")
-        val token = authenticationService.authenticateOrCreateAuthor(login)
+        val token = authenticationService.authenticateAuthor(mail = login.mail, googleToken = login.token)
         response.addCookie(Cookie(X_QUI_TOKEN, token).also { it.path = "/" })
     }
 
@@ -26,7 +26,7 @@ open class LoginController(
     @ResponseStatus(HttpStatus.OK)
     open fun supervisorLogin(@RequestBody login: LoginDTO, response: HttpServletResponse) {
         LOGGER.info("New supervisor login")
-        val token = authenticationService.authenticateSupervisor(login)
+        val token = authenticationService.authenticateSupervisor(mail = login.mail, googleToken = login.token)
         response.addCookie(Cookie(X_QUI_TOKEN, token).also { it.path = "/" })
     }
 
