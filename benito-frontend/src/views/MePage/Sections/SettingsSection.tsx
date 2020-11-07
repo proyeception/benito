@@ -60,12 +60,7 @@ const SettingsSection = (props: SettingsSectionProps) => {
         />
       </GridItem>
       <GridItem className={classes.rowItem}>
-        <CustomButton
-          onClick={() => console.log("Al toque pa")}
-          color="success"
-        >
-          Guardar
-        </CustomButton>
+        <CustomButton color="success">Guardar</CustomButton>
       </GridItem>
     </GridContainer>
   );

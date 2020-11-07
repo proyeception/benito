@@ -98,7 +98,12 @@ const CreateGhostUser = (props: CreateGhostUserProps) => {
                     <TextField
                       fullWidth
                       label="Email"
-                      error={mail == undefined || mail.length < 7 || !mail.includes("@") || mail.includes(" ")}
+                      error={
+                        mail == undefined ||
+                        mail.length < 7 ||
+                        !mail.includes("@") ||
+                        mail.includes(" ")
+                      }
                       defaultValue={mail}
                       onBlur={(e) => setMail(e.currentTarget.value)}
                     />
@@ -115,7 +120,14 @@ const CreateGhostUser = (props: CreateGhostUserProps) => {
             </ThemeProvider>
             <ThemeProvider theme={theme}>
               <Button
-                disabled={mail == undefined || mail.length < 7 || !mail.includes("@") || mail.includes(" ") || name == undefined || name.length < 5}
+                disabled={
+                  mail == undefined ||
+                  mail.length < 7 ||
+                  !mail.includes("@") ||
+                  mail.includes(" ") ||
+                  name == undefined ||
+                  name.length < 5
+                }
                 onClick={() => {
                   setLoading(true);
                   createGhostUser(
@@ -126,10 +138,7 @@ const CreateGhostUser = (props: CreateGhostUserProps) => {
                     mail
                   )
                     .then((res) => res.data)
-                    .then((u) => {
-                      console.log(u);
-                      props.afterCreate(u);
-                    })
+                    .then((u) => props.afterCreate(u))
                     .catch(console.error)
                     .then(() => setLoading(false))
                     .then(() => props.setOpen(false))

@@ -1,4 +1,12 @@
-import { Project, Role, Person, OrganizationQuantityType, ProjectCreationTimelineType, CategoryQuantityType, TopProject } from "../../types";
+import {
+  Project,
+  Role,
+  Person,
+  OrganizationQuantityType,
+  ProjectCreationTimelineType,
+  CategoryQuantityType,
+  TopProject,
+} from "../../types";
 import { benitoHost } from "../../config";
 import axios, { AxiosRequestConfig, AxiosPromise } from "axios";
 import { signRequest } from "../http";
@@ -85,7 +93,7 @@ export function updatePicture(projectId: string, picture: File) {
     data: pictureForm,
   };
 
-  return axios.request(signRequest(pictureConfig)).then(console.log);
+  return axios.request(signRequest(pictureConfig));
 }
 
 export function updateTags(projectId: string, tags: Array<string>) {
@@ -95,7 +103,7 @@ export function updateTags(projectId: string, tags: Array<string>) {
     data: { tags },
   };
 
-  return axios.request(signRequest(pictureConfig)).then(console.log);
+  return axios.request(signRequest(pictureConfig));
 }
 
 export function uploadDocuments(projectId: string, documents: Array<File>) {
@@ -181,13 +189,13 @@ export function closeProject(projectId: string) {
 export function updateProjectxQuantity(
   id: string
 ): AxiosPromise<Array<OrganizationQuantityType>> {
-  let queryParams = ""
-  if(id != "") {
-    queryParams = "?categoryId=" + id
+  let queryParams = "";
+  if (id != "") {
+    queryParams = "?categoryId=" + id;
   }
   let results: AxiosRequestConfig = {
-    url: `${benitoHost}/benito/stats/projectsxorganization${queryParams}` ,
-    method: "GET"
+    url: `${benitoHost}/benito/stats/projectsxorganization${queryParams}`,
+    method: "GET",
   };
   return axios.request<Array<OrganizationQuantityType>>(signRequest(results));
 }
@@ -195,14 +203,13 @@ export function updateProjectxQuantity(
 export function updateCategoryxQuantity(
   id: string
 ): AxiosPromise<Array<CategoryQuantityType>> {
-  let queryParams = ""
-  if(id != "") {
-    queryParams = "?organizationId=" + id
+  let queryParams = "";
+  if (id != "") {
+    queryParams = "?organizationId=" + id;
   }
-  console.log(queryParams)
   let results: AxiosRequestConfig = {
-    url: `${benitoHost}/benito/stats/projectsxcategory${queryParams}` ,
-    method: "GET"
+    url: `${benitoHost}/benito/stats/projectsxcategory${queryParams}`,
+    method: "GET",
   };
   return axios.request<Array<CategoryQuantityType>>(signRequest(results));
 }
@@ -212,23 +219,25 @@ export function updateProjectCreationTimeline(
   startYear: number | null | undefined,
   endYear: number | null | undefined
 ): AxiosPromise<Array<ProjectCreationTimelineType>> {
-  let queryParams = "?"
-  if(ids.length != 0) {
-    queryParams = queryParams + "categoryIds=" + ids.join(",") + "&"
+  let queryParams = "?";
+  if (ids.length != 0) {
+    queryParams = queryParams + "categoryIds=" + ids.join(",") + "&";
   }
-  if(startYear != null) {
-    queryParams = queryParams + "since=" + startYear + "&"
+  if (startYear != null) {
+    queryParams = queryParams + "since=" + startYear + "&";
   }
-  if(endYear != null) {
-    queryParams = queryParams + "to=" + endYear + "&"
+  if (endYear != null) {
+    queryParams = queryParams + "to=" + endYear + "&";
   }
   queryParams = queryParams.slice(0, -1);
 
   let results: AxiosRequestConfig = {
     url: `${benitoHost}/benito/stats/projectsxcategoryxyear${queryParams}`,
-    method: "GET"
+    method: "GET",
   };
-  return axios.request<Array<ProjectCreationTimelineType>>(signRequest(results));
+  return axios.request<Array<ProjectCreationTimelineType>>(
+    signRequest(results)
+  );
 }
 
 export function updateTopProjects(
@@ -236,22 +245,21 @@ export function updateTopProjects(
   organizationId: string | null,
   year: number | null | undefined
 ): AxiosPromise<Array<TopProject>> {
-  
-  let queryParams = "?"
-  if(categoryId != null) {
-    queryParams = queryParams + "categoryId=" + categoryId + "&"
+  let queryParams = "?";
+  if (categoryId != null) {
+    queryParams = queryParams + "categoryId=" + categoryId + "&";
   }
-  if(organizationId != null) {
-    queryParams = queryParams + "organizationId=" + organizationId + "&"
+  if (organizationId != null) {
+    queryParams = queryParams + "organizationId=" + organizationId + "&";
   }
-  if(year != null) {
-    queryParams = queryParams + "year=" + year + "&"
+  if (year != null) {
+    queryParams = queryParams + "year=" + year + "&";
   }
   queryParams = queryParams.slice(0, -1);
 
   let results: AxiosRequestConfig = {
-    url: `${benitoHost}/benito/stats/topprojects${queryParams}` ,
-    method: "GET"
+    url: `${benitoHost}/benito/stats/topprojects${queryParams}`,
+    method: "GET",
   };
   return axios.request<Array<TopProject>>(signRequest(results));
 }

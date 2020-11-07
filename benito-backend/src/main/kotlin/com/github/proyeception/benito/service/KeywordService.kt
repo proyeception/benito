@@ -28,7 +28,6 @@ public class KeywordService() {
         val restService = RestService(RestTemplateBuilder());
         val result = restService.postRequest(url, map)
 
-        println(result)
 
         return result
     }
@@ -51,7 +50,6 @@ public class KeywordService() {
     }
 
     fun getStopwords(text: String): List<String> {
-        System.out.println("Starting Stanford NLP");
         val props = Properties()
         props["annotators"] = "tokenize, ssplit, pos, lemma, ner";
 
