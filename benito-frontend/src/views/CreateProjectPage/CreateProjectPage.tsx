@@ -530,7 +530,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                     moment(e).format("yyyy-MM-DD").toString() != "Invalid date"
                   ) {
                     setCreationDate(
-                      moment(e).format("yyyy-MM-DD").toString()
+                      moment(e).add(1, "days").format("yyyy-MM-DD").toString()
                     );
                     setDateIncompleted(false);
                   } else {
@@ -916,7 +916,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
               <Autocomplete
                 fullWidth
                 className={classes.autocomplete}
-                options={props.categories}
+                options={props.categories.sort((a, b) => { return a.name.localeCompare(b.name) })}
                 getOptionLabel={(option) => option.name}
                 defaultValue={category}
                 onChange={(e, c) => {
@@ -1000,7 +1000,9 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                 <Autocomplete
                   fullWidth
                   clearOnBlur
-                  options={organization.authors.filter(
+                  options={organization.authors
+                    .sort((a, b) => { return a.fullName.localeCompare(b.fullName) })
+                    .filter(
                     (s) => !authorsToAdd.includes(s)
                   )}
                   getOptionLabel={(option) => option.fullName}
@@ -1096,7 +1098,9 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
               <GridItem xs={9}>
                 <Autocomplete
                   fullWidth
-                  options={organization.supervisors.filter(
+                  options={organization.supervisors
+                    .sort((a, b) => { return a.fullName.localeCompare(b.fullName) })
+                    .filter(
                     (s) => !supervisorsToAdd.includes(s)
                   )}
                   getOptionLabel={(option) => option.fullName}
