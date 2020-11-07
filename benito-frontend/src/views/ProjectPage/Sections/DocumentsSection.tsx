@@ -9,6 +9,7 @@ import styles from "../../../assets/jss/material-kit-react/views/landingPageSect
 import moment from "moment";
 import { Link } from "react-router-dom";
 import { Alert, AlertTitle } from "@material-ui/lab";
+import { fromCategoryName } from "../../../functions/categories";
 
 const useStyles = makeStyles(styles);
 
@@ -43,7 +44,9 @@ const DocumentsSection = ({ project }: DocumentsSectionProps) => {
             </GridItem>
             <GridItem xs={6} md={6} style={{ textAlign: "right" }}>
               <Link
-                to={`/search?category=${project.category?.toLocaleLowerCase()}`}
+                to={`/search?category=${
+                  fromCategoryName(project.category)?.tagName
+                }`}
                 className="normalize-link"
                 style={{ color: project.organization.color }}
               >
@@ -74,10 +77,14 @@ const DocumentsSection = ({ project }: DocumentsSectionProps) => {
             </GridItem>
           </GridContainer>
         </GridItem>
-        <GridItem xs={12} md={6} className={classes.documentsContainer} >
+        <GridItem xs={12} md={6} className={classes.documentsContainer}>
           {project.documentation != undefined ? (
             project.documentation?.map((d, idx) => (
-              <DownloadDocument document={d} idx={idx} color={project.organization.color}></DownloadDocument>
+              <DownloadDocument
+                document={d}
+                idx={idx}
+                color={project.organization.color}
+              ></DownloadDocument>
             ))
           ) : (
             <Alert
@@ -87,12 +94,26 @@ const DocumentsSection = ({ project }: DocumentsSectionProps) => {
                 backgroundColor: "#ececec",
               }}
             >
-              <AlertTitle style={{ color: "#3c4858" }}><Link to={`/login`} style={{ color: project.organization.color, textDecoration: "underline" }}>Inicia sesión</Link> para descargar la documentación del proyecto!</AlertTitle>
+              <AlertTitle style={{ color: "#3c4858" }}>
+                <Link
+                  to={`/login`}
+                  style={{
+                    color: project.organization.color,
+                    textDecoration: "underline",
+                  }}
+                >
+                  Inicia sesión
+                </Link>{" "}
+                para descargar la documentación del proyecto!
+              </AlertTitle>
             </Alert>
           )}
-          {project.documentation != undefined && project.documentation.length == 0 ? (
+          {project.documentation != undefined &&
+          project.documentation.length == 0 ? (
             <div> El proyecto no cuenta con documentación</div>
-            ) : (<div style={{display: "none"}}></div>)}
+          ) : (
+            <div style={{ display: "none" }}></div>
+          )}
         </GridItem>
       </GridContainer>
     </div>
