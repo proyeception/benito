@@ -3,7 +3,7 @@ import searchPageStyle from "../../assets/jss/material-kit-react/views/searchPag
 import store from "../../store";
 import { NOTHING, SearchState } from "../../store/search/types";
 import { SearchParams, SortMethod } from "../../types";
-import { fromCategoryName } from "../categories";
+import { fromCategoryTagName } from "../categories";
 import moment from "moment";
 import { fromOrganizationName } from "../organization";
 
@@ -47,7 +47,7 @@ function buildQueryParamProperty(key: string, value?: string) {
 export function syncParamsToState(params: SearchParams) {
   let state: SearchState = {
     title: params.title || "",
-    category: fromCategoryName(params.category),
+    category: fromCategoryTagName(params.category),
     from: params.from ? params.from : undefined,
     to: params.to ? params.to : undefined,
     documentation: params.documentation || "",

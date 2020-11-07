@@ -9,7 +9,10 @@ import styles from "../../../assets/jss/material-kit-react/views/landingPageSect
 import moment from "moment";
 import { Link } from "react-router-dom";
 import { Alert, AlertTitle } from "@material-ui/lab";
-import { fromCategoryName } from "../../../functions/categories";
+import {
+  fromCategoryTagName,
+  fromCategoryName,
+} from "../../../functions/categories";
 
 const useStyles = makeStyles(styles);
 

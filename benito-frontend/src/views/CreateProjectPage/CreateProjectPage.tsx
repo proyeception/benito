@@ -30,7 +30,13 @@ import { ERROR, PENDING, SUCCESS } from "../../hooks/withFetch";
 import CustomTabs from "../../components/CustomTabs/CustomTabs";
 import { Edit, Description, RemoveCircle, AddCircle } from "@material-ui/icons";
 import MarkdownCompiler from "../../components/MarkdownCompiler/MarkdownCompiler";
-import { Organization, Person, Project, Category } from "../../types";
+import {
+  Organization,
+  Person,
+  Project,
+  Category,
+  Documentation,
+} from "../../types";
 import { SessionState } from "../../store/session/types";
 import { RootState } from "../../reducers";
 import { connect } from "react-redux";
@@ -85,6 +91,23 @@ interface CreateProjectPageProps extends RouteComponentProps<MatchParams> {
   session: SessionState;
   categories: Array<Category>;
 }
+
+type ProjectBuilder = {
+  id: string;
+  title: string;
+  description: string;
+  pictureUrl?: string;
+  authors: Array<Person>;
+  supervisors: Array<Person>;
+  creationDate: Date;
+  tags: Array<string>;
+  extraContent: string;
+  documentation?: Array<Documentation>;
+  organization: Organization;
+  keywordMatchingDocs: Array<Documentation>;
+  category?: string;
+  views: string;
+};
 
 const CreateProjectPage = (props: CreateProjectPageProps) => {
   const classes = useStyles();
@@ -327,7 +350,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
     return <Redirect to={{ pathname: "/error" }} />;
   }
 
-  const project: Project = {
+  const project = {
     id: "",
     title: "",
     description: "",
@@ -339,7 +362,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
     extraContent: "",
     organization: user.value.organizations[0],
     keywordMatchingDocs: [],
-    views: "0"
+    views: "0",
   };
 
   if (props.session.isLoggedIn) {
@@ -411,7 +434,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
     });
   }
 
-  function updateProject(project: Project) {
+  function updateProject(project: ProjectBuilder) {
     createProject(title!, category!.id, project.organization.id, creationDate!)
       .then((res) => {
         let promises = [];
@@ -529,9 +552,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                     e &&
                     moment(e).format("yyyy-MM-DD").toString() != "Invalid date"
                   ) {
-                    setCreationDate(
-                      moment(e).format("yyyy-MM-DD").toString()
-                    );
+                    setCreationDate(moment(e).format("yyyy-MM-DD").toString());
                     setDateIncompleted(false);
                   } else {
                     store.dispatch(updateFromDate(""));
