@@ -347,24 +347,26 @@ open class ProjectService(
         )
     }
         .also {
-            val driveFolderId = it.driveFolderId
-
-            val permitted = permissionsStorage.findPermissionsForFile(driveFolderId)
-
             launchIOAsync {
+                val driveFolderId = it.driveFolderId
+
+                val permitted = permissionsStorage.findPermissionsForFile(driveFolderId)
+
                 (it.authors + it.supervisors)
-                    .filter { u -> u.mail != null && !u.ghost }
-                    .filter { u -> u.id !in permitted.map { p -> p.mail } }
+                    .filter { u -> !u.ghost }
+                    .filter { u -> u.mail !in permitted.map { p -> p.mail } }
                     .map { u ->
                         asyncIO {
-                            googleDriveClient.giveWriterPermission(u.mail!!, driveFolderId)
-                                .fold(
-                                    ifLeft = { e -> LOGGER.warn("Failed to give write permission to ${u.mail}", e) },
-                                    ifRight = { p ->
-                                        LOGGER.info("Gave write permission ${u.mail} ${it.title}")
-                                        permissionsStorage.save(u.mail, p.id, driveFolderId)
-                                    }
-                                )
+                            if (u.mail != null) {
+                                googleDriveClient.giveWriterPermission(u.mail, driveFolderId)
+                                    .fold(
+                                        ifLeft = { e -> LOGGER.warn("Failed to give write permission to ${u.mail}", e) },
+                                        ifRight = { p ->
+                                            LOGGER.info("Gave write permission ${u.mail} ${it.title}")
+                                            permissionsStorage.save(u.mail, p.id, driveFolderId)
+                                        }
+                                    )
+                            }
                         }
                     }.awaitAll()
             }
@@ -390,7 +392,7 @@ open class ProjectService(
     }
         .also { launchIOAsync { addTagsToProjectKeywords(it, tags) } }
 
-    fun fixMarks(string: String?): String{
+    fun fixMarks(string: String?): String {
         return String(string!!.toByteArray(StandardCharsets.ISO_8859_1), StandardCharsets.ISO_8859_1)
     }
 
@@ -434,7 +436,6 @@ open class ProjectService(
             return uploadPictureToMedusa(result)
 
         } else {
-            System.err.println(file.name + " File not exists")
             throw FailedDependencyException("Error uploading pdf as jpg to Medusa")
         }
     }

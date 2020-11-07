@@ -38,10 +38,13 @@ interface SearchResultsSectionProps extends RouteChildrenProps<SearchParams> {
 const useStyles = makeStyles(styles);
 
 const SearchResultsSection = (props: SearchResultsSectionProps) => {
-
-  let color: string = "#c41234"
-  if(props.session && props.session.isLoggedIn && props.session.selectedOrganization){
-    color = props.session.selectedOrganization.color
+  let color: string = "#c41234";
+  if (
+    props.session &&
+    props.session.isLoggedIn &&
+    props.session.selectedOrganization
+  ) {
+    color = props.session.selectedOrganization.color;
   }
 
   const theme = createMuiTheme({
@@ -77,7 +80,6 @@ const SearchResultsSection = (props: SearchResultsSectionProps) => {
   });
 
   const handleChange = (_event: any, value: React.SetStateAction<number>) => {
-    console.log(value.valueOf());
     queryParams = {
       ...queryParams,
       page: ((value.valueOf() as number) - 1).toString(),
@@ -101,7 +103,7 @@ const SearchResultsSection = (props: SearchResultsSectionProps) => {
   }
 
   if (search.type == PENDING) {
-    return <Spinner color={color}/>;
+    return <Spinner color={color} />;
   }
 
   if (search.value.projects.length == 0) {
@@ -109,7 +111,10 @@ const SearchResultsSection = (props: SearchResultsSectionProps) => {
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
           <div className={classes.text}>
-            <div className={classes.message} style={{color:color}}> NO SE ENCONTRARON PROYECTOS</div>
+            <div className={classes.message} style={{ color: color }}>
+              {" "}
+              NO SE ENCONTRARON PROYECTOS
+            </div>
             <div className={classes.submessage}>
               {" "}
               Probá con otros criterios de búsqueda!
@@ -117,7 +122,11 @@ const SearchResultsSection = (props: SearchResultsSectionProps) => {
           </div>
         </GridItem>
         <GridItem xs={12} sm={12} md={12}>
-          <img src={image} className={classes.image} alt="Error: no se encontraron proyectos"/>
+          <img
+            src={image}
+            className={classes.image}
+            alt="Error: no se encontraron proyectos"
+          />
         </GridItem>
       </GridContainer>
     );
@@ -133,7 +142,7 @@ const SearchResultsSection = (props: SearchResultsSectionProps) => {
                 <div className={classes.contentContainer}>
                   <ProjectLink id={p.id}>
                     <div
-                      style={{color:color}}
+                      style={{ color: color }}
                       className={classNames(classes.title, " underline-hover")}
                     >
                       {p.title}
@@ -181,7 +190,9 @@ const SearchResultsSection = (props: SearchResultsSectionProps) => {
                 {p.keywordMatchingDocs.length > 0 && (
                   <ul>
                     {p.keywordMatchingDocs.map((d, idx) => (
-                      <li style={{ color: "#3c4858" }} key={idx}>{d.fileName}</li>
+                      <li style={{ color: "#3c4858" }} key={idx}>
+                        {d.fileName}
+                      </li>
                     ))}
                   </ul>
                 )}
