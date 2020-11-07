@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // @material-ui/core components
@@ -27,35 +27,20 @@ import { PENDING, ERROR } from "../../hooks/withFetch";
 import { Divider, Hidden } from "@material-ui/core";
 import Recommendations from "./Sections/Recommendations";
 import Spinner from "../../components/Spinner/Spinner";
-import { ProjectEditionRole } from "../../types";
 import image from "../../assets/img/proyectate/pattern-big.jpg";
 import Button from "@material-ui/core/Button/Button";
-import { ArrowBackIos, Telegram } from "@material-ui/icons";
+import { ArrowBackIos } from "@material-ui/icons";
 import {
-  EmailShareButton,
   FacebookIcon,
   FacebookShareButton,
-  HatenaShareButton,
-  InstapaperShareButton,
-  LineShareButton,
   LinkedinIcon,
   LinkedinShareButton,
-  LivejournalShareButton,
-  MailruShareButton,
-  OKShareButton,
-  PinterestShareButton,
-  PocketShareButton,
-  RedditShareButton,
   TelegramIcon,
   TelegramShareButton,
-  TumblrShareButton,
   TwitterIcon,
   TwitterShareButton,
-  ViberShareButton,
-  VKShareButton,
   WhatsappIcon,
   WhatsappShareButton,
-  WorkplaceShareButton,
 } from "react-share";
 import { SessionState } from "../../store/session/types";
 import { RootState } from "../../reducers";
@@ -86,24 +71,29 @@ const ProjectPage = (props: Props) => {
   );
 
   if (project.type == PENDING) {
-    let color: string = "#c41234"
-    if(props.session && props.session.isLoggedIn && props.session.selectedOrganization){
-      color = props.session.selectedOrganization.color
+    let color: string = "#c41234";
+    if (
+      props.session &&
+      props.session.isLoggedIn &&
+      props.session.selectedOrganization
+    ) {
+      color = props.session.selectedOrganization.color;
     }
-    return <Spinner color={color}/>;
+    return <Spinner color={color} />;
   }
 
   if (project.type == ERROR) {
     return <Redirect to={{ pathname: "/error" }} />;
   }
 
-  const shareUrl = `https://www.benito-stg.herokuapp.com/projects/${project.value.id}`;
+  const url = new URL(document.URL);
+
+  const shareUrl = `${url.protocol}://${url.hostname}/projects/${project.value.id}`;
   const shareBrief =
     project.value.description.length > 100
       ? project.value.description.slice(0, 97) + "..."
       : project.value.description;
 
-      
   return (
     <div>
       <Header
@@ -113,7 +103,11 @@ const ProjectPage = (props: Props) => {
         fixed
         {...rest}
       />
-      <Parallax filter image={project.value.organization.header || image} style={{backgroundPosition: "70% 50%"}}>
+      <Parallax
+        filter
+        image={project.value.organization.header || image}
+        style={{ backgroundPosition: "70% 50%" }}
+      >
         <div className={classes.container}>
           <GridContainer>
             <GridItem xs={12} sm={12} md={6}>
@@ -179,7 +173,7 @@ const ProjectPage = (props: Props) => {
           </GridItem>
           <Divider orientation="vertical" flexItem />
           <GridItem xs={12} sm={12} md={2} className={classes.recommendations}>
-            <Recommendations project={project.value}/>
+            <Recommendations project={project.value} />
           </GridItem>
           <Hidden only={["xs", "sm"]}>
             <GridItem
@@ -193,10 +187,14 @@ const ProjectPage = (props: Props) => {
                 onClick={() => {
                   props.history.goBack();
                 }}
-                style={{color: project.value.organization.color}}
+                style={{ color: project.value.organization.color }}
                 variant="outlined"
                 size="large"
-                startIcon={<ArrowBackIos style={{color: project.value.organization.color}}/>}
+                startIcon={
+                  <ArrowBackIos
+                    style={{ color: project.value.organization.color }}
+                  />
+                }
               >
                 Volver
               </Button>
