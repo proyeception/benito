@@ -976,6 +976,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                 .concat(justCreatedAuthors)
                 .concat(authorsToAdd)
                 .filter((a) => !authorsToRemove.some((atr) => atr == a))
+                .sort((a, b) => { return a.fullName.localeCompare(b.fullName) })
                 .map((a, idx) => (
                   <div
                     key={idx}
@@ -1098,6 +1099,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                     !supervisorsToRemove.some((str) => str == s) ||
                     project.value.authors.some((pa) => pa.id == s.id)
                 )
+                .sort((a, b) => { return a.fullName.localeCompare(b.fullName) })
                 .map((s, idx) => (
                   <div
                     key={idx}

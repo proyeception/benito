@@ -18,7 +18,7 @@ const CategorySelector = (props: CategorySelectorProps) => (
   <div>
     <Autocomplete
       fullWidth
-      options={props.categories}
+      options={props.categories.sort((a, b) => { return a.name.localeCompare(b.name) })}
       getOptionLabel={(option) => option.name}
       defaultValue={props.category}
       onChange={(e, c) => {
