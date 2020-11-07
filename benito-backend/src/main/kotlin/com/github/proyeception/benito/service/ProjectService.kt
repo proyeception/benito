@@ -436,7 +436,6 @@ open class ProjectService(
             return uploadPictureToMedusa(result)
 
         } else {
-            System.err.println(file.name + " File not exists")
             throw FailedDependencyException("Error uploading pdf as jpg to Medusa")
         }
     }
