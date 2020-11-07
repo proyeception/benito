@@ -111,13 +111,21 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
   const [category, setCategory] = useState<Category | undefined>();
   const [documentsToUpload, setDocumentsToUpload] = useState<Array<File>>([]);
   const [invalidFile, setInvalidFile] = useState<boolean>(false);
+  const [invalidSize, setInvalidSize] = useState<boolean>(false);
   const onDrop = useCallback((files) => setDocumentsToUpload(documentsToUpload.concat(files.filter((f: File) => {
     const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "application/pdf", "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation"]
     if(allowedTypes.includes(f.type)){
       setInvalidFile(false)
-      return allowedTypes.includes(f.type)
+      if(f.size > 26214400){
+        setInvalidSize(true)
+        return false
+      } else {
+        setInvalidSize(false)
+        return true
+      }
     } else {
       setInvalidFile(true)
+      return false
     }
   }))), documentsToUpload);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
@@ -786,6 +794,9 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
             ))}
             {invalidFile ? (<div style={{color: "red"}}>
                 El tipo de archivo subido es inválido
+              </div>) : (<div style={{display: "none"}}></div>)}
+              {invalidSize ? (<div style={{color: "red"}}>
+                El archivo supera el límite de 25MB
               </div>) : (<div style={{display: "none"}}></div>)}
             <section
               id="dropper"
