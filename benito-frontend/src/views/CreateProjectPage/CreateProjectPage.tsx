@@ -110,7 +110,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
   const [pictureUrl, setPictureUrl] = useState<string | undefined>();
   const [category, setCategory] = useState<Category | undefined>();
   const [documentsToUpload, setDocumentsToUpload] = useState<Array<File>>([]);
-  const onDrop = useCallback((files) => setDocumentsToUpload(files), []);
+  const onDrop = useCallback((files) => setDocumentsToUpload(documentsToUpload.concat(files)), documentsToUpload);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -758,6 +758,23 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
 
           <GridItem>
             <h4 className={classes.subtitle}>Documentos</h4>
+            {documentsToUpload.map((d, idx) => (
+              <div
+                key={idx}
+                className={classNames(
+                  classes.bullet,
+                  "underline-hover",
+                  "cursor-pointer"
+                )}
+                onClick={() => {
+                  if(documentsToUpload.length < 20){
+                    setDocumentsToUpload(documentsToUpload.filter((doc) => doc != d))
+                  }
+                }}
+              >
+                <RemoveCircle /> {d.name}
+              </div>
+            ))}
             <section
               className="dropzone-container"
               style={{ marginTop: "15px" }}

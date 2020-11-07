@@ -108,7 +108,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
     Array<Documentation>
   >([]);
   const onPictureDrop = useCallback((file) => setPicture(file[0]), []);
-  const onDrop = useCallback((files) => setDocumentsToUpload(files), []);
+  const onDrop = useCallback((files) => setDocumentsToUpload(documentsToUpload.concat(files)), documentsToUpload);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -778,6 +778,23 @@ const EditProjectPage = (props: EditProjectPageProps) => {
             ) : (
               <div></div>
             )}
+            {documentsToUpload.map((d, idx) => (
+              <div
+                key={idx}
+                className={classNames(
+                  classes.bullet,
+                  "underline-hover",
+                  "cursor-pointer"
+                )}
+                onClick={() => {
+                  if(documentsToUpload.length < 20){
+                    setDocumentsToUpload(documentsToUpload.filter((doc) => doc != d))
+                  }
+                }}
+              >
+                <RemoveCircle /> {d.name}
+              </div>
+            ))}
             <section
               className="dropzone-container"
               style={{ marginTop: "15px" }}
