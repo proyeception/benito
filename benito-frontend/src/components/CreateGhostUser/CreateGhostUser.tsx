@@ -89,6 +89,7 @@ const CreateGhostUser = (props: CreateGhostUserProps) => {
                       autoFocus
                       fullWidth
                       label="Nombre"
+                      error={name == undefined || name.length < 5}
                       defaultValue={name}
                       onBlur={(e) => setName(e.currentTarget.value)}
                     />
@@ -97,22 +98,11 @@ const CreateGhostUser = (props: CreateGhostUserProps) => {
                     <TextField
                       fullWidth
                       label="Email"
+                      error={mail == undefined || mail.length < 7 || !mail.includes("@") || mail.includes(" ")}
                       defaultValue={mail}
                       onBlur={(e) => setMail(e.currentTarget.value)}
                     />
                   </ThemeProvider>
-                  <TextField
-                    fullWidth
-                    label="Proyecto"
-                    value={props.project?.title}
-                    disabled
-                  />
-                  <TextField
-                    fullWidth
-                    label="Organización"
-                    value={props.organization.displayName}
-                    disabled
-                  />
                 </div>
               )}
             </DialogContentText>
@@ -125,6 +115,7 @@ const CreateGhostUser = (props: CreateGhostUserProps) => {
             </ThemeProvider>
             <ThemeProvider theme={theme}>
               <Button
+                disabled={mail == undefined || mail.length < 7 || !mail.includes("@") || mail.includes(" ") || name == undefined || name.length < 5}
                 onClick={() => {
                   setLoading(true);
                   createGhostUser(
