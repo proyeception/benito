@@ -853,9 +853,11 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                   "underline-hover",
                   "cursor-pointer"
                 )}
-                onClick={() =>
-                  setAuthorsToAdd(authorsToAdd.filter((sta) => sta != s))
-                }
+                onClick={() => {
+                  if(authorsToAdd.length < 10){
+                    setAuthorsToAdd(authorsToAdd.filter((sta) => sta != s))
+                  }
+                }}
               >
                 <RemoveCircle /> {s.fullName}
               </div>
@@ -960,8 +962,10 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                   getOptionLabel={(option) => option.fullName}
                   onPointerLeave={() => {}}
                   onChange={(e, s) => {
-                    if (s) {
-                      setSupervisorsToAdd(supervisorsToAdd.concat(s!));
+                    if(supervisorsToAdd.length < 7){
+                      if (s) {
+                        setSupervisorsToAdd(supervisorsToAdd.concat(s!));
+                      }
                     }
                   }}
                   renderInput={(params) => <TextField {...params} fullWidth placeholder="Albus Dum..."/>}

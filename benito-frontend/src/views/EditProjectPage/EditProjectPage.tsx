@@ -869,7 +869,9 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                     )}
                     getOptionLabel={(option) => option.fullName}
                     onChange={(e, a) => {
-                      if (a) setAuthorsToAdd(authorsToAdd.concat(a!));
+                      if(authorsToAdd.concat(authors).concat(justCreatedAuthors).length < 10){
+                        if (a) setAuthorsToAdd(authorsToAdd.concat(a!));
+                      }
                     }}
                     renderInput={(params) => (
                       <ThemeProvider theme={theme}>
@@ -974,7 +976,9 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                     )}
                     getOptionLabel={(option) => option.fullName}
                     onChange={(e, s) => {
-                      if (s) setSupervisorsToAdd(supervisorsToAdd.concat(s!));
+                      if(supervisorsToAdd.concat(supervisors).concat(justCreatedSupervisors).length < 7){
+                        if (s) setSupervisorsToAdd(supervisorsToAdd.concat(s!));
+                      }
                     }}
                     renderInput={(params) => (
                       <TextField {...params} fullWidth placeholder="Albus Dum..."/>
