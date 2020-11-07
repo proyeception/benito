@@ -27,6 +27,7 @@ const ToDateInput = (props: ToDateInputProps) => (
       clearable={true}
       placeholder="2016"
       variant={props.variant}
+      helperText={''}
       format="yyyy"
       label="Fin"
       value={props.to || null}
@@ -37,7 +38,7 @@ const ToDateInput = (props: ToDateInputProps) => (
         if (e && moment(e).format("yyyy-MM-DD").toString() != "Invalid date") {
           store.dispatch(
             updateToDate(
-              moment(e).add(1, "days").format("yyyy-MM-DD").toString()
+              moment(e).format("yyyy-MM-DD").toString()
             )
           );
         } else {

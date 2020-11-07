@@ -37,7 +37,7 @@ const FromDateInput = (props: FromDateInputProps) => (
         if (e && moment(e).format("yyyy-MM-DD").toString() != "Invalid date") {
           store.dispatch(
             updateFromDate(
-              moment(e).add(1, "days").format("yyyy-MM-DD").toString()
+              moment(e).format("yyyy-MM-DD").toString()
             )
           );
         } else {
