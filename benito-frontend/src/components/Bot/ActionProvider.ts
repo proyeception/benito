@@ -184,13 +184,13 @@ class ActionProvider {
 
   handleAuthorUploadQuestion = (userMessage : String) => {
     this.addUserMessage(userMessage)
-    const message = this.createChatBotMessage("TO-DO");
+    const message = this.createChatBotMessage("Como autor no tenés la posibilidad de cargar proyectos, pedile a un docente de tu universidad que cree uno y que te lo asigne para que lo puedas editar");
     this.addMessageToState(message);
   };
 
   handleSupervisorUploadQuestion = (userMessage : String) => {
     this.addUserMessage(userMessage)
-    const message = this.createChatBotMessage('Para cargar un proyecto como supervisor solo hace falta hacer click en "Crear nuevo proyecto" arriba a la derecha, donde está tu nombre. Después, ingresás los datos que te pide el formulario, ¡y listo!');
+    const message = this.createChatBotMessage('Para cargar un proyecto como supervisor solo hace falta estar loggeado y hacer click en tu nombre arriba a la derecha y luego en "Crear nuevo proyecto". Después, ingresás los datos que te pide el formulario, ¡y listo!');
     this.addMessageToState(message);
   };
   
