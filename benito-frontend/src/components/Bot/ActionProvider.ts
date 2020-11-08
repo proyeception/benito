@@ -25,11 +25,23 @@ class ActionProvider {
 
   handleProyectateQuestion = (userMessage : String) => {
     this.addUserMessage(userMessage)
-    let message = this.createChatBotMessage("Proyectate es la plataforma central en la que podrás buscar y ver todos los proyectos de las universidades del país");
+    let message = this.createChatBotMessage("Proyectate es la plataforma central en la que podrás buscar y ver todos los proyectos de las universidades del país",
+    {
+      withAvatar: false,
+      delay: 500,
+    });
     this.addMessageToState(message);
-    message = this.createChatBotMessage("Contamos con módulos de estadísticas, recomendaciones personalizadas para nuestros usuarios, e indexación en todas nuestras búsquedas para poder ayudarte a encontrar lo que estás buscando");
+    message = this.createChatBotMessage("Contamos con módulos de estadísticas, recomendaciones personalizadas para nuestros usuarios, e indexación en todas nuestras búsquedas para poder ayudarte a encontrar lo que estás buscando",
+    {
+      withAvatar: false,
+      delay: 2500,
+    });
     this.addMessageToState(message);
-    message = this.createChatBotMessage("Así que, ¡animate a ser parte de esta comunidad!");
+    message = this.createChatBotMessage("Así que, ¡animate a ser parte de esta comunidad!",
+    {
+      withAvatar: false,
+      delay: 5000,
+    });
     this.addMessageToState(message);
     message = this.createChatBotMessage("Te pudo ayudar con algo más?",
     {
@@ -37,6 +49,7 @@ class ActionProvider {
       withAvatar: false,
       loading: true,
       terminateLoading: true,
+      delay: 8500,
     });
     this.addMessageToState(message);
     
