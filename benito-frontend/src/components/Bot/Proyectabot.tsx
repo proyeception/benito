@@ -20,6 +20,7 @@ import ProjectOptions from "./widgets/GeneralOptions/ProjectOptions";
 import MoreHelpOptions from "./widgets/GeneralOptions/MoreHelpOptions"
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import ReportErrorOption from "./widgets/GeneralOptions/ReportErrorOption";
+import { EmojiEmotions } from "@material-ui/icons";
 
 interface ProyectabotProps extends RouteComponentProps {
   session?: SessionState;
@@ -103,7 +104,7 @@ const Proyectabot = (props: ProyectabotProps) => {
       <div className = "app-chatbot-button" style={{backgroundColor: color}}>
       <ThemeProvider theme={theme}>
         <Fab color="primary" aria-label= "expand" onClick = {handleClick}>
-          <UpIcon />
+          <EmojiEmotions />
         </Fab>
       </ThemeProvider>
       </div>
