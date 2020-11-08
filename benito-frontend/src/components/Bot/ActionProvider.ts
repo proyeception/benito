@@ -23,38 +23,44 @@ class ActionProvider {
     this.addMessageToState(message);
   };
 
-  handleProyectateQuestion = (userMessage : String) => {
+  
+  handleProyectateQuestion = async (userMessage : String) => {
     this.addUserMessage(userMessage)
     let message = this.createChatBotMessage("Proyectate es la plataforma central en la que podrás buscar y ver todos los proyectos de las universidades del país",
     {
       withAvatar: false,
-      delay: 500,
+      loading: true,
+      terminateLoading: true,
     });
     this.addMessageToState(message);
-    message = this.createChatBotMessage("Contamos con módulos de estadísticas, recomendaciones personalizadas para nuestros usuarios, e indexación en todas nuestras búsquedas para poder ayudarte a encontrar lo que estás buscando",
+    await this.sleep(5000);
+    message = this.createChatBotMessage("Contamos con módulos de estadísticas, recomendaciones personalizadas para nuestros usuarios y búsquedas inteligentes para poder ayudarte a encontrar lo que estás buscando",
     {
       withAvatar: false,
-      delay: 2500,
+      loading: true,
+      terminateLoading: true,
     });
     this.addMessageToState(message);
+    await this.sleep(7000);
     message = this.createChatBotMessage("Así que, ¡animate a ser parte de esta comunidad!",
     {
       withAvatar: false,
-      delay: 5000,
+      loading: true,
+      terminateLoading: true,
     });
     this.addMessageToState(message);
+    await this.sleep(2000);
     message = this.createChatBotMessage("Te pudo ayudar con algo más?",
     {
       widget: "moreHelpOptions",
       withAvatar: false,
       loading: true,
       terminateLoading: true,
-      delay: 8500,
     });
     this.addMessageToState(message);
     
   }
-
+  
   handleProyectabotQuestion = (userMessage : String) => {
     this.addUserMessage(userMessage)
     let message = this.createChatBotMessage("Ay, gracias por preguntar");
@@ -70,7 +76,7 @@ class ActionProvider {
     });
     this.addMessageToState(message);
   };
-
+  
   handleBugNotification = (userMessage : String) => {
     this.addUserMessage(userMessage)
     let message = this.createChatBotMessage("Para notificar algún problema en la página, por favor dirigí un mail a proyeception@gmail.com con el detalle de qué estabas haciendo y una captura del error si es posible");
@@ -98,19 +104,19 @@ class ActionProvider {
     });
     this.addMessageToState(message);
   };
-
+  
   handleNoMoreHelp = (userMessage : String) => {
     this.addUserMessage(userMessage)
     let message = this.createChatBotMessage("De nada! Chau!")
     this.addMessageToState(message);
   };
-
+  
   handleProjectUploadQuestion = (userMessage : String) => {
     this.addUserMessage(userMessage)
     const message = this.createChatBotMessage("Para cargar un proyecto blah");
     this.addMessageToState(message);
   };
-
+  
   addUserMessage = (userMessage : String) => {
     const message = this.createClientMessage(userMessage)
     this.addMessageToState(message)
@@ -122,6 +128,10 @@ class ActionProvider {
       messages: [...state.messages, message],
     }));
   };
+
+  sleep(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 }
 
 export default ActionProvider;
