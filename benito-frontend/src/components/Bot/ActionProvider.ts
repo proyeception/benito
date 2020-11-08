@@ -61,12 +61,14 @@ class ActionProvider {
     
   }
   
-  handleProyectabotQuestion = (userMessage : String) => {
+  handleProyectabotQuestion = async (userMessage : String) => {
     this.addUserMessage(userMessage)
     let message = this.createChatBotMessage("Ay, gracias por preguntar");
     this.addMessageToState(message);
+    await this.sleep(1000);
     message = this.createChatBotMessage("Yo soy Proyectabot, el fiel compañero ayuda de Proyectate. Mi funcion es ayudarte a encontrar lo que estés buscando y resolver cualquier duda que puedas tener");
     this.addMessageToState(message);
+    await this.sleep(6000);
     message = this.createChatBotMessage("Te pudo ayudar con algo más?",
     {
       widget: "moreHelpOptions",
@@ -77,12 +79,20 @@ class ActionProvider {
     this.addMessageToState(message);
   };
   
-  handleBugNotification = (userMessage : String) => {
+  handleBugNotification = async (userMessage : String) => {
     this.addUserMessage(userMessage)
-    let message = this.createChatBotMessage("Para notificar algún problema en la página, por favor dirigí un mail a proyeception@gmail.com con el detalle de qué estabas haciendo y una captura del error si es posible");
+    let message = this.createChatBotMessage("Para notificar algún problema en la página, por favor dirigí un mail a proyeception@gmail.com con el detalle de qué estabas haciendo y una captura del error si es posible",
+    {
+      widget: "reportErrorOption",
+      withAvatar: false,
+      loading: true,
+      terminateLoading: true,
+    });
     this.addMessageToState(message);
+    await this.sleep(7000);
     message = this.createChatBotMessage("¡Muchas gracias por ayudarnos a mejorar!");
     this.addMessageToState(message);
+    await this.sleep(1000);
     message = this.createChatBotMessage("Te pudo ayudar con algo más?",
     {
       widget: "moreHelpOptions",

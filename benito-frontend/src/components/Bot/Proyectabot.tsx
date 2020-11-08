@@ -19,6 +19,7 @@ import CategoriesOptions from "./widgets/GeneralOptions/CategoriesOptions";
 import ProjectOptions from "./widgets/GeneralOptions/ProjectOptions";
 import MoreHelpOptions from "./widgets/GeneralOptions/MoreHelpOptions"
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
+import ReportErrorOption from "./widgets/GeneralOptions/ReportErrorOption";
 
 interface ProyectabotProps extends RouteComponentProps {
   session?: SessionState;
@@ -88,6 +89,10 @@ const Proyectabot = (props: ProyectabotProps) => {
       {
         widgetName: "ProjectOptions",
         widgetFunc: (props:any) => <ProjectOptions {...props} />,
+      },
+      {
+        widgetName: "reportErrorOption",
+        widgetFunc: (props:any) => <ReportErrorOption {...props} />,
       },
     ],
   };
