@@ -35,11 +35,7 @@ interface ProyectabotProps extends RouteComponentProps {
 const Proyectabot = (props: ProyectabotProps) => {
 
 
-  const [showChatbot, toggleChatbot] = useState(true);
-
-
     const handleClick = () => {
-      toggleChatbot((showChatbot) => !showChatbot);
       store.dispatch(updateSessionStateChatbot(!props.session!.chatBotOpen))
     };
 
@@ -133,7 +129,7 @@ const Proyectabot = (props: ProyectabotProps) => {
         </Fab>
       </ThemeProvider>
       </div>
-      <Collapse in = {!showChatbot} className = "app-chatbot-container">
+      <Collapse in = {props.session!.chatBotOpen} className = "app-chatbot-container">
                 <Chatbot
                   config={config}
                   messageParser={MessageParser}

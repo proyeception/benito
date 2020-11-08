@@ -47,12 +47,12 @@ export interface LoggedInState {
   isLoggedIn: true;
   selectedOrganization: Organization;
   organizations: Array<Organization>;
-  chatBotOpen?: boolean
+  chatBotOpen: boolean
 }
 
 export interface NotLoggedInState {
   isLoggedIn: false;
-  chatBotOpen?: boolean
+  chatBotOpen: boolean
 }
 
 export type SessionState = LoggedInState | NotLoggedInState;

@@ -9,6 +9,7 @@ import {
 
 const defaultSessionState: SessionState = {
   isLoggedIn: false,
+  chatBotOpen: false
 };
 
 function sessionReducer(

@@ -50,7 +50,8 @@ export async function openLocalStoredSession(cb?: () => void) {
           username: user.username,
           isLoggedIn: true,
           organizations: person.organizations,
-          selectedOrganization: person.organizations[0]
+          selectedOrganization: person.organizations[0],
+          chatBotOpen: false
         })
       );
     } catch (e) {
