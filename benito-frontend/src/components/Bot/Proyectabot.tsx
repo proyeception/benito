@@ -21,7 +21,7 @@ import UploadOptions from "./widgets/GeneralOptions/UploadOptions";
 import MoreHelpOptions from "./widgets/GeneralOptions/MoreHelpOptions"
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import ReportErrorOption from "./widgets/GeneralOptions/ReportErrorOption";
-import { EmojiEmotions } from "@material-ui/icons";
+import { EmojiEmotions, Sms } from "@material-ui/icons";
 import QuestionOptions from "./widgets/GeneralOptions/QuestionOptions";
 import InitialOptions from "./widgets/GeneralOptions/InitialOptions";
 import store from "../../store";
@@ -125,7 +125,7 @@ const Proyectabot = (props: ProyectabotProps) => {
       <div className = "app-chatbot-button" style={{backgroundColor: color}}>
       <ThemeProvider theme={theme}>
         <Fab color="primary" aria-label= "expand" onClick = {handleClick}>
-          <EmojiEmotions />
+          <Sms />
         </Fab>
       </ThemeProvider>
       </div>
