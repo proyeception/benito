@@ -162,7 +162,7 @@ class ActionProvider {
   
   handleProjectUploadQuestion = (userMessage : String) => {
     this.addUserMessage(userMessage)
-    const message = this.createChatBotMessage("¿Cargar un proyecto como autor o supervisor?",
+    const message = this.createChatBotMessage("Sos un autor o un supervisor?",
     {
       widget: "uploadOptions",
       withAvatar: true,
@@ -182,15 +182,33 @@ class ActionProvider {
     this.addMessageToState(message);
   };
 
-  handleAuthorUploadQuestion = (userMessage : String) => {
+  handleAuthorUploadQuestion = async (userMessage : String) => {
     this.addUserMessage(userMessage)
-    const message = this.createChatBotMessage("Como autor no tenés la posibilidad de cargar proyectos, pedile a un docente de tu universidad que cree uno y que te lo asigne para que lo puedas editar");
+    let message = this.createChatBotMessage("Como autor no tenés la posibilidad de cargar proyectos. Un docente de tu universidad lo tiene que crear y asignártelo para que lo puedas editar.");
+    this.addMessageToState(message);
+    await this.sleep(10000);
+    message = this.createChatBotMessage("¿Te pudo ayudar con algo más?",
+    {
+      widget: "moreHelpOptions",
+      withAvatar: true,
+      loading: true,
+      terminateLoading: true,
+    });
     this.addMessageToState(message);
   };
 
-  handleSupervisorUploadQuestion = (userMessage : String) => {
+  handleSupervisorUploadQuestion = async (userMessage : String) => {
     this.addUserMessage(userMessage)
-    const message = this.createChatBotMessage('Para cargar un proyecto como supervisor solo hace falta estar loggeado y hacer click en tu nombre arriba a la derecha y luego en "Crear nuevo proyecto". Después, ingresás los datos que te pide el formulario, ¡y listo!');
+    let message = this.createChatBotMessage('Para cargar un proyecto como supervisor solo hace falta estar loggeado y hacer click en tu nombre arriba a la derecha y luego en "Crear nuevo proyecto". Después, ingresás los datos que te pide el formulario, ¡y listo!');
+    this.addMessageToState(message);
+    await this.sleep(10000);
+    message = this.createChatBotMessage("¿Te pudo ayudar con algo más?",
+    {
+      widget: "moreHelpOptions",
+      withAvatar: true,
+      loading: true,
+      terminateLoading: true,
+    });
     this.addMessageToState(message);
   };
   
