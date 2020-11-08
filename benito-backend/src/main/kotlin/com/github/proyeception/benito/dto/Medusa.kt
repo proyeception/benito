@@ -43,7 +43,8 @@ data class CreateMedusaPersonDTO(
     val mail: String,
     val profilePic: String?,
     val googleUserId: String,
-    val googleToken: String
+    val googleToken: String,
+    val organization: String?
 )
 
 data class MedusaPersonDTO(
@@ -112,8 +113,8 @@ data class MedusaOrganizationDTO(
     val icon: MedusaFileDTO,
     val header: MedusaFileDTO,
     val color: String,
-    val supervisors: List<MedusaPersonRefDTO> = emptyList(),
-    val authors: List<MedusaPersonRefDTO> = emptyList()
+    val supervisors: List<MedusaPersonRefDTO>?,
+    val authors: List<MedusaPersonRefDTO>?
 )
 
 data class SocialDTO(

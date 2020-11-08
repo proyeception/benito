@@ -6,7 +6,6 @@ import com.github.proyeception.benito.oauth.GoogleDriveClient
 import com.github.proyeception.benito.parser.DocumentParser
 import com.github.proyeception.benito.service.*
 import com.github.proyeception.benito.snapshot.CategorySnapshot
-import com.github.proyeception.benito.snapshot.OrganizationSnapshot
 import com.github.proyeception.benito.storage.*
 import com.github.proyeception.benito.utils.FileHelper
 import com.github.proyeception.benito.utils.HashHelper
@@ -98,11 +97,9 @@ open class ServiceModule {
 
     @Bean
     open fun organizationService(
-        medusaClient: MedusaClient,
-        organizationSnapshot: OrganizationSnapshot
+        medusaGraphClient: MedusaGraphClient
     ): OrganizationService = OrganizationService(
-        medusaClient = medusaClient,
-        organizationSnapshot = organizationSnapshot
+        medusaGraphClient = medusaGraphClient
     )
 
     @Bean

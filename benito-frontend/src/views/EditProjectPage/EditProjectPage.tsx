@@ -999,7 +999,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                 <GridItem xs={9}>
                   <Autocomplete
                     fullWidth
-                    options={organization.authors.filter(
+                    options={(organization.authors || []).filter(
                       (a) =>
                         !(
                           authorsToAdd.includes(a) ||
@@ -1130,7 +1130,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
                   <Autocomplete
                     fullWidth
                     clearOnBlur
-                    options={organization.supervisors.filter(
+                    options={(organization.supervisors || []).filter(
                       (s) =>
                         !(
                           supervisorsToAdd.includes(s) ||

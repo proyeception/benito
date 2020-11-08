@@ -4,12 +4,12 @@ import store from "../../store";
 import { Organization } from "../../types";
 
 export function fetchOrganizations(
-  cached?: boolean
+  withUsers: boolean = false
 ): AxiosPromise<Array<Organization>> {
   let config: AxiosRequestConfig = {
     method: "GET",
-    url: `${benitoHost}/benito/organizations?cached=${(
-      cached || true
+    url: `${benitoHost}/benito/organizations?users=${(
+      withUsers
     ).toString()}`,
   };
 
@@ -22,12 +22,12 @@ export function fromOrganizationName(s?: string): Organization | undefined {
 
 export function fetchOrganization(
   id: string,
-  cached?: boolean
+  withUsers?: boolean
 ): AxiosPromise<Organization> {
   let config: AxiosRequestConfig = {
     method: "GET",
-    url: `${benitoHost}/benito/organizations/${id}?cached=${(
-      cached || true
+    url: `${benitoHost}/benito/organizations/${id}?users=${(
+      withUsers || true
     ).toString()}`,
   };
 

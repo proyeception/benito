@@ -76,7 +76,7 @@ class UserServiceTest : Spec() {
                         )
                     )
                 )
-                on(organizationMock.find(eq("123"), eq(true))).thenReturn(
+                on(organizationMock.find(eq("123"), eq(false))).thenReturn(
                     OrganizationDTO(
                         displayName = "UTN FRBA",
                         name = "utnfrba",
@@ -223,7 +223,8 @@ class UserServiceTest : Spec() {
                         mail = "benito@quinquela.com.ar",
                         googleUserId = "g-123",
                         googleToken = "123",
-                        profilePic = profilePicFile.id
+                        profilePic = profilePicFile.id,
+                        organization = null
                     ),
                     UserType.AUTHOR
                 )).thenReturn(MedusaPersonDTO(
@@ -240,7 +241,8 @@ class UserServiceTest : Spec() {
                     mail = "benito@quinquela.com.ar",
                     googleUserId = "g-123",
                     googleToken = "123",
-                    profilePicUrl = "https://profilepic.com"
+                    profilePicUrl = "https://profilepic.com",
+                    organizationId = null
                 )
             }
 
@@ -252,7 +254,8 @@ class UserServiceTest : Spec() {
                         mail = "benito@quinquela.com.ar",
                         googleUserId = "g-123",
                         googleToken = "123",
-                        profilePic = null
+                        profilePic = null,
+                        organization = null
                     ),
                     UserType.AUTHOR
                 )).thenReturn(MedusaPersonDTO(
@@ -269,7 +272,8 @@ class UserServiceTest : Spec() {
                     mail = "benito@quinquela.com.ar",
                     googleUserId = "g-123",
                     googleToken = "123",
-                    profilePicUrl = null
+                    profilePicUrl = null,
+                    organizationId = null
                 )
             }
         }

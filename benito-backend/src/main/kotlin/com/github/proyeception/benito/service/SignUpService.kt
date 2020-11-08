@@ -1,7 +1,7 @@
 package com.github.proyeception.benito.service
 
 import com.github.proyeception.benito.client.MedusaClient
-import com.github.proyeception.benito.dto.AuthorSignUp
+import com.github.proyeception.benito.dto.AuthorSignUpDTO
 import com.github.proyeception.benito.dto.CreatePendingSupervisorDTO
 import com.github.proyeception.benito.dto.PersonDTO
 import com.github.proyeception.benito.extension.fromCamelToKebab
@@ -28,13 +28,14 @@ class SignUpService(
         medusaClient.createPendingSupervisor(supervisor.copy(profilePic = file?.id))
     }
 
-    fun createAuthor(author: AuthorSignUp): PersonDTO = userService.createAuthor(
+    fun createAuthor(author: AuthorSignUpDTO): PersonDTO = userService.createAuthor(
         fullName = author.fullName,
         profilePicUrl = author.profilePictureUrl,
         googleUserId = author.googleUserId,
         username = author.fullName.fromCamelToKebab(),
         mail = author.mail,
-        googleToken = author.token
+        googleToken = author.token,
+        organizationId = author.organization
     )
 
     companion object {
