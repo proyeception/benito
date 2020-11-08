@@ -49,9 +49,9 @@ class ActionProvider {
     this.addMessageToState(message);
   };
 
-  handleHasQuestion = (userMessage : String) => {
+  handleHasQuestion = async (userMessage : String) => {
     this.addUserMessage(userMessage)
-    const message = this.createChatBotMessage(
+    let message = this.createChatBotMessage(
       "¿Cuál es tu duda?",
       {
         widget: "questionOptions",
@@ -60,6 +60,29 @@ class ActionProvider {
         terminateLoading: true,
       }
     );
+    this.addMessageToState(message);
+  };
+
+  handleOtherDoubt = async (userMessage : String) => {
+    this.addUserMessage(userMessage)
+    let message = this.createChatBotMessage(
+      "Por favor, envianos un mail con tu duda",
+      {
+        widget: "otherDoubt",
+        withAvatar: true,
+        loading: true,
+        terminateLoading: true,
+      }
+    );
+    this.addMessageToState(message);
+    await this.sleep(3000);
+    message = this.createChatBotMessage("¿Te pudo ayudar con algo más?",
+    {
+      widget: "moreHelpOptions",
+      withAvatar: true,
+      loading: true,
+      terminateLoading: true,
+    });
     this.addMessageToState(message);
   };
   

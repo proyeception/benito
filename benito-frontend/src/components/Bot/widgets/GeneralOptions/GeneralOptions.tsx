@@ -22,17 +22,14 @@ const GeneralOptions = (props: GeneralOptionsProps | any) => {
     {
       name: "Estoy buscando un proyecto",
       handler: props.actionProvider.handleCategoriesChoice,
-      id: 1,
-    },
-    {
-      name: "Tengo una duda",
-      handler: props.actionProvider.handleHasQuestion,
-      id: 2
     },
     {
       name: "Quiero reportar un error",
       handler: props.actionProvider.handleBugNotification,
-      id: 3
+    },
+    {
+      name: "Tengo una duda",
+      handler: props.actionProvider.handleHasQuestion,
     }
   ];
   return <Options options={options} color={color} {...props} />;

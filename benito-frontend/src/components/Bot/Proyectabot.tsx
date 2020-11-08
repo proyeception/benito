@@ -26,6 +26,7 @@ import QuestionOptions from "./widgets/GeneralOptions/QuestionOptions";
 import InitialOptions from "./widgets/GeneralOptions/InitialOptions";
 import store from "../../store";
 import { updateSessionState, updateSessionStateChatbot } from "../../actions/session";
+import OtherDoubt from "./widgets/GeneralOptions/OtherDoubt";
 
 interface ProyectabotProps extends RouteComponentProps {
   session?: SessionState;
@@ -114,6 +115,10 @@ const Proyectabot = (props: ProyectabotProps) => {
       {
         widgetName: "reportErrorOption",
         widgetFunc: (props:any) => <ReportErrorOption {...props} />,
+      },
+      {
+        widgetName: "otherDoubt",
+        widgetFunc: (props:any) => <OtherDoubt {...props} />,
       },
     ],
   };

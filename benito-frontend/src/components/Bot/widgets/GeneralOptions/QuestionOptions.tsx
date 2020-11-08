@@ -30,7 +30,11 @@ const QuestionOptions = (props: QuestionOptionsProps | any) => {
     {
       name: "¿Cómo cargo un proyecto?",
       handler: props.actionProvider.handleProjectUploadQuestion,
-    } 
+    },
+    {
+      name: "Otra",
+      handler: props.actionProvider.handleOtherDoubt,
+    }  
   ];
   return <Options options={options} color={color} {...props} />;
 };
