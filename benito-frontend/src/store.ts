@@ -33,6 +33,9 @@ const defaultState: RootState = {
     supervisorsToAdd: [],
     supervisorsToDelete: [],
   },
+  routes: {
+    routes: [],
+  },
 };
 
 const store = createStore(

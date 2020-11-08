@@ -34,6 +34,7 @@ import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import { connect } from "react-redux";
 import { RootState } from "../../reducers";
 import { SessionState } from "../../store/session/types";
+import GoBack from "../../components/GoBack/GoBack";
 
 const useStyles = makeStyles({
   ...styles,
@@ -52,12 +53,14 @@ type MatchParams = {
   id: string;
 };
 
-
 const ProfilePage = (props: ProfilePageProps) => {
-  
-  let color: string = "#c41234"
-  if(props.session && props.session.isLoggedIn && props.session.selectedOrganization){
-    color = props.session.selectedOrganization.color
+  let color: string = "#c41234";
+  if (
+    props.session &&
+    props.session.isLoggedIn &&
+    props.session.selectedOrganization
+  ) {
+    color = props.session.selectedOrganization.color;
   }
 
   const theme = createMuiTheme({
@@ -103,7 +106,7 @@ const ProfilePage = (props: ProfilePageProps) => {
   const noProfilePic = "https://image.flaticon.com/icons/png/512/16/16363.png";
 
   if (user.type == PENDING) {
-    return <Spinner color={color}/>;
+    return <Spinner color={color} />;
   }
 
   if (user.type == ERROR) {
@@ -125,53 +128,63 @@ const ProfilePage = (props: ProfilePageProps) => {
                       src={user.value.profilePicUrl?.valueOf() || noProfilePic}
                       alt={user.value.fullName.valueOf()}
                       className={imageClasses}
-                      style={{width: "160px",
-                      height: "160px",
-                      objectFit: "cover"}}
+                      style={{
+                        width: "160px",
+                        height: "160px",
+                        objectFit: "cover",
+                      }}
                     />
                   </div>
                   <div className={classes.name}>
-                    <h3 className={classes.title} style={{color:color}}>{user.value.fullName}</h3>
+                    <h3 className={classes.title} style={{ color: color }}>
+                      {user.value.fullName}
+                    </h3>
                     <br />
-                    {user.value.socials.twitter && user.value.socials.twitter != "https://www.twitter.com/" && (
-                      <a
-                        target="_blank"
-                        href={user.value.socials.twitter}
-                        style={{ display: "contents" }}
-                      >
-                        <Button style={{ display: "contents" }}>
-                          <TwitterIcon
-                            style={{ marginRight: "5px", marginLeft: "5px" }}
-                          />
-                        </Button>
-                      </a>
-                    )}
-                    {user.value.socials.linkedin && user.value.socials.linkedin != "https://www.linkedin.com/" && (
-                      <a
-                        target="_blank"
-                        href={user.value.socials.linkedin}
-                        style={{ display: "contents" }}
-                      >
-                        <Button style={{ display: "contents" }}>
-                          <LinkedInIcon
-                            style={{ marginRight: "5px", marginLeft: "5px" }}
-                          />
-                        </Button>
-                      </a>
-                    )}
-                    {user.value.socials.facebook && user.value.socials.facebook != "https://www.facebook.com/" && (
-                      <a
-                        target="_blank"
-                        href={user.value.socials.facebook}
-                        style={{ display: "contents" }}
-                      >
-                        <Button style={{ display: "contents" }}>
-                          <FacebookIcon
-                            style={{ marginRight: "5px", marginLeft: "5px" }}
-                          />
-                        </Button>
-                      </a>
-                    )}
+                    {user.value.socials.twitter &&
+                      user.value.socials.twitter !=
+                        "https://www.twitter.com/" && (
+                        <a
+                          target="_blank"
+                          href={user.value.socials.twitter}
+                          style={{ display: "contents" }}
+                        >
+                          <Button style={{ display: "contents" }}>
+                            <TwitterIcon
+                              style={{ marginRight: "5px", marginLeft: "5px" }}
+                            />
+                          </Button>
+                        </a>
+                      )}
+                    {user.value.socials.linkedin &&
+                      user.value.socials.linkedin !=
+                        "https://www.linkedin.com/" && (
+                        <a
+                          target="_blank"
+                          href={user.value.socials.linkedin}
+                          style={{ display: "contents" }}
+                        >
+                          <Button style={{ display: "contents" }}>
+                            <LinkedInIcon
+                              style={{ marginRight: "5px", marginLeft: "5px" }}
+                            />
+                          </Button>
+                        </a>
+                      )}
+                    {user.value.socials.facebook &&
+                      user.value.socials.facebook !=
+                        "https://www.facebook.com/" && (
+                        <a
+                          target="_blank"
+                          href={user.value.socials.facebook}
+                          style={{ display: "contents" }}
+                        >
+                          <Button style={{ display: "contents" }}>
+                            <FacebookIcon
+                              style={{ marginRight: "5px", marginLeft: "5px" }}
+                            />
+                          </Button>
+                        </a>
+                      )}
                   </div>
                 </div>
               </GridItem>
@@ -242,7 +255,11 @@ const ProfilePage = (props: ProfilePageProps) => {
                           className="normalize-link"
                         >
                           <h4
-                            className={classNames(classes.imgCardTop, "underline-hover", classes.longTitle)}
+                            className={classNames(
+                              classes.imgCardTop,
+                              "underline-hover",
+                              classes.longTitle
+                            )}
                           >
                             {p.title}
                           </h4>
@@ -285,20 +302,10 @@ const ProfilePage = (props: ProfilePageProps) => {
                 </GridContainer>
               )}
             </GridContainer>
+            <GoBack color={color} />
             <Hidden only={["xs", "sm"]}>
               <ThemeProvider theme={theme}>
-                <Button
-                  className={classes.goback}
-                  onClick={() => {
-                    props.history.goBack();
-                  }}
-                  variant="outlined"
-                  size="large"
-                  style={{color:color}}
-                  startIcon={<ArrowBackIos style={{color:color}}/>}
-                >
-                  Volver
-                </Button>
+                <GoBack color={color} />
               </ThemeProvider>
             </Hidden>
           </div>

@@ -4,6 +4,7 @@ import homeReducer from "./home";
 import searchReducer from "./search";
 import commonReducer from "./common";
 import projectReducer from "./project";
+import routesReducer from "./routes";
 
 const rootReducer = combineReducers({
   session: sessionReducer,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   home: homeReducer,
   common: commonReducer,
   project: projectReducer,
+  routes: routesReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

@@ -45,6 +45,7 @@ import {
 import { SessionState } from "../../store/session/types";
 import { RootState } from "../../reducers";
 import { connect } from "react-redux";
+import GoBack from "../../components/GoBack/GoBack";
 
 const dashboardRoutes: any = [];
 
@@ -182,22 +183,7 @@ const ProjectPage = (props: Props) => {
               md={12}
               className={classNames(classes.project, classes.actions)}
             >
-              <Button
-                className={classes.goback}
-                onClick={() => {
-                  props.history.goBack();
-                }}
-                style={{ color: project.value.organization.color }}
-                variant="outlined"
-                size="large"
-                startIcon={
-                  <ArrowBackIos
-                    style={{ color: project.value.organization.color }}
-                  />
-                }
-              >
-                Volver
-              </Button>
+              <GoBack color={project.value.organization.color} />
             </GridItem>
           </Hidden>
         </GridContainer>

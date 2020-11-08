@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { Router, Route, Switch, useHistory } from "react-router-dom";
 import ProjectPage from "./views/ProjectPage/ProjectPage";
 import SearchPage from "./views/SearchPage/SearchPage";
 import AuthorPage from "./views/ProfilePage/AuthorPage";
@@ -34,12 +34,15 @@ import Spinner from "./components/Spinner/Spinner";
 import { RootState } from "./reducers";
 import { hot } from "react-hot-loader";
 import { connect } from "react-redux";
+import { createBrowserHistory } from "history";
+import { pushRoute } from "./actions/routes";
 
 type AppProps = {
   loading: boolean;
 };
 
 const App = (props: AppProps) => {
+  const browserHistory = createBrowserHistory();
   useEffect(() => {
     let config: AxiosRequestConfig = {
       method: "GET",
@@ -74,10 +77,14 @@ const App = (props: AppProps) => {
     },
   });
 
+  browserHistory.listen((location, action) => {
+    store.dispatch(pushRoute(location.pathname + location.search));
+  });
+
   return (
     <ThemeProvider theme={theme}>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <BrowserRouter>
+        <Router history={browserHistory}>
           <Switch>
             <Route path="/projects/create" component={CreateProjectPage} />
             <Route path="/projects/:id/edit" component={EditProjectPage} />
@@ -93,7 +100,7 @@ const App = (props: AppProps) => {
             <Route path="/" exact component={HomePage} />
             <Route component={NotFoundPage} />
           </Switch>
-        </BrowserRouter>
+        </Router>
       </MuiPickersUtilsProvider>
     </ThemeProvider>
   );
