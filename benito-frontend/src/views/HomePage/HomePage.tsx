@@ -18,6 +18,7 @@ import image from "../../assets/img/proyectate/pattern.jpg";
 import RecommendationsSection from "./Sections/RecommendationsSection";
 import { SessionState } from "../../store/session/types";
 import StatsSection from "./Sections/StatsSection";
+import { Helmet } from "react-helmet";
 
 const useStyles = makeStyles(styles);
 
@@ -30,6 +31,9 @@ const HomePage = (props: HomePageProps) => {
   const { ...rest } = props;
   return (
     <div>
+      <Helmet>
+        <title>Proyectate</title>
+      </Helmet>
       <Header rightLinks={<HeaderLinks />} fixed color="darkGray" {...rest} />
       <Parallax image={image} filter small>
         <div className={classes.container}>

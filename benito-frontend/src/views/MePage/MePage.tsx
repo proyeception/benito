@@ -28,6 +28,7 @@ import { grey } from "@material-ui/core/colors";
 import { mapRoleToCollection, updateUserPicture } from "../../functions/user";
 import { Role } from "../../types";
 import { Edit } from "@material-ui/icons";
+import { Helmet } from "react-helmet";
 
 const useStyles = makeStyles(styles);
 
@@ -117,6 +118,9 @@ const MePage = (props: MePageProps) => {
 
   return (
     <div>
+      <Helmet>
+        <title>Proyectate</title>
+      </Helmet>
       <Header color="darkGray" rightLinks={<HeaderLinks />} fixed {...rest} />
 
       <Parallax

@@ -35,6 +35,7 @@ import { connect } from "react-redux";
 import { RootState } from "../../reducers";
 import { SessionState } from "../../store/session/types";
 import GoBack from "../../components/GoBack/GoBack";
+import { Helmet } from "react-helmet";
 
 const useStyles = makeStyles({
   ...styles,
@@ -115,6 +116,9 @@ const ProfilePage = (props: ProfilePageProps) => {
 
   return (
     <div>
+      <Helmet>
+        <title>{user.value.fullName}</title>
+      </Helmet>
       <Header color="darkGray" rightLinks={<HeaderLinks />} fixed {...rest} />
       <Parallax small filter image={image} />
       <div className={classNames(classes.main, classes.mainRaised)}>

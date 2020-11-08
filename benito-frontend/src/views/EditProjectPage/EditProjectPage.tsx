@@ -63,6 +63,7 @@ import FilePreview from "react-preview-file/dist/filePreview";
 import ImageUploading, { ImageListType } from "react-images-uploading";
 import { CSSTransition } from "react-transition-group";
 import spinner from "../../assets/img/proyectate/spinner.gif";
+import { Helmet } from "react-helmet";
 
 const useStyles = makeStyles(styles);
 
@@ -492,6 +493,9 @@ const EditProjectPage = (props: EditProjectPageProps) => {
 
   return (
     <div>
+      <Helmet>
+        <title>{project.value.title}</title>
+      </Helmet>
       <Header
         color="darkGray"
         routes={[]}

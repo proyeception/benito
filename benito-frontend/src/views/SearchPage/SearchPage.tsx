@@ -27,6 +27,7 @@ import { withRouter } from "react-router-dom";
 import { Divider, Hidden } from "@material-ui/core";
 import SearchBoxSection from "./Sections/SearchBoxSection";
 import SearchResultsSection from "./Sections/SearchResultsSection";
+import { Helmet } from "react-helmet";
 
 const dashboardRoutes: any = [];
 
@@ -38,6 +39,9 @@ const SearchPage = (props: any) => {
 
   return (
     <div>
+      <Helmet>
+        <title>Proyectate</title>
+      </Helmet>
       <Header
         color="darkGray"
         routes={dashboardRoutes}

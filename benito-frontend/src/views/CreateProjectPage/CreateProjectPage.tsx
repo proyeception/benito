@@ -61,6 +61,7 @@ import classNames from "classnames";
 import CreateGhostUser from "../../components/CreateGhostUser/CreateGhostUser";
 import FilePreview from "react-preview-file/dist/filePreview";
 import { CSSTransition } from "react-transition-group";
+import { Helmet } from "react-helmet";
 
 const useStyles = makeStyles(styles);
 
@@ -465,6 +466,9 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
 
   return (
     <div>
+      <Helmet>
+        <title>Crear un proyecto nuevo</title>
+      </Helmet>
       <Header
         color="darkGray"
         routes={[]}

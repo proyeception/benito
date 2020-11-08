@@ -46,6 +46,7 @@ import { SessionState } from "../../store/session/types";
 import { RootState } from "../../reducers";
 import { connect } from "react-redux";
 import GoBack from "../../components/GoBack/GoBack";
+import { Helmet } from "react-helmet";
 
 const dashboardRoutes: any = [];
 
@@ -97,6 +98,9 @@ const ProjectPage = (props: Props) => {
 
   return (
     <div>
+      <Helmet>
+        <title>{project.value.title}</title>
+      </Helmet>
       <Header
         color="darkGray"
         routes={dashboardRoutes}

@@ -23,6 +23,7 @@ import MostPopularTags from "./Sections/MostPopularTags";
 import ImportantNumbers from "./Sections/ImportantNumbers";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { SessionState } from "../../store/session/types";
+import { Helmet } from "react-helmet";
 
 const useStyles = makeStyles(styles);
 
@@ -45,6 +46,9 @@ const StatsPage = (props: StatsPageProps) => {
 
   return (
     <div>
+      <Helmet>
+        <title>Proyectate</title>
+      </Helmet>
       <Header rightLinks={<HeaderLinks />} fixed color="darkGray" {...rest} />
       <Parallax image={image} filter small>
         <div className={classes.container}>
