@@ -1,7 +1,5 @@
 package com.github.proyeception.benito.service
 
-import arrow.fx.Promise
-import arrow.fx.extensions.io.concurrent.Promise
 import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.exception.AmbiguousReferenceException
@@ -60,7 +58,8 @@ open class UserService(
         mail: String,
         googleUserId: String,
         googleToken: String,
-        profilePicUrl: String?
+        profilePicUrl: String?,
+        organizationId: String?
     ): PersonDTO = mapMedusaToDomain {
         val image = createImageFromUrl(googleUserId, profilePicUrl)
 
@@ -70,7 +69,8 @@ open class UserService(
             mail = mail,
             googleUserId = googleUserId,
             profilePic = image?.id,
-            googleToken = googleToken
+            googleToken = googleToken,
+            organization = organizationId
         )
 
         medusaClient.createUser(person, UserType.AUTHOR)
@@ -174,7 +174,7 @@ open class UserService(
         ?.also { LOGGER.info("Created image with id ${it.id} on medusa") }
 
     private fun mapIdToOrganization(organizationId: String): OrganizationDTO = organizationService
-        .find(organizationId)
+        .find(organizationId, false)
 
     private fun mapMedusaToDomain(f: () -> MedusaPersonDTO): PersonDTO = f().let { medusa ->
         PersonDTO(

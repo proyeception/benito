@@ -1,9 +1,8 @@
 package com.github.proyeception.benito.controller
 
 import com.github.proyeception.benito.X_QUI_TOKEN
-import com.github.proyeception.benito.dto.AuthorSignUp
+import com.github.proyeception.benito.dto.AuthorSignUpDTO
 import com.github.proyeception.benito.dto.CreatePendingSupervisorDTO
-import com.github.proyeception.benito.dto.PersonDTO
 import com.github.proyeception.benito.service.AuthenticationService
 import com.github.proyeception.benito.service.SignUpService
 import org.springframework.http.HttpStatus
@@ -29,7 +28,7 @@ class SignUpController(
     @RequestMapping(value = ["/benito/authors/sign-up"], method = [RequestMethod.POST])
     @ResponseStatus(value = HttpStatus.OK)
     fun signUpAuthor(
-        @RequestBody author: AuthorSignUp,
+        @RequestBody author: AuthorSignUpDTO,
         response: HttpServletResponse
     ) {
         signUpService.createAuthor(author)

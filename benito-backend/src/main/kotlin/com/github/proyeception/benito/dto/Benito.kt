@@ -100,8 +100,8 @@ data class OrganizationDTO(
     val color: String,
     val name: String,
     val displayName: String,
-    val supervisors: List<PersonRefDTO>,
-    val authors: List<PersonRefDTO>
+    val supervisors: List<PersonRefDTO>?,
+    val authors: List<PersonRefDTO>?
 ) {
     constructor(medusa: MedusaOrganizationDTO) : this(
         name = medusa.name,
@@ -110,8 +110,8 @@ data class OrganizationDTO(
         color = medusa.color,
         displayName = medusa.displayName,
         id = medusa.id,
-        supervisors = medusa.supervisors.map { PersonRefDTO(it) },
-        authors = medusa.authors.map { PersonRefDTO(it) }
+        supervisors = medusa.supervisors?.map { PersonRefDTO(it) },
+        authors = medusa.authors?.map { PersonRefDTO(it) }
     )
 }
 
@@ -261,10 +261,10 @@ data class CustomRecommendationDTO(
     val views: Int
 )
 
-data class AuthorSignUp(
+data class AuthorSignUpDTO(
     val mail: String,
     val googleUserId: String,
-    val organizationId: String,
+    val organization: String,
     val token: String,
     val fullName: String,
     val profilePictureUrl: String?

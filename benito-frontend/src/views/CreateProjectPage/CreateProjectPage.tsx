@@ -1,7 +1,6 @@
 import {
   Button,
   createMuiTheme,
-  createStyles,
   Dialog,
   DialogActions,
   DialogTitle,
@@ -11,7 +10,6 @@ import {
   makeStyles,
   Popover,
   TextField,
-  Theme,
   ThemeProvider,
   Typography,
 } from "@material-ui/core";
@@ -26,21 +24,17 @@ import Header from "../../components/Header/Header";
 import HeaderLinks from "../../components/Header/HeaderLinks";
 import Parallax from "../../components/Parallax/Parallax";
 import Spinner from "../../components/Spinner/Spinner";
-import { ERROR, PENDING, SUCCESS } from "../../hooks/withFetch";
-import CustomTabs from "../../components/CustomTabs/CustomTabs";
-import { Edit, Description, RemoveCircle, AddCircle } from "@material-ui/icons";
-import MarkdownCompiler from "../../components/MarkdownCompiler/MarkdownCompiler";
+import { ERROR, PENDING } from "../../hooks/withFetch";
+import { RemoveCircle, AddCircle } from "@material-ui/icons";
 import {
   Organization,
   Person,
-  Project,
   Category,
   Documentation,
 } from "../../types";
 import { SessionState } from "../../store/session/types";
 import { RootState } from "../../reducers";
 import { connect } from "react-redux";
-import ImageUploader from "react-images-upload";
 import { useDropzone } from "react-dropzone";
 import CustomButton from "../../components/CustomButtons/Button";
 import { fetchOrganization } from "../../functions/organization";
@@ -57,8 +51,6 @@ import {
   generatePdfUrl,
 } from "../../functions/project";
 import image from "../../assets/img/proyectate/pattern.jpg";
-import { SET_LOGIN_TRUE } from "../../store/login/types";
-import DateInput from "../../components/DateInput/DateInput";
 import { KeyboardDatePicker } from "@material-ui/pickers";
 import { updateFromDate } from "../../actions/search";
 import store from "../../store";
@@ -67,13 +59,8 @@ import moment from "moment";
 import MEDitor, { commands } from "@uiw/react-md-editor";
 import classNames from "classnames";
 import CreateGhostUser from "../../components/CreateGhostUser/CreateGhostUser";
-import { SSL_OP_EPHEMERAL_RSA } from "constants";
-import SelectInput from "@material-ui/core/Select/SelectInput";
 import FilePreview from "react-preview-file/dist/filePreview";
-import ImageUploading, { ImageListType } from "react-images-uploading";
 import { CSSTransition } from "react-transition-group";
-import spinner from "../../assets/img/proyectate/spinner.gif";
-import withOrganization from "../../hooks/withOrganization";
 
 const useStyles = makeStyles(styles);
 
@@ -122,8 +109,6 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
     color = props.session.selectedOrganization.color;
   }
 
-  const [numPages, setNumPages] = useState<number | undefined>();
-  const [pageNumber, setPageNumber] = useState(1);
   const [title, setTitle] = useState<string | undefined>();
   const [creationDate, setCreationDate] = useState<string | undefined>();
   const [description, setDescription] = useState<string | undefined>();
@@ -296,17 +281,8 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
     return <Redirect to={{ pathname: "/error" }} />;
   }
 
-  const organi = withOrganization(
-    props.session.selectedOrganization.id,
-    (o) => {
-      setOrganization(o);
-    }
-  );
-
   if (
-    organization &&
-    organization != ERROR &&
-    organization.id != props.session.selectedOrganization.id
+    organization === undefined
   ) {
     if (props.session.isLoggedIn) {
       fetchOrganization(props.session.selectedOrganization.id)
@@ -340,7 +316,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
       primary: grey,
     },
   });
-
+  
   if (organization == undefined) {
     return <Spinner color={color} />;
   }
@@ -367,7 +343,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
 
   if (props.session.isLoggedIn) {
     let loggedInSupId = props.session.userId;
-    let sup: Array<Person> = organization.supervisors.filter(
+    let sup: Array<Person> = (organization.supervisors || []).filter(
       (s) => s.id == loggedInSupId
     );
     if (!supervisorsToAdd.includes(sup[0])) {
@@ -1023,7 +999,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                 <Autocomplete
                   fullWidth
                   clearOnBlur
-                  options={organization.authors.filter(
+                  options={(organization.authors || []).filter(
                     (s) => !authorsToAdd.includes(s)
                   )}
                   getOptionLabel={(option) => option.fullName}
@@ -1119,7 +1095,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
               <GridItem xs={9}>
                 <Autocomplete
                   fullWidth
-                  options={organization.supervisors.filter(
+                  options={(organization.supervisors || []).filter(
                     (s) => !supervisorsToAdd.includes(s)
                   )}
                   getOptionLabel={(option) => option.fullName}

@@ -79,7 +79,6 @@ export function startLogin(
   };
   axios
     .request(config)
-    .then(() => console.log("asd"))
     .then(() => openLocalStoredSession())
     .catch(onError);
 }

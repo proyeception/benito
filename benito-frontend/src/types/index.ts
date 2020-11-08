@@ -51,8 +51,8 @@ export type Organization = {
   displayName: string;
   name: string;
   iconUrl: string;
-  authors: Array<Person>;
-  supervisors: Array<Person>;
+  authors?: Array<Person>;
+  supervisors?: Array<Person>;
   header: string;
   color: string;
 };

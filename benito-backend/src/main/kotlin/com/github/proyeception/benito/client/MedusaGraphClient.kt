@@ -4,8 +4,10 @@ import arrow.core.Either
 import com.fasterxml.jackson.core.type.TypeReference
 import com.github.proyeception.benito.connector.GraphConnector
 import com.github.proyeception.benito.connector.GraphResponse
+import com.github.proyeception.benito.dto.MedusaOrganizationDTO
 import com.github.proyeception.benito.dto.MedusaProjectDTO
 import com.github.proyeception.benito.dto.OrderDTO
+import com.github.proyeception.benito.dto.OrganizationDTO
 import com.github.proyeception.benito.extension.replaceUrlSpaces
 import org.eclipse.jetty.util.Promise
 import org.slf4j.LoggerFactory
@@ -17,6 +19,62 @@ open class MedusaGraphClient(
     data class Projects(
         val projects: List<MedusaProjectDTO>
     )
+
+    data class Organizations(
+        val organizations: List<MedusaOrganizationDTO>
+    )
+
+    data class Organization(
+        val organization: MedusaOrganizationDTO
+    )
+
+    open fun organization(id: String, withUsers: Boolean): Either<Throwable, MedusaOrganizationDTO> = medusaGraphConnector
+        .execute(
+            """
+            query {
+              organization(id: "$id") {
+                id
+                display_name
+                name
+                icon {
+                  url
+                  id
+                }
+                header {
+                  url
+                  id
+                }
+                color
+                ${if (withUsers) USERS else ""}
+              }
+            }
+        """.trimIndent()
+        )
+        .map { it.deserializeAs(ORGANIZATION_REF).organization }
+
+    open fun organizations(withUsers: Boolean): Either<Throwable, List<MedusaOrganizationDTO>> = medusaGraphConnector
+        .execute(
+            """
+            query {
+              organizations {
+                id
+                display_name
+                name
+                icon {
+                  url
+                  id
+                }
+                header {
+                  url
+                  id
+                }
+                color
+                ${if (withUsers) USERS else ""}
+              }
+            }
+        """.trimIndent()
+        )
+        .map { it.deserializeAs(ORGANIZATIONS_REF).organizations }
 
     open fun findProjects(
         orderBy: OrderDTO? = null,
@@ -125,13 +183,15 @@ open class MedusaGraphClient(
                   file_name
                   drive_id
                 }
-                ${keyword?.let { """
+                ${keyword?.let {
+                """
                 keyword_matching_docs: documentation(where: { content_contains: "$it" } ) {
                   id
                   file_name
                   drive_id
                 }
-                """.trimIndent() } ?: ""}
+                """.trimIndent()
+            } ?: ""}
                 recommendations {
                   id
                   score
@@ -205,7 +265,7 @@ open class MedusaGraphClient(
         )
 
         return execute.map { it.body!!["projectsConnection"] as LinkedHashMap<String, LinkedHashMap<String, Int>> }
-                        .map { it["aggregate"]!!["count"]!! }
+            .map { it["aggregate"]!!["count"]!! }
     }
 
     private fun simplifyRecommendations(k: String, v: Any): Any {
@@ -253,8 +313,8 @@ open class MedusaGraphClient(
         organizationId?.let { where.add("""organization: { id: "$it" }""") }
         organizationName?.let { where.add("""organization: { name: "$it" }""") }
         id?.let { where.add("""id: "$it"""") }
-        projectKeywords?.let {
-            ks -> where.add("""project_keywords: { name_in: [${ks.joinToString(",") { "\"$it\"" } }] }""")
+        projectKeywords?.let { ks ->
+            where.add("""project_keywords: { name_in: [${ks.joinToString(",") { "\"$it\"" }}] }""")
         }
 
         val sort = orderBy?.let { """sort: "${it.sortMethod}"""" }
@@ -271,7 +331,7 @@ open class MedusaGraphClient(
 
         params.add(start)
 
-        if(requiresLimit) {
+        if (requiresLimit) {
             params.add(limit)
         }
         sort?.let { params.add(it) }
@@ -280,8 +340,41 @@ open class MedusaGraphClient(
     }
 
     private companion object {
+        private val USERS = """
+            authors {
+              id
+              username
+              full_name
+              facebook
+              linkedin
+              twitter
+              mail
+              ghost
+              profile_pic {
+                id
+                url
+              }
+            }
+            supervisors {
+              id
+              username
+              full_name
+              facebook
+              linkedin
+              twitter
+              mail
+              ghost
+              profile_pic {
+                id
+                url
+              }
+            }
+        """.trimIndent()
+
         private val PROJECTS_REF = object : TypeReference<Projects>() {}
         private val SINGLE_PROJECT_REF = object : TypeReference<MedusaProjectDTO>() {}
+        private val ORGANIZATIONS_REF = object : TypeReference<Organizations>() {}
+        private val ORGANIZATION_REF = object : TypeReference<Organization>() {}
         private const val PAGE_SIZE = 10
         private val LOGGER = LoggerFactory.getLogger(MedusaGraphClient::class.java)
     }
