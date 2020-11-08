@@ -17,6 +17,7 @@ import { createChatBotMessage } from "react-chatbot-kit";
 import GeneralOptions from "./widgets/GeneralOptions/GeneralOptions";
 import CategoriesOptions from "./widgets/GeneralOptions/CategoriesOptions";
 import ProjectOptions from "./widgets/GeneralOptions/ProjectOptions";
+import UploadOptions from "./widgets/GeneralOptions/UploadOptions";
 import MoreHelpOptions from "./widgets/GeneralOptions/MoreHelpOptions"
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import ReportErrorOption from "./widgets/GeneralOptions/ReportErrorOption";
@@ -70,6 +71,7 @@ const Proyectabot = (props: ProyectabotProps) => {
         backgroundColor: color,
       },
     },
+    state: {canWrite:false},
     initialMessages: [
       createChatBotMessage(`Hola, soy ${botName}`,
       {
@@ -98,12 +100,16 @@ const Proyectabot = (props: ProyectabotProps) => {
         widgetFunc: (props:any) => <CategoriesOptions {...props} />,
       },
       {
-        widgetName: "moreHelpOptions",
-        widgetFunc: (props:any) => <MoreHelpOptions {...props} />,
+        widgetName: "projectOptions",
+        widgetFunc: (props:any) => <ProjectOptions {...props} />,
       },
       {
-        widgetName: "ProjectOptions",
-        widgetFunc: (props:any) => <ProjectOptions {...props} />,
+        widgetName: "uploadOptions",
+        widgetFunc: (props:any) => <UploadOptions {...props} />,
+      },
+      {
+        widgetName: "moreHelpOptions",
+        widgetFunc: (props:any) => <MoreHelpOptions {...props} />,
       },
       {
         widgetName: "reportErrorOption",

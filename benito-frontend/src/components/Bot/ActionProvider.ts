@@ -9,7 +9,21 @@ class ActionProvider {
     this.createClientMessage = createClientMessage
   }
 
+  handleDefault = () => {
+    const message = this.createChatBotMessage("Perdon, no entendí qué quisiste decir. ¿Arrancamos de nuevo?",      
+    {
+      widget: "generalOptions",
+      delay: 500,
+    });
+    this.addMessageToState(message);
+  }
+
   handleCategoriesChoice = (userMessage : String) => {
+    this.setState((state:any) => ({
+      ...state,
+      canWrite:true
+    }));
+
     this.addUserMessage(userMessage)
     const message = this.createChatBotMessage(
       "¿Te interesa alguna de estas categorías? Si tenías otra cosa en mente, escribimelo",
@@ -75,7 +89,7 @@ class ActionProvider {
     });
     this.addMessageToState(message);
     await this.sleep(2000);
-    message = this.createChatBotMessage("Te pudo ayudar con algo más?",
+    message = this.createChatBotMessage("¿Te pudo ayudar con algo más?",
     {
       widget: "moreHelpOptions",
       withAvatar: true,
@@ -94,7 +108,7 @@ class ActionProvider {
     message = this.createChatBotMessage("Yo soy Proyectabot, el fiel compañero ayuda de Proyectate. Mi funcion es ayudarte a encontrar lo que estés buscando y resolver cualquier duda que puedas tener");
     this.addMessageToState(message);
     await this.sleep(6000);
-    message = this.createChatBotMessage("Te pudo ayudar con algo más?",
+    message = this.createChatBotMessage("¿Te pudo ayudar con algo más?",
     {
       widget: "moreHelpOptions",
       withAvatar: true,
@@ -118,7 +132,7 @@ class ActionProvider {
     message = this.createChatBotMessage("¡Muchas gracias por ayudarnos a mejorar!");
     this.addMessageToState(message);
     await this.sleep(1000);
-    message = this.createChatBotMessage("Te pudo ayudar con algo más?",
+    message = this.createChatBotMessage("¿Te pudo ayudar con algo más?",
     {
       widget: "moreHelpOptions",
       withAvatar: true,
@@ -130,7 +144,7 @@ class ActionProvider {
 
   handleMoreHelp = (userMessage : String) => {
     this.addUserMessage(userMessage)
-    let message = this.createChatBotMessage("Con qué te puedo ayudar?",
+    let message = this.createChatBotMessage("¿Con qué te puedo ayudar?",
     {
       widget: "generalOptions",
       withAvatar: true,
@@ -142,13 +156,41 @@ class ActionProvider {
   
   handleNoMoreHelp = (userMessage : String) => {
     this.addUserMessage(userMessage)
-    let message = this.createChatBotMessage("De nada! Chau!")
+    let message = this.createChatBotMessage("¡De nada! ¡Chau!")
     this.addMessageToState(message);
   };
   
   handleProjectUploadQuestion = (userMessage : String) => {
     this.addUserMessage(userMessage)
-    const message = this.createChatBotMessage("Para cargar un proyecto blah");
+    const message = this.createChatBotMessage("¿Cargar un proyecto como autor o supervisor?",
+    {
+      widget: "uploadOptions",
+      withAvatar: true,
+      loading: true,
+      terminateLoading: true,
+    });
+    this.addMessageToState(message);
+  };
+
+  handleProjectParse = (userMessage : String) => {
+    this.setState((state:any) => ({
+      ...state,
+      canWrite:false
+    }));
+    this.addUserMessage(userMessage)
+    let message = this.createChatBotMessage("TO-DO");
+    this.addMessageToState(message);
+  };
+
+  handleAuthorUploadQuestion = (userMessage : String) => {
+    this.addUserMessage(userMessage)
+    const message = this.createChatBotMessage("TO-DO");
+    this.addMessageToState(message);
+  };
+
+  handleSupervisorUploadQuestion = (userMessage : String) => {
+    this.addUserMessage(userMessage)
+    const message = this.createChatBotMessage('Para cargar un proyecto como supervisor solo hace falta hacer click en "Crear nuevo proyecto" arriba a la derecha, donde está tu nombre. Después, ingresás los datos que te pide el formulario, ¡y listo!');
     this.addMessageToState(message);
   };
   
