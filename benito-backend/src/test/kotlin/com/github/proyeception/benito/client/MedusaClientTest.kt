@@ -119,36 +119,6 @@ class MedusaClientTest : Spec() {
                 expected shouldBe actual
             }
 
-            "should get to strapi's ascending alphabetic sort by title when using ALPHA_ASC" {
-                val projectsResponse = listOf<ProjectDTO>(project)
-
-                val expectedEndpoint =
-                    PROJECTS_PATH + QUERY_PARAM_START + STRAPI_SORT_QUERY_PARAM + STRAPI_TITLE_FIELD + STRAPI_ASC_IDENTIFIER
-                on(medusaConnector.get(eq(expectedEndpoint))).thenReturn(responseMock)
-                on(responseMock.isError()).thenReturn(false)
-                on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
-
-                val expected = projectsResponse
-                val actual = medusaClient.findProjects(OrderDTO.ALPHA_ASC)
-
-                expected shouldBe actual
-            }
-
-            "should get to strapi's descending alphabetic sort by title when using ALPHA_DESC" {
-                val projectsResponse = listOf<ProjectDTO>(project)
-
-                val expectedEndpoint =
-                    PROJECTS_PATH + QUERY_PARAM_START + STRAPI_SORT_QUERY_PARAM + STRAPI_TITLE_FIELD + STRAPI_DESC_IDENTIFIER
-                on(medusaConnector.get(eq(expectedEndpoint))).thenReturn(responseMock)
-                on(responseMock.isError()).thenReturn(false)
-                on(responseMock.deserializeAs(ArgumentMatchers.any(TypeReference::class.java))).thenReturn(projectsResponse)
-
-                val expected = projectsResponse
-                val actual = medusaClient.findProjects(OrderDTO.ALPHA_DESC)
-
-                expected shouldBe actual
-            }
-
             "should get to strapi's ascending views sort by title when using VIEWS_ASC" {
                 val projectsResponse = listOf<ProjectDTO>(project)
 

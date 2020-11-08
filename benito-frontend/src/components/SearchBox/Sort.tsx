@@ -31,9 +31,6 @@ const Sort = (props: SortProps) => (
       <ListSubheader>Fecha de creación</ListSubheader>
       <MenuItem value={SortMethod.DateAsc}>Más recientes</MenuItem>
       <MenuItem value={SortMethod.DateDesc}>Más antiguos</MenuItem>
-      <ListSubheader>Alfabético</ListSubheader>
-      <MenuItem value={SortMethod.AlphaAsc}>A-Z</MenuItem>
-      <MenuItem value={SortMethod.AlphaDesc}>Z-A</MenuItem>
       <ListSubheader>Visitas</ListSubheader>
       <MenuItem value={SortMethod.ViewsDesc}>Más visitas</MenuItem>
       <MenuItem value={SortMethod.ViewsAsc}>Menos visitas</MenuItem>
