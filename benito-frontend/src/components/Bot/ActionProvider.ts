@@ -66,7 +66,7 @@ class ActionProvider {
   handleOtherDoubt = async (userMessage : String) => {
     this.addUserMessage(userMessage)
     let message = this.createChatBotMessage(
-      "Por favor, envianos un mail con tu duda",
+      "Por favor, envianos un mail con tu duda a proyeception@gmail.com",
       {
         widget: "otherDoubt",
         withAvatar: true,
