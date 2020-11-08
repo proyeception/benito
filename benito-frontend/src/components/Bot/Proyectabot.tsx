@@ -3,6 +3,9 @@ import React, { useState } from "react"
 import {Chatbot} from "react-chatbot-kit"
 import ActionProvider from "./ActionProvider"
 import MessageParser from "./MessageParser"
+import Fab from '@material-ui/core/Fab';
+import UpIcon from '@material-ui/icons/KeyboardArrowUp';
+import Collapse from '@material-ui/core/Collapse';
 
 import "../../assets/scss/bot/bot.scss"
 import { RootState } from "../../reducers"
@@ -22,7 +25,15 @@ interface ProyectabotProps extends RouteComponentProps {
 
 const Proyectabot = (props: ProyectabotProps) => {
 
-  let color: string = "#c41234"
+
+  const [showChatbot, toggleChatbot] = useState(true);
+
+
+    const handleClick = () => {
+      toggleChatbot((showChatbot) => !showChatbot);
+    };
+
+    let color: string = "#c41234"
   if(props.session && props.session.isLoggedIn  && props.session.selectedOrganization){
     color = props.session.selectedOrganization.color
   }
@@ -69,28 +80,25 @@ const Proyectabot = (props: ProyectabotProps) => {
     ],
   };
 
-  const [showChatbot, toggleChatbot] = useState(true);
 
-  return(
+    return(
     <div> 
-      <div className="app-chatbot-container">
-        <Chatbot
-          config={config}
-          messageParser={MessageParser}
-          actionProvider={ActionProvider}
-          
-        />
+      <div className = "app-chatbot-button">
+      <Fab color = "secondary" aria-label= "expand" onClick = {handleClick}>
+        <UpIcon />
+      </Fab>
       </div>
-      <button
-        className="app-chatbot-button"
-        onClick={() => toggleChatbot((prev) => !prev)}
-      >asdasdasd
-      </button>
-    </div>
-  );
+      <Collapse in = {!showChatbot} className = "app-chatbot-container">
+                <Chatbot
+                  config={config}
+                  messageParser={MessageParser}
+                  actionProvider={ActionProvider}            
+                />
+        </Collapse>
+  </div>
+);
 }
-
-
+  
 const mapStateToProps = (rootState: RootState) => {
   return {
     session: rootState.session,
