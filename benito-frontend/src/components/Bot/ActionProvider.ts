@@ -9,7 +9,21 @@ class ActionProvider {
     this.createClientMessage = createClientMessage
   }
 
+  handleDefault = () => {
+    const message = this.createChatBotMessage("Perdon, no entendí qué quisiste decir. ¿Arrancamos de nuevo?",      
+    {
+      widget: "generalOptions",
+      delay: 500,
+    });
+    this.addMessageToState(message);
+  }
+
   handleCategoriesChoice = (userMessage : String) => {
+    this.setState((state:any) => ({
+      ...state,
+      canWrite:true
+    }));
+
     this.addUserMessage(userMessage)
     const message = this.createChatBotMessage(
       "¿Te interesa alguna de estas categorías? Si tenías otra cosa en mente, escribimelo",
@@ -51,7 +65,35 @@ class ActionProvider {
 
   handleProjectUploadQuestion = (userMessage : String) => {
     this.addUserMessage(userMessage)
-    const message = this.createChatBotMessage("Para cargar un proyecto blah");
+    const message = this.createChatBotMessage("¿Cargar un proyecto como autor o supervisor?",
+    {
+      widget: "uploadOptions",
+      withAvatar: true,
+      loading: true,
+      terminateLoading: true,
+    });
+    this.addMessageToState(message);
+  };
+
+  handleProjectParse = (userMessage : String) => {
+    this.setState((state:any) => ({
+      ...state,
+      canWrite:false
+    }));
+    this.addUserMessage(userMessage)
+    let message = this.createChatBotMessage("TO-DO");
+    this.addMessageToState(message);
+  };
+
+  handleAuthorUploadQuestion = (userMessage : String) => {
+    this.addUserMessage(userMessage)
+    const message = this.createChatBotMessage("TO-DO");
+    this.addMessageToState(message);
+  };
+
+  handleSupervisorUploadQuestion = (userMessage : String) => {
+    this.addUserMessage(userMessage)
+    const message = this.createChatBotMessage('Para cargar un proyecto como supervisor solo hace falta hacer click en "Crear nuevo proyecto" arriba a la derecha, donde está tu nombre. Después, ingresás los datos que te pide el formulario, ¡y listo!');
     this.addMessageToState(message);
   };
 

@@ -17,6 +17,7 @@ import { createChatBotMessage } from "react-chatbot-kit";
 import GeneralOptions from "./widgets/GeneralOptions/GeneralOptions";
 import CategoriesOptions from "./widgets/GeneralOptions/CategoriesOptions";
 import ProjectOptions from "./widgets/GeneralOptions/ProjectOptions";
+import UploadOptions from "./widgets/GeneralOptions/UploadOptions";
 
 interface ProyectabotProps extends RouteComponentProps {
   session?: SessionState;
@@ -50,6 +51,7 @@ const Proyectabot = (props: ProyectabotProps) => {
         backgroundColor: color,
       },
     },
+    state: {canWrite:false},
     initialMessages: [
       createChatBotMessage(`Hola, soy ${botName}. ¿En qué te puedo ayudar?`,
       {
@@ -68,8 +70,12 @@ const Proyectabot = (props: ProyectabotProps) => {
         widgetFunc: (props:any) => <CategoriesOptions {...props} />,
       },
       {
-        widgetName: "ProjectOptions",
+        widgetName: "projectOptions",
         widgetFunc: (props:any) => <ProjectOptions {...props} />,
+      },
+      {
+        widgetName: "uploadOptions",
+        widgetFunc: (props:any) => <UploadOptions {...props} />,
       },
     ],
   };
