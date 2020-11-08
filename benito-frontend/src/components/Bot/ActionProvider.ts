@@ -1,3 +1,6 @@
+import { updateSessionStateChatbot } from "../../actions/session";
+import store from "../../store";
+
 class ActionProvider {
   createChatBotMessage : any
   setState : any
@@ -177,9 +180,20 @@ class ActionProvider {
     this.addMessageToState(message);
   };
   
-  handleNoMoreHelp = (userMessage : String) => {
+  handleNoMoreHelp = async (userMessage : String) => {
     this.addUserMessage(userMessage)
-    let message = this.createChatBotMessage("¡De nada! ¡Chau!")
+    let message = this.createChatBotMessage("Estoy para ayudar :)")
+    this.addMessageToState(message);
+    await this.sleep(2000);
+    store.dispatch(updateSessionStateChatbot(false))
+    await this.sleep(5000);
+    message = this.createChatBotMessage("¿Te pudo ayudar con algo más?",
+    {
+      widget: "generalOptions",
+      withAvatar: true,
+      loading: true,
+      terminateLoading: true,
+    });
     this.addMessageToState(message);
   };
   
