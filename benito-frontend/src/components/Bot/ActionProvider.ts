@@ -15,7 +15,7 @@ class ActionProvider {
       "¿Te interesa alguna de estas categorías? Si tenías otra cosa en mente, escribimelo",
       {
         widget: "categoriesOptions",
-        withAvatar: true,
+        withAvatar: false,
         loading: true,
         terminateLoading: true,
       }
@@ -31,6 +31,15 @@ class ActionProvider {
     this.addMessageToState(message);
     message = this.createChatBotMessage("Así que, ¡animate a ser parte de esta comunidad!");
     this.addMessageToState(message);
+    message = this.createChatBotMessage("Te pudo ayudar con algo más?",
+    {
+      widget: "moreHelpOptions",
+      withAvatar: false,
+      loading: true,
+      terminateLoading: true,
+    });
+    this.addMessageToState(message);
+    
   }
 
   handleProyectabotQuestion = (userMessage : String) => {
@@ -39,6 +48,14 @@ class ActionProvider {
     this.addMessageToState(message);
     message = this.createChatBotMessage("Yo soy Proyectabot, el fiel compañero ayuda de Proyectate. Mi funcion es ayudarte a encontrar lo que estés buscando y resolver cualquier duda que puedas tener");
     this.addMessageToState(message);
+    message = this.createChatBotMessage("Te pudo ayudar con algo más?",
+    {
+      widget: "moreHelpOptions",
+      withAvatar: false,
+      loading: true,
+      terminateLoading: true,
+    });
+    this.addMessageToState(message);
   };
 
   handleBugNotification = (userMessage : String) => {
@@ -46,6 +63,32 @@ class ActionProvider {
     let message = this.createChatBotMessage("Para notificar algún problema en la página, por favor dirigí un mail a proyeception@gmail.com con el detalle de qué estabas haciendo y una captura del error si es posible");
     this.addMessageToState(message);
     message = this.createChatBotMessage("¡Muchas gracias por ayudarnos a mejorar!");
+    this.addMessageToState(message);
+    message = this.createChatBotMessage("Te pudo ayudar con algo más?",
+    {
+      widget: "moreHelpOptions",
+      withAvatar: false,
+      loading: true,
+      terminateLoading: true,
+    });
+    this.addMessageToState(message);
+  };
+
+  handleMoreHelp = (userMessage : String) => {
+    this.addUserMessage(userMessage)
+    let message = this.createChatBotMessage("Con qué te puedo ayudar?",
+    {
+      widget: "generalOptions",
+      withAvatar: false,
+      loading: true,
+      terminateLoading: true,
+    });
+    this.addMessageToState(message);
+  };
+
+  handleNoMoreHelp = (userMessage : String) => {
+    this.addUserMessage(userMessage)
+    let message = this.createChatBotMessage("De nada! Chau!")
     this.addMessageToState(message);
   };
 
