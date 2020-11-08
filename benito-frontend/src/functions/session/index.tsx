@@ -3,8 +3,9 @@ import { updateSessionState } from "../../actions/session";
 import Cookies from "js-cookie";
 import axios, { AxiosRequestConfig } from "axios";
 import { benitoHost } from "../../config";
-import { LoginData, Organization, Person, Session } from "../../types";
+import { LoginData, Person, Session } from "../../types";
 import { fetchUser, mapRoleToCollection } from "../user";
+import { toggleLoading } from "../../actions/common";
 
 const X_QUI_TOKEN = "x-qui-token";
 export const X_CUSTOMIZATION_TOKEN = "x-customization-token";
@@ -20,6 +21,7 @@ export async function openLocalStoredSession(cb?: () => void) {
 
   if (quiTokenStorage) {
     try {
+      store.dispatch(toggleLoading(true));
       const session = await axios
         .request<Session>({
           url: `${benitoHost}/benito/session`,
@@ -60,6 +62,7 @@ export async function openLocalStoredSession(cb?: () => void) {
       clearLocalSession();
     }
   }
+  store.dispatch(toggleLoading(false));
 
   if (cb) {
     cb();
@@ -84,10 +87,13 @@ export function startLogin(
 }
 
 export function clearSession(token: string) {
-  axios.delete(`${benitoHost}/benito/session`, {
-    headers: { "x-qui-token": token },
-  });
-  clearLocalSession();
+  store.dispatch(toggleLoading(true));
+  axios
+    .delete(`${benitoHost}/benito/session`, {
+      headers: { "x-qui-token": token },
+    })
+    .then(() => clearLocalSession())
+    .then(() => store.dispatch(toggleLoading(false)));
 }
 
 function clearLocalSession() {

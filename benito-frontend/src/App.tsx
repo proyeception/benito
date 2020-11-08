@@ -7,7 +7,11 @@ import AuthorPage from "./views/ProfilePage/AuthorPage";
 import SupervisorPage from "./views/ProfilePage/SupervisorPage";
 import LoginPage from "./views/LoginPage/LoginPage";
 import store from "./store";
-import { updateCategories, updateOrganizations } from "./actions/common";
+import {
+  toggleLoading,
+  updateCategories,
+  updateOrganizations,
+} from "./actions/common";
 import axios from "axios";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
@@ -26,16 +30,23 @@ import ComingSoon from "./views/ComingSoon/ComingSoon";
 import CreateProjectPage from "./views/CreateProjectPage/CreateProjectPage";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import { grey } from "@material-ui/core/colors";
+import Spinner from "./components/Spinner/Spinner";
+import { RootState } from "./reducers";
+import { hot } from "react-hot-loader";
+import { connect } from "react-redux";
 
-const App = () => {
-  const [isLoggingIn, setIsLoggingIn] = useState(true);
+type AppProps = {
+  loading: boolean;
+};
+
+const App = (props: AppProps) => {
   useEffect(() => {
     let config: AxiosRequestConfig = {
       method: "GET",
       url: `${benitoHost}/benito/categories`,
     };
 
-    openLocalStoredSession(() => setIsLoggingIn(false));
+    openLocalStoredSession(() => store.dispatch(toggleLoading(false)));
 
     axios
       .request<Array<Category>>(config)
@@ -49,8 +60,12 @@ const App = () => {
       .catch(console.error);
   }, []);
 
-  if (isLoggingIn) {
-    return <div id="login" />;
+  if (props.loading) {
+    return (
+      <div id="login">
+        <Spinner />
+      </div>
+    );
   }
 
   const theme = createMuiTheme({
@@ -84,4 +99,10 @@ const App = () => {
   );
 };
 
-export default App;
+const mapStateToProps = (rootState: RootState) => {
+  return {
+    loading: rootState.common.loading,
+  };
+};
+
+export default hot(module)(connect(mapStateToProps)(App));

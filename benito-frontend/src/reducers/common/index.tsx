@@ -10,7 +10,7 @@ import {
 const defaultCommonState: CommonState = {
   categories: [],
   isMenuOpen: false,
-  loading: false,
+  loading: true,
   organizations: [],
 };
 

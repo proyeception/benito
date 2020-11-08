@@ -14,14 +14,14 @@ export function updateCategories(categories: Array<Category>): CommonAction {
   };
 }
 
-export function toggleHamburgerButton(b: Boolean): CommonAction {
+export function toggleHamburgerButton(b: boolean): CommonAction {
   return {
     type: TOGGLE_HAMBURGER_BUTTON,
     payload: b,
   };
 }
 
-export function toggleLoading(b: Boolean): CommonAction {
+export function toggleLoading(b: boolean): CommonAction {
   return {
     type: TOGGLE_LOADING,
     payload: b,

@@ -12,12 +12,12 @@ interface UpdateCategoriesAction {
 
 interface ToggleHamburgerButtonAction {
   type: typeof TOGGLE_HAMBURGER_BUTTON;
-  payload: Boolean;
+  payload: boolean;
 }
 
 interface ToggleLoadingAction {
   type: typeof TOGGLE_LOADING;
-  payload: Boolean;
+  payload: boolean;
 }
 
 interface UpdateOrganizationsAction {
@@ -33,8 +33,8 @@ export type CommonAction =
 
 export type CommonState = {
   categories: Array<Category>;
-  isMenuOpen: Boolean;
-  loading: Boolean;
+  isMenuOpen: boolean;
+  loading: boolean;
   organizations: Array<Organization>;
   customizationToken?: string;
 };
