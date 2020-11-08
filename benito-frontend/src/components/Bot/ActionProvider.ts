@@ -15,7 +15,7 @@ class ActionProvider {
       "¿Te interesa alguna de estas categorías? Si tenías otra cosa en mente, escribimelo",
       {
         widget: "categoriesOptions",
-        withAvatar: false,
+        withAvatar: true,
         loading: true,
         terminateLoading: true,
       }
@@ -28,7 +28,7 @@ class ActionProvider {
     this.addUserMessage(userMessage)
     let message = this.createChatBotMessage("Proyectate es la plataforma central en la que podrás buscar y ver todos los proyectos de las universidades del país",
     {
-      withAvatar: false,
+      withAvatar: true,
       loading: true,
       terminateLoading: true,
     });
@@ -36,7 +36,7 @@ class ActionProvider {
     await this.sleep(5000);
     message = this.createChatBotMessage("Contamos con módulos de estadísticas, recomendaciones personalizadas para nuestros usuarios y búsquedas inteligentes para poder ayudarte a encontrar lo que estás buscando",
     {
-      withAvatar: false,
+      withAvatar: true,
       loading: true,
       terminateLoading: true,
     });
@@ -44,7 +44,7 @@ class ActionProvider {
     await this.sleep(7000);
     message = this.createChatBotMessage("Así que, ¡animate a ser parte de esta comunidad!",
     {
-      withAvatar: false,
+      withAvatar: true,
       loading: true,
       terminateLoading: true,
     });
@@ -53,7 +53,7 @@ class ActionProvider {
     message = this.createChatBotMessage("Te pudo ayudar con algo más?",
     {
       widget: "moreHelpOptions",
-      withAvatar: false,
+      withAvatar: true,
       loading: true,
       terminateLoading: true,
     });
@@ -72,7 +72,7 @@ class ActionProvider {
     message = this.createChatBotMessage("Te pudo ayudar con algo más?",
     {
       widget: "moreHelpOptions",
-      withAvatar: false,
+      withAvatar: true,
       loading: true,
       terminateLoading: true,
     });
@@ -84,7 +84,7 @@ class ActionProvider {
     let message = this.createChatBotMessage("Para notificar algún problema en la página, por favor dirigí un mail a proyeception@gmail.com con el detalle de qué estabas haciendo y una captura del error si es posible",
     {
       widget: "reportErrorOption",
-      withAvatar: false,
+      withAvatar: true,
       loading: true,
       terminateLoading: true,
     });
@@ -96,7 +96,7 @@ class ActionProvider {
     message = this.createChatBotMessage("Te pudo ayudar con algo más?",
     {
       widget: "moreHelpOptions",
-      withAvatar: false,
+      withAvatar: true,
       loading: true,
       terminateLoading: true,
     });
@@ -108,7 +108,7 @@ class ActionProvider {
     let message = this.createChatBotMessage("Con qué te puedo ayudar?",
     {
       widget: "generalOptions",
-      withAvatar: false,
+      withAvatar: true,
       loading: true,
       terminateLoading: true,
     });

@@ -66,11 +66,21 @@ const Proyectabot = (props: ProyectabotProps) => {
       },
     },
     initialMessages: [
-      createChatBotMessage(`Hola, soy ${botName}. ¿En qué te puedo ayudar?`,
+      createChatBotMessage(`Hola, soy ${botName}`,
       {
-        withAvatar: false,
+        withAvatar: true,
+        loading: true,
+        terminateLoading: true,
+        delay: 500
+      }
+      ),
+      createChatBotMessage(`¿En qué te puedo ayudar?`,
+      {
+        withAvatar: true,
+        loading: true,
+        terminateLoading: true,
+        delay: 1500,
         widget: "generalOptions",
-        delay: 500,
       }
       ),
     ],
