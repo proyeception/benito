@@ -18,6 +18,7 @@ import GeneralOptions from "./widgets/GeneralOptions/GeneralOptions";
 import CategoriesOptions from "./widgets/GeneralOptions/CategoriesOptions";
 import ProjectOptions from "./widgets/GeneralOptions/ProjectOptions";
 import MoreHelpOptions from "./widgets/GeneralOptions/MoreHelpOptions"
+import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 
 interface ProyectabotProps extends RouteComponentProps {
   session?: SessionState;
@@ -37,6 +38,17 @@ const Proyectabot = (props: ProyectabotProps) => {
   if(props.session && props.session.isLoggedIn  && props.session.selectedOrganization){
     color = props.session.selectedOrganization.color
   }
+
+  const theme = createMuiTheme({
+    palette: {
+      primary: {
+        light: color,
+        main: color,
+        dark: color,
+        contrastText: "#fff",
+      },
+    },
+  });
 
   const botName = "Proyectabot";
 
@@ -83,10 +95,12 @@ const Proyectabot = (props: ProyectabotProps) => {
 
     return(
     <div> 
-      <div className = "app-chatbot-button">
-      <Fab color = "secondary" aria-label= "expand" onClick = {handleClick}>
-        <UpIcon />
-      </Fab>
+      <div className = "app-chatbot-button" style={{backgroundColor: color}}>
+      <ThemeProvider theme={theme}>
+        <Fab color="primary" aria-label= "expand" onClick = {handleClick}>
+          <UpIcon />
+        </Fab>
+      </ThemeProvider>
       </div>
       <Collapse in = {!showChatbot} className = "app-chatbot-container">
                 <Chatbot
