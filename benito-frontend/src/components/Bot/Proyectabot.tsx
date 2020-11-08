@@ -18,6 +18,10 @@ import GeneralOptions from "./widgets/GeneralOptions/GeneralOptions";
 import CategoriesOptions from "./widgets/GeneralOptions/CategoriesOptions";
 import ProjectOptions from "./widgets/GeneralOptions/ProjectOptions";
 import UploadOptions from "./widgets/GeneralOptions/UploadOptions";
+import MoreHelpOptions from "./widgets/GeneralOptions/MoreHelpOptions"
+import { createMuiTheme, ThemeProvider } from "@material-ui/core";
+import ReportErrorOption from "./widgets/GeneralOptions/ReportErrorOption";
+import { EmojiEmotions } from "@material-ui/icons";
 
 interface ProyectabotProps extends RouteComponentProps {
   session?: SessionState;
@@ -38,6 +42,17 @@ const Proyectabot = (props: ProyectabotProps) => {
     color = props.session.selectedOrganization.color
   }
 
+  const theme = createMuiTheme({
+    palette: {
+      primary: {
+        light: color,
+        main: color,
+        dark: color,
+        contrastText: "#fff",
+      },
+    },
+  });
+
   const botName = "Proyectabot";
 
   const config = {
@@ -53,10 +68,21 @@ const Proyectabot = (props: ProyectabotProps) => {
     },
     state: {canWrite:false},
     initialMessages: [
-      createChatBotMessage(`Hola, soy ${botName}. ¿En qué te puedo ayudar?`,
+      createChatBotMessage(`Hola, soy ${botName}`,
       {
+        withAvatar: true,
+        loading: true,
+        terminateLoading: true,
+        delay: 500
+      }
+      ),
+      createChatBotMessage(`¿En qué te puedo ayudar?`,
+      {
+        withAvatar: true,
+        loading: true,
+        terminateLoading: true,
+        delay: 1500,
         widget: "generalOptions",
-        delay: 500,
       }
       ),
     ],
@@ -77,16 +103,26 @@ const Proyectabot = (props: ProyectabotProps) => {
         widgetName: "uploadOptions",
         widgetFunc: (props:any) => <UploadOptions {...props} />,
       },
+      {
+        widgetName: "moreHelpOptions",
+        widgetFunc: (props:any) => <MoreHelpOptions {...props} />,
+      },
+      {
+        widgetName: "reportErrorOption",
+        widgetFunc: (props:any) => <ReportErrorOption {...props} />,
+      },
     ],
   };
 
 
     return(
     <div> 
-      <div className = "app-chatbot-button">
-      <Fab color = "secondary" aria-label= "expand" onClick = {handleClick}>
-        <UpIcon />
-      </Fab>
+      <div className = "app-chatbot-button" style={{backgroundColor: color}}>
+      <ThemeProvider theme={theme}>
+        <Fab color="primary" aria-label= "expand" onClick = {handleClick}>
+          <EmojiEmotions />
+        </Fab>
+      </ThemeProvider>
       </div>
       <Collapse in = {!showChatbot} className = "app-chatbot-container">
                 <Chatbot
