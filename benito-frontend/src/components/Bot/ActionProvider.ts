@@ -23,6 +23,31 @@ class ActionProvider {
     this.addMessageToState(message);
   };
 
+  initial = () => {
+    const message = this.createChatBotMessage(`¿En qué te puedo ayudar?`,
+    {
+      withAvatar: true,
+      loading: true,
+      terminateLoading: true,
+      widget: "generalOptions",
+    }
+    );
+    this.addMessageToState(message);
+  };
+
+  handleHasQuestion = (userMessage : String) => {
+    this.addUserMessage(userMessage)
+    const message = this.createChatBotMessage(
+      "¿Cuál es tu duda?",
+      {
+        widget: "questionOptions",
+        withAvatar: true,
+        loading: true,
+        terminateLoading: true,
+      }
+    );
+    this.addMessageToState(message);
+  };
   
   handleProyectateQuestion = async (userMessage : String) => {
     this.addUserMessage(userMessage)

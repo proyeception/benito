@@ -7,11 +7,11 @@ import { SessionState } from "../../../../store/session/types";
 
 import Options from "../Options/Options";
 
-interface GeneralOptionsProps extends RouteComponentProps {
+interface QuestionOptionsProps extends RouteComponentProps {
   session?: SessionState;
 }
 
-const GeneralOptions = (props: GeneralOptionsProps | any) => {
+const QuestionOptions = (props: QuestionOptionsProps | any) => {
 
   let color: string = "#c41234"
   if(props.session && props.session.isLoggedIn  && props.session.selectedOrganization){
@@ -20,20 +20,17 @@ const GeneralOptions = (props: GeneralOptionsProps | any) => {
 
   const options = [
     {
-      name: "Estoy buscando un proyecto",
-      handler: props.actionProvider.handleCategoriesChoice,
-      id: 1,
+      name: "¿Qué es proyectate?",
+      handler: props.actionProvider.handleProyectateQuestion,
     },
     {
-      name: "Tengo una duda",
-      handler: props.actionProvider.handleHasQuestion,
-      id: 2
+      name: "¿Qué es proyectabot?",
+      handler: props.actionProvider.handleProyectabotQuestion,
     },
     {
-      name: "Quiero reportar un error",
-      handler: props.actionProvider.handleBugNotification,
-      id: 3
-    }
+      name: "¿Cómo cargo un proyecto?",
+      handler: props.actionProvider.handleProjectUploadQuestion,
+    } 
   ];
   return <Options options={options} color={color} {...props} />;
 };
@@ -45,4 +42,4 @@ const mapStateToProps = (rootState: RootState) => {
   };
 };
 
-export default hot(module)(connect(mapStateToProps)(withRouter(GeneralOptions)));
+export default hot(module)(connect(mapStateToProps)(withRouter(QuestionOptions)));

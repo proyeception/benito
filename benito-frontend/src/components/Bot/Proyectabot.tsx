@@ -21,6 +21,10 @@ import MoreHelpOptions from "./widgets/GeneralOptions/MoreHelpOptions"
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import ReportErrorOption from "./widgets/GeneralOptions/ReportErrorOption";
 import { EmojiEmotions } from "@material-ui/icons";
+import QuestionOptions from "./widgets/GeneralOptions/QuestionOptions";
+import InitialOptions from "./widgets/GeneralOptions/InitialOptions";
+import store from "../../store";
+import { updateSessionState, updateSessionStateChatbot } from "../../actions/session";
 
 interface ProyectabotProps extends RouteComponentProps {
   session?: SessionState;
@@ -34,6 +38,7 @@ const Proyectabot = (props: ProyectabotProps) => {
 
     const handleClick = () => {
       toggleChatbot((showChatbot) => !showChatbot);
+      store.dispatch(updateSessionStateChatbot(!props.session!.chatBotOpen))
     };
 
     let color: string = "#c41234"
@@ -71,23 +76,22 @@ const Proyectabot = (props: ProyectabotProps) => {
         withAvatar: true,
         loading: true,
         terminateLoading: true,
-        delay: 500
-      }
-      ),
-      createChatBotMessage(`¿En qué te puedo ayudar?`,
-      {
-        withAvatar: true,
-        loading: true,
-        terminateLoading: true,
-        delay: 1500,
-        widget: "generalOptions",
+        widget: "initial"
       }
       ),
     ],
     widgets: [
       {
+        widgetName: "initial",
+        widgetFunc: (props:any) => <InitialOptions {...props} />,
+      },
+      {
         widgetName: "generalOptions",
         widgetFunc: (props:any) => <GeneralOptions {...props} />,
+      },
+      {
+        widgetName: "questionOptions",
+        widgetFunc: (props:any) => <QuestionOptions {...props} />,
       },
       {
         widgetName: "categoriesOptions",
