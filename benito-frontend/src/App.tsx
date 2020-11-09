@@ -49,7 +49,7 @@ const App = (props: AppProps) => {
       url: `${benitoHost}/benito/categories`,
     };
 
-    openLocalStoredSession(() => store.dispatch(toggleLoading(false)));
+    openLocalStoredSession();
 
     axios
       .request<Array<Category>>(config)

@@ -6,6 +6,7 @@ import GridItem from "../../components/Grid/GridItem";
 import lost from "../../assets/img/proyectate/lost.jpg"
 import { makeStyles } from "@material-ui/core/styles";
 import styles from "../../assets/jss/material-kit-react/views/errorPage";
+import { Helmet } from "react-helmet";
 
 const useStyles = makeStyles(styles);
 
@@ -14,6 +15,9 @@ export default function NotFoundPage(props: any) {
   const classes = useStyles();
   return (
     <div className={classes.white}>
+        <Helmet>
+          <title>Proyectate</title>
+        </Helmet>
         <Header color="darkGray" rightLinks={<HeaderLinks />} fixed {...rest} />
         <div className={classes.main}>
         <GridContainer>

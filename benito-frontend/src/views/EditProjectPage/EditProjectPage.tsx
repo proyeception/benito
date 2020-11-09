@@ -63,6 +63,7 @@ import FilePreview from "react-preview-file/dist/filePreview";
 import ImageUploading, { ImageListType } from "react-images-uploading";
 import { CSSTransition } from "react-transition-group";
 import spinner from "../../assets/img/proyectate/spinner.gif";
+import { Helmet } from "react-helmet";
 
 const useStyles = makeStyles(styles);
 
@@ -77,6 +78,7 @@ interface Change {
 
 interface EditProjectPageProps extends RouteComponentProps<MatchParams> {
   session: SessionState;
+  loading: boolean;
 }
 
 const EditProjectPage = (props: EditProjectPageProps) => {
@@ -295,6 +297,13 @@ const EditProjectPage = (props: EditProjectPageProps) => {
     },
   });
 
+  if (props.loading) {
+    return <div></div>
+  }
+  if (!props.session.isLoggedIn) {
+    return <Redirect to="/login" />;
+  }
+
   if (project.type == PENDING || organization == undefined || isLoading) {
     let color: string = "#c41234";
     if (
@@ -492,6 +501,9 @@ const EditProjectPage = (props: EditProjectPageProps) => {
 
   return (
     <div>
+      <Helmet>
+        <title>{project.value.title}</title>
+      </Helmet>
       <Header
         color="darkGray"
         routes={[]}
@@ -1310,6 +1322,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
 const mapStateToProps = (rootState: RootState) => {
   return {
     session: rootState.session,
+    loading: rootState.common.loading
   };
 };
 

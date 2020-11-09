@@ -61,6 +61,7 @@ import classNames from "classnames";
 import CreateGhostUser from "../../components/CreateGhostUser/CreateGhostUser";
 import FilePreview from "react-preview-file/dist/filePreview";
 import { CSSTransition } from "react-transition-group";
+import { Helmet } from "react-helmet";
 
 const useStyles = makeStyles(styles);
 
@@ -77,6 +78,7 @@ interface Change {
 interface CreateProjectPageProps extends RouteComponentProps<MatchParams> {
   session: SessionState;
   categories: Array<Category>;
+  loading: boolean;
 }
 
 type ProjectBuilder = {
@@ -272,10 +274,13 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
   const activeTab =
     tabs.findIndex((t) => t.key === props.match.params.tab) || 0;
 
+  if (props.loading) {
+    return <div></div>
+  }
   if (!props.session.isLoggedIn) {
     return <Redirect to="/login" />;
   }
-
+  
   if (!(props.session.role == "SUPERVISOR")) {
     console.error("Usuario sin permisos de supervisor");
     return <Redirect to={{ pathname: "/error" }} />;
@@ -465,6 +470,9 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
 
   return (
     <div>
+      <Helmet>
+        <title>Crear un proyecto nuevo</title>
+      </Helmet>
       <Header
         color="darkGray"
         routes={[]}
@@ -1245,6 +1253,7 @@ const mapStateToProps = (rootState: RootState) => {
   return {
     session: rootState.session,
     categories: rootState.common.categories,
+    loading: rootState.common.loading
   };
 };
 

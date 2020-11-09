@@ -38,6 +38,7 @@ import { Alert } from "@material-ui/lab";
 import { grey } from "@material-ui/core/colors";
 import classNames from "classnames";
 import Spinner from "../../components/Spinner/Spinner";
+import { Helmet } from "react-helmet";
 
 const getKeyValue = <T extends object, U extends keyof T>(obj: T) => (key: U) =>
   obj[key];
@@ -82,6 +83,9 @@ const LoginPage = (props: LoginPageProps) => {
 
   return (
     <div>
+      <Helmet>
+        <title>Iniciar sesión en Proyectate</title>
+      </Helmet>
       <Header
         absolute
         color="darkGray"

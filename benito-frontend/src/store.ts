@@ -21,7 +21,7 @@ const defaultState: RootState = {
     categories: [],
     organizations: [],
     isMenuOpen: false,
-    loading: false,
+    loading: true,
     customizationToken:
       localStorage.getItem(X_CUSTOMIZATION_TOKEN) || undefined,
   },

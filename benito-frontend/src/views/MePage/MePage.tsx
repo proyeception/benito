@@ -28,6 +28,8 @@ import { grey } from "@material-ui/core/colors";
 import { mapRoleToCollection, updateUserPicture } from "../../functions/user";
 import { Role } from "../../types";
 import { Edit } from "@material-ui/icons";
+import { Helmet } from "react-helmet";
+import store from "../../store";
 
 const useStyles = makeStyles(styles);
 
@@ -37,28 +39,31 @@ type MatchParams = {
 
 interface MePageProps extends RouteComponentProps<MatchParams> {
   session: SessionState;
+  loading: boolean;
 }
 
 const MePage = (props: MePageProps) => {
 
   const [isLoading, setIsLoading] = React.useState(false);
   
+  if (props.loading) {
+    return <div></div>
+  }
+  if (!props.session.isLoggedIn) {
+    return <Redirect to="/login" />;
+  }
+
   let role = ""
-  if(props.session.isLoggedIn){
-    if(props.session.role == "SUPERVISOR"){
-      role = "supervisors";
-    } else {
-      role = "authors";
-    }
+  
+  if(props.session.role == "SUPERVISOR"){
+    role = "supervisors";
+  } else {
+    role = "authors";
   }
   
   let color: string = "#c41234"
-  if(props.session && props.session.isLoggedIn && props.session.selectedOrganization){
+  if (props.session.selectedOrganization){
     color = props.session.selectedOrganization.color
-  }
-  
-  if (!props.session.isLoggedIn) {
-    return <Redirect to="/login" />;
   }
   
   const classes = useStyles();
@@ -117,6 +122,9 @@ const MePage = (props: MePageProps) => {
 
   return (
     <div>
+      <Helmet>
+        <title>Proyectate</title>
+      </Helmet>
       <Header color="darkGray" rightLinks={<HeaderLinks />} fixed {...rest} />
 
       <Parallax
@@ -193,6 +201,7 @@ const MePage = (props: MePageProps) => {
 const mapStateToProps = (rootState: RootState) => {
   return {
     session: rootState.session,
+    loading: rootState.common.loading
   };
 };
 
