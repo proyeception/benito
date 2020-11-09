@@ -78,6 +78,7 @@ interface Change {
 
 interface EditProjectPageProps extends RouteComponentProps<MatchParams> {
   session: SessionState;
+  loading: boolean;
 }
 
 const EditProjectPage = (props: EditProjectPageProps) => {
@@ -295,6 +296,13 @@ const EditProjectPage = (props: EditProjectPageProps) => {
       primary: grey,
     },
   });
+
+  if (props.loading) {
+    return <div></div>
+  }
+  if (!props.session.isLoggedIn) {
+    return <Redirect to="/login" />;
+  }
 
   if (project.type == PENDING || organization == undefined || isLoading) {
     let color: string = "#c41234";
@@ -1314,6 +1322,7 @@ const EditProjectPage = (props: EditProjectPageProps) => {
 const mapStateToProps = (rootState: RootState) => {
   return {
     session: rootState.session,
+    loading: rootState.common.loading
   };
 };
 
