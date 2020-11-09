@@ -13,13 +13,11 @@ import Options from "../Options/Options";
 
 interface GeneralOptionsProps extends RouteComponentProps {
   session?: SessionState;
-  selectedCategory: CategoryReference;
+  selectedCategory: string;
 }
 
 const CategoryProjectsOption = (props: GeneralOptionsProps | any) => {
 
-  console.log("holi")
-  console.log(props)
   console.log(props.selectedCategory)
 
   const [projects, setProjects] = useState<Array<ProjectReference>>([]);
@@ -28,7 +26,7 @@ const CategoryProjectsOption = (props: GeneralOptionsProps | any) => {
     return {
       name: project.title,
       handler: props.actionProvider.handleCategory,
-      id: project.title
+      id: project.projectId
     }
   }
   

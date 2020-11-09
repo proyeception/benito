@@ -26,7 +26,7 @@ open class CategoriesController(
     @ResponseBody
     open fun top4categories(): CategoryListDTO = CategoryListDTO(statsService.top4categories())
 
-    @RequestMapping("/benito/top-projects-category")
+    @RequestMapping("/benito/top-projects-category/{categoryId}")
     @ResponseBody
     open fun topProjectsFromCategory(
         @PathVariable categoryId: String

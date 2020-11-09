@@ -1,3 +1,4 @@
+import { Redirect } from "react-router-dom";
 import { updateSessionStateChatbot } from "../../actions/session";
 import store from "../../store";
 
@@ -262,6 +263,23 @@ class ActionProvider {
     this.setState((state:any) => ({
       ...state,
       selectedCategory: id
+    }));
+    this.addMessageToState(message);
+  };
+
+  handleProjectSelected = async (userMessage : String, id: String) => {
+    this.addUserMessage(userMessage)
+    await this.sleep(1000);
+    let message = this.createChatBotMessage(`Redireccionando...`,
+    {
+      widget: "redirectoToProject",
+      withAvatar: true,
+      loading: true,
+      terminateLoading: true,
+    });
+    this.setState((state:any) => ({
+      ...state,
+      selectedProject: id
     }));
     this.addMessageToState(message);
   };

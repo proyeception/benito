@@ -70,7 +70,7 @@ const Proyectabot = (props: ProyectabotProps) => {
         backgroundColor: color,
       },
     },
-    state: {canWrite:false, selectedCategory: ""},
+    state: {canWrite:false, selectedCategory: "", selectedProject: ""},
     initialMessages: [
       createChatBotMessage(`Hola, soy ${botName}`,
       {
