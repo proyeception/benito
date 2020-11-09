@@ -124,7 +124,7 @@ const Proyectabot = (props: ProyectabotProps) => {
         widgetName: "categoryProjectsOption",
         widgetFunc: (props:any) => <CategoryProjectsOption {...props} />,
         mapStateToProps: ["selectedCategory"],
-      }
+      },
       {
         widgetName: "otherDoubt",
         widgetFunc: (props:any) => <OtherDoubt {...props} />,

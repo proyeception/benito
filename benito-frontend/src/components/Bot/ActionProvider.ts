@@ -249,7 +249,7 @@ class ActionProvider {
     this.addMessageToState(message);
   };
 
-  handleCategory = async (userMessage : String) => {
+  handleCategory = async (userMessage : String, id: String) => {
     this.addUserMessage(userMessage)
     await this.sleep(1000);
     let message = this.createChatBotMessage(`Aquí están los proyectos más visitados para la categoría: ${userMessage}`,
@@ -261,8 +261,7 @@ class ActionProvider {
     });
     this.setState((state:any) => ({
       ...state,
-      messages: [...state.messages, message],
-      selectedCategory: userMessage
+      selectedCategory: id
     }));
     this.addMessageToState(message);
   };

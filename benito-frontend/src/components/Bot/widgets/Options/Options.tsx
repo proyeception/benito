@@ -18,7 +18,7 @@ const Options = (props:any) => {
           return (
             <div
               className="option-item"
-              onClick={() => option.handler(option.name)}
+              onClick={() => option.handler(option.name, option.id)}
               key={option.id}
               style={{color:props.color, borderColor: props.color, marginLeft: "auto"}}
             >
