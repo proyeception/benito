@@ -30,6 +30,8 @@ cp -r $FRONTEND/build/index.html $BACKEND_RESOURCES/templates/error.ftl
 cp -r $FRONTEND/build/static/* $BACKEND_RESOURCES/static/
 
 find $BACKEND_RESOURCES -type f -print0 | xargs -0 sed -i -e 's/\/static//g'
+sed -i -e 's/ftl/<title>${title}<\/title><#if no_index?? \&\& !no_index><meta name="robots" content="no-index,nofollow"><\/#if>/g' $BACKEND_RESOURCES/templates/index.ftl
+sed -i -e 's/ftl/<title>Proyectate<\/title>/g' $BACKEND_RESOURCES/templates/error.ftl
 
 mvn -f $BACKEND/pom.xml -Dmaven.test.skip=true clean package
 

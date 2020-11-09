@@ -23,7 +23,7 @@ open class BenitoController(
     @GetMapping(value = ["/login"])
     open fun login(): ModelAndView = ModelAndView("index", mapOf("title" to "Iniciar sesión en Proyectate"))
 
-    @GetMapping(value = ["/me/*", "/search"])
+    @GetMapping(value = ["/me/*", "/search", "/projects/create"])
     open fun noIndex(): ModelAndView = ModelAndView(
         "index",
         mapOf(

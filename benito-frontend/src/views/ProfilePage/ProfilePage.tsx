@@ -306,7 +306,6 @@ const ProfilePage = (props: ProfilePageProps) => {
                 </GridContainer>
               )}
             </GridContainer>
-            <GoBack color={color} />
             <Hidden only={["xs", "sm"]}>
               <ThemeProvider theme={theme}>
                 <GoBack color={color} />
