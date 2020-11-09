@@ -36,7 +36,18 @@ open class BenitoController(
     @GetMapping(value = ["/projects/{id}"])
     open fun project(@PathVariable id: String): ModelAndView = ModelAndView(
         "index",
-        mapOf("title" to projectService.findProject(id).title)
+        projectService.findProject(id).let {
+            mapOf(
+                "title" to it.title,
+                "meta" to mapOf(
+                    "url" to "/projects/$id",
+                    "type" to "article",
+                    "title" to it.title,
+                    "description" to it.description,
+                    "image" to it.pictureUrl
+                )
+            )
+        }
     )
 
     @GetMapping(value = ["/projects/{id}/edit"])
