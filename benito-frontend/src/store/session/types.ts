@@ -4,6 +4,7 @@ export const INVALIDATE_SESSION = "INVALIDATE_SESSION";
 export const UPDATE_SESSION_STATE = "UPDATE_SESSION_STATE";
 export const UPDATE_SESSION_FULL_NAME = "UPDATE_SESSION_FULL_NAME";
 export const UPDATE_SESSION_SELECTED_ORGANIZATION = "UPDATE_SESSION_SELECTED_ORGANIZATION";
+export const UPDATE_SESSION_STATE_CHATBOT = "UPDATE_SESSION_STATE_CHATBOT"
 
 interface InvalidateSessionAction {
   type: typeof INVALIDATE_SESSION;
@@ -24,11 +25,17 @@ interface UpdateSessionSelectedOrganization {
   payload: Organization;
 }
 
+interface UpdateSessionStateChatbot {
+  type: typeof UPDATE_SESSION_STATE_CHATBOT;
+  payload: boolean;
+}
+
 export type SessionAction =
   | InvalidateSessionAction
   | UpdateSessionStateAction
   | UpdateSessionFullName
-  | UpdateSessionSelectedOrganization;
+  | UpdateSessionSelectedOrganization
+  | UpdateSessionStateChatbot;
 
 export interface LoggedInState {
   token: string;
@@ -40,10 +47,12 @@ export interface LoggedInState {
   isLoggedIn: true;
   selectedOrganization: Organization;
   organizations: Array<Organization>;
+  chatBotOpen: boolean
 }
 
 export interface NotLoggedInState {
   isLoggedIn: false;
+  chatBotOpen: boolean
 }
 
 export type SessionState = LoggedInState | NotLoggedInState;

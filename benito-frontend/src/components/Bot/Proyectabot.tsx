@@ -21,9 +21,14 @@ import UploadOptions from "./widgets/GeneralOptions/UploadOptions";
 import MoreHelpOptions from "./widgets/GeneralOptions/MoreHelpOptions"
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import ReportErrorOption from "./widgets/GeneralOptions/ReportErrorOption";
-import { EmojiEmotions } from "@material-ui/icons";
 import CategoryProjectsOption from "./widgets/GeneralOptions/CategoryProjectsOption";
 import { CategoryReference } from "../../types";
+import { EmojiEmotions, Sms } from "@material-ui/icons";
+import QuestionOptions from "./widgets/GeneralOptions/QuestionOptions";
+import InitialOptions from "./widgets/GeneralOptions/InitialOptions";
+import store from "../../store";
+import { updateSessionState, updateSessionStateChatbot } from "../../actions/session";
+import OtherDoubt from "./widgets/GeneralOptions/OtherDoubt";
 
 interface ProyectabotProps extends RouteComponentProps {
   session?: SessionState;
@@ -32,11 +37,8 @@ interface ProyectabotProps extends RouteComponentProps {
 const Proyectabot = (props: ProyectabotProps) => {
 
 
-  const [showChatbot, toggleChatbot] = useState(true);
-
-
     const handleClick = () => {
-      toggleChatbot((showChatbot) => !showChatbot);
+      store.dispatch(updateSessionStateChatbot(!props.session!.chatBotOpen))
     };
 
     let color: string = "#c41234"
@@ -75,24 +77,23 @@ const Proyectabot = (props: ProyectabotProps) => {
         withAvatar: true,
         loading: true,
         terminateLoading: true,
-        delay: 500
-      }
-      ),
-      createChatBotMessage(`¿En qué te puedo ayudar?`,
-      {
-        withAvatar: true,
-        loading: true,
-        terminateLoading: true,
-        delay: 1500,
-        widget: "generalOptions",
+        widget: "initial"
       }
       ),
     ],
     widgets: [
       {
+        widgetName: "initial",
+        widgetFunc: (props:any) => <InitialOptions {...props} />,
+      },
+      {
         widgetName: "generalOptions",
         widgetFunc: (props:any) => <GeneralOptions {...props} />,
         mapStateToProps: ["selectedCategory"],
+      },
+      {
+        widgetName: "questionOptions",
+        widgetFunc: (props:any) => <QuestionOptions {...props} />,
       },
       {
         widgetName: "categoriesOptions",
@@ -124,6 +125,10 @@ const Proyectabot = (props: ProyectabotProps) => {
         widgetFunc: (props:any) => <CategoryProjectsOption {...props} />,
         mapStateToProps: ["selectedCategory"],
       }
+      {
+        widgetName: "otherDoubt",
+        widgetFunc: (props:any) => <OtherDoubt {...props} />,
+      },
     ],
   };
 
@@ -133,11 +138,11 @@ const Proyectabot = (props: ProyectabotProps) => {
       <div className = "app-chatbot-button" style={{backgroundColor: color}}>
       <ThemeProvider theme={theme}>
         <Fab color="primary" aria-label= "expand" onClick = {handleClick}>
-          <EmojiEmotions />
+          <Sms />
         </Fab>
       </ThemeProvider>
       </div>
-      <Collapse in = {!showChatbot} className = "app-chatbot-container">
+      <Collapse in = {props.session!.chatBotOpen} className = "app-chatbot-container">
                 <Chatbot
                   config={config}
                   messageParser={MessageParser}

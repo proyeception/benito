@@ -1,3 +1,6 @@
+import { updateSessionStateChatbot } from "../../actions/session";
+import store from "../../store";
+
 class ActionProvider {
   createChatBotMessage : any
   setState : any
@@ -37,6 +40,54 @@ class ActionProvider {
     this.addMessageToState(message);
   };
 
+  initial = () => {
+    const message = this.createChatBotMessage(`¿En qué te puedo ayudar?`,
+    {
+      withAvatar: true,
+      loading: true,
+      terminateLoading: true,
+      widget: "generalOptions",
+    }
+    );
+    this.addMessageToState(message);
+  };
+
+  handleHasQuestion = async (userMessage : String) => {
+    this.addUserMessage(userMessage)
+    let message = this.createChatBotMessage(
+      "¿Cuál es tu duda?",
+      {
+        widget: "questionOptions",
+        withAvatar: true,
+        loading: true,
+        terminateLoading: true,
+      }
+    );
+    this.addMessageToState(message);
+  };
+
+  handleOtherDoubt = async (userMessage : String) => {
+    this.addUserMessage(userMessage)
+    let message = this.createChatBotMessage(
+      "Por favor, envianos un mail con tu duda a proyeception@gmail.com",
+      {
+        widget: "otherDoubt",
+        withAvatar: true,
+        loading: true,
+        terminateLoading: true,
+      }
+    );
+    this.addMessageToState(message);
+    await this.sleep(3000);
+    message = this.createChatBotMessage("¿Te pudo ayudar con algo más?",
+    {
+      widget: "moreHelpOptions",
+      withAvatar: true,
+      loading: true,
+      terminateLoading: true,
+    });
+    this.addMessageToState(message);
+  };
   
   handleProyectateQuestion = async (userMessage : String) => {
     this.addUserMessage(userMessage)
@@ -129,15 +180,26 @@ class ActionProvider {
     this.addMessageToState(message);
   };
   
-  handleNoMoreHelp = (userMessage : String) => {
+  handleNoMoreHelp = async (userMessage : String) => {
     this.addUserMessage(userMessage)
-    let message = this.createChatBotMessage("¡De nada! ¡Chau!")
+    let message = this.createChatBotMessage("Estoy para ayudar :)")
+    this.addMessageToState(message);
+    await this.sleep(2000);
+    store.dispatch(updateSessionStateChatbot(false))
+    await this.sleep(5000);
+    message = this.createChatBotMessage("¿Te pudo ayudar con algo más?",
+    {
+      widget: "generalOptions",
+      withAvatar: true,
+      loading: true,
+      terminateLoading: true,
+    });
     this.addMessageToState(message);
   };
   
   handleProjectUploadQuestion = (userMessage : String) => {
     this.addUserMessage(userMessage)
-    const message = this.createChatBotMessage("¿Cargar un proyecto como autor o supervisor?",
+    const message = this.createChatBotMessage("Sos un autor o un supervisor?",
     {
       widget: "uploadOptions",
       withAvatar: true,
@@ -157,15 +219,33 @@ class ActionProvider {
     this.addMessageToState(message);
   };
 
-  handleAuthorUploadQuestion = (userMessage : String) => {
+  handleAuthorUploadQuestion = async (userMessage : String) => {
     this.addUserMessage(userMessage)
-    const message = this.createChatBotMessage("TO-DO");
+    let message = this.createChatBotMessage("Como autor no tenés la posibilidad de cargar proyectos. Un docente de tu universidad lo tiene que crear y asignártelo para que lo puedas editar.");
+    this.addMessageToState(message);
+    await this.sleep(10000);
+    message = this.createChatBotMessage("¿Te pudo ayudar con algo más?",
+    {
+      widget: "moreHelpOptions",
+      withAvatar: true,
+      loading: true,
+      terminateLoading: true,
+    });
     this.addMessageToState(message);
   };
 
-  handleSupervisorUploadQuestion = (userMessage : String) => {
+  handleSupervisorUploadQuestion = async (userMessage : String) => {
     this.addUserMessage(userMessage)
-    const message = this.createChatBotMessage('Para cargar un proyecto como supervisor solo hace falta hacer click en "Crear nuevo proyecto" arriba a la derecha, donde está tu nombre. Después, ingresás los datos que te pide el formulario, ¡y listo!');
+    let message = this.createChatBotMessage('Para cargar un proyecto como supervisor solo hace falta estar loggeado y hacer click en tu nombre arriba a la derecha y luego en "Crear nuevo proyecto". Después, ingresás los datos que te pide el formulario, ¡y listo!');
+    this.addMessageToState(message);
+    await this.sleep(10000);
+    message = this.createChatBotMessage("¿Te pudo ayudar con algo más?",
+    {
+      widget: "moreHelpOptions",
+      withAvatar: true,
+      loading: true,
+      terminateLoading: true,
+    });
     this.addMessageToState(message);
   };
 

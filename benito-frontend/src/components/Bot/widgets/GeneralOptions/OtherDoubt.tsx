@@ -5,11 +5,11 @@ import { RouteComponentProps, withRouter } from "react-router-dom";
 import { RootState } from "../../../../reducers";
 import { SessionState } from "../../../../store/session/types";
 
-interface ReportErrorOptionsProps extends RouteComponentProps {
+interface OtherDoubtProps extends RouteComponentProps {
   session?: SessionState;
 }
 
-const ReportErrorOption = (props: ReportErrorOptionsProps | any) => {
+const OtherDoubt = (props: OtherDoubtProps | any) => {
 
   let color: string = "#c41234"
   if(props.session && props.session.isLoggedIn  && props.session.selectedOrganization){
@@ -18,7 +18,7 @@ const ReportErrorOption = (props: ReportErrorOptionsProps | any) => {
 
   return <div style={{textAlign: "right"}}>
     <a href="mailto:proyeception@gmail.com" style={{color: "#2f3336"}}>
-      <button style={{backgroundColor:"white", color: color, borderColor:color, border: "solid 1px", cursor: "pointer", padding: "10px", borderRadius: "6px", margin: "auto"}}>O podes hacer click acá</button>
+      <button style={{backgroundColor:"white", color: color, borderColor:color, border: "solid 1px", cursor: "pointer", padding: "10px", borderRadius: "6px", marginLeft: "auto"}}>Enviar mail</button>
     </a>
   </div>;
 };
@@ -30,4 +30,4 @@ const mapStateToProps = (rootState: RootState) => {
   };
 };
 
-export default hot(module)(connect(mapStateToProps)(withRouter(ReportErrorOption)));
+export default hot(module)(connect(mapStateToProps)(withRouter(OtherDoubt)));
