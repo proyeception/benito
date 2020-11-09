@@ -5,6 +5,7 @@ import com.github.proyeception.benito.service.ProjectService
 import com.github.proyeception.benito.service.SessionService
 import com.github.proyeception.benito.service.UserService
 import org.springframework.stereotype.Controller
+import org.springframework.web.bind.annotation.CookieValue
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestHeader
@@ -41,12 +42,12 @@ open class BenitoController(
     @GetMapping(value = ["/projects/{id}/edit"])
     open fun editProject(
         @PathVariable id: String,
-        @RequestHeader(value = X_QUI_TOKEN, required = false) sessionToken: String
+        @CookieValue(value = X_QUI_TOKEN, required = false) sessionToken: String?
     ): ModelAndView = ModelAndView(
         "index",
         mapOf(
             "no_index" to true,
-            sessionService[sessionToken]?.userId?.let {
+            sessionToken?.let { sessionService[it] }?.userId?.let {
                 projectService.findProject(id).takeIf { p ->
                     p.authors.any { a -> a.id == it } || p.supervisors.any { s -> s.id == it }
                 }
