@@ -22,6 +22,8 @@ import MoreHelpOptions from "./widgets/GeneralOptions/MoreHelpOptions"
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import ReportErrorOption from "./widgets/GeneralOptions/ReportErrorOption";
 import { EmojiEmotions } from "@material-ui/icons";
+import CategoryProjectsOption from "./widgets/GeneralOptions/CategoryProjectsOption";
+import { CategoryReference } from "../../types";
 
 interface ProyectabotProps extends RouteComponentProps {
   session?: SessionState;
@@ -66,7 +68,7 @@ const Proyectabot = (props: ProyectabotProps) => {
         backgroundColor: color,
       },
     },
-    state: {canWrite:false},
+    state: {canWrite:false, selectedCategory: ""},
     initialMessages: [
       createChatBotMessage(`Hola, soy ${botName}`,
       {
@@ -90,27 +92,38 @@ const Proyectabot = (props: ProyectabotProps) => {
       {
         widgetName: "generalOptions",
         widgetFunc: (props:any) => <GeneralOptions {...props} />,
+        mapStateToProps: ["selectedCategory"],
       },
       {
         widgetName: "categoriesOptions",
         widgetFunc: (props:any) => <CategoriesOptions {...props} />,
+        mapStateToProps: ["selectedCategory"],
       },
       {
         widgetName: "projectOptions",
         widgetFunc: (props:any) => <ProjectOptions {...props} />,
+        mapStateToProps: ["selectedCategory"],
       },
       {
         widgetName: "uploadOptions",
         widgetFunc: (props:any) => <UploadOptions {...props} />,
+        mapStateToProps: ["selectedCategory"],
       },
       {
         widgetName: "moreHelpOptions",
         widgetFunc: (props:any) => <MoreHelpOptions {...props} />,
+        mapStateToProps: ["selectedCategory"],
       },
       {
         widgetName: "reportErrorOption",
         widgetFunc: (props:any) => <ReportErrorOption {...props} />,
+        mapStateToProps: ["selectedCategory"],
       },
+      {
+        widgetName: "categoryProjectsOption",
+        widgetFunc: (props:any) => <CategoryProjectsOption {...props} />,
+        mapStateToProps: ["selectedCategory"],
+      }
     ],
   };
 

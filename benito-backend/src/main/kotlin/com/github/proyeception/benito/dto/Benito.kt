@@ -176,6 +176,15 @@ data class CreateProjectDTO(
     val categoryId: String
 )
 
+data class CategoryListDTO(
+    val categories: List<CategoryRefDTO>
+)
+
+data class CategoryRefDTO(
+    val id: String,
+    val name: String
+)
+
 data class PersonRefDTO(
     val id: String,
     val fullName: String,
@@ -258,4 +267,13 @@ data class CustomRecommendationDTO(
     val customizationId: String,
     val projectId: String,
     val views: Int
+)
+
+data class ProjectLinkDTO(
+    val id: String,
+    val name: String
+)
+
+data class ProjectLinksDTO(
+    val projects: List<ProjectLinkDTO>
 )

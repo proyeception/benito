@@ -3,32 +3,37 @@ import { hot } from "react-hot-loader";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { ERROR, PENDING } from "../../../../hooks/withFetch";
-import withTopCategories from "../../../../hooks/withTopCategories";
+import withTopProjectsByCategory from "../../../../hooks/withTopProjectsByCategpry";
 import { RootState } from "../../../../reducers";
 import { SessionState } from "../../../../store/session/types";
-import { CategoryReference } from "../../../../types";
+import { CategoryReference, ProjectReference } from "../../../../types";
 import Spinner from "../../../Spinner/Spinner";
 
 import Options from "../Options/Options";
 
 interface GeneralOptionsProps extends RouteComponentProps {
   session?: SessionState;
+  selectedCategory: CategoryReference;
 }
 
-const CategoriesOptions = (props: GeneralOptionsProps | any) => {
+const CategoryProjectsOption = (props: GeneralOptionsProps | any) => {
 
-  const [categories, setCategories] = useState<Array<CategoryReference>>([]);
+  console.log("holi")
+  console.log(props)
+  console.log(props.selectedCategory)
 
-  function createOptionFromCategory(category: CategoryReference){
+  const [projects, setProjects] = useState<Array<ProjectReference>>([]);
+
+  function createOptionFromProject(project: ProjectReference){
     return {
-      name: category.name,
+      name: project.title,
       handler: props.actionProvider.handleCategory,
-      id: category.id
+      id: project.title
     }
-  }  
-
-  const res = withTopCategories((result) => {
-    setCategories(result.categories)
+  }
+  
+  const res = withTopProjectsByCategory(props.selectedCategory, (result) => {
+    setProjects(result.projects);
   })
 
   let color: string = "#c41234"
@@ -37,11 +42,12 @@ const CategoriesOptions = (props: GeneralOptionsProps | any) => {
   }
 
   if (res.type == PENDING || res.type == ERROR) {
-    return <Spinner color={'#ffffff'}/>;
+    console.log(res);
+    return <Spinner color={'#444444'}/>;
   }
-  return  <Options options={categories.map(
-    (c) => createOptionFromCategory(c)
-  )} color={color} {...props}/>;
+  return  <Options options={projects.map(
+    (p) => createOptionFromProject(p)
+  )} color={color} {...props} />;
 };
 
 const mapStateToProps = (rootState: RootState) => {
@@ -51,4 +57,4 @@ const mapStateToProps = (rootState: RootState) => {
   };
 };
 
-export default hot(module)(connect(mapStateToProps)(withRouter(CategoriesOptions)));
+export default hot(module)(connect(mapStateToProps)(withRouter(CategoryProjectsOption)));

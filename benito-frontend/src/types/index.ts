@@ -156,3 +156,21 @@ export type CategoryQuantityType = {
 export type ProjectCount = {
   total: number
 }
+
+export type TopCategories = {
+  categories: Array<CategoryReference>
+}
+
+export type CategoryReference = {
+  id: String,
+  name: String
+}
+
+export type RecommendedProjects = {
+  projects: Array<ProjectReference>
+}
+
+export type ProjectReference = {
+  projectId: string,
+  title: string
+}

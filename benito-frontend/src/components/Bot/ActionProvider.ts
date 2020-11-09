@@ -168,6 +168,24 @@ class ActionProvider {
     const message = this.createChatBotMessage('Para cargar un proyecto como supervisor solo hace falta hacer click en "Crear nuevo proyecto" arriba a la derecha, donde está tu nombre. Después, ingresás los datos que te pide el formulario, ¡y listo!');
     this.addMessageToState(message);
   };
+
+  handleCategory = async (userMessage : String) => {
+    this.addUserMessage(userMessage)
+    await this.sleep(1000);
+    let message = this.createChatBotMessage(`Aquí están los proyectos más visitados para la categoría: ${userMessage}`,
+    {
+      widget: "categoryProjectsOption",
+      withAvatar: true,
+      loading: true,
+      terminateLoading: true,
+    });
+    this.setState((state:any) => ({
+      ...state,
+      messages: [...state.messages, message],
+      selectedCategory: userMessage
+    }));
+    this.addMessageToState(message);
+  };
   
   addUserMessage = (userMessage : String) => {
     const message = this.createClientMessage(userMessage)

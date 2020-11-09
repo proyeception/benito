@@ -43,7 +43,9 @@ open class ServiceModule {
     @Bean
     open fun categoriesService(
         categorySnapshot: CategorySnapshot
-    ): CategoriesService = CategoriesService(categorySnapshot = categorySnapshot)
+    ): CategoriesService = CategoriesService(
+        categorySnapshot = categorySnapshot
+    )
 
     @Bean
     open fun documentService(
