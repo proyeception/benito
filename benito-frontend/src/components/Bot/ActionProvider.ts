@@ -1,4 +1,3 @@
-import { Redirect } from "react-router-dom";
 import { updateSessionStateChatbot } from "../../actions/session";
 import store from "../../store";
 
@@ -14,7 +13,7 @@ class ActionProvider {
   }
 
   handleDefault = () => {
-    const message = this.createChatBotMessage("Perdon, no entendí qué quisiste decir. ¿Arrancamos de nuevo?",      
+    const message = this.createChatBotMessage("Perdón, no entendí qué quisiste decir. ¿Arrancamos de nuevo?",      
     {
       widget: "generalOptions",
       delay: 500,
@@ -266,6 +265,7 @@ class ActionProvider {
   handleCategory = async (userMessage : String, id: String) => {
     this.addUserMessage(userMessage)
     await this.sleep(1000);
+    console.log('searching projects for category: ' + id)
     let message = this.createChatBotMessage(`Aquí están los proyectos más visitados para la categoría: ${userMessage}`,
     {
       widget: "categoryProjectsOption",
@@ -285,7 +285,7 @@ class ActionProvider {
     await this.sleep(1000);
     let message = this.createChatBotMessage(`Redireccionando...`,
     {
-      widget: "redirectoToProject",
+      widget: "redirectToProject",
       withAvatar: true,
       loading: true,
       terminateLoading: true,

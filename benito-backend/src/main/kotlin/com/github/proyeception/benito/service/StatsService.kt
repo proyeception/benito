@@ -156,6 +156,6 @@ open class StatsService(
     }
 
     fun topProjectsFromCategory(categoryId: String): List<ProjectLinkDTO> {
-        return topProjects(categoryId, null, null).take(4).map{ProjectLinkDTO(it.title, it.projectId)}
+        return topProjects(categoryId, null, null).take(4).map{ProjectLinkDTO(it.projectId, it.title)}
     }
 }
