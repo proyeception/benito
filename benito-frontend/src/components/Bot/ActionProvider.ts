@@ -262,10 +262,9 @@ class ActionProvider {
     this.addMessageToState(message);
   };
 
-  handleCategory = async (userMessage : String, id: String) => {
+  handleCategory = async (userMessage : String, categoryId: String) => {
     this.addUserMessage(userMessage)
     await this.sleep(1000);
-    console.log('searching projects for category: ' + id)
     let message = this.createChatBotMessage(`Aquí están los proyectos más visitados para la categoría: ${userMessage}`,
     {
       widget: "categoryProjectsOption",
@@ -275,12 +274,12 @@ class ActionProvider {
     });
     this.setState((state:any) => ({
       ...state,
-      selectedCategory: id
+      selectedCategory: categoryId
     }));
     this.addMessageToState(message);
   };
 
-  handleProjectSelected = async (userMessage : String, id: String) => {
+  handleProjectSelected = async (userMessage : String, projectId: String) => {
     this.addUserMessage(userMessage)
     await this.sleep(1000);
     let message = this.createChatBotMessage(`Redireccionando...`,
@@ -292,7 +291,24 @@ class ActionProvider {
     });
     this.setState((state:any) => ({
       ...state,
-      selectedProject: id
+      selectedProject: projectId
+    }));
+    this.addMessageToState(message);
+  };
+
+  handleViewMoreProjectsOfCategory = async (userMessage : String, categoryId: String) => {
+    this.addUserMessage(userMessage)
+    await this.sleep(1000);
+    let message = this.createChatBotMessage(`Redireccionando...`,
+    {
+      widget: "redirectToSearch",
+      withAvatar: true,
+      loading: true,
+      terminateLoading: true,
+    });
+    this.setState((state:any) => ({
+      ...state,
+      selectedProject: categoryId
     }));
     this.addMessageToState(message);
   };

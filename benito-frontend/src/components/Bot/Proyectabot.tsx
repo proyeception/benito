@@ -30,6 +30,7 @@ import store from "../../store";
 import { updateSessionState, updateSessionStateChatbot } from "../../actions/session";
 import OtherDoubt from "./widgets/GeneralOptions/OtherDoubt";
 import RedirectToProject from "./widgets/GeneralOptions/RedirectToProject";
+import RedirectToSearch from "./widgets/GeneralOptions/RedirectToSearch";
 
 interface ProyectabotProps extends RouteComponentProps {
   session?: SessionState;
@@ -135,7 +136,13 @@ const Proyectabot = (props: ProyectabotProps) => {
         widgetFunc: (props:any) => <RedirectToProject {...props} />,
         mapStateToProps: ["selectedCategory", "selectedProject"],
       },
+      {
+        widgetName: "redirectToSearch",
+        widgetFunc: (props:any) => <RedirectToSearch {...props} />,
+        mapStateToProps: ["selectedCategory", "selectedProject"],
+      },
     ],
+
   };
 
 

@@ -29,6 +29,12 @@ const CategoryProjectsOption = (props: GeneralOptionsProps | any) => {
       id: project.id
     }
   }
+
+  let viewMoreProjects = {
+    name: "Ver más proyectos",
+    handler: props.actionProvider.handleViewMoreProjectsOfCategory,
+    id: "1"
+  }
   
   const res = withTopProjectsByCategory(props.selectedCategory, (result) => {
     setProjects(result.projects);
@@ -51,7 +57,7 @@ const CategoryProjectsOption = (props: GeneralOptionsProps | any) => {
   
   if(mappedProjects.length > 0){
     return (
-      <Options options={mappedProjects} cropped={true} color={color} {...props} />
+      <Options options={...mappedProjects.concat(viewMoreProjects)} cropped={true} color={color} {...props} />
     );
   } else {
     return <Spinner color={color}/>;

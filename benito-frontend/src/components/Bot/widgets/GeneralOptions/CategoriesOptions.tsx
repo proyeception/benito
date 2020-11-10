@@ -21,7 +21,6 @@ const CategoriesOptions = (props: GeneralOptionsProps | any) => {
   const [categories, setCategories] = useState<Array<CategoryReference>>([]);
 
   function createOptionFromCategory(category: CategoryReference){
-    console.log(categories)
     return {
       name: category.name,
       handler: props.actionProvider.handleCategory,

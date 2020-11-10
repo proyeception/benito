@@ -9,7 +9,6 @@ const withTopCategories = (andThen?: (p: TopCategories) => void): FetchStatus<To
       andThen(e);
     }
   });
-  console.log(result)
   return result;
 };
 
