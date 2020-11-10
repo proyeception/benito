@@ -31,7 +31,6 @@ const HomePage = (props: HomePageProps) => {
   const { ...rest } = props;
   return (
     <div>
-      <Proyectabot/>
       <Header rightLinks={<HeaderLinks />} fixed color="darkGray" {...rest} />
       <Parallax image={image} filter small>
         <div className={classes.container}>

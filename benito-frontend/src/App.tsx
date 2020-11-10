@@ -26,6 +26,7 @@ import ComingSoon from "./views/ComingSoon/ComingSoon";
 import CreateProjectPage from "./views/CreateProjectPage/CreateProjectPage";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import { grey } from "@material-ui/core/colors";
+import Proyectabot from "./components/Bot/Proyectabot";
 
 const App = () => {
   const [isLoggingIn, setIsLoggingIn] = useState(true);
@@ -63,6 +64,7 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <BrowserRouter>
+          <Proyectabot/>
           <Switch>
             <Route path="/projects/create" component={CreateProjectPage} />
             <Route path="/projects/:id/edit" component={EditProjectPage} />
