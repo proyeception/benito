@@ -38,7 +38,7 @@ const CategoriesOptions = (props: GeneralOptionsProps | any) => {
   }
 
   if (res.type == PENDING || res.type == ERROR) {
-    return <Spinner color={'#ffffff'}/>;
+    return <Spinner color={'#444444'}/>;
   }
   return  <Options options={categories.map(
     (c) => createOptionFromCategory(c)

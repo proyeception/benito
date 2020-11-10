@@ -11,7 +11,7 @@ import "../../assets/scss/bot/bot.scss"
 import { RootState } from "../../reducers"
 import { hot } from "react-hot-loader"
 import { connect } from "react-redux"
-import { RouteComponentProps, withRouter } from "react-router-dom"
+import { RouteComponentProps, withRouter, Redirect } from "react-router-dom"
 import { SessionState } from "../../store/session/types"
 import { createChatBotMessage } from "react-chatbot-kit";
 import GeneralOptions from "./widgets/GeneralOptions/GeneralOptions";
@@ -29,6 +29,7 @@ import InitialOptions from "./widgets/GeneralOptions/InitialOptions";
 import store from "../../store";
 import { updateSessionState, updateSessionStateChatbot } from "../../actions/session";
 import OtherDoubt from "./widgets/GeneralOptions/OtherDoubt";
+import RedirectToProject from "./widgets/GeneralOptions/RedirectToProject";
 
 interface ProyectabotProps extends RouteComponentProps {
   session?: SessionState;
@@ -103,7 +104,7 @@ const Proyectabot = (props: ProyectabotProps) => {
       {
         widgetName: "projectOptions",
         widgetFunc: (props:any) => <ProjectOptions {...props} />,
-        mapStateToProps: ["selectedCategory"],
+        mapStateToProps: ["selectedCategory", "selectedProject"],
       },
       {
         widgetName: "uploadOptions",
@@ -123,11 +124,16 @@ const Proyectabot = (props: ProyectabotProps) => {
       {
         widgetName: "categoryProjectsOption",
         widgetFunc: (props:any) => <CategoryProjectsOption {...props} />,
-        mapStateToProps: ["selectedCategory"],
+        mapStateToProps: ["selectedCategory", "selectedProject"],
       },
       {
         widgetName: "otherDoubt",
         widgetFunc: (props:any) => <OtherDoubt {...props} />,
+      },
+      {
+        widgetName: "redirectToProject",
+        widgetFunc: (props:any) => <RedirectToProject {...props} />,
+        mapStateToProps: ["selectedCategory", "selectedProject"],
       },
     ],
   };

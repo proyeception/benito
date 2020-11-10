@@ -3,7 +3,7 @@ import { hot } from "react-hot-loader";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { ERROR, PENDING } from "../../../../hooks/withFetch";
-import withTopProjectsByCategory from "../../../../hooks/withTopProjectsByCategpry";
+import withTopProjectsByCategory from "../../../../hooks/withTopProjectsByCategory";
 import { RootState } from "../../../../reducers";
 import { SessionState } from "../../../../store/session/types";
 import { CategoryReference, ProjectReference } from "../../../../types";
@@ -22,11 +22,11 @@ const CategoryProjectsOption = (props: GeneralOptionsProps | any) => {
 
   const [projects, setProjects] = useState<Array<ProjectReference>>([]);
 
-  function createOptionFromProject(project: ProjectReference){
+  function createOptionFromProject(project: any){
     return {
-      name: project.title,
-      handler: props.actionProvider.handleCategory,
-      id: project.projectId
+      name: project.name,
+      handler: props.actionProvider.handleProjectSelected,
+      id: project.id
     }
   }
   
