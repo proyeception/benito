@@ -30,6 +30,7 @@ import store from "../../store";
 import { updateSessionState, updateSessionStateChatbot } from "../../actions/session";
 import OtherDoubt from "./widgets/GeneralOptions/OtherDoubt";
 import RedirectToProject from "./widgets/GeneralOptions/RedirectToProject";
+import ProyectabotAvatar from "./components/ProyectabotAvatar"
 
 interface ProyectabotProps extends RouteComponentProps {
   session?: SessionState;
@@ -71,6 +72,9 @@ const Proyectabot = (props: ProyectabotProps) => {
         backgroundColor: color,
       },
     },
+    /*customComponents: {
+      botAvatar: (props:any) => <ProyectabotAvatar {...props} />,
+    },*/
     state: {canWrite:false, selectedCategory: "", selectedProject: ""},
     initialMessages: [
       createChatBotMessage(`Hola, soy ${botName}`,
@@ -150,6 +154,8 @@ const Proyectabot = (props: ProyectabotProps) => {
       </div>
       <Collapse in = {props.session!.chatBotOpen} className = "app-chatbot-container">
                 <Chatbot
+                  headerText="Conversación con Proyectabot" 
+                  placeholderText="Escribí acá para conversar"
                   config={config}
                   messageParser={MessageParser}
                   actionProvider={ActionProvider}            
