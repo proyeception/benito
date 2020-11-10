@@ -10,6 +10,7 @@ import { CategoryReference, ProjectReference } from "../../../../types";
 import Spinner from "../../../Spinner/Spinner";
 
 import Options from "../Options/Options";
+import ChatBotError from "./ChatBotError";
 
 interface GeneralOptionsProps extends RouteComponentProps {
   session?: SessionState;
@@ -18,20 +19,23 @@ interface GeneralOptionsProps extends RouteComponentProps {
 
 const CategoryProjectsOption = (props: GeneralOptionsProps | any) => {
 
-  console.log(props.selectedCategory)
-
   const [projects, setProjects] = useState<Array<ProjectReference>>([]);
+  const [mappedProjects, setMappedProjects] = useState<Array<any>>([]);
 
-  function createOptionFromProject(project: ProjectReference){
-    return {
-      name: project.title,
-      handler: props.actionProvider.handleCategory,
-      id: project.projectId
+  function createOptionFromProject(project: any){
+    let p = {
+      name: project.id,
+      handler: props.actionProvider.handleProjectSelected,
+      id: project.name
     }
+    console.error(p)
+    return p
   }
   
   const res = withTopProjectsByCategory(props.selectedCategory, (result) => {
     setProjects(result.projects);
+    setMappedProjects(result.projects.map(
+      (p) => createOptionFromProject(p)))
   })
 
   let color: string = "#c41234"
@@ -39,13 +43,21 @@ const CategoryProjectsOption = (props: GeneralOptionsProps | any) => {
     color = props.session.selectedOrganization.color
   }
 
-  if (res.type == PENDING || res.type == ERROR) {
-    console.log(res);
-    return <Spinner color={'#444444'}/>;
+  if (res.type == PENDING) {
+    return <Spinner color={color}/>;
   }
-  return  <Options options={projects.map(
-    (p) => createOptionFromProject(p)
-  )} color={color} {...props} />;
+
+  if ( res.type == ERROR) {
+    return <ChatBotError/>;
+  }
+  
+  if(mappedProjects.length > 0){
+    return (
+      <Options options={mappedProjects} cropped={true} color={color} {...props} />
+    );
+  } else {
+    return <Spinner color={color}/>;
+  }
 };
 
 const mapStateToProps = (rootState: RootState) => {

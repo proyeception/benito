@@ -9,7 +9,6 @@ const withTopProjectsByCategory = (category: string, andThen?: (p: RecommendedPr
       andThen(e);
     }
   });
-  console.log(result)
   return result;
 };
 

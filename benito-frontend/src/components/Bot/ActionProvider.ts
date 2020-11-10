@@ -53,6 +53,19 @@ class ActionProvider {
     this.addMessageToState(message);
   };
 
+  error = async () => {
+    const message = this.createChatBotMessage(`Disculpá las molestias, ocurrió un error. Por favor, habláme dentro de unos minutos :)`,
+    {
+      withAvatar: true,
+      loading: true,
+      terminateLoading: true,
+    }
+    );
+    this.addMessageToState(message);
+    await this.sleep(3000);
+    store.dispatch(updateSessionStateChatbot(false))
+  };
+
   handleHasQuestion = async (userMessage : String) => {
     this.addUserMessage(userMessage)
     let message = this.createChatBotMessage(
