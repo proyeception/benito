@@ -10,6 +10,7 @@ import { CategoryReference } from "../../../../types";
 import Spinner from "../../../Spinner/Spinner";
 
 import Options from "../Options/Options";
+import ChatBotError from "./ChatBotError";
 
 interface GeneralOptionsProps extends RouteComponentProps {
   session?: SessionState;
@@ -37,9 +38,14 @@ const CategoriesOptions = (props: GeneralOptionsProps | any) => {
     color = props.session.selectedOrganization.color
   }
 
-  if (res.type == PENDING || res.type == ERROR) {
-    return <Spinner color={'#444444'}/>;
+  if (res.type == PENDING) {
+    return <Spinner color={color}/>;
   }
+
+  if ( res.type == ERROR) {
+    return <ChatBotError/>;
+  }
+  
   return  <Options options={categories.map(
     (c) => createOptionFromCategory(c)
   )} color={color} {...props}/>;

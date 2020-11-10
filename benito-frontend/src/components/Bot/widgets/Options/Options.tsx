@@ -7,6 +7,7 @@ interface Option {
   handler:any,
   id: number,
   color: string,
+  crooped: boolean
 }
 
 const Options = (props:any) => {
@@ -15,12 +16,16 @@ const Options = (props:any) => {
       <h1 className="options-header">{props.title}</h1>
       <div className="options-container">
         {props.options.map((option : Option) => {
+          let styles: any = {color:props.color, borderColor: props.color, marginLeft: "auto"}
+          if(props.cropped){
+            styles = {color:props.color, borderColor: props.color, marginLeft: "auto", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap"}
+          } 
           return (
             <div
               className="option-item"
               onClick={() => option.handler(option.name, option.id)}
               key={option.id}
-              style={{color:props.color, borderColor: props.color, marginLeft: "auto"}}
+              style={styles}
             >
               {option.name}
             </div>
