@@ -82,7 +82,7 @@ const FeaturedSection = (props: FeaturedSectionProps) => {
                 <h2 className={classes.title} style={{ textAlign: "center", paddingTop: "40px", color:color}}>
                   ESTADÍSTICAS
                 </h2>
-                <p>Podés ver cuales son los temas más buscados en los distintos años, los más trabajadso en las distintas universidades y facultades y mucho más!</p>
+                <p>Podés ver cuales son los temas más buscados en los distintos años, los más trabajados en las distintas universidades y facultades y mucho más!</p>
                 <div style={{ margin: "auto", textAlign: "center", paddingBottom: "20px", paddingTop: "50px"}}>
                   <Link to="/stats" className="normalize-link">
                     <Button color={color} style={{ margin: "auto"}}>

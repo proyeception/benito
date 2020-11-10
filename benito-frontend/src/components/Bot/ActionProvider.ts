@@ -92,7 +92,7 @@ class ActionProvider {
     );
     this.addMessageToState(message);
     await this.sleep(3000);
-    message = this.createChatBotMessage("¿Te pudo ayudar con algo más?",
+    message = this.createChatBotMessage("¿Te puedo ayudar con algo más?",
     {
       widget: "moreHelpOptions",
       withAvatar: true,
@@ -128,7 +128,7 @@ class ActionProvider {
     });
     this.addMessageToState(message);
     await this.sleep(2000);
-    message = this.createChatBotMessage("¿Te pudo ayudar con algo más?",
+    message = this.createChatBotMessage("¿Te puedo ayudar con algo más?",
     {
       widget: "moreHelpOptions",
       withAvatar: true,
@@ -147,7 +147,7 @@ class ActionProvider {
     message = this.createChatBotMessage("Yo soy Proyectabot, el fiel compañero ayuda de Proyectate. Mi funcion es ayudarte a encontrar lo que estés buscando y resolver cualquier duda que puedas tener");
     this.addMessageToState(message);
     await this.sleep(6000);
-    message = this.createChatBotMessage("¿Te pudo ayudar con algo más?",
+    message = this.createChatBotMessage("¿Te puedo ayudar con algo más?",
     {
       widget: "moreHelpOptions",
       withAvatar: true,
@@ -171,7 +171,7 @@ class ActionProvider {
     message = this.createChatBotMessage("¡Muchas gracias por ayudarnos a mejorar!");
     this.addMessageToState(message);
     await this.sleep(1000);
-    message = this.createChatBotMessage("¿Te pudo ayudar con algo más?",
+    message = this.createChatBotMessage("¿Te puedo ayudar con algo más?",
     {
       widget: "moreHelpOptions",
       withAvatar: true,
@@ -200,7 +200,7 @@ class ActionProvider {
     await this.sleep(2000);
     store.dispatch(updateSessionStateChatbot(false))
     await this.sleep(5000);
-    message = this.createChatBotMessage("¿Te pudo ayudar con algo más?",
+    message = this.createChatBotMessage("¿Te puedo ayudar con algo más?",
     {
       widget: "generalOptions",
       withAvatar: true,
@@ -237,7 +237,7 @@ class ActionProvider {
     let message = this.createChatBotMessage("Como autor no tenés la posibilidad de cargar proyectos. Un docente de tu universidad lo tiene que crear y asignártelo para que lo puedas editar.");
     this.addMessageToState(message);
     await this.sleep(10000);
-    message = this.createChatBotMessage("¿Te pudo ayudar con algo más?",
+    message = this.createChatBotMessage("¿Te puedo ayudar con algo más?",
     {
       widget: "moreHelpOptions",
       withAvatar: true,
@@ -252,7 +252,7 @@ class ActionProvider {
     let message = this.createChatBotMessage('Para cargar un proyecto como supervisor solo hace falta estar loggeado y hacer click en tu nombre arriba a la derecha y luego en "Crear nuevo proyecto". Después, ingresás los datos que te pide el formulario, ¡y listo!');
     this.addMessageToState(message);
     await this.sleep(10000);
-    message = this.createChatBotMessage("¿Te pudo ayudar con algo más?",
+    message = this.createChatBotMessage("¿Te puedo ayudar con algo más?",
     {
       widget: "moreHelpOptions",
       withAvatar: true,
@@ -294,6 +294,15 @@ class ActionProvider {
       selectedProject: projectId
     }));
     this.addMessageToState(message);
+    await this.sleep(10000);
+    message = this.createChatBotMessage("¿Te puedo ayudar con algo más?",
+    {
+      widget: "moreHelpOptions",
+      withAvatar: true,
+      loading: true,
+      terminateLoading: true,
+    });
+    this.addMessageToState(message);
   };
 
   handleViewMoreProjectsOfCategory = async (userMessage : String, categoryId: String) => {
@@ -310,6 +319,15 @@ class ActionProvider {
       ...state,
       selectedProject: categoryId
     }));
+    this.addMessageToState(message);
+    await this.sleep(10000);
+    message = this.createChatBotMessage("¿Te puedo ayudar con algo más?",
+    {
+      widget: "moreHelpOptions",
+      withAvatar: true,
+      loading: true,
+      terminateLoading: true,
+    });
     this.addMessageToState(message);
   };
   
