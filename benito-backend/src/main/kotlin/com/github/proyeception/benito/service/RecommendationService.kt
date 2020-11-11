@@ -7,7 +7,8 @@ import org.slf4j.LoggerFactory
 
 open class RecommendationService(
     private val medusaClient: MedusaClient,
-    private val recommendationStorage: RecommendationStorage
+    private val recommendationStorage: RecommendationStorage,
+    private val keywordService: KeywordService
 ) {
 
     open fun recalculateRecommendations(
@@ -62,9 +63,28 @@ open class RecommendationService(
         )
     }
 
+    private fun obtainProjectRecommendations(recommendedProjects: List<ProjectRecommendationDTO>,
+                                             keywords: List<KeywordDTO>)
+    : List<ProjectLinkDTO> {
+        //val recommendations: MutableList<CreateRecommendationDTO> = mutableListOf()
+
+        val recommendations = recommendedProjects.sortedBy {
+            calculateScore(it.project_keywords, keywords) }
+            .take(4)
+            .map { ProjectLinkDTO(it.id, medusaClient.findProject(it.id).title) }
+
+        return recommendations
+    }
+
     private fun calculateScore(projectKeywords: List<KeywordDTO>, updatedProjectKeywords: List<KeywordDTO>): Double {
         val keywordNamesToCompare: List<String> = updatedProjectKeywords.map { it.name }
         return projectKeywords.filter { keywordNamesToCompare.contains(it.name) }.sumByDouble { it.score }
+    }
+
+    fun getRecommendedProjects(content: String): List<ProjectLinkDTO> {
+        val keywords = keywordService.getKeywordsFromText(content)
+        val recommendations = recommendationStorage.findProjectRecommendationsWithKeyword(keywords)
+        return obtainProjectRecommendations(recommendations, keywords)
     }
 
     companion object {

@@ -108,10 +108,12 @@ open class ServiceModule {
     @Bean
     open fun recommendationService(
         medusaClient: MedusaClient,
-        recommendationStorage: RecommendationStorage
+        recommendationStorage: RecommendationStorage,
+        keywordService: KeywordService
     ): RecommendationService = RecommendationService(
         medusaClient = medusaClient,
-        recommendationStorage = recommendationStorage
+        recommendationStorage = recommendationStorage,
+        keywordService = keywordService
     )
 
     @Bean
