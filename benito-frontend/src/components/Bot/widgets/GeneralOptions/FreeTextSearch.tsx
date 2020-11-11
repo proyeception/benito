@@ -6,41 +6,42 @@ import { ERROR, PENDING } from "../../../../hooks/withFetch";
 import withTopCategories from "../../../../hooks/withTopCategories";
 import { RootState } from "../../../../reducers";
 import { SessionState } from "../../../../store/session/types";
-import { CategoryReference } from "../../../../types";
+import { CategoryReference, ProjectReference } from "../../../../types";
 import Spinner from "../../../Spinner/Spinner";
 
 import Options from "../Options/Options";
 import ChatBotError from "./ChatBotError";
+import withRecommendedProjectsByText from "../../../../hooks/withRecommendedProjectsByText";
 
 interface GeneralOptionsProps extends RouteComponentProps {
   session?: SessionState;
 }
 
-const CategoriesOptions = (props: GeneralOptionsProps | any) => {
+const FreeTextSearch = (props: GeneralOptionsProps | any) => {
 
-  const [categories, setCategories] = useState<Array<CategoryReference>>([]);
+    const [projects, setProjects] = useState<Array<ProjectReference>>([]);
+    const [mappedProjects, setMappedProjects] = useState<Array<any>>([]);
 
-  function createOptionFromCategory(category: CategoryReference){
+  function createOptionFromRecommendedProjectsByText(project: ProjectReference){
     return {
-      name: category.name,
+      name: project.title,
       handler: props.actionProvider.handleCategory,
-      id: category.id
+      id: project.projectId
     }
   }  
 
-  const res = withTopCategories((result) => {
-    setCategories(result.categories)
+  let textSearch: string = props.textSearch
+  console.log('text search: ', textSearch)
+
+  const res = withRecommendedProjectsByText(textSearch, (result) => {
+    setProjects(result.projects);
+    setMappedProjects(result.projects.map(
+      (p) => createOptionFromRecommendedProjectsByText(p)))
   })
 
   let color: string = "#c41234"
   if(props.session && props.session.isLoggedIn  && props.session.selectedOrganization){
     color = props.session.selectedOrganization.color
-  }
-
-  let notSureOption = {
-    name: "No estoy seguro...",
-    handler: props.actionProvider.handleNotSureOption,
-    id: "1"
   }
 
   if (res.type == PENDING) {
@@ -50,12 +51,8 @@ const CategoriesOptions = (props: GeneralOptionsProps | any) => {
   if ( res.type == ERROR) {
     return <ChatBotError/>;
   }
-
-  let mappedResults = categories.map(
-    (c) => createOptionFromCategory(c)
-  )
   
-  return  <Options options={mappedResults.concat(notSureOption)} color={color} {...props}/>;
+  return  <Options options={mappedProjects} color={color} {...props}/>;
 };
 
 const mapStateToProps = (rootState: RootState) => {
@@ -65,4 +62,4 @@ const mapStateToProps = (rootState: RootState) => {
   };
 };
 
-export default hot(module)(connect(mapStateToProps)(withRouter(CategoriesOptions)));
+export default hot(module)(connect(mapStateToProps)(withRouter(FreeTextSearch)));

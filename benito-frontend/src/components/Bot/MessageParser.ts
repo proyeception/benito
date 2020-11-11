@@ -8,6 +8,10 @@ class MessageParser {
 
   parse(message:String) {
 
+    if(this.state.waitingTextSearch) {
+      return this.actionProvider.handleTextSearch(message);
+    }
+
     if(this.state.canWrite)
     {
       return this.actionProvider.handleProjectParse();

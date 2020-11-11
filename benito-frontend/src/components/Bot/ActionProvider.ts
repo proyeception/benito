@@ -269,6 +269,41 @@ class ActionProvider {
     this.restart(5000)      
   };
 
+  handleNotSureOption = async (userMessage : String) => {
+    this.addUserMessage(userMessage)
+    await this.sleep(1000);
+    let message = this.createChatBotMessage(
+      `Entiendo! Lo que podés hacer es contarme un poco acerca del tipo de proyecto que querés buscar.
+      Por ejemplo me podés escribir "proyectos que traten sobre ciudades digitales en Argentina"
+      y con eso voy a realizar una búsqueda para encontrar aquellos que más se ajusten a lo pedido!`
+    );
+    this.setState((state:any) => ({
+      ...state,
+      waitingTextSearch: true
+    }))
+    this.addMessageToState(message);
+  };
+
+  handleTextSearch = async (textSearch : String) => {
+    await this.sleep(1000);
+    this.setState((state:any) => ({
+      ...state,
+      waitingTextSearch: false,
+      textSearch: textSearch
+    }))
+    let message = this.createChatBotMessage(
+      `Obteniendo resultados...`,
+      {
+        widget: "freeTextSearch",
+        withAvatar: true,
+        loading: true,
+        terminateLoading: true,
+      }
+    );
+    this.addMessageToState(message);
+    this.restart(10000)
+  };
+
   restart = async (ms: number) => {
     await this.sleep(ms);
     let message = this.createChatBotMessage("¿Te puedo ayudar con algo más?",

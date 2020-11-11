@@ -31,6 +31,7 @@ import { updateSessionState, updateSessionStateChatbot } from "../../actions/ses
 import OtherDoubt from "./widgets/GeneralOptions/OtherDoubt";
 import RedirectToProject from "./widgets/GeneralOptions/RedirectToProject";
 import RedirectToSearch from "./widgets/GeneralOptions/RedirectToSearch";
+import FreeTextSearch from "./widgets/GeneralOptions/FreeTextSearch";
 import ProyectabotAvatar from "./components/ProyectabotAvatar"
 
 interface ProyectabotProps extends RouteComponentProps {
@@ -76,7 +77,7 @@ const Proyectabot = (props: ProyectabotProps) => {
     /*customComponents: {
       botAvatar: (props:any) => <ProyectabotAvatar {...props} />,
     },*/
-    state: {canWrite:false, selectedCategory: "", selectedProject: ""},
+    state: {canWrite:false, selectedCategory: "", selectedProject: "", waitingTextSearch: false, textSearch: ""},
     initialMessages: [
       createChatBotMessage(`Hola, soy ${botName}`,
       {
@@ -144,6 +145,11 @@ const Proyectabot = (props: ProyectabotProps) => {
         widgetName: "redirectToSearch",
         widgetFunc: (props:any) => <RedirectToSearch {...props} />,
         mapStateToProps: ["selectedCategory", "selectedProject"],
+      },
+      {
+        widgetName: "freeTextSearch",
+        widgetFunc: (props:any) => <FreeTextSearch {...props} />,
+        mapStateToProps: ["textSearch"],
       },
     ],
 
