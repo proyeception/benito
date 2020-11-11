@@ -1,5 +1,7 @@
 import { updateSessionStateChatbot } from "../../actions/session";
 import store from "../../store";
+import { REFRESH } from "../../store/search/types";
+import { updateFetchStatus } from "../../actions/search";
 
 class ActionProvider {
   createChatBotMessage : any
@@ -263,7 +265,8 @@ class ActionProvider {
       selectedProject: categoryId
     }));
     this.addMessageToState(message);
-    this.restart(5000)
+    store.dispatch(updateFetchStatus(REFRESH))
+    this.restart(5000)      
   };
 
   restart = async (ms: number) => {

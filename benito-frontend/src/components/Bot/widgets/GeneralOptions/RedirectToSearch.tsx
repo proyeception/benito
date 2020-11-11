@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { hot } from "react-hot-loader";
 import { connect } from "react-redux";
 import { Redirect, RouteComponentProps, withRouter } from "react-router-dom";
-import { ERROR, PENDING } from "../../../../hooks/withFetch";
-import withTopProjectsByCategory from "../../../../hooks/withTopProjectsByCategory";
 import { RootState } from "../../../../reducers";
 import { SessionState } from "../../../../store/session/types";
-import { CategoryReference, ProjectReference, SearchParams, Category, SortMethod } from "../../../../types";
+import { SearchParams, Category, SortMethod } from "../../../../types";
 import { buildQueryParams } from "../../../../functions/search";
 
 interface GeneralOptionsProps extends RouteComponentProps {
@@ -23,7 +21,8 @@ const RedirectToProject = (props: GeneralOptionsProps | any) => {
     category: category.tagName,
     orderBy: SortMethod.ViewsDesc
   }
-  return <Redirect to={{ pathname: `/search`, search: buildQueryParams(searchParams) }} />;
+  
+  return <Redirect push to={{ pathname: `/search`, search: buildQueryParams(searchParams) }} />;
 };
 
 const mapStateToProps = (rootState: RootState) => {
