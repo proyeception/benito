@@ -15,7 +15,7 @@ const TitleInput = (props: TitleInputProps) => (
   <TextField
     label="Título"
     fullWidth
-    onChange={(e) => store.dispatch(updateTitle(e.target.value))}
+    onChange={(e) => {store.dispatch(updateTitle(e.target.value.replace(/[^A-Za-z0-9áéíóúÁÉÍÓÚÜü ?!ñÑ¿¡]/, "")))}}
     value={props.title}
     variant={props.variant}
   />

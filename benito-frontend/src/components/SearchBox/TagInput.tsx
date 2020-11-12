@@ -15,7 +15,7 @@ const TagInput = (props: TagInputProps) => (
   <TextField
     label="Tag"
     fullWidth
-    onChange={(e) => store.dispatch(updateTag(e.target.value))}
+    onChange={(e) => store.dispatch(updateTag(e.target.value.replace(/[^A-Za-z0-9áéíóúÁÉÍÓÚÜü ?!ñÑ¿¡]/, "")))}
     value={props.tag}
     variant={props.variant}
   />

@@ -15,7 +15,7 @@ const KeywordInput = (props: KeywordInputProps) => (
   <TextField
     label="Palabra clave"
     fullWidth
-    onChange={(e) => store.dispatch(updateKeyword(e.target.value))}
+    onChange={(e) => store.dispatch(updateKeyword(e.target.value.replace(/[^A-Za-z0-9áéíóúÁÉÍÓÚÜü ?!ñÑ¿¡]/, "")))}
     value={props.keyword}
     variant={props.variant}
   />
