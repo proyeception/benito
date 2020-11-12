@@ -12,6 +12,10 @@ class MessageParser {
       return this.actionProvider.handleTextSearch(message);
     }
 
+    if(this.state.canWrite)
+    {
+      return this.actionProvider.handleProjectParse();
+    }
     return this.actionProvider.handleDefault();
   };
 }

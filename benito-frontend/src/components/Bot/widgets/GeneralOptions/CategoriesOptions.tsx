@@ -48,7 +48,9 @@ const CategoriesOptions = (props: GeneralOptionsProps | any) => {
   }
 
   if ( res.type == ERROR) {
-    return <ChatBotError/>;
+    console.error("errorrrrr")
+    props.actionProvider.error()
+    return <div></div>;
   }
 
   let mappedResults = categories.map(

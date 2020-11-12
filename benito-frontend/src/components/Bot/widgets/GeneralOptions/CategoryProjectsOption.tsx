@@ -52,7 +52,8 @@ const CategoryProjectsOption = (props: GeneralOptionsProps | any) => {
   }
 
   if ( res.type == ERROR) {
-    return <ChatBotError/>;
+    //props.actionProvider.error()
+    return <div></div>;
   }
   
   if(mappedProjects.length > 0){

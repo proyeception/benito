@@ -49,7 +49,8 @@ const FreeTextSearch = (props: GeneralOptionsProps | any) => {
   }
 
   if ( res.type == ERROR) {
-    return <ChatBotError/>;
+    //props.actionProvider.error()
+    return <div></div>;
   }
   
   return  <Options options={mappedProjects} color={color} {...props}/>;
