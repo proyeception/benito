@@ -14,10 +14,12 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Controller
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import javax.servlet.http.Cookie
 import javax.servlet.http.HttpServletResponse
+import javax.validation.constraints.Pattern
 
 @Controller
 open class ProjectController(
@@ -43,21 +45,35 @@ open class ProjectController(
         @RequestParam(required = false) page: Int?,
         @RequestParam(required = false) tag: String?,
         @RequestHeader(required = false, value = X_QUI_TOKEN) sessionToken: String?
-    ): SearchProjectDTO = projectService.findProjects(
-        orderBy = orderBy,
-        from = from,
-        to = to,
-        title = title,
-        category = category,
-        keyword = keyword,
-        page = page,
-        authorName = authorName,
-        authorId = authorId,
-        organizationId = organizationId,
-        organizationName = organizationName,
-        tag = tag
-    ).let { sp ->
-        sp.copy(projects = sp.projects)
+    ): SearchProjectDTO {
+        var newTitle : String? = title
+        if(title != null){
+            newTitle = title.replace(Regex("[^A-Za-z0-9áéíóúÁÉÍÓÚÜü ?!ñÑ¿¡]"), "")
+        }
+        var newKeyword : String? = keyword
+        if(keyword != null){
+            newKeyword = keyword.replace(Regex("[^A-Za-z0-9áéíóúÁÉÍÓÚÜü ?!ñÑ¿¡]"), "")
+        }
+        var newTag : String? = tag
+        if(tag != null){
+            newTag = tag.replace(Regex("[^A-Za-z0-9áéíóúÁÉÍÓÚÜü ?!ñÑ¿¡]"), "")
+        }
+        return projectService.findProjects(
+                orderBy = orderBy,
+                from = from,
+                to = to,
+                title = newTitle,
+                category = category,
+                keyword = newKeyword,
+                page = page,
+                authorName = authorName,
+                authorId = authorId,
+                organizationId = organizationId,
+                organizationName = organizationName,
+                tag = newTag
+        ).let { sp ->
+            sp.copy(projects = sp.projects)
+        }
     }
 
     @RequestMapping("/benito/projects/featured", method = [RequestMethod.GET])
