@@ -47,8 +47,6 @@ const CategoriesOptions = (props: GeneralOptionsProps | any) => {
     return <Spinner color={color}/>;
   }
 
-  console.error(res.type)
-
   if ( res.type == ERROR) {
     if(showMessage){
       setShowMessage(false)
