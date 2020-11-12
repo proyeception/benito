@@ -2,7 +2,6 @@ package com.github.proyeception.benito.dto
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDate
 
 data class ErrorDTO(
@@ -212,12 +211,12 @@ data class PersonRefDTO(
 data class RecommendationDTO(
     val id: String?,
     val score: Double,
-    @JsonProperty("project") val projectId: String
+    @JsonProperty("project") val project: String
 ){
     constructor(medusa: MedusaRecommendationDTO) : this(
         id = medusa.id,
         score = medusa.score,
-        projectId = medusa.project
+        project = medusa.project
     )
 }
 
