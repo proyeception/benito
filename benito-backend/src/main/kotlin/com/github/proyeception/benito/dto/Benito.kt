@@ -214,12 +214,12 @@ data class PersonRefDTO(
 data class RecommendationDTO(
     val id: String?,
     val score: Double,
-    @JsonProperty("project") val projectId: String
+    @JsonProperty("project") val project: String
 ){
     constructor(medusa: MedusaRecommendationDTO) : this(
         id = medusa.id,
         score = medusa.score,
-        projectId = medusa.project
+        project = medusa.project
     )
 }
 
