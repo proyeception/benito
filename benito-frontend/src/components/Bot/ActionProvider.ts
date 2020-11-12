@@ -39,6 +39,10 @@ class ActionProvider {
         terminateLoading: true,
       }
     );
+    this.setState((state:any) => ({
+      ...state,
+      waitingTextSearch: true
+    }))
     this.addMessageToState(message);
   };
 
