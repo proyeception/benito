@@ -21,6 +21,7 @@ const FreeTextSearch = (props: GeneralOptionsProps | any) => {
 
     const [projects, setProjects] = useState<Array<ProjectReference>>([]);
     const [mappedProjects, setMappedProjects] = useState<Array<any>>([]);
+    const [showMessage, setShowMessage] = useState(true);
 
   function createOptionFromRecommendedProjectsByText(project: ProjectReference){
     return {
@@ -49,7 +50,10 @@ const FreeTextSearch = (props: GeneralOptionsProps | any) => {
   }
 
   if ( res.type == ERROR) {
-    //props.actionProvider.error()
+    if(showMessage){
+      setShowMessage(false)
+      props.actionProvider.error()
+    }
     return <div></div>;
   }
   

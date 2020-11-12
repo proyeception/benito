@@ -21,6 +21,7 @@ const CategoryProjectsOption = (props: GeneralOptionsProps | any) => {
 
   const [projects, setProjects] = useState<Array<ProjectReference>>([]);
   const [mappedProjects, setMappedProjects] = useState<Array<any>>([]);
+  const [showMessage, setShowMessage] = useState(true);
 
   function createOptionFromProject(project: ProjectReference){
     return {
@@ -51,8 +52,13 @@ const CategoryProjectsOption = (props: GeneralOptionsProps | any) => {
     return <Spinner color={color}/>;
   }
 
-  if ( res.type == ERROR) {
-    //props.actionProvider.error()
+  console.error(res.type)
+
+  if (res.type == ERROR) {
+    if(showMessage){
+      setShowMessage(false)
+      props.actionProvider.error()
+    }
     return <div></div>;
   }
   

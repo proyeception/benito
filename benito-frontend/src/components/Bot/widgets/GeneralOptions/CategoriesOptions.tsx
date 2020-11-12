@@ -10,7 +10,6 @@ import { CategoryReference } from "../../../../types";
 import Spinner from "../../../Spinner/Spinner";
 
 import Options from "../Options/Options";
-import ChatBotError from "./ChatBotError";
 
 interface GeneralOptionsProps extends RouteComponentProps {
   session?: SessionState;
@@ -19,6 +18,7 @@ interface GeneralOptionsProps extends RouteComponentProps {
 const CategoriesOptions = (props: GeneralOptionsProps | any) => {
 
   const [categories, setCategories] = useState<Array<CategoryReference>>([]);
+  const [showMessage, setShowMessage] = useState(true);
 
   function createOptionFromCategory(category: CategoryReference){
     return {
@@ -47,9 +47,13 @@ const CategoriesOptions = (props: GeneralOptionsProps | any) => {
     return <Spinner color={color}/>;
   }
 
+  console.error(res.type)
+
   if ( res.type == ERROR) {
-    console.error("errorrrrr")
-    props.actionProvider.error()
+    if(showMessage){
+      setShowMessage(false)
+      props.actionProvider.error()
+    }
     return <div></div>;
   }
 
