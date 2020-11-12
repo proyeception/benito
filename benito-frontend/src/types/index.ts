@@ -11,7 +11,7 @@ export type Project = {
   documentation?: Array<Documentation>;
   organization: Organization;
   keywordMatchingDocs: Array<Documentation>;
-  category: string;
+  category?: string;
   views: string;
 };
 
@@ -103,6 +103,8 @@ export type UpdateUser = {
 export enum SortMethod {
   DateAsc = "DATE_ASC",
   DateDesc = "DATE_DESC",
+  AlphaAsc = "ALPHA_ASC",
+  AlphaDesc = "ALPHA_DESC",
   ViewsAsc = "VIEWS_ASC",
   ViewsDesc = "VIEWS_DESC",
 }
@@ -121,37 +123,55 @@ export type SearchParams = {
 };
 
 export type OrganizationQuantityType = {
-  organization: string;
-  quantity: number;
-};
+  organization: string,
+  quantity: number
+}
 
 export type ProjectCreationTimelineType = {
-  category: string;
-  quantities: Array<QuantityPerYear>;
-};
+  category: string,
+  quantities: Array<QuantityPerYear>
+}
 
 export type QuantityPerYear = {
-  year: string;
-  quantity: number;
-};
+  year: string,
+  quantity: number
+}
 
 export type TopProject = {
-  projectId: string;
-  title: string;
-  pictureUrl: string | null | undefined;
-  views: number;
-};
+  projectId: string,
+  title: string,
+  pictureUrl: string | null | undefined,
+  views: number
+}
 
 export type TopTag = {
-  tag: string;
-  searchCount: number;
-};
+  tag: string,
+  searchCount: number
+}
 
 export type CategoryQuantityType = {
-  category: string;
-  quantity: number;
-};
+  category: string,
+  quantity: number
+}
 
 export type ProjectCount = {
-  total: number;
-};
+  total: number
+}
+
+export type TopCategories = {
+  categories: Array<CategoryReference>
+}
+
+export type CategoryReference = {
+  id: String,
+  name: String
+}
+
+export type RecommendedProjects = {
+  projects: Array<ProjectReference>
+}
+
+export type ProjectReference = {
+  id: string,
+  name: string
+}

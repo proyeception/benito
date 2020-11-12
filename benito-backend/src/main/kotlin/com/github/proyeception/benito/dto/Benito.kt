@@ -2,6 +2,7 @@ package com.github.proyeception.benito.dto
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDate
 
 data class ErrorDTO(
@@ -13,6 +14,8 @@ data class ErrorDTO(
 enum class OrderDTO(val sortMethod: String) {
     DATE_ASC("creation_date:ASC"),
     DATE_DESC("creation_date:DESC"),
+    ALPHA_ASC("title:ASC"),
+    ALPHA_DESC("title:DESC"),
     VIEWS_ASC("views:ASC"),
     VIEWS_DESC("views:DESC")
 }
@@ -175,6 +178,15 @@ data class CreateProjectDTO(
     val categoryId: String
 )
 
+data class CategoryListDTO(
+    val categories: List<CategoryRefDTO>
+)
+
+data class CategoryRefDTO(
+    val id: String,
+    val name: String
+)
+
 data class PersonRefDTO(
     val id: String,
     val fullName: String,
@@ -266,4 +278,13 @@ data class AuthorSignUpDTO(
     val token: String,
     val fullName: String,
     val profilePictureUrl: String?
+)
+
+data class ProjectLinkDTO(
+    val id: String,
+    val name: String
+)
+
+data class ProjectLinksDTO(
+    val projects: List<ProjectLinkDTO>
 )

@@ -7,6 +7,7 @@ import { X_CUSTOMIZATION_TOKEN } from "./functions/session";
 const defaultState: RootState = {
   session: {
     isLoggedIn: false,
+    chatBotOpen: false
   },
   home: {
     featuredProjects: [],

@@ -146,4 +146,16 @@ open class StatsService(
     fun searchCount(): CountDTO {
         return statsStorage.searchCount()
     }
+
+    fun top4categories(): List<CategoryRefDTO> {
+        return projectsXcategory(null).take(4).map {
+            val categoryName = it.category
+            val categoryId = categoriesService.categories().find{ it.name == categoryName}?.id
+            CategoryRefDTO(categoryId!!, it.category)
+        }
+    }
+
+    fun topProjectsFromCategory(categoryId: String): List<ProjectLinkDTO> {
+        return topProjects(categoryId, null, null).take(4).map{ProjectLinkDTO(it.projectId, it.title)}
+    }
 }

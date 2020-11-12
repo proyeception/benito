@@ -4,7 +4,8 @@ import {
   UPDATE_SESSION_STATE,
   LoggedInState,
   UPDATE_SESSION_FULL_NAME,
-  UPDATE_SESSION_SELECTED_ORGANIZATION
+  UPDATE_SESSION_SELECTED_ORGANIZATION,
+  UPDATE_SESSION_STATE_CHATBOT
 } from "../../store/session/types";
 import { Organization } from "../../types";
 
@@ -12,6 +13,13 @@ export function updateSessionState(loginState: LoggedInState): SessionAction {
   return {
     type: UPDATE_SESSION_STATE,
     payload: loginState,
+  };
+}
+
+export function updateSessionStateChatbot(chatBotOpen: boolean): SessionAction {
+  return {
+    type: UPDATE_SESSION_STATE_CHATBOT,
+    payload: chatBotOpen,
   };
 }
 

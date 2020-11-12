@@ -85,6 +85,7 @@ const App = (props: AppProps) => {
     <ThemeProvider theme={theme}>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <Router history={browserHistory}>
+	<Proyectabot/>
           <Switch>
             <Route path="/projects/create" component={CreateProjectPage} />
             <Route path="/projects/:id/edit" component={EditProjectPage} />

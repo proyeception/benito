@@ -390,7 +390,7 @@ open class ProjectService(
         return runBlocking {
             project.recommendations
                 .take(4)
-                .map { asyncIO { findProject(it.projectId) } }.awaitAll()
+                .map { asyncIO { findProject(it.project) } }.awaitAll()
         }
     }
 

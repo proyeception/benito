@@ -3,7 +3,7 @@ import { updateSessionState } from "../../actions/session";
 import Cookies from "js-cookie";
 import axios, { AxiosRequestConfig } from "axios";
 import { benitoHost } from "../../config";
-import { LoginData, Person, Session } from "../../types";
+import { LoginData, Organization, Person, Session } from "../../types";
 import { fetchUser, mapRoleToCollection } from "../user";
 import { toggleLoading } from "../../actions/common";
 
@@ -55,6 +55,7 @@ export async function openLocalStoredSession(cb?: () => void) {
           isLoggedIn: true,
           organizations: person.organizations,
           selectedOrganization: person.organizations[0],
+          chatBotOpen: false
         })
       );
     } catch (e) {

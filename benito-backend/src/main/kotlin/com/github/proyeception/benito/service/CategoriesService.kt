@@ -1,5 +1,6 @@
 package com.github.proyeception.benito.service
 
+import com.github.proyeception.benito.dto.CategoryDTO
 import com.github.proyeception.benito.dto.CountDTO
 import com.github.proyeception.benito.snapshot.CategorySnapshot
 

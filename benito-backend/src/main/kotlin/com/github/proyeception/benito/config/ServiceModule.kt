@@ -44,7 +44,9 @@ open class ServiceModule {
     @Bean
     open fun categoriesService(
         categorySnapshot: CategorySnapshot
-    ): CategoriesService = CategoriesService(categorySnapshot = categorySnapshot)
+    ): CategoriesService = CategoriesService(
+        categorySnapshot = categorySnapshot
+    )
 
     @Bean
     open fun documentService(
@@ -105,10 +107,12 @@ open class ServiceModule {
     @Bean
     open fun recommendationService(
         medusaClient: MedusaClient,
-        recommendationStorage: RecommendationStorage
+        recommendationStorage: RecommendationStorage,
+        keywordService: KeywordService
     ): RecommendationService = RecommendationService(
         medusaClient = medusaClient,
-        recommendationStorage = recommendationStorage
+        recommendationStorage = recommendationStorage,
+        keywordService = keywordService
     )
 
     @Bean
