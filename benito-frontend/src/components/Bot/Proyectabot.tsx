@@ -74,9 +74,9 @@ const Proyectabot = (props: ProyectabotProps) => {
         backgroundColor: color,
       },
     },
-    /*customComponents: {
+    customComponents: {
       botAvatar: (props:any) => <ProyectabotAvatar {...props} />,
-    },*/
+    },
     state: {canWrite:false, selectedCategory: "", selectedProject: "", waitingTextSearch: false, textSearch: ""},
     initialMessages: [
       createChatBotMessage(`Hola, soy ${botName}`,
