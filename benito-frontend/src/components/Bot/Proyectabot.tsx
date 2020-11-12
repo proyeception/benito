@@ -167,8 +167,8 @@ const Proyectabot = (props: ProyectabotProps) => {
       </div>
       <Collapse in = {props.session!.chatBotOpen} className = "app-chatbot-container">
                 <Chatbot
-                  /*headerText="Conversación con Proyectabot" 
-                  placeholderText="Escribí acá para conversar"*/
+                  headerText="Conversación con Proyectabot" 
+                  placeholderText="Escribí acá para conversar"
                   config={config}
                   messageParser={MessageParser}
                   actionProvider={ActionProvider}            
