@@ -301,7 +301,6 @@ class ActionProvider {
       }
     );
     this.addMessageToState(message);
-    this.restart(10000)
   };
 
   restart = async (ms: number) => {

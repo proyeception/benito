@@ -3,7 +3,7 @@ import withFetch, { FetchStatus } from "./withFetch";
 
 const withRecommendedProjectsByText = (textSearch: string, andThen?: (p: RecommendedProjects) => void): FetchStatus<RecommendedProjects> => {
   const [recommendations] = withFetch<RecommendedProjects>(
-    `projects/${textSearch}/recommendations`, (e) => {
+    `recommendations-by-text?textSearch=${textSearch}`, (e) => {
       if (andThen) {
         andThen(e);
       }

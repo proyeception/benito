@@ -171,6 +171,6 @@ export type RecommendedProjects = {
 }
 
 export type ProjectReference = {
-  projectId: string,
-  title: string
+  id: string,
+  name: string
 }

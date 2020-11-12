@@ -6,7 +6,7 @@ import { ERROR, PENDING } from "../../../../hooks/withFetch";
 import withTopCategories from "../../../../hooks/withTopCategories";
 import { RootState } from "../../../../reducers";
 import { SessionState } from "../../../../store/session/types";
-import { CategoryReference, ProjectReference } from "../../../../types";
+import { CategoryReference, ProjectReference, RecommendedProjects } from "../../../../types";
 import Spinner from "../../../Spinner/Spinner";
 
 import Options from "../Options/Options";
@@ -24,9 +24,9 @@ const FreeTextSearch = (props: GeneralOptionsProps | any) => {
 
   function createOptionFromRecommendedProjectsByText(project: ProjectReference){
     return {
-      name: project.title,
-      handler: props.actionProvider.handleCategory,
-      id: project.projectId
+      name: project.name,
+      handler: props.actionProvider.handleProjectSelected,
+      id: project.id
     }
   }  
 

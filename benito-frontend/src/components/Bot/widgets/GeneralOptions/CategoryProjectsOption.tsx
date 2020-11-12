@@ -22,7 +22,7 @@ const CategoryProjectsOption = (props: GeneralOptionsProps | any) => {
   const [projects, setProjects] = useState<Array<ProjectReference>>([]);
   const [mappedProjects, setMappedProjects] = useState<Array<any>>([]);
 
-  function createOptionFromProject(project: any){
+  function createOptionFromProject(project: ProjectReference){
     return {
       name: project.name,
       handler: props.actionProvider.handleProjectSelected,
