@@ -34,6 +34,12 @@ const FreeTextSearch = (props: GeneralOptionsProps | any) => {
     }
   }  
 
+  let none = {
+    name: "Ninguno me interesa",
+    handler: props.actionProvider.handleNoProjectSelected,
+    id: "1"
+  }
+
   let textSearch: string = props.textSearch
   console.log('text search: ', textSearch)
 
@@ -64,7 +70,7 @@ const FreeTextSearch = (props: GeneralOptionsProps | any) => {
     return <div></div>;
   }
   if (!emptyResult) {
-    return  <Options options={mappedProjects} color={color} {...props} cropped={true} />;
+    return  <Options options={mappedProjects.concat(none)} color={color} {...props} cropped={true} />;
   } else {
     if(!finished) {
       console.log('no projects found')

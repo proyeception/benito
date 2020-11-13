@@ -318,14 +318,43 @@ class ActionProvider {
 
   handleEmptyProjectResult = async () => {
     let message = this.createChatBotMessage(
-      `No encontré proyectos :(
-        ¿Te gustaría hacer otra búsqueda?`,
+      `No encontré proyectos :(`
+      );
+    this.addMessageToState(message);
+    await this.sleep(1500);
+    message = this.createChatBotMessage(
+      `¿Te gustaría hacer otra búsqueda?`,
     {
       widget: "additionalSearchOptions",
       withAvatar: true,
       loading: true,
       terminateLoading: true,
     });
+    this.setState((state:any) => ({
+      ...state,
+      waitingTextSearch: true
+    }))
+    this.addMessageToState(message);
+  }
+
+  handleNoProjectSelected = async () => {
+    let message = this.createChatBotMessage(
+      `Lo siento :(`
+      );
+    this.addMessageToState(message);
+    await this.sleep(1500);
+    message = this.createChatBotMessage(
+      `¿Te gustaría hacer otra búsqueda?`,
+    {
+      widget: "additionalSearchOptions",
+      withAvatar: true,
+      loading: true,
+      terminateLoading: true,
+    });
+    this.setState((state:any) => ({
+      ...state,
+      waitingTextSearch: true
+    }))
     this.addMessageToState(message);
   }
 
