@@ -22,6 +22,7 @@ import MoreHelpOptions from "./widgets/GeneralOptions/MoreHelpOptions"
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import ReportErrorOption from "./widgets/GeneralOptions/ReportErrorOption";
 import CategoryProjectsOption from "./widgets/GeneralOptions/CategoryProjectsOption";
+import AdditionalSearchOptions from "./widgets/GeneralOptions/AdditionalSearchOptions";
 import { CategoryReference } from "../../types";
 import { EmojiEmotions, Sms } from "@material-ui/icons";
 import QuestionOptions from "./widgets/GeneralOptions/QuestionOptions";
@@ -150,6 +151,10 @@ const Proyectabot = (props: ProyectabotProps) => {
         widgetName: "freeTextSearch",
         widgetFunc: (props:any) => <FreeTextSearch {...props} />,
         mapStateToProps: ["textSearch"],
+      },
+      {
+        widgetName: "additionalSearchOptions",
+        widgetFunc: (props:any) => <AdditionalSearchOptions {...props} />,
       },
     ],
 

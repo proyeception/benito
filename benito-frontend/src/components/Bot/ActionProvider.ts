@@ -316,6 +316,19 @@ class ActionProvider {
     this.addMessageToState(message);
   };
 
+  handleEmptyProjectResult = async () => {
+    let message = this.createChatBotMessage(
+      `No encontré proyectos :(
+        ¿Te gustaría hacer otra búsqueda?`,
+    {
+      widget: "additionalSearchOptions",
+      withAvatar: true,
+      loading: true,
+      terminateLoading: true,
+    });
+    this.addMessageToState(message);
+  }
+
   restart = async (ms: number) => {
     await this.sleep(ms);
     let message = this.createChatBotMessage("¿Te puedo ayudar con algo más?",
