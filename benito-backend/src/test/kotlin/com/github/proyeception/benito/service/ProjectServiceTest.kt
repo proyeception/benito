@@ -28,13 +28,13 @@ class ProjectServiceTest : Spec() {
         val documentService: DocumentService = getMock()
         val fileServiceMock: FileService = getMock()
         val medusaGraphClientMock: MedusaGraphClient = getMock()
-        val keywordService = KeywordService()
+        val keywordService: KeywordService = getMock()
         val recommendationService: RecommendationService = getMock()
         val driveClientMock: GoogleDriveClient = getMock()
         val driveStorageMock: DriveStorage = getMock()
         val statsService: StatsService = getMock()
         val categoriesService: CategoriesService = getMock()
-	val permissionStorageMock: PermissionsStorage = getMock()
+	    val permissionStorageMock: PermissionsStorage = getMock()
         val projectService = ProjectService(
             medusaClient = medusaClient,
             documentParser = documentParserMock,

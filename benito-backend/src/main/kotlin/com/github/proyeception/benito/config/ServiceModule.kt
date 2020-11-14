@@ -10,6 +10,7 @@ import com.github.proyeception.benito.storage.*
 import com.github.proyeception.benito.utils.FileHelper
 import com.github.proyeception.benito.utils.HashHelper
 import org.springframework.context.annotation.Bean
+import com.typesafe.config.Config
 
 open class ServiceModule {
     @Bean
@@ -116,7 +117,11 @@ open class ServiceModule {
     )
 
     @Bean
-    open fun keywordService(): KeywordService = KeywordService()
+    open fun keywordService(
+        config: Config
+    ): KeywordService = KeywordService(
+        host = config.getString("pitonisio.host")
+    )
 
     @Bean
     open fun signUpService(

@@ -9,14 +9,13 @@ import edu.stanford.nlp.pipeline.StanfordCoreNLP
 import edu.stanford.nlp.util.CoreMap
 import org.slf4j.LoggerFactory
 import org.springframework.boot.web.client.RestTemplateBuilder
-import org.springframework.http.HttpEntity
-import org.springframework.http.HttpHeaders
-import ucar.httpservices.HTTPFactory.Post
 import java.util.*
 
-public class KeywordService() {
+open class KeywordService(
+    private val host: String
+) {
     open fun getKeywords(project: ProjectDTO): List<KeywordDTO> {
-        val url = "http://rochychipian.pythonanywhere.com/keywords"
+        val url = "$host/keywords"
         val map: MutableMap<String, String> = HashMap()
         val content = project.title + ". " + project.description + ". " + project.extraContent
 
@@ -25,15 +24,13 @@ public class KeywordService() {
         map["text"] = content
         map["stopwords"] = stopwords.dropLast(1).drop(1).toString()
 
-        val restService = RestService(RestTemplateBuilder());
-        val result = restService.postRequest(url, map)
+        val restService = RestService(RestTemplateBuilder())
 
-
-        return result
+        return restService.postRequest(url, map)
     }
 
     open fun getKeywordsFromText(content: String): List<KeywordDTO> {
-        val url = "http://rochychipian.pythonanywhere.com/keywords"
+        val url = "$host/keywords"
         val map: MutableMap<String, String> = HashMap()
 
         val stopwords = getStopwords(content)
@@ -41,7 +38,7 @@ public class KeywordService() {
         map["text"] = content
         map["stopwords"] = stopwords.dropLast(1).drop(1).toString()
 
-        val restService = RestService(RestTemplateBuilder());
+        val restService = RestService(RestTemplateBuilder())
         val result = restService.postRequest(url, map)
 
         return result
@@ -58,25 +55,24 @@ public class KeywordService() {
         map["text"] = cleanText
         map["stopwords"] = stopwords.dropLast(1).drop(1).toString()
 
-        val restService = RestService(RestTemplateBuilder());
+        val restService = RestService(RestTemplateBuilder())
         val result = restService.postRequestHashtags(url, map)
 
-        return result;
+        return result
     }
 
     fun getStopwords(text: String): List<String> {
         val props = Properties()
-        props["annotators"] = "tokenize, ssplit, pos, lemma, ner";
+        props["annotators"] = "tokenize, ssplit, pos, lemma, ner"
 
-        props.setProperty("tokenize.language", "es");
-        props.setProperty("pos.model", "edu/stanford/nlp/models/pos-tagger/spanish/spanish-distsim.tagger");
-        props.setProperty("ner.model", "edu/stanford/nlp/models/ner/spanish.ancora.distsim.s512.crf.ser.gz");
-        props.setProperty("ner.applyNumericClassifiers", "false");
-        props.setProperty("ner.useSUTime", "false");
+        props.setProperty("tokenize.language", "es")
+        props.setProperty("pos.model", "edu/stanford/nlp/models/pos-tagger/spanish/spanish-distsim.tagger")
+        props.setProperty("ner.model", "edu/stanford/nlp/models/ner/spanish.ancora.distsim.s512.crf.ser.gz")
+        props.setProperty("ner.applyNumericClassifiers", "false")
+        props.setProperty("ner.useSUTime", "false")
         val pipeline = StanfordCoreNLP(props)
 
-        //http://data.cervantesvirtual.com/blog/2017/07/17/libreria-corenlp-de-stanford-de-procesamiento-lenguage-natural-reconocimiento-entidades/
-        val document: Annotation = Annotation(text)
+        val document = Annotation(text)
         pipeline.annotate(document)
 
         val sentences: List<CoreMap> = document.get(CoreAnnotations.SentencesAnnotation::class.java)
@@ -95,8 +91,8 @@ public class KeywordService() {
     private fun getStopwords(stanfordResult: MutableMap<String, String>): List<String> {
         val stopwords: MutableList<String> = mutableListOf()
 
-        for(word in stanfordResult){
-            if(isStopword(word.value) && (word.value != ",")){
+        for (word in stanfordResult) {
+            if (isStopword(word.value) && (word.value != ",")) {
                 stopwords.add(word.key)
             }
         }
@@ -104,10 +100,11 @@ public class KeywordService() {
     }
 
     private fun isStopword(value: String): Boolean {
-        return STOPWORDS_CLASSES.any { value.startsWith(it)  }
+        return STOPWORDS_CLASSES.any { value.startsWith(it) }
     }
 
     companion object {
         private val STOPWORDS_CLASSES = listOf('c', 'd', 'f', 'i', 'p', 'r', 's', 'v', 'w', 'z')
+        private val LOGGER = LoggerFactory.getLogger(KeywordService::class.java)
     }
 }
