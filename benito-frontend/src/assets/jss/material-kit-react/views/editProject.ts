@@ -47,7 +47,7 @@ const editProjectStyle = (theme: Theme) =>
     },
     autocomplete: {
       paddingBottom: "10px",
-      paddingTop: "10px"
+      paddingTop: "15px"
     },
     datePicker: {
     },
