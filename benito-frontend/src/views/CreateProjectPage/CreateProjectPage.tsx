@@ -172,7 +172,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
   const [descriptionIncompleted, setDescriptionIncompleted] = React.useState(
     true
   );
-  const [dateIncompleted, setDateIncompleted] = React.useState(true);
+  const [dateIncompleted, setDateIncompleted] = React.useState(false);
   const [categoryIncompleted, setCategoryIncompleted] = React.useState(true);
   const [isLoading, setIsLoading] = React.useState(false);
   const [supervisorsIncompleted, setSupervisorsIncompleted] = React.useState(
@@ -530,7 +530,9 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
                 fullWidth
                 label="Año de publicacion"
                 views={["year"]}
-                value={creationDate || null}
+                maxDate={moment(moment().format("yyyy").toString() + "-12-31")}
+                minDate={moment("1/1/2000")}
+                value={creationDate || moment()}
                 onChange={(e) => {
                   if (
                     e &&
