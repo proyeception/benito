@@ -23,7 +23,7 @@ open class MongoConfig {
         val databaseName = mongoConfig.getString("db.name")
 
         val connectionString = ConnectionString(
-            "mongodb+srv://$user:$password@$host/$databaseName?retryWrites=true&w=majority"
+            "mongodb://$user:$password@$host/$databaseName?retryWrites=true"
         )
         val mongoClientSettings = MongoClientSettings.builder()
             .applyConnectionString(connectionString)
