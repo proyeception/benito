@@ -37,8 +37,7 @@ const DocumentsSection = ({ project }: DocumentsSectionProps) => {
               Año de publicación
             </GridItem>
             <GridItem xs={6} md={6} style={{ textAlign: "right" }}>
-              {moment(project.creationDate)
-                .add(1, "days")
+              {moment(project.creationDate, 'YYYY-MM-DD')
                 .format("yyyy")
                 .toString()}
             </GridItem>
