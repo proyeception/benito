@@ -35,7 +35,7 @@ class SignUpService(
         username = author.fullName.fromCamelToKebab(),
         mail = author.mail,
         googleToken = author.token,
-        organizationId = author.organization
+        organizationId = author.organizationId
     )
 
     companion object {

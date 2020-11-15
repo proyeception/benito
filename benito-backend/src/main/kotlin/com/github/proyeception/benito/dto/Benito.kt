@@ -274,7 +274,7 @@ data class CustomRecommendationDTO(
 data class AuthorSignUpDTO(
     val mail: String,
     val googleUserId: String,
-    val organization: String,
+    val organizationId: String,
     val token: String,
     val fullName: String,
     val profilePictureUrl: String?
