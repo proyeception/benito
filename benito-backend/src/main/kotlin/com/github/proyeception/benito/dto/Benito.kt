@@ -277,7 +277,7 @@ data class AuthorSignUpDTO(
     val organizationId: String,
     val token: String,
     val fullName: String,
-    val profilePictureUrl: String?
+    val profilePic: String?
 )
 
 data class ProjectLinkDTO(

@@ -165,7 +165,6 @@ const ProfileSection = (props: ProfileSectionProps) => {
                   setTwitter(lastTwitter);
                   setTwitterEnabled(true);
                 }
-                console.error(twitter)
               }}
               value="checkedA"
             />

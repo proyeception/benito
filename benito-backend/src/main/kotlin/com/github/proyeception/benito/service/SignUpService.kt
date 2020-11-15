@@ -30,7 +30,7 @@ class SignUpService(
 
     fun createAuthor(author: AuthorSignUpDTO): PersonDTO = userService.createAuthor(
         fullName = author.fullName,
-        profilePicUrl = author.profilePictureUrl,
+        profilePicUrl = author.profilePic,
         googleUserId = author.googleUserId,
         username = author.fullName.fromCamelToKebab(),
         mail = author.mail,

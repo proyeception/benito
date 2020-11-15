@@ -286,9 +286,12 @@ class ActionProvider {
     this.addUserMessage(userMessage)
     await this.sleep(1000);
     let message = this.createChatBotMessage(
-      `Entiendo! Lo que podés hacer es contarme un poco acerca del tipo de proyecto que querés buscar.
-      Por ejemplo me podés escribir "proyectos que traten sobre ciudades digitales en Argentina"
-      y con eso voy a realizar una búsqueda para encontrar aquellos que más se ajusten a lo pedido!`
+      `¡Entiendo! Contame un poco acerca del tipo de proyecto que querés buscar`
+    );
+    this.addMessageToState(message);
+    await this.sleep(2500);
+    message = this.createChatBotMessage(
+      `Por ejemplo me podés escribir "proyectos que traten sobre ciudades digitales en Argentina"`
     );
     this.setState((state:any) => ({
       ...state,

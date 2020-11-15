@@ -149,7 +149,6 @@ const LoginPage = (props: LoginPageProps) => {
                                   };
                                   startLogin(loginData, "author", () => {
                                     setError(true);
-                                    console.log("fuck");
                                     setIsLoading(false);
                                   });
                                 }}
@@ -217,8 +216,8 @@ const LoginPage = (props: LoginPageProps) => {
                                       googleInfo.googleId,
                                       googleInfo.profileObj.name,
                                       googleInfo.profileObj.email,
-                                      googleInfo.profileObj.imageUrl,
-                                      googleInfo.tokenId
+                                      googleInfo.tokenId,
+                                      googleInfo.profileObj.imageUrl
                                     )
                                       .then(() => setDisabled(false))
                                       .then(() => setSuccess(true))
