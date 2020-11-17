@@ -224,7 +224,7 @@ class UserServiceTest : Spec() {
                         googleUserId = "g-123",
                         googleToken = "123",
                         profilePic = profilePicFile.id,
-                        organization = null
+                        organizations = emptyList()
                     ),
                     UserType.AUTHOR
                 )).thenReturn(MedusaPersonDTO(
@@ -255,7 +255,7 @@ class UserServiceTest : Spec() {
                         googleUserId = "g-123",
                         googleToken = "123",
                         profilePic = null,
-                        organization = null
+                        organizations = emptyList()
                     ),
                     UserType.AUTHOR
                 )).thenReturn(MedusaPersonDTO(

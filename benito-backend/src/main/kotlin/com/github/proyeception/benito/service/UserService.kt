@@ -70,7 +70,7 @@ open class UserService(
             googleUserId = googleUserId,
             profilePic = image?.id,
             googleToken = googleToken,
-            organization = organizationId
+            organizations = organizationId?.let { listOf(it) } ?: emptyList()
         )
 
         medusaClient.createUser(person, UserType.AUTHOR)
