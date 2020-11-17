@@ -24,6 +24,7 @@ data class CountDTO(
     val total: Int
 )
 
+@Document(collection="projects")
 data class ProjectDTO(
     val id: String,
     val title: String,
