@@ -112,7 +112,7 @@ const CreateProjectPage = (props: CreateProjectPageProps) => {
   }
 
   const [title, setTitle] = useState<string | undefined>();
-  const [creationDate, setCreationDate] = useState<string | undefined>();
+  const [creationDate, setCreationDate] = useState<string | undefined>(moment().format("yyyy-MM-DD"));
   const [description, setDescription] = useState<string | undefined>();
   const [readme, setReadme] = useState<string | undefined>();
   const [authorsToAdd, setAuthorsToAdd] = useState<Array<Person>>([]);
