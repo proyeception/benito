@@ -5,6 +5,7 @@ import {
   TOGGLE_HAMBURGER_BUTTON,
   TOGGLE_LOADING,
   UPDATE_ORGANIZATIONS,
+  UPDATE_CUSTOMIZATION_TOKEN,
 } from "../../store/common/types";
 
 export function updateCategories(categories: Array<Category>): CommonAction {
@@ -32,5 +33,12 @@ export function updateOrganizations(orgs: Array<Organization>): CommonAction {
   return {
     type: UPDATE_ORGANIZATIONS,
     payload: orgs,
+  };
+}
+
+export function updateCustomizationToken(token: string): CommonAction {
+  return {
+    type: UPDATE_CUSTOMIZATION_TOKEN,
+    payload: token,
   };
 }

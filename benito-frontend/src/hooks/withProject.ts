@@ -2,6 +2,8 @@ import { Project } from "../types";
 import withFetch, { FetchStatus } from "./withFetch";
 import Cookies from "js-cookie";
 import { X_CUSTOMIZATION_TOKEN } from "../functions/session";
+import store from "../store";
+import { updateCustomizationToken } from "../actions/common";
 
 const withProject = (
   projectId: string,
@@ -18,6 +20,7 @@ const withProject = (
 
       if (customizationToken) {
         localStorage.setItem(X_CUSTOMIZATION_TOKEN, customizationToken);
+        store.dispatch(updateCustomizationToken(customizationToken));
       }
     },
     listener ? [listener] : []

@@ -5,6 +5,7 @@ import {
   TOGGLE_HAMBURGER_BUTTON,
   TOGGLE_LOADING,
   UPDATE_ORGANIZATIONS,
+  UPDATE_CUSTOMIZATION_TOKEN,
 } from "../../store/common/types";
 
 const defaultCommonState: CommonState = {
@@ -36,6 +37,12 @@ function commonReducer(state = defaultCommonState, action: CommonAction) {
       return {
         ...state,
         organizations: action.payload,
+      };
+    }
+    case UPDATE_CUSTOMIZATION_TOKEN: {
+      return {
+        ...state,
+        customizationToken: action.payload,
       };
     }
     default:
