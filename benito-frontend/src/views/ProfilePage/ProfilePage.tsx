@@ -26,7 +26,7 @@ import { cardTitle } from "../../assets/jss/material-kit-react";
 import Spinner from "../../components/Spinner/Spinner";
 import image from "../../assets/img/proyectate/pattern.jpg";
 import pictureNotFound from "../../assets/img/proyectate/picture.svg";
-import { ArrowBackIos } from "@material-ui/icons";
+import { ArrowBackIos, Edit } from "@material-ui/icons";
 import Pagination from "@material-ui/lab/Pagination";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import FacebookIcon from "@material-ui/icons/Facebook";
@@ -114,6 +114,12 @@ const ProfilePage = (props: ProfilePageProps) => {
     return <Redirect to={{ pathname: "/error" }} />;
   }
 
+  let showEdit = false 
+  if( props.session ) {
+    showEdit = props.session.isLoggedIn &&
+    user.value.id == props.session.userId;
+  } 
+
   return (
     <div>
       <Helmet>
@@ -140,8 +146,24 @@ const ProfilePage = (props: ProfilePageProps) => {
                     />
                   </div>
                   <div className={classes.name}>
-                    <h3 className={classes.title} style={{ color: color }}>
+                    <h3 className={classes.title} style={{ color: color}}>
                       {user.value.fullName}
+                      {showEdit ? (
+                        <span>
+                          <ThemeProvider theme={theme}>
+                          <Link to={`/me/profile`}>
+                            <Button
+                              type="button"
+                              endIcon
+                              >
+                              <Edit /> Editar
+                            </Button>
+                          </Link>
+                          </ThemeProvider>
+                        </span>
+                      ) : (
+                        <div></div>
+                        )}
                     </h3>
                     <br />
                     {user.value.socials.twitter &&
