@@ -49,7 +49,9 @@ public class LoggingFilter implements Filter {
         "/benito/projects/.*/picture",
         "/benito/projects/.*/documents",
         "/benito/author/login",
-        "/benito/supervisor/login"
+        "/benito/supervisor/login",
+        "/benito/authors/sign-up",
+        "/benito/supervisors/sign-up"
     );
 
     private static final List<String> EXCLUDED_URIS_RESPONSE_BODY = ImmutableList.of(
@@ -59,7 +61,9 @@ public class LoggingFilter implements Filter {
         "/benito/supervisor/login",
         "/benito/users/recommendations",
         "/benito/authors/.*",
-        "/benito/supervisors/.*"
+        "/benito/supervisors/.*",
+        "/benito/top-projects-category/.*",
+        "/benito/stats/.*"
     );
 
     private static final List<String> EXCLUDED_HEADERS = ImmutableList.of(

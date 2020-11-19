@@ -75,6 +75,7 @@ open class MedusaGraphClient(
         """.trimIndent()
         )
         .map { it.deserializeAs(ORGANIZATIONS_REF).organizations }
+        .also { LOGGER.debug("Organizations: {}", it) }
 
     open fun findProjects(
         orderBy: OrderDTO? = null,
@@ -221,6 +222,7 @@ open class MedusaGraphClient(
                 }
             }
             .map { it.deserializeAs(PROJECTS_REF).projects }
+            .also { LOGGER.debug("Projects: {}", it) }
     }
 
     open fun countProjects(

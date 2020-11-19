@@ -43,6 +43,7 @@ open class MedusaClient(
         }
 
         return response.deserializeAs(object : TypeReference<List<MedusaProjectDTO>>() {})
+            .also { LOGGER.debug("Projects: {}", it) }
     }
 
     open fun featuredProjects(): List<MedusaProjectDTO> = findProjects(limit = 10, orderBy = OrderDTO.VIEWS_DESC)
@@ -121,14 +122,11 @@ open class MedusaClient(
     )
 
     open fun createFile(file: File, filename: String, contentType: ContentType): MedusaFileDTO {
-        val filenamee = "chipian rocio.jpg"
-        val contentt = "image"
         val multipart = MultipartMetadataBuilder()
             .setText("name", "files")
-            .setBinary("files", file, contentType, filenamee)
+            .setBinary("files", file, contentType, filename)
             .buildPart()
             .build()
-        //multipart.parts[0].binaryBody.filename = "chipian rocio.jpg"
         val response = medusaConnector.post("/upload", multipart)
 
         if (response.isError()) {
@@ -277,12 +275,14 @@ open class MedusaClient(
         }
 
         return response.deserializeAs(ref)
+            .also { LOGGER.debug("Found: {}", it) }
     }
 
     private fun <T> findOne(collection: String, id: String, ref: TypeReference<T>): T {
         val response = medusaConnector.get("/$collection/$id")
         when (response.status) {
             200 -> return response.deserializeAs(ref)
+                .also { LOGGER.debug("Found one: {}", it) }
             404 -> throw NotFoundException("$id not found in $collection")
             else -> {
                 LOGGER.error("Error getting $id from $collection on Medusa", response.body)
