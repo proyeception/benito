@@ -27,7 +27,11 @@ import classNames from "classnames";
 import { Hidden } from "@material-ui/core";
 import MG from "../../assets/img/proyectate/magnifying-glass.png";
 import store from "../../store";
-import { invalidateSession, updateSessionSelectedOrganization, updateSessionState } from "../../actions/session";
+import {
+  invalidateSession,
+  updateSessionSelectedOrganization,
+  updateSessionState,
+} from "../../actions/session";
 import { Organization } from "../../types";
 
 const useStyles = makeStyles(styles);
@@ -37,18 +41,20 @@ interface Props extends RouteComponentProps {
 }
 
 const HeaderLinks = (props: Props) => {
-
-  let color: string = "#c41234"
-  let userOrganizations: Array<Organization> = []
-  if(props.session && props.session.isLoggedIn  && props.session.selectedOrganization){
-    color = props.session.selectedOrganization.color
-    userOrganizations = props.session.organizations
+  let color: string = "#c41234";
+  let userOrganizations: Array<Organization> = [];
+  if (
+    props.session &&
+    props.session.isLoggedIn &&
+    props.session.selectedOrganization
+  ) {
+    color = props.session.selectedOrganization.color;
+    userOrganizations = props.session.organizations;
   }
 
   const classes = useStyles();
 
   const dropdown = (session: LoggedInState) => {
-
     const drop: Array<any> = [
       <UserLink
         role={session.role}
@@ -94,41 +100,55 @@ const HeaderLinks = (props: Props) => {
 
     return (
       <List className={classes.list}>
-        {(userOrganizations.length > 1) ?
-          (<ListItem className={classes.listItem}>
+        {userOrganizations.length > 1 ? (
+          <ListItem className={classes.listItem}>
             <CustomDropdown
               buttonProps={{
                 color: "transparent",
-                size: "lg"
+                size: "lg",
               }}
               buttonText={session.selectedOrganization.name}
               dropdownList={userOrganizations.map((s: Organization, idx) => (
-                <div key={idx}  onClick={(s) => {
-                    if(props.session.isLoggedIn){
-                      let organi: Organization = session.organizations[idx]
+                <div
+                  key={idx}
+                  onClick={(s) => {
+                    if (props.session.isLoggedIn) {
+                      let organi: Organization = session.organizations[idx];
                       store.dispatch(
                         updateSessionState({
                           ...props.session,
-                          selectedOrganization: organi
+                          selectedOrganization: organi,
                         })
-                      )
-                  }
-              }}>{s.name.toUpperCase()}</div>
+                      );
+                    }
+                  }}
+                >
+                  {s.name.toUpperCase()}
+                </div>
               ))}
-              style={{color: "white !important", fontWeight: 500, fontSize: "0.875rem !important"}}
+              style={{
+                color: "white !important",
+                fontWeight: 500,
+                fontSize: "0.875rem !important",
+              }}
               color={color}
             />
-          </ListItem>) : (<span style={{ display: "none" }}></span>)
-        }
-        <ListItem className={classes.listItem} style={{color: "white !important"}}>
+          </ListItem>
+        ) : (
+          <span style={{ display: "none" }}></span>
+        )}
+        <ListItem
+          className={classes.listItem}
+          style={{ color: "white !important" }}
+        >
           <CustomDropdown
             buttonProps={{
               color: "transparent",
-              size: "lg"
+              size: "lg",
             }}
             buttonText={session.fullName}
             dropdownList={drop}
-            style={{color: "white !important"}}
+            style={{ color: "white !important" }}
             color={color}
           />
         </ListItem>
@@ -137,24 +157,49 @@ const HeaderLinks = (props: Props) => {
   };
 
   return (
-    <List className={classes.list} style={{color: "white !important", display: "flex"}}>
-      <ListItem className={classes.listItem} style={{verticalAlign: "middle"}}>
-      <Hidden smDown>
-        <Link to="/search" style={{verticalAlign: "middle"}}>
-          <Button color="transparent" className={classes.navLink} >
-            <img src={MG} alt="Lupa" style={{ height: "25px", margin: "0" }} />
-          </Button>
-        </Link>
+    <List
+      className={classes.list}
+      style={{ color: "white !important", display: "flex" }}
+    >
+      <ListItem
+        className={classNames(classes.listItem, classes.search)}
+        style={{ verticalAlign: "middle" }}
+      >
+        <Hidden smDown>
+          <Link to="/search" style={{ verticalAlign: "middle" }}>
+            <Button color="transparent" className={classes.navLink}>
+              <img
+                src={MG}
+                alt="Lupa"
+                style={{ height: "25px", margin: "0" }}
+              />
+            </Button>
+          </Link>
         </Hidden>
       </ListItem>
-      <ListItem className={classes.listItem} style={{verticalAlign: "middle"}}>
+      <ListItem
+        className={classes.listItem}
+        style={{ verticalAlign: "middle" }}
+      >
         {props.session.isLoggedIn ? (
           dropdown(props.session)
         ) : (
-          <Link to="/login" className="normalize-link" style={{verticalAlign: "middle"}}>
-            <Button color="transparent" className={classes.navLink} >
-              <ExitToApp className={classes.socialIcons} /> Iniciar sesión
-            </Button>
+          <Link
+            to="/login"
+            className="normalize-link"
+            style={{ verticalAlign: "middle" }}
+          >
+            <Hidden mdUp>
+              <Button color="primary" className={classes.navLink}>
+                <ExitToApp className={classes.socialIcons} />
+                Iniciar sesión
+              </Button>{" "}
+            </Hidden>
+            <Hidden smDown>
+              <Button color="transparent" className={classes.navLink}>
+                <ExitToApp className={classes.socialIcons} /> Iniciar sesión
+              </Button>
+            </Hidden>
           </Link>
         )}
       </ListItem>

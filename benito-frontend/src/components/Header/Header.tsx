@@ -28,7 +28,7 @@ const useStyles = makeStyles(styles);
 
 type Any = any;
 
-interface HeaderProps extends RouteComponentProps, Any { }
+interface HeaderProps extends RouteComponentProps, Any {}
 
 const Header = (props: HeaderProps) => {
   const classes = useStyles();
@@ -39,7 +39,7 @@ const Header = (props: HeaderProps) => {
 
   const brand = (
     <span className={classes.logoContainer}>
-      <img src={logo} className={classes.brandLogo} alt="Logo Proyectate"/>
+      <img src={logo} className={classes.brandLogo} alt="Logo Proyectate" />
     </span>
   );
 
@@ -50,43 +50,47 @@ const Header = (props: HeaderProps) => {
     [classes.absolute]: absolute,
     [classes.fixed]: fixed,
   });
-  const brandComponent = (
-    <Link to={"/"}>
-      {brand}
-    </Link>
-  );
+  const brandComponent = <Link to={"/"}>{brand}</Link>;
   return (
     <AppBar className={appBarClasses}>
-        <Toolbar style={{ marginLeft: "30px", marginRight: "30px", width: "-webkit-fill-available" }}>
-          {leftLinks !== undefined ? brandComponent : null}
-          <div className={classes.flex}>
-            {leftLinks !== undefined ? (
-              <Hidden smDown implementation="css">
-                {leftLinks}
-              </Hidden>
-            ) : (
-                brandComponent
-              )}
-          </div>
-            <Hidden smDown implementation="css" >
-            <span style={{color: "white"}}><HeaderLinks /></span>
+      <Toolbar
+        style={{
+          marginLeft: "30px",
+          marginRight: "30px",
+          width: "-webkit-fill-available",
+        }}
+      >
+        {leftLinks !== undefined ? brandComponent : null}
+        <div className={classes.flex}>
+          {leftLinks !== undefined ? (
+            <Hidden smDown implementation="css">
+              {leftLinks}
             </Hidden>
-            <Hidden mdUp>
-              <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                onClick={handleDrawerToggle}
-              >
-                <Menu />
-              </IconButton>
-            </Hidden>
-        </Toolbar>
+          ) : (
+            brandComponent
+          )}
+        </div>
+        <Hidden smDown implementation="css">
+          <span style={{ color: "white" }}>
+            <HeaderLinks />
+          </span>
+        </Hidden>
+        <Hidden mdUp>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerToggle}
+          >
+            <Menu />
+          </IconButton>
+        </Hidden>
+      </Toolbar>
       <Hidden mdUp implementation="js">
         <Drawer
           variant="temporary"
           anchor={"right"}
           open={mobileOpen}
-          style={{color: "black"}}
+          style={{ color: "black" }}
           classes={{
             paper: classes.drawerPaper,
           }}
