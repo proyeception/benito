@@ -1,5 +1,6 @@
 package com.github.proyeception.benito.dto
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -68,7 +69,8 @@ data class MedusaProjectRefDTO(
     val title: String,
     val picture: MedusaFileDTO?,
     @JsonProperty("organization") val organizationId: String,
-    val description: String
+    val description: String,
+    val driveFolderId: String
 )
 
 data class MedusaFileDTO(
@@ -142,11 +144,15 @@ enum class UserType(val collection: String) {
 }
 
 data class UpdateUserDTO(
-    val mail: String?,
-    val phone: String?,
-    val fullName: String?,
-    val username: String?,
-    val socials: SocialDTO
+    val mail: String? = null,
+    val phone: String? = null,
+    val fullName: String? = null,
+    val username: String? = null,
+    val socials: SocialDTO = SocialDTO(),
+    val ghost: Boolean? = null,
+    val profilePic: String? = null,
+    val googleUserId: String? = null,
+    val googleToken: String? = null
 )
 
 data class CreateMedusaProjectDTO(
@@ -204,7 +210,11 @@ data class UpdateMedusaUserDTO(
     val username: String?,
     val facebook: String?,
     val linkedin: String?,
-    val twitter: String?
+    val twitter: String?,
+    val ghost: Boolean?,
+    val profilePic: String?,
+    val googleUserId: String?,
+    val googleToken: String?
 ) {
     constructor (user: UpdateUserDTO) : this(
         mail = user.mail,
@@ -213,7 +223,11 @@ data class UpdateMedusaUserDTO(
         username = user.username,
         facebook = user.socials.facebook,
         linkedin = user.socials.linkedin,
-        twitter = user.socials.twitter
+        twitter = user.socials.twitter,
+        ghost = user.ghost,
+        googleUserId = user.googleUserId,
+        googleToken = user.googleToken,
+        profilePic = user.profilePic
     )
 }
 

@@ -121,46 +121,9 @@ const LoginPage = (props: LoginPageProps) => {
                         tabIcon: Book,
                         tabContent: (
                           <GridContainer align="center">
-                            <GridItem>
-                              Iniciá sesión con alguna de estas opciones
-                            </GridItem>
-                            <GridItem>
-                              <GoogleLogin
-                                clientId={googleClientId}
-                                render={(renderProps) => (
-                                  <Button
-                                    onClick={renderProps.onClick}
-                                    justIcon
-                                    color="transparent"
-                                  >
-                                    <i className={"fab fa-google-plus-g"} />
-                                  </Button>
-                                )}
-                                onSuccess={(res) => {
-                                  setIsLoading(true);
-                                  let googleInfo = res as GoogleLoginResponse;
-                                  let loginData: LoginData = {
-                                    googleUserId: googleInfo.googleId,
-                                    fullName: googleInfo.profileObj.name,
-                                    profilePictureUrl:
-                                      googleInfo.profileObj.imageUrl,
-                                    mail: googleInfo.profileObj.email,
-                                    token: googleInfo.tokenId,
-                                  };
-                                  startLogin(loginData, "author", () => {
-                                    setError(true);
-                                    setIsLoading(false);
-                                  });
-                                }}
-                                onFailure={console.warn}
-                              />
-                            </GridItem>
-                            <GridItem>
-                              <Divider variant="fullWidth" />
-                            </GridItem>
                             <GridItem style={{ paddingTop: "15px" }}>
                               <div>
-                                O registrate en tu organización. Es gratis!
+                                Elegí tu organización y registrate. Es gratis!
                               </div>
                               <ThemeProvider theme={theme}>
                                 <Autocomplete
@@ -265,6 +228,49 @@ const LoginPage = (props: LoginPageProps) => {
                                 </Alert>
                               </Snackbar>
                             </GridItem>
+                            <GridItem
+                              style={{
+                                marginTop: "30px",
+                                marginBottom: "30px",
+                              }}
+                            >
+                              <Divider variant="fullWidth" />
+                            </GridItem>
+                            <GridItem>
+                              Ya estás registrado? Iniciá sesión con alguna de
+                              estas opciones
+                            </GridItem>
+                            <GridItem>
+                              <GoogleLogin
+                                clientId={googleClientId}
+                                render={(renderProps) => (
+                                  <Button
+                                    onClick={renderProps.onClick}
+                                    justIcon
+                                    color="transparent"
+                                  >
+                                    <i className={"fab fa-google-plus-g"} />
+                                  </Button>
+                                )}
+                                onSuccess={(res) => {
+                                  setIsLoading(true);
+                                  let googleInfo = res as GoogleLoginResponse;
+                                  let loginData: LoginData = {
+                                    googleUserId: googleInfo.googleId,
+                                    fullName: googleInfo.profileObj.name,
+                                    profilePictureUrl:
+                                      googleInfo.profileObj.imageUrl,
+                                    mail: googleInfo.profileObj.email,
+                                    token: googleInfo.tokenId,
+                                  };
+                                  startLogin(loginData, "author", () => {
+                                    setError(true);
+                                    setIsLoading(false);
+                                  });
+                                }}
+                                onFailure={console.warn}
+                              />
+                            </GridItem>
                             <Snackbar
                               open={error}
                               autoHideDuration={6000}
@@ -294,46 +300,9 @@ const LoginPage = (props: LoginPageProps) => {
                         tabIcon: SupervisorAccount,
                         tabContent: (
                           <GridContainer align="center">
-                            <GridItem>
-                              Iniciá sesión con alguna de estas opciones
-                            </GridItem>
-                            <GridItem>
-                              <GoogleLogin
-                                clientId={googleClientId}
-                                render={(renderProps) => (
-                                  <Button
-                                    onClick={renderProps.onClick}
-                                    justIcon
-                                    color="transparent"
-                                  >
-                                    <i className={"fab fa-google-plus-g"} />
-                                  </Button>
-                                )}
-                                onSuccess={(res) => {
-                                  setIsLoading(true);
-                                  let googleInfo = res as GoogleLoginResponse;
-                                  let loginData: LoginData = {
-                                    googleUserId: googleInfo.googleId,
-                                    fullName: googleInfo.profileObj.name,
-                                    profilePictureUrl:
-                                      googleInfo.profileObj.imageUrl,
-                                    mail: googleInfo.profileObj.email,
-                                    token: googleInfo.tokenId,
-                                  };
-                                  startLogin(loginData, "supervisor", () => {
-                                    setError(true);
-                                    setDisabled(true);
-                                  });
-                                }}
-                                onFailure={console.warn}
-                              />
-                            </GridItem>
-                            <GridItem>
-                              <Divider variant="fullWidth" />
-                            </GridItem>
                             <GridItem style={{ paddingTop: "15px" }}>
                               <div>
-                                O solicitá una cuenta de supervisor para tu
+                                Solicitá una cuenta de supervisor para tu
                                 organización
                               </div>
                               <ThemeProvider theme={theme}>
@@ -438,6 +407,49 @@ const LoginPage = (props: LoginPageProps) => {
                                   resolviéndolo.
                                 </Alert>
                               </Snackbar>
+                            </GridItem>
+                            <GridItem
+                              style={{
+                                marginTop: "30px",
+                                marginBottom: " 15px",
+                              }}
+                            >
+                              <Divider variant="fullWidth" />
+                            </GridItem>
+                            <GridItem>
+                              Ya estás registrado? Iniciá sesión con alguna de
+                              estas opciones
+                            </GridItem>
+                            <GridItem>
+                              <GoogleLogin
+                                clientId={googleClientId}
+                                render={(renderProps) => (
+                                  <Button
+                                    onClick={renderProps.onClick}
+                                    justIcon
+                                    color="transparent"
+                                  >
+                                    <i className={"fab fa-google-plus-g"} />
+                                  </Button>
+                                )}
+                                onSuccess={(res) => {
+                                  setIsLoading(true);
+                                  let googleInfo = res as GoogleLoginResponse;
+                                  let loginData: LoginData = {
+                                    googleUserId: googleInfo.googleId,
+                                    fullName: googleInfo.profileObj.name,
+                                    profilePictureUrl:
+                                      googleInfo.profileObj.imageUrl,
+                                    mail: googleInfo.profileObj.email,
+                                    token: googleInfo.tokenId,
+                                  };
+                                  startLogin(loginData, "supervisor", () => {
+                                    setError(true);
+                                    setDisabled(true);
+                                  });
+                                }}
+                                onFailure={console.warn}
+                              />
                             </GridItem>
                           </GridContainer>
                         ),

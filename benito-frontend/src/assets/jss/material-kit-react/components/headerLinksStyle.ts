@@ -101,7 +101,7 @@ const headerLinksStyle = (theme: Theme) =>
       position: "relative",
       fontSize: "20px !important",
       marginRight: "4px",
-      color: "white"
+      color: "white",
     },
     dropdownLink: {
       "&,&:hover,&:focus": {
@@ -118,6 +118,11 @@ const headerLinksStyle = (theme: Theme) =>
     alignCenter: {
       display: "flex",
       alignItems: "center",
+    },
+    search: {
+      [theme.breakpoints.down("sm")]: {
+        display: "none",
+      },
     },
   });
 

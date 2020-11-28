@@ -4,14 +4,19 @@ import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.dto.AuthorSignUpDTO
 import com.github.proyeception.benito.dto.CreatePendingSupervisorDTO
 import com.github.proyeception.benito.dto.PersonDTO
+import com.github.proyeception.benito.dto.UpdateUserDTO
+import com.github.proyeception.benito.exception.BadRequestException
+import com.github.proyeception.benito.extension.asyncIO
 import com.github.proyeception.benito.extension.fromCamelToKebab
+import com.github.proyeception.benito.extension.launchIOAsync
 import org.apache.http.entity.ContentType
 import org.slf4j.LoggerFactory
 
 class SignUpService(
     private val medusaClient: MedusaClient,
     private val fileService: FileService,
-    private val userService: UserService
+    private val userService: UserService,
+    private val permissionService: PermissionService
 ) {
     fun createPendingSupervisor(supervisor: CreatePendingSupervisorDTO) {
         LOGGER.info("New supervisor sign up: {}", supervisor)
@@ -28,15 +33,51 @@ class SignUpService(
         medusaClient.createPendingSupervisor(supervisor.copy(profilePic = file?.id))
     }
 
-    fun createAuthor(author: AuthorSignUpDTO): PersonDTO = userService.createAuthor(
-        fullName = author.fullName,
-        profilePicUrl = author.profilePic,
-        googleUserId = author.googleUserId,
-        username = author.fullName.fromCamelToKebab(),
-        mail = author.mail,
-        googleToken = author.token,
-        organizationId = author.organizationId
-    )
+    fun createAuthor(author: AuthorSignUpDTO): PersonDTO {
+        val user = userService.findAuthorByEmail(author.mail)
+
+        return user?.let {
+            if (it.ghost) {
+                val image = author.profilePic?.let { url ->
+                    fileService.createMedusaFileFromUrl(
+                        url = url,
+                        fileName = "${author.fullName}.jpg",
+                        filePath = "/tmp/${author.fullName}.jpg",
+                        contentType = ContentType.IMAGE_JPEG
+                    )
+                }
+
+                userService.updateAuthor(
+                    id = it.id,
+                    user = UpdateUserDTO(
+                        ghost = false,
+                        googleUserId = author.googleUserId,
+                        googleToken = author.token,
+                        profilePic = image?.id
+                    )
+                )
+                    .also {
+                        launchIOAsync {
+                            it.projects.map { p ->
+                                asyncIO {
+                                    permissionService.givePermission(p.driveFolderId, author.mail)
+                                }
+                            }
+                        }
+                    }
+            } else {
+                throw BadRequestException("User ${author.mail} already exists")
+            }
+        } ?: userService.createAuthor(
+            fullName = author.fullName,
+            profilePicUrl = author.profilePic,
+            googleUserId = author.googleUserId,
+            username = author.fullName.fromCamelToKebab(),
+            mail = author.mail,
+            googleToken = author.token,
+            organizationId = author.organizationId
+        )
+    }
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(SignUpService::class.java)

@@ -191,7 +191,8 @@ open class UserService(
                     title = it.title,
                     pictureUrl = it.picture?.url,
                     organization = mapIdToOrganization(it.organizationId),
-                    description = it.description
+                    description = it.description,
+                    driveFolderId = it.driveFolderId
                 )
             },
             socials = SocialDTO(
