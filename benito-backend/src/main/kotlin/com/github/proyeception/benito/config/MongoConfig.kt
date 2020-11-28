@@ -21,9 +21,12 @@ open class MongoConfig {
         val password = System.getenv("STORAGE_PASSWORD") ?: mongoConfig.getString("password")
         val host = mongoConfig.getString("host")
         val databaseName = mongoConfig.getString("db.name")
+        val srv = mongoConfig.getBoolean("srv")
+        val string = "mongodb${if(srv) "+srv" else ""}://"
+
 
         val connectionString = ConnectionString(
-            "mongodb://$user:$password@$host/$databaseName?retryWrites=true"
+            "$string$user:$password@$host/$databaseName?retryWrites=true"
         )
         val mongoClientSettings = MongoClientSettings.builder()
             .applyConnectionString(connectionString)
