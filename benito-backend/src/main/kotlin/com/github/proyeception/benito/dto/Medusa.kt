@@ -142,11 +142,12 @@ enum class UserType(val collection: String) {
 }
 
 data class UpdateUserDTO(
-    val mail: String?,
-    val phone: String?,
-    val fullName: String?,
-    val username: String?,
-    val socials: SocialDTO
+    val mail: String? = null,
+    val phone: String? = null,
+    val fullName: String? = null,
+    val username: String? = null,
+    val socials: SocialDTO = SocialDTO(),
+    val ghost: Boolean? = null
 )
 
 data class CreateMedusaProjectDTO(

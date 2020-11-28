@@ -4,6 +4,8 @@ import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.dto.AuthorSignUpDTO
 import com.github.proyeception.benito.dto.CreatePendingSupervisorDTO
 import com.github.proyeception.benito.dto.PersonDTO
+import com.github.proyeception.benito.dto.UpdateUserDTO
+import com.github.proyeception.benito.exception.BadRequestException
 import com.github.proyeception.benito.extension.fromCamelToKebab
 import org.apache.http.entity.ContentType
 import org.slf4j.LoggerFactory
@@ -28,15 +30,25 @@ class SignUpService(
         medusaClient.createPendingSupervisor(supervisor.copy(profilePic = file?.id))
     }
 
-    fun createAuthor(author: AuthorSignUpDTO): PersonDTO = userService.createAuthor(
-        fullName = author.fullName,
-        profilePicUrl = author.profilePic,
-        googleUserId = author.googleUserId,
-        username = author.fullName.fromCamelToKebab(),
-        mail = author.mail,
-        googleToken = author.token,
-        organizationId = author.organizationId
-    )
+    fun createAuthor(author: AuthorSignUpDTO): PersonDTO {
+        val user = userService.findAuthorByEmail(author.mail)
+
+        return user?.let {
+            if (it.ghost) {
+                userService.updateAuthor(it.id, UpdateUserDTO(ghost = false))
+            } else {
+                throw BadRequestException("User ${author.mail} already exists")
+            }
+        } ?: userService.createAuthor(
+            fullName = author.fullName,
+            profilePicUrl = author.profilePic,
+            googleUserId = author.googleUserId,
+            username = author.fullName.fromCamelToKebab(),
+            mail = author.mail,
+            googleToken = author.token,
+            organizationId = author.organizationId
+        )
+    }
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(SignUpService::class.java)
