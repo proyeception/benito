@@ -38,7 +38,24 @@ class SignUpService(
 
         return user?.let {
             if (it.ghost) {
-                userService.updateAuthor(it.id, UpdateUserDTO(ghost = false))
+                val image = author.profilePic?.let { url ->
+                    fileService.createMedusaFileFromUrl(
+                        url = url,
+                        fileName = "${author.fullName}.jpg",
+                        filePath = "/tmp/${author.fullName}.jpg",
+                        contentType = ContentType.IMAGE_JPEG
+                    )
+                }
+
+                userService.updateAuthor(
+                    id = it.id,
+                    user = UpdateUserDTO(
+                        ghost = false,
+                        googleUserId = author.googleUserId,
+                        googleToken = author.token,
+                        profilePic = image?.id
+                    )
+                )
                     .also {
                         launchIOAsync {
                             it.projects.map { p ->

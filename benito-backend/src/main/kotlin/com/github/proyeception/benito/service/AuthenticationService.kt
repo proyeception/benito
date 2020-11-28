@@ -27,6 +27,7 @@ open class AuthenticationService(
         LOGGER.info("Login from $mail")
 
         return userService.findAuthorByEmail(mail)
+            ?.takeUnless { it.ghost }
             ?.let {
                 LOGGER.info("User found")
 

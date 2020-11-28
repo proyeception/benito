@@ -127,8 +127,9 @@ open class ServiceModule {
     open fun signUpService(
         medusaClient: MedusaClient,
         fileService: FileService,
-        userService: UserService
-    ): SignUpService = SignUpService(medusaClient, fileService, userService)
+        userService: UserService,
+        permissionService: PermissionService
+    ): SignUpService = SignUpService(medusaClient, fileService, userService, permissionService)
 
     @Bean
     open fun statsService(
@@ -137,4 +138,12 @@ open class ServiceModule {
         categoriesService: CategoriesService
     ): StatsService = StatsService(statsStorage, medusaClient, categoriesService)
 
+    @Bean
+    open fun permissionsService(
+        permissionsStorage: PermissionsStorage,
+        googleClient: GoogleDriveClient
+    ): PermissionService = PermissionService(
+        permissionsStorage = permissionsStorage,
+        googleDriveClient = googleClient
+    )
 }

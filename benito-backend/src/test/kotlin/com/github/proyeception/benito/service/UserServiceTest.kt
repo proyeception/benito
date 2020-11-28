@@ -71,7 +71,8 @@ class UserServiceTest : Spec() {
                                 picture = MedusaFileDTO(
                                     url = "https://picture.com",
                                     id = "picture"
-                                )
+                                ),
+                                driveFolderId = "123"
                             )
                         )
                     )
@@ -121,7 +122,8 @@ class UserServiceTest : Spec() {
                                 supervisors = emptyList(),
                                 header = "header",
                                 color = "color"
-                            )
+                            ),
+                            driveFolderId = "123"
                         )
                     ),
                     contact = ContactDTO(null, null),
