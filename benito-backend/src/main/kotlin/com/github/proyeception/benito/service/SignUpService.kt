@@ -6,14 +6,17 @@ import com.github.proyeception.benito.dto.CreatePendingSupervisorDTO
 import com.github.proyeception.benito.dto.PersonDTO
 import com.github.proyeception.benito.dto.UpdateUserDTO
 import com.github.proyeception.benito.exception.BadRequestException
+import com.github.proyeception.benito.extension.asyncIO
 import com.github.proyeception.benito.extension.fromCamelToKebab
+import com.github.proyeception.benito.extension.launchIOAsync
 import org.apache.http.entity.ContentType
 import org.slf4j.LoggerFactory
 
 class SignUpService(
     private val medusaClient: MedusaClient,
     private val fileService: FileService,
-    private val userService: UserService
+    private val userService: UserService,
+    private val permissionService: PermissionService
 ) {
     fun createPendingSupervisor(supervisor: CreatePendingSupervisorDTO) {
         LOGGER.info("New supervisor sign up: {}", supervisor)
@@ -36,6 +39,15 @@ class SignUpService(
         return user?.let {
             if (it.ghost) {
                 userService.updateAuthor(it.id, UpdateUserDTO(ghost = false))
+                    .also {
+                        launchIOAsync {
+                            it.projects.map { p ->
+                                asyncIO {
+                                    permissionService.givePermission(p.driveFolderId, author.mail)
+                                }
+                            }
+                        }
+                    }
             } else {
                 throw BadRequestException("User ${author.mail} already exists")
             }

@@ -122,7 +122,8 @@ data class ProjectRefDTO(
     val title: String,
     val pictureUrl: String?,
     val organization: OrganizationDTO,
-    val description: String
+    val description: String,
+    @JsonIgnore val driveFolderId: String
 )
 
 data class SessionInfoDTO(
