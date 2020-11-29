@@ -82,6 +82,13 @@ open class ProjectService(
 
         return if (tag.isNullOrEmpty()) {
 
+            statsService.registerTagSearch(ProjectSearchDTO(
+                tag = null,
+                visitedOn = LocalDate.now(),
+                categoryId = null
+            )
+            )
+
             val projects = medusaGraphClient.findProjects(
                 orderBy = orderBy,
                 from = from,
