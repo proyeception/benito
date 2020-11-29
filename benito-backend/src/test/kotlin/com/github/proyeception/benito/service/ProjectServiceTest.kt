@@ -6,6 +6,7 @@ import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.client.MedusaGraphClient
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.job.FileWatcher
+import com.github.proyeception.benito.mock.Mock.thenReturn
 import com.github.proyeception.benito.mock.eq
 import com.github.proyeception.benito.mock.getMock
 import com.github.proyeception.benito.mock.on
@@ -16,10 +17,12 @@ import com.github.proyeception.benito.storage.DriveStorage
 import com.github.proyeception.benito.storage.PermissionsStorage
 import com.nhaarman.mockito_kotlin.any
 import io.kotlintest.matchers.shouldBe
+import org.mockito.Mockito.doNothing
 import org.mockito.Mockito.verify
 import org.springframework.web.multipart.MultipartFile
 import java.io.InputStream
 import java.time.LocalDate
+import org.mockito.Mockito
 
 class ProjectServiceTest : Spec() {
     init {
@@ -150,6 +153,8 @@ class ProjectServiceTest : Spec() {
                 val expected = listOf(project)
 
                 on(medusaGraphClientMock.findProjects()).thenReturn(projects.right())
+                //on(statsService.registerSearchWithoutParameters()).thenReturn(null)
+                doNothing().`when`(statsService).registerSearchWithoutParameters()
                 on(medusaGraphClientMock.countProjects()).thenReturn(1.right())
 
                 val actual = projectService.findProjects(
