@@ -191,7 +191,7 @@ const OrganizationQuantity = (props: OrganizationQuantityProps) => {
 
 const mapStateToProps = (rootState: RootState) => {
 
-  const minYear = 2010
+  const minYear = 2020
   const maxYear = moment().year();
 
   let years: Array<number> = []
