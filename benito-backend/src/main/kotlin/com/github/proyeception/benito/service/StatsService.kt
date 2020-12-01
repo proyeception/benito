@@ -3,6 +3,7 @@ package com.github.proyeception.benito.service
 import com.github.proyeception.benito.client.MedusaClient
 import com.github.proyeception.benito.dto.*
 import com.github.proyeception.benito.storage.StatsStorage
+import java.time.LocalDate
 
 open class StatsService(
     private val statsStorage: StatsStorage,
@@ -142,6 +143,14 @@ open class StatsService(
     }
 
     fun registerTagSearch(projectSearchDTO: ProjectSearchDTO) = statsStorage.insert(projectSearchDTO)
+
+    open fun registerSearchWithoutParameters(){
+        registerTagSearch(ProjectSearchDTO(
+            tag = null,
+            visitedOn = LocalDate.now(),
+            categoryId = null
+        ))
+    }
 
     fun searchCount(): CountDTO {
         return statsStorage.searchCount()
