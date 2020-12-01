@@ -164,7 +164,7 @@ const OrganizationQuantity = (props: OrganizationQuantityProps) => {
             <GridList cellHeight={180} className={classes.gridList}>
               {projects.map((project) => (
                 <GridListTile key={project.projectId} className={classes.fiveColumns}>
-                    <img src={project.pictureUrl || pictureNotFound} alt={project.title}/>
+                    <img src={project.pictureUrl || pictureNotFound} alt={project.title} className={classes.gridImg} />
                     <GridListTileBar
                       title={project.title}
                       subtitle={<p>Vistas: {project.views}</p>}

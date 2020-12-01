@@ -112,6 +112,9 @@ const productStyle = (theme: Theme) => createStyles({
     width: "100%",
     height: 450,
   },
+  gridImg: {
+    width: "100% !important",
+  },
   icon: {
     color: 'rgba(255, 255, 255, 0.54) !important',
   },
