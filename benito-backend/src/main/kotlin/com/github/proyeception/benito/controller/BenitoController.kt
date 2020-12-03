@@ -24,6 +24,9 @@ open class BenitoController(
     @GetMapping(value = ["/login"])
     open fun login(): ModelAndView = ModelAndView("index", mapOf("title" to "Iniciar sesión en Proyectate"))
 
+    @GetMapping(value = ["/legal"])
+    open fun legal(): ModelAndView = ModelAndView("index", mapOf("title" to "Términos y condiciones"))
+
     @GetMapping(value = ["/me/*", "/search", "/projects/create"])
     open fun noIndex(): ModelAndView = ModelAndView(
         "index",
