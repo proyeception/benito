@@ -37,6 +37,7 @@ import { connect } from "react-redux";
 import { createBrowserHistory } from "history";
 import { pushRoute } from "./actions/routes";
 import Proyectabot from "./components/Bot/Proyectabot";
+import LegalPage from "./views/LegalPage/LegalPage";
 
 type AppProps = {
   loading: boolean;
@@ -86,7 +87,7 @@ const App = (props: AppProps) => {
     <ThemeProvider theme={theme}>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <Router history={browserHistory}>
-	      <Proyectabot/>
+          <Proyectabot />
           <Switch>
             <Route path="/projects/create" component={CreateProjectPage} />
             <Route path="/projects/:id/edit" component={EditProjectPage} />
@@ -99,6 +100,7 @@ const App = (props: AppProps) => {
             <Route path="/stats" component={StatsPage} />
             <Route path="/comingSoon" component={ComingSoon} />
             <Route path="/me/:tab" component={MePage} />
+            <Route path="/legal" component={LegalPage} />
             <Route path="/" exact component={HomePage} />
             <Route component={NotFoundPage} />
           </Switch>
