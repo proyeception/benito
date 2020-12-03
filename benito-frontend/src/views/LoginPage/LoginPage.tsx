@@ -20,7 +20,12 @@ import { LoginData, Organization } from "../../types";
 import { startLogin } from "../../functions/session";
 import { RootState } from "../../reducers";
 import { connect } from "react-redux";
-import { Redirect, RouteComponentProps, withRouter } from "react-router-dom";
+import {
+  Link,
+  Redirect,
+  RouteComponentProps,
+  withRouter,
+} from "react-router-dom";
 import CustomTabs from "../../components/CustomTabs/CustomTabs";
 import { Book, Close, SupervisorAccount } from "@material-ui/icons";
 import {
@@ -31,6 +36,7 @@ import {
   ThemeProvider,
   createMuiTheme,
   Hidden,
+  Checkbox,
 } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { requestSupervisorAccount, signUpAuthor } from "../../functions/user";
@@ -80,6 +86,14 @@ const LoginPage = (props: LoginPageProps) => {
   if (isLoading) {
     return <Spinner />;
   }
+
+  const LegalStuff = () => (
+    <div style={{ fontSize: "12px" }}>
+      <Checkbox />
+      <span>He leído y aceptado los </span>
+      <Link to="/legal">términos y condiciones</Link>
+    </div>
+  );
 
   return (
     <div>
@@ -149,6 +163,7 @@ const LoginPage = (props: LoginPageProps) => {
                                   )}
                                 />
                               </ThemeProvider>
+                              <LegalStuff />
                               <GoogleLogin
                                 clientId={googleClientId}
                                 render={(renderProps) => (
@@ -329,6 +344,7 @@ const LoginPage = (props: LoginPageProps) => {
                                   )}
                                 />
                               </ThemeProvider>
+                              <LegalStuff />
                               <GoogleLogin
                                 clientId={googleClientId}
                                 render={(renderProps) => (
