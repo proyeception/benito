@@ -62,16 +62,18 @@ const LegalPage = (props: any) => {
           <div className={classes.submessage}>Usuarios</div>
           <div>
             <ol>
-              Proyectate es una plataforma de libre uso por cualquier usuario
-              limitado bajo las funcionalidades que poseen los usuarios sin
-              registarse, detalladas a continuación: buscar proyectos,
-              visualizar perfiles de usuario, visualizar estadísticas, recibir
-              recomendaciones.
-            </ol>
-            <ol>
-              Proyectate se reserva el derecho de aprobación de usuarios
-              supervisores, independientemente de la organización de la que
-              provengan.
+              <li>
+                Proyectate es una plataforma de libre uso por cualquier usuario
+                limitado bajo las funcionalidades que poseen los usuarios sin
+                registarse, detalladas a continuación: buscar proyectos,
+                visualizar perfiles de usuario, visualizar estadísticas, recibir
+                recomendaciones.
+              </li>
+              <li>
+                Proyectate se reserva el derecho de aprobación de usuarios
+                supervisores, independientemente de la organización de la que
+                provengan.
+              </li>
             </ol>
           </div>
           <div className={classes.submessage}>Propiedad intelectual</div>
