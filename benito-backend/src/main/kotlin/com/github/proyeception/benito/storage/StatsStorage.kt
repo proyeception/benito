@@ -92,6 +92,8 @@ class StatsStorage(
             filters.add(matchYear)
         }
 
+        filters.add(match(Criteria.where("tag").exists(true)))
+        
         val searchCount: GroupOperation = group("tag")
             .count()
             .`as`("tagsCount")
