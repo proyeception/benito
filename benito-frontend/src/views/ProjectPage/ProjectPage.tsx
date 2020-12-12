@@ -90,7 +90,7 @@ const ProjectPage = (props: Props) => {
 
   const url = new URL(document.URL);
 
-  const shareUrl = `${url.protocol}://${url.hostname}/projects/${project.value.id}`;
+  const shareUrl = `${url.protocol}//${url.hostname}/projects/${project.value.id}`;
   const shareBrief =
     project.value.description.length > 100
       ? project.value.description.slice(0, 97) + "..."
