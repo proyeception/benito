@@ -1866,11 +1866,6 @@
   resolved "https://registry.yarnpkg.com/@types/parse-json/-/parse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"
   integrity sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==
 
-"@types/pdfjs-dist@*":
-  version "2.1.6"
-  resolved "https://registry.yarnpkg.com/@types/pdfjs-dist/-/pdfjs-dist-2.1.6.tgz#58e2372d6e65f1d59b1ec3632eb2ac34e36622f7"
-  integrity sha512-atQ3Dqgc3uKjNu9lCW/G7jhl875iXVErkSWoH8gEqMEpHP+GSuhkxAEaEImZCefeolz1tvWNGcZ/0/jCaVM9EQ==
-
 "@types/prismjs@1.16.1":
   version "1.16.1"
   resolved "https://registry.yarnpkg.com/@types/prismjs/-/prismjs-1.16.1.tgz#50b82947207847db6abcbcd14caa89e3b897c259"
@@ -1917,13 +1912,20 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-pdf@^4.0.6":
-  version "4.0.6"
-  resolved "https://registry.yarnpkg.com/@types/react-pdf/-/react-pdf-4.0.6.tgz#cc96357d87ca72e21d8d4caec5956c62a3990abc"
-  integrity sha512-ZmtUA31L5AaF9PilB8cJ3PuGOHIiyWcHnCir7KOux1cDjfVH6VxiN/j7CcyX98U9hwlyN81bkqxeNWNuEc0a4w==
+"@types/react-helmet@^6.1.0":
+  version "6.1.4"
+  resolved "https://registry.yarnpkg.com/@types/react-helmet/-/react-helmet-6.1.4.tgz#3e54a3eb37ba7fb34ffafc64f425be4e68df03b9"
+  integrity sha512-jyx50RNZXVaTGHY3MsoRPNpeiVk8b0XTPgD/O6KHF6COTDnG/+lRjPYvTK5nfWtR3xDOux0w6bHLAsaHo2ZLTA==
   dependencies:
-    "@types/pdfjs-dist" "*"
     "@types/react" "*"
+
+"@types/react-pdf@^5.0.9":
+  version "5.0.9"
+  resolved "https://registry.yarnpkg.com/@types/react-pdf/-/react-pdf-5.0.9.tgz#db1db3af62103b29c01b796d9aefc42aabbf98d9"
+  integrity sha512-sDK48DwAnha8nf74cavp1g1a8oCLI3F4hBQZm+DHZmgGYOnBm0UuAKwVu84cL2By0MkiCrGv0KSJDVSv+tN6KA==
+  dependencies:
+    "@types/react" "*"
+    pdfjs-dist "^2.10.377"
 
 "@types/react-redux@^7.1.9":
   version "7.1.11"
@@ -9610,10 +9612,10 @@ pdfjs-dist@2.4.456:
   resolved "https://registry.yarnpkg.com/pdfjs-dist/-/pdfjs-dist-2.4.456.tgz#0eaad2906cda866bbb393e79a0e5b4e68bd75520"
   integrity sha512-yckJEHq3F48hcp6wStEpbN9McOj328Ib09UrBlGAKxvN2k+qYPN5iq6TH6jD1C0pso7zTep+g/CKsYgdrQd5QA==
 
-pdfjs-dist@^2.0.943:
-  version "2.5.207"
-  resolved "https://registry.yarnpkg.com/pdfjs-dist/-/pdfjs-dist-2.5.207.tgz#b5e8c19627be64269cd3fb6df3eaaf45ddffe7b6"
-  integrity sha512-xGDUhnCYPfHy+unMXCLCJtlpZaaZ17Ew3WIL0tnSgKFUZXHAPD49GO9xScyszSsQMoutNDgRb+rfBXIaX/lJbw==
+pdfjs-dist@^2.0.943, pdfjs-dist@^2.10.377:
+  version "2.10.377"
+  resolved "https://registry.yarnpkg.com/pdfjs-dist/-/pdfjs-dist-2.10.377.tgz#feadc9f31bf1790795994e54b18930974cf4970a"
+  integrity sha512-i0jRShtvgfsVQUNCoFYH4SVhPO3U0yhtiFLfZ0RR0B+68N+Vnwq+8B3cjWjLEwWGh8wg1XQ/sYMYKUlHn/Qpsw==
 
 performance-now@^2.1.0:
   version "2.1.0"
@@ -10727,10 +10729,10 @@ react-chartjs-2@^2.10.0:
     lodash "^4.17.19"
     prop-types "^15.7.2"
 
-react-chatbot-kit@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/react-chatbot-kit/-/react-chatbot-kit-1.1.0.tgz#5cc4676138a086ef2661361de31742e46e6fb7d6"
-  integrity sha512-xteMo18SRlXeI50pgZrd4jFV5PFJOE45kknspBYKoV8P7f40KpC0lQGnIHv27PubrjntK45ooLx37oqTshT7nQ==
+react-chatbot-kit@^1.1.1:
+  version "1.1.20"
+  resolved "https://registry.yarnpkg.com/react-chatbot-kit/-/react-chatbot-kit-1.1.20.tgz#2388b66e2ad424f364d07fb7b3861badd74a1c5d"
+  integrity sha512-zVXXiNsVxfSvpvPdJS+2r6AQyz/n+HPEVZEAy1ICm1fPYc+8KXeGMVi9TZmN/PqXAoZCu9nHupI85SHfPloPqw==
   dependencies:
     classnames "^2.2.6"
     css-loader "^3.5.1"
@@ -10818,6 +10820,11 @@ react-event-listener@^0.6.0, react-event-listener@^0.6.2:
     prop-types "^15.6.0"
     warning "^4.0.1"
 
+react-fast-compare@^3.1.1:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-3.2.0.tgz#641a9da81b6a6320f270e89724fb45a0b39e43bb"
+  integrity sha512-rtGImPZ0YyLrscKI9xTpV8psd6I8VAtjKCzQDlzyDvqJA8XOW78TXYQwNRNd8g8JZnDu8q9Fu/1v4HPAVwVdHA==
+
 react-file-previewer@^0.6.3:
   version "0.6.3"
   resolved "https://registry.yarnpkg.com/react-file-previewer/-/react-file-previewer-0.6.3.tgz#f4a9961a9a1417560c2abc2af87345b31ffeb7b6"
@@ -10852,6 +10859,16 @@ react-google-login@^5.1.21:
   dependencies:
     "@types/react" "*"
     prop-types "^15.6.0"
+
+react-helmet@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/react-helmet/-/react-helmet-6.1.0.tgz#a750d5165cb13cf213e44747502652e794468726"
+  integrity sha512-4uMzEY9nlDlgxr61NL3XbKRy1hEkXmKNXhjbAIOVw5vcFrsdYbH2FEwcNyWvWinl103nXgzYNlns9ca+8kFiWw==
+  dependencies:
+    object-assign "^4.1.1"
+    prop-types "^15.7.2"
+    react-fast-compare "^3.1.1"
+    react-side-effect "^2.1.0"
 
 react-hot-loader@^4.13.0:
   version "4.13.0"
@@ -11074,6 +11091,11 @@ react-share@^4.3.1:
   dependencies:
     classnames "^2.2.5"
     jsonp "^0.2.1"
+
+react-side-effect@^2.1.0:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/react-side-effect/-/react-side-effect-2.1.1.tgz#66c5701c3e7560ab4822a4ee2742dee215d72eb3"
+  integrity sha512-2FoTQzRNTncBVtnzxFOk2mCpcfxQpenBMbk5kSVBg5UcPqV9fRbgY2zhb7GTWWOlpFmAxhClBDlIq8Rsubz1yQ==
 
 react-slick@^0.27.10:
   version "0.27.13"
