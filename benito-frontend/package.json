@@ -19,7 +19,7 @@
     "@types/jest": "^24.9.1",
     "@types/lodash": "^4.14.161",
     "@types/material-ui": "^0.21.8",
-    "@types/node": "^12.12.54",
+    "@types/node": "^17.0.12",
     "@types/node-sass": "^4.11.1",
     "@types/nouislider": "^9.0.7",
     "@types/psl": "^1.1.0",
