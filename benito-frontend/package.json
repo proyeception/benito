@@ -16,7 +16,7 @@
     "@testing-library/user-event": "^7.2.1",
     "@types/chart.js": "^2.9.27",
     "@types/classnames": "^2.2.10",
-    "@types/jest": "^24.9.1",
+    "@types/jest": "^29.2.4",
     "@types/lodash": "^4.14.161",
     "@types/material-ui": "^0.21.8",
     "@types/node": "^12.12.54",
